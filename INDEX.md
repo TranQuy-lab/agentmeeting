@@ -7,7 +7,7 @@ Bảng dưới đây là nguồn sự thật duy nhất về artifact trong kho.
 | # | Đường dẫn | Tác giả | Loại | Trạng thái | Reviewer |
 |---|---|---|---|---|---|
 | 1 | `README.md` | Admin | Khung | ✅ hoàn tất | — |
-| 2 | `INDEX.md` | DocWriter | Khung | ⏳ chờ dựng | — |
+| 2 | `INDEX.md` | **Admin** (DocWriter *chuẩn hoá* ở T1 — xem DISSENT-2) | Khung | ✅ hoàn tất trên `main`; bản 39 file ở nhánh `agent/doc-writer/T1` **chưa verify** | Reviewer1 |
 | 3 | `ADMIN/ROSTER.md` | Admin | Điều hành | ✅ hoàn tất | Auditor2 |
 | 4 | `ADMIN/ASSIGNMENTS.md` | Admin | Điều hành | ✅ hoàn tất | Auditor2 |
 | 5 | `ADMIN/LOG.md` | Admin | Điều hành | 🔄 cập nhật liên tục | Auditor2 |

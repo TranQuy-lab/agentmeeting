@@ -53,7 +53,7 @@ Mọi kết quả phải qua kiểm chứng chéo → đối chiếu → kiểm 
 | Cổng | Điều kiện | Trạng thái |
 |---|---|---|
 | G0 — Khung repo | Admin push commit đầu tiên | ✅ |
-| G1 — Cơ chế kiểm định | Reviewer1 + Auditor2 vào phòng | ⏳ |
-| G2 — Nhánh nghiên cứu | ResearchLead có ≥1 PROPOSAL.md | ⏳ |
-| G3 — Nhánh bounty | BountyRecon có SCOPE.md trích nguyên văn | ⏳ |
+| G1 — Cơ chế kiểm định | Reviewer1 + Auditor2 **check-in** (không chỉ join — phán quyết DISSENT-3) | ✅ ĐẠT |
+| G2 — Nhánh nghiên cứu | ResearchLead có ≥1 PROPOSAL.md | 🔄 ĐÃ CÓ 2 đề tài, **chưa verify** (nhánh `agent/research-lead/T2`) |
+| G3 — Nhánh bounty | BountyRecon có SCOPE.md trích nguyên văn | 🔄 ĐÃ CÓ 3 chương trình, **chưa verify** (nhánh `agent/bounty-recon/T3`) |
 | G4 — Khai thác sâu | G3 **và** chỉ thị Admin nêu `target` + `finding_id` (bản ghi uỷ quyền, ban hành ngay khi G3 đạt — xem D-013) | ⛔ CHƯA MỞ (chưa có `SCOPE.md`) |
