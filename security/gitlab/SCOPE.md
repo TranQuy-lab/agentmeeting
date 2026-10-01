@@ -146,6 +146,23 @@ SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace-ui
 SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace
 ```
 
+> 🧭 **[3b] CHIỀU `archived_at` (D-026) — bảng này TRƯỚC ĐÂY THIẾU chiều này.**
+> Tự truy vấn lại `2026-10-01T15:28Z` (`archived:false` / `archived:true`, GraphQL công khai):
+> **GitLab** — `archived:false` **44** scope (sub=True **19**) · `archived:true` **19** (sub=True **5**) · TỔNG **63**.
+> **5 bản ghi `archived_at != None` MÀ VẪN `eligible_for_submission=true`** (tạm gọi *orphan*) — bảng gốc không phân biệt được chúng với bản còn hiệu lực:
+>   - `gitlab-workhorse` — `2021-12-28T13:36:15.653Z`
+>   - `license.gitlab.com` — `2022-03-21T22:30:03.041Z`
+>   - `Static websites` — `2022-07-21T16:00:50.221Z`
+>   - `opstrace/` — `2023-06-04T21:02:31.693Z`
+>   - `GitLab for Jira Cloud Plugin` — `2023-12-07T13:38:09.687Z`
+> Bản chụp lại **có cột `archived_at`** đầy đủ: `agents/bountyrecon/tasks/T3/EVIDENCE/scope_gitlab_v2.md` (bản gốc `scope_gitlab.md` **giữ nguyên**, không sửa/xoá — D-026 (a)).
+>
+> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho các bản ghi này.
+> Chỉ được khẳng định: bảng **THIẾU chiều `archived_at`** ⇒ **KHÔNG PHÂN BIỆT ĐƯỢC** bản ghi còn hiệu lực hay đã nghỉ hưu.
+> Việc **loại khỏi T4** chỉ áp cho **4 tài sản GitLab** đã có phán quyết (`D-021`).
+>
+> ❗ **`DISSENT-12` vẫn MỞ:** ngữ nghĩa `eligible_for_submission=True` trên một bản ghi `archived_at != None` **CHƯA có định nghĩa chính thức** (introspection `description` RỖNG;
+> tài liệu công khai không có). **Ghi hiện tượng, KHÔNG kết luận ngữ nghĩa.**
 Prose out-of-scope (không nằm trong bảng structured) — `policy_gitlab.md` § `## Out of scope`,
 dòng 125–191, danh sách rất dài. Các mục quan trọng nhất cho giai đoạn trinh sát:
 

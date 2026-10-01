@@ -52,6 +52,22 @@ SOURCE_CODE  https://github.com/cloudflare/workerd     critical
 SOURCE_CODE  https://github.com/cloudflare/vinext      critical
 ```
 
+> 🧭 **[3b] CHIỀU `archived_at` (D-026) — bảng này TRƯỚC ĐÂY THIẾU chiều này.**
+> Tự truy vấn lại `2026-10-01T15:28Z` (`archived:false` / `archived:true`, GraphQL công khai):
+> **Cloudflare** — `archived:false` **78** scope (sub=True **51**) · `archived:true` **5** (sub=True **4**) · TỔNG **83**.
+> **4 bản ghi `archived_at != None` MÀ VẪN `eligible_for_submission=true`** (tạm gọi *orphan*) — bảng gốc không phân biệt được chúng với bản còn hiệu lực:
+>   - `http://cloudflare.com/apps/` — `2023-03-01T17:47:43.944Z`
+>   - `dash.teams.cloudflare.com` — `2023-05-08T10:11:33.083Z`
+>   - `Argo Tunnel` — `2023-10-26T15:25:05.200Z`
+>   - `Durable Objects` — `2023-10-26T15:40:54.533Z`
+> Bản chụp lại **có cột `archived_at`** đầy đủ: `agents/bountyrecon/tasks/T3/EVIDENCE/scope_cloudflare_v2.md` (bản gốc `scope_cloudflare.md` **giữ nguyên**, không sửa/xoá — D-026 (a)).
+>
+> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho các bản ghi này.
+> Chỉ được khẳng định: bảng **THIẾU chiều `archived_at`** ⇒ **KHÔNG PHÂN BIỆT ĐƯỢC** bản ghi còn hiệu lực hay đã nghỉ hưu.
+> Việc **loại khỏi T4** chỉ áp cho **4 tài sản GitLab** đã có phán quyết (`D-021`).
+>
+> ❗ **`DISSENT-12` vẫn MỞ:** ngữ nghĩa `eligible_for_submission=True` trên một bản ghi `archived_at != None` **CHƯA có định nghĩa chính thức** (introspection `description` RỖNG;
+> tài liệu công khai không có). **Ghi hiện tượng, KHÔNG kết luận ngữ nghĩa.**
 ### 1b. Sản phẩm / dịch vụ trong scope (n=55 tổng; `eligible_for_bounty=true`)
 
 ```text

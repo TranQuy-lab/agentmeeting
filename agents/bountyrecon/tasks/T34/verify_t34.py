@@ -30,25 +30,23 @@ FILES = [
     "agents/bountyrecon/tasks/T31/history_check_t31.py",
     "agents/bountyrecon/tasks/T31/verify_t31.py",
 ]
-# vùng NGUYÊN VĂN phải bảo vệ: (file, mô tả, regex mở, regex đóng)
+# vùng NGUYÊN VĂN phải bảo vệ: (file, mô tả, regex TIÊU ĐỀ mục)
+# Vùng = KHỐI FENCE ```...``` ĐẦU TIÊN sau tiêu đề đó.
+# (Dùng khối fence, KHÔNG dùng "từ tiêu đề tới tiêu đề sau", vì T37 chèn khối [3b]
+#  KHÔNG-nguyên-văn vào TRONG các mục đó — lấy cả mục sẽ báo KHÁC sai.)
 PROTECTED = [
-    ("security/gitlab/SCOPE.md", "§1 khoi POLICY PROSE (All GitLab Inc. products...)",
-     r'^All GitLab Inc\. products', r'^```\s*$'),
-    ("security/gitlab/SCOPE.md", "§2a out-of-scope",
-     r'^### 2a\.', r'^## 2b\.'),
-    ("security/gitlab/SCOPE.md", "§3 quy dinh cam",
-     r'^## 3\.', r'^## 4\.'),
-    ("security/gitlab/SCOPE.md", "§4 muc thuong",
-     r'^## 4\.', r'^## 5\.'),
-    ("security/github/SCOPE.md", "§1 in-scope",
-     r'^## 1\.', r'^## 2\.'),
-    ("security/github/SCOPE.md", "§4b ineligible",
-     r'^## 4b\.', r'^## 5\.'),
-    ("security/cloudflare/SCOPE.md", "§1 in-scope",
-     r'^## 1\.', r'^## 2\.'),
-    ("security/cite", "", "", ""),  # placeholder loai bo
+    ("security/gitlab/SCOPE.md", "§1 khoi POLICY PROSE (fence, KHONG doi)", r'^Policy prose bổ sung'),
+    ("security/gitlab/SCOPE.md", "§2a out-of-scope (fence)", r'^### 2a\.'),
+    ("security/gitlab/SCOPE.md", "§3 quy dinh cam (fence)", r'^## 3\.'),
+    ("security/gitlab/SCOPE.md", "§4 muc thuong (fence)", r'^## 4\.'),
+    ("security/github/SCOPE.md", "§1 in-scope (fence)", r'^## 1\.'),
+    ("security/github/SCOPE.md", "§4b ineligible (fence)", r'^## 4b\.'),
+    ("security/cloudflare/SCOPE.md", "§1 in-scope (fence)", r'^## 1\.'),
+    ("security/cloudflare/SCOPE.md", "§3 quy dinh cam (fence)", r'^## 3\.'),
+    ("security/github/RECON.md", "§1 bang DNS (fence)", r'^## 1\.'),
+    ("security/cloudflare/RECON.md", "§1 bang DNS (fence)", r'^## 1\.'),
+    ("security/gitlab/RECON.md", "§1 bang DNS (fence)", r'^## 1\.'),
 ]
-PROTECTED = [p for p in PROTECTED if p[1]]
 ALLOWED_PREFIX = "agents/bountyrecon/tasks/T34/"
 FIXED = tuple(FILES)
 EXCLUDED_HINT = ("FIX_2B", "/T28/", "/T29/", "/T30/", "/T32/", "/T33/")
@@ -71,20 +69,19 @@ def h(s):
     return hashlib.sha256(s.encode("utf-8")).hexdigest()[:16]
 
 
-def region(ls, open_rx, close_rx):
-    """Trả về (bắt đầu, kết thúc-ngoại-lệ) các dòng giữa lần khớp open_rx đầu tiên
-    và lần khớp close_rx đầu tiên SAU đó. None nếu không tìm thấy."""
-    a = b = None
-    for i, l in enumerate(ls):
-        if a is None and re.search(open_rx, l):
-            a = i
-            continue
-        if a is not None and re.search(close_rx, l):
-            b = i
-            break
-    if a is None or b is None or b <= a:
+def region(ls, heading_rx):
+    """Vùng = KHỐI FENCE ```...``` ĐẦU TIÊN sau dòng khớp heading_rx.
+    Trả về (i_mở_fence, i_đóng_fence) — bao gồm cả 2 dòng fence. None nếu không thấy."""
+    hi = next((i for i, l in enumerate(ls) if re.search(heading_rx, l)), None)
+    if hi is None:
         return None
-    return a, b
+    a = next((i for i in range(hi, len(ls)) if re.match(r'^\s*```', ls[i])), None)
+    if a is None:
+        return None
+    b = next((i for i in range(a + 1, len(ls)) if re.match(r'^\s*```\s*$', ls[i])), None)
+    if b is None:
+        return None
+    return a, b + 1
 
 
 def main():
@@ -127,9 +124,9 @@ def main():
     print("=" * 78)
     print("[2] VUNG NGUYEN VAN BAO VE — phai GIONG HET truoc/sau")
     print("=" * 78)
-    for f, label, o, c in PROTECTED:
+    for f, label, hrx in PROTECTED:
         b, a = lines_at(base, f), work(f)
-        rb, ra = region(b, o, c), region(a, o, c)
+        rb, ra = region(b, hrx), region(a, hrx)
         if rb is None or ra is None:
             print(f"  {f} :: {label}: KHONG tim thay vung -> CANH BAO")
             all_ok = False
