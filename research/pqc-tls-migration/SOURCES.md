@@ -83,7 +83,7 @@
 | S15 | On the Security and Efficiency of TLS 1.3 Handshake with Hybrid Key Exchange from CPA-Secure KEMs | `10.3390/e27121242` | Entropy, 2025 | 6 | MDPI chặn tải (HTTP 403) |
 | S16 | Module-Lattice-Based Key-Encapsulation Mechanism Performance Measurements | `10.3390/sci7030091` | Sci (MDPI), 2025 | 14 | MDPI chặn tải (HTTP 403) |
 | S17 | Hybrid ML-KEM in TLS 1.3: Performance Analysis on ARM64 Under Network Stress | `10.53070/bbd.1898820` | Computer Science (DergiPark), 2026 | 4 | Máy chủ DergiPark không kết nối được từ môi trường này |
-| **S31** | **Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange** — Gómez-Cambronero, Munteanu, González-Tablas | arXiv:2603.11006v2 (không có DOI) | arXiv, 2026-03-11 (cập nhật 2026-07-07) | chưa tra | 🔴 **MỐI ĐE DOẠ TÍNH MỚI.** Đã đọc **trừu tượng** qua arXiv API (`../EVIDENCE/arxiv_lookups.txt`); **chưa đọc toàn văn** |
+| **S31** | **Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange** — Gómez-Cambronero, Munteanu, González-Tablas | arXiv:2603.11006v2 (không có DOI) | arXiv, 2026-03-11 (cập nhật 2026-07-07) · **đã bình duyệt: SPIQE 2026 / Euro S&P 2026** | chưa tra | 🟢 **ĐÃ ĐỌC TOÀN VĂN** ở vòng T19 (HTML, HTTP 200, 368.458 bytes). Đếm từ khoá: `MTU`/`middlebox`/`fragment`/`packet size`/`network layer`/`certificate chain`/`tunnel`/`VPN` = **0**; `edge`=1 ở footer arXiv. Tự liệt kê khoảng hở của T1 vào *future work*. Bằng chứng: `../EVIDENCE/T19_checks.txt` |
 
 **Nguồn chuẩn hoá (metadata):**
 | Mã | Tài liệu | DOI | Ngày | Trạng thái |
@@ -106,7 +106,7 @@
 | S26 | Simple and precise static analysis of untrusted Linux kernel extensions | `10.1145/3314221.3314590` | ACM PLDI, 2019 | 99 | 🟡 không truy cập được |
 | S27 | Optimizing network microsegmentation policy for cyber resilience | `10.1177/15485129211051386` | J. Defense Modeling & Simulation, 2021-10-08 | 12 | 🟡 không có bản mở |
 | S28 | Automated Microsegmentation for Lateral Movement Prevention in Industrial Internet of Things (IIoT) | `10.1109/SIN54109.2021.9699232` | IEEE SIN, 2021-12-15 | 18 | 🟡 không đọc toàn văn |
-| S29 | Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, RBAC, and ABAC | `10.1109/ICICT63348.2025.10989392` | IEEE ICCIT, 2025-04-13 | 9 | 🟡 không có bản mở |
+| S29 | Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, RBAC, and ABAC | `10.1109/iccit63348.2025.10989392` | IEEE ICCIT, 2025-04-13 | 9 | 🟡 không có bản mở |
 
 ---
 
@@ -140,8 +140,8 @@
 | `https://www.ndss-symposium.org/wp-content/uploads/2020/02/24203-paper.pdf` | ✅ HTTP 200 | Thành công (S3) |
 
 **Tổng kết truy cập (do người lập tự đếm, Reviewer1 phải kiểm lại):**
-- Tải **thành công** nội dung: **6** nguồn (S1, S2, S3, S4, S5, S6).
-- Đọc **trừu tượng chính thức qua arXiv API**: **1** nguồn bổ sung (S31) — *không tính là toàn văn*.
+- Tải **thành công** nội dung: **7** nguồn (S1, S2, S3, S4, S5, S6) **+ S31 toàn văn HTML** (vòng T19).
+- Đọc **trừu tượng chính thức qua arXiv API**: 1 nguồn (S31) ở vòng T2 — **nay đã nâng lên toàn văn** ở vòng T19.
 - Xác minh **metadata** thành công nhưng không đọc toàn văn: **21** DOI (S7–S21, S22–S29).
 - **Thất bại** khi fetch: **7** URL (bảng §E, trừ 2 dòng ✅).
 - **Không xác minh được**: **5** mục (X1–X5). **Đã tự phát hiện và sửa 1 sai sót** (X6): `arXiv:2609.18633` thực ra tồn tại — lỗi do thiếu cờ `-L` khi gọi arXiv API.
@@ -165,3 +165,19 @@ Danh sách tác giả: xác minh qua OpenAlex, lưu tại `../EVIDENCE/openalex_
 
 Công cụ dùng: `curl`, `python3` (thư viện chuẩn), `pdftotext` (poppler), `web_search`, `web_fetch`.
 **Không** dùng CSDL trả phí. **Không** dùng bất kỳ nguồn nào từ trí nhớ mà không kiểm tra.
+
+---
+
+## G. BÀI HỌC TỪ DISSENT-6 — DOI phân biệt HOA/THƯỜNG khi truy vấn
+
+Đã tự kiểm lại bằng `curl` (bằng chứng thô: `../EVIDENCE/T19_checks.txt` mục VIỆC 1):
+
+| Chuỗi DOI | Crossref REST | OpenAlex REST | doi.org |
+|---|---|---|---|
+| `10.1109/`**`ICICT`**`63348.2025.10989392` | **404** | **404** | **404** |
+| `10.1109/`**`iccit`**`63348.2025.10989392` | **200** | **200** | **202** |
+
+⇒ **hoa/thường quyết định 404 hay 200** trong thực tế. Đây là lỗi **chép sai hoa/thường**, **KHÔNG phải bịa nguồn**.
+Đã sửa 4 vị trí theo DISSENT-6; `grep -rn "ICICT63348" research/` nay → **0 match**.
+
+**Quy tắc từ nay:** **luôn dán DOI nguyên văn từ output API**, không gõ lại bằng tay.

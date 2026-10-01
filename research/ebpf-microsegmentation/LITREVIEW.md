@@ -261,7 +261,7 @@ Ngoài ra, đường dẫn `https://eprint.iacr.org/2026/1938.pdf` xuất hiện
 - **[S26]** (2019). *Simple and precise static analysis of untrusted Linux kernel extensions*. ACM PLDI 2019. DOI: [10.1145/3314221.3314590](https://doi.org/10.1145/3314221.3314590). ⚠️ Chưa đọc toàn văn.
 - **[S27]** Noel, S., et al. (2021-10-08). *Optimizing network microsegmentation policy for cyber resilience*. J. Defense Modeling & Simulation. DOI: [10.1177/15485129211051386](https://doi.org/10.1177/15485129211051386). ⚠️ Chưa đọc toàn văn.
 - **[S28]** (2021-12-15). *Automated Microsegmentation for Lateral Movement Prevention in Industrial Internet of Things (IIoT)*. IEEE SIN 2021. DOI: [10.1109/SIN54109.2021.9699232](https://doi.org/10.1109/SIN54109.2021.9699232). ⚠️ Chưa đọc toàn văn.
-- **[S29]** (2025-04-13). *Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC)*. IEEE ICCIT 2025. DOI: [10.1109/ICICT63348.2025.10989392](https://doi.org/10.1109/ICICT63348.2025.10989392). 🔴 **Chưa đọc toàn văn — RỦI RO CAO cho tính mới.**
+- **[S29]** (2025-04-13). *Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC)*. IEEE ICCIT 2025. DOI: [10.1109/iccit63348.2025.10989392](https://doi.org/10.1109/iccit63348.2025.10989392). 🔴 **Chưa đọc toàn văn — RỦI RO CAO cho tính mới.**
 
 ---
 

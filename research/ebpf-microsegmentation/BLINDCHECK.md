@@ -50,7 +50,7 @@
 
 | # | Việc phải làm | Kết quả thô | Kết luận |
 |---|---|---|---|
-| B2.1 | **Tìm cách đọc toàn văn S29** (`10.1109/ICICT63348.2025.10989392`). S29 có đo **cửa sổ hội tụ** chính sách không? | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
+| B2.1 | **Tìm cách đọc toàn văn S29** (`10.1109/iccit63348.2025.10989392`). S29 có đo **cửa sổ hội tụ** chính sách không? | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 | B2.2 | Nếu S29 ĐÃ đo cửa sổ hội tụ → **tính mới gần như bằng không**. Ghi rõ. | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 | B2.3 | Tự chạy tìm kiếm độc lập: *policy convergence time Kubernetes network policy dynamic* | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 | B2.4 | Tự chạy tìm kiếm độc lập: *L3 vs L7 network policy overhead comparison benchmark* | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |

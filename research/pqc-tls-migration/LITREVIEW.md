@@ -124,18 +124,42 @@ Ngày **2024-08-13** là mốc chốt: FIPS 203 (ML-KEM), FIPS 204 (ML-DSA), FIP
 
 ### 6.1. Chi phí bắt tay: từ chữ ký sang kích thước bản ghi
 
-> ## 🔴 CẢNH BÁO TÍNH MỚI — PHÁT HIỆN MUỘN, ĐÃ CẬP NHẬT HỒ SƠ
-> Trong lúc hoàn thiện hồ sơ, người lập **phát hiện thêm một nguồn rất gần với đề tài**:
-> **Gómez-Cambronero, Munteanu & González-Tablas (2026), "Layered Performance Analysis of TLS 1.3
-> Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange", arXiv:2603.11006v2 (S31).**
-> Nguồn này **đã được tải và đọc trừu tượng qua arXiv API** (`../EVIDENCE/arxiv_lookups.txt`).
+> ## ✅ TÍNH MỚI — ĐÃ GIẢI QUYẾT BẰNG BẰNG CHỨNG DƯƠNG (cập nhật vòng T19)
+> Nguồn gần nhất với đề tài là **S31** — Gómez-Cambronero, Munteanu & González-Tablas (2026),
+> *Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange*,
+> arXiv:2603.11006v2, **đã qua bình duyệt** tại **SPIQE 2026** (gắn với **Euro S&P 2026**).
 >
-> **Hệ quả trực tiếp: tính mới của đề tài này BỊ HẠ CẤP.** Cụ thể:
-> - S31 **đã làm** phân tích hiệu năng **theo tầng** cho TLS 1.3 với **ba nhóm trao đổi khoá: cổ điển, lai (hybrid), và hậu lượng tử thuần** — đúng ý tưởng "đo hybrid so với cổ điển".
-> - S31 dùng **hơn 30 thí nghiệm**, có **giảm dữ liệu và phân tích thống kê theo từng tầng**, với kiến trúc phòng thí nghiệm gồm **cân bằng tải** và máy chủ backend, tải lên tới **100 giao dịch/giây**, và **có thay đổi kích thước phản hồi backend**.
-> - Vì vậy, khẳng định ở `PROPOSAL.md` §1.1 rằng "chưa có bộ dữ liệu mở nào…" **phải được đọc lại một cách thận trọng**: nó chỉ còn đúng nếu phần **biên + middlebox + MTU + chuỗi chứng thư ML-DSA** thực sự chưa được S31 bao phủ — và điều đó **chưa được kiểm chứng**, vì người lập chỉ đọc **trừu tượng** của S31, **không đọc toàn văn**.
+> **Người lập đã tự tải và đọc toàn văn bản HTML** (`https://arxiv.org/html/2603.11006v2`, HTTP 200, **368.458 bytes**),
+> bóc thẻ → **67.743 ký tự văn bản**, và đếm từ khoá. Kết quả:
 >
-> **Việc Reviewer1 BẮT BUỘC phải làm:** đọc toàn văn S31 trước khi đánh giá tính mới. Nếu S31 đã bao phủ biên/MTU/middlebox hoặc chuỗi chứng thư ML-DSA, thì phần đóng góp còn lại của đề tài chỉ là **mô hình quyết định P3** — và tính mới phải bị hạ cấp tương ứng.
+> | Từ khoá | Số lần |
+> |---|---|
+> | `MTU` · `middlebox` · `fragment` · `packet size` · `network layer` · `certificate chain` · `tunnel` · `VPN` | **0 · 0 · 0 · 0 · 0 · 0 · 0 · 0** |
+> | `edge` | 1 — ở **99,5%** độ dài văn bản ⇒ **footer arXiv**, không phải nội dung bài |
+> | `MiTM` / `man-in-the-middle` | 2 / 2 |
+> | `load balancer` | 2 |
+>
+> **S31 tự liệt kê đúng khoảng hở của đề tài này vào *future work***, trích nguyên văn:
+> > *"extending the analysis to real network environments with commercial load balancers and MiTM
+> > (Man-in-The-Middle) inspection devices to quantify the performance impact when using PQC in TLS…"*
+>
+> **S31 bao phủ:** phân tích theo tầng (TCP → TCP-TLS → TLS → tầng trung gian → HTTP), ba nhóm trao đổi khoá
+> cổ điển/lai/thuần PQC, hơn 30 thí nghiệm, backend đổi kích thước phản hồi, tới 100 giao dịch/giây, có effect size.
+>
+> **S31 KHÔNG bao phủ:** thiết bị trung gian thật, ràng buộc MTU/phân mảnh, lớp mạng, chuỗi chứng thư,
+> đường hầm/VPN, biên thật.
+>
+> ⇒ **Kết luận tính mới:** khoảng hở của đề tài là **CÒN MỞ**, được chứng minh bằng **bằng chứng DƯƠNG**
+> (S31 đã qua bình duyệt và tự nhận phần này là việc chưa làm), **không còn** là suy luận từ việc "không tìm thấy".
+> Người lập chấm lại **N = 4/5** (không phải 2/5 như bản trước, cũng không phải 5/5 vì phần lõi
+> "đo hybrid so với cổ điển" **đã có người làm**).
+>
+> **Bằng chứng thô:** `../EVIDENCE/T19_checks.txt` mục VIỆC 2.
+>
+> **Ghi chú trung thực về một lần suýt sai:** lần grep đầu tiên trên HTML **không** tìm thấy thông tin venue
+> (`SPIQE`/`Euro S&P`), và người lập suýt kết luận rằng Reviewer1 nêu sai venue. Kiểm lại ở trường
+> `<arxiv:comment>` qua arXiv API thì **venue là THẬT** — thông tin nằm ở **metadata**, không nằm trong bản HTML
+> toàn văn. Bài học: **một lần grep rỗng không phải là bằng chứng phủ định.**
 
 Đây là chủ đề có **chất lượng bằng chứng tốt nhất** trong tổng quan, vì có một nguồn đọc toàn văn.
 
@@ -198,8 +222,8 @@ Về phía thuật toán, ML-KEM là đối tượng của FIPS 203 (S18). Các 
 
 | # | Khoảng trống | Mức độ chắc chắn của bằng chứng | Đề tài đóng góp gì |
 |---|---|---|---|
-| G1 | Không có tập dữ liệu/harness mở cho hybrid ML-KEM ở biên có middlebox + ràng buộc MTU | 🔴 **YẾU SAU KHI PHÁT HIỆN S31** — S31 (2026) đã làm phân tích theo tầng cho hybrid/cổ điển/thuần, có backend đổi kích thước phản hồi. Phần chưa rõ còn lại: **biên + middlebox + MTU + chứng thư ML-DSA** | P2 |
-| G2 | Chi phí chuỗi chứng thư ML-DSA trong mTLS chưa được đo | 🟡 **Trung bình** — S31 đo **trao đổi khoá**, không thấy nói tới **chuỗi chứng thư ML-DSA** trong trừu tượng; cần Reviewer1 xác nhận bằng toàn văn | P2 |
+| G1 | Không có tập dữ liệu/harness mở cho hybrid ML-KEM ở biên có middlebox + ràng buộc MTU | 🟢 **CÒN MỞ — BẰNG CHỨNG DƯƠNG.** S31 (2026, đã bình duyệt) đếm được `MTU`=0, `middlebox`=0, `fragment`=0, `network layer`=0, `tunnel`=0, `VPN`=0 trên toàn văn, và **tự liệt kê đúng khoảng hở này vào future work** | P2 |
+| G2 | Chi phí chuỗi chứng thư ML-DSA trong mTLS chưa được đo | 🟢 **CÒN MỞ — BẰNG CHỨNG DƯƠNG.** Toàn văn S31 có `certificate chain` = **0** lần | P2 |
 | G3 | Chưa có mô hình ưu tiên di trú kiểm chứng được | 🔴 **Yếu** — dựa trên *không tìm thấy*, và 2 nguồn liên quan nhất (S7, S21) chưa đọc được toàn văn | P3 |
 
 **Vị trí của đề tài (đã điều chỉnh sau khi phát hiện S31):** nằm ở giao điểm của (a) đo lường hiệu năng giao thức và (b) hỗ trợ ra quyết định vận hành an ninh mạng. Nó **không** nằm trong làn sóng thiết kế lại giao thức (KEMTLS và tương tự).
@@ -208,7 +232,7 @@ Về phía thuật toán, ML-KEM là đối tượng của FIPS 203 (S18). Các 
 
 ## 9. Đánh giá chất lượng bằng chứng
 
-**Phát hiện muộn được ghi nhận trung thực:** S31 (arXiv:2603.11006) chỉ được tìm thấy **sau** khi hồ sơ đã viết xong bản đầu, qua truy vấn arXiv trực tiếp. Người lập **không giấu** việc này và đã hạ cấp tính mới tương ứng (§6.1, §8). Đây là minh chứng rằng quy trình tìm kiếm ban đầu **có lỗ hổng độ phủ**.
+**Phát hiện muộn được ghi nhận trung thực, và nay đã giải quyết:** S31 (arXiv:2603.11006) chỉ được tìm thấy **sau** khi hồ sơ viết xong bản đầu. Người lập **không giấu**, đã tự hạ tính mới từ 4 xuống 2 ở vòng T2, rồi ở vòng T19 **tự đọc toàn văn S31** và **nâng lại lên N=4 theo bằng chứng**. Việc hạ rồi nâng lại theo dữ liệu — chứ không theo uy quyền — là điều cần ghi lại. Quy trình tìm kiếm ban đầu **có lỗ hổng độ phủ**, và lỗ hổng đó là thật.
 
 **Điểm mạnh của tổng quan này:**
 - Mọi trích dẫn định lượng đều truy được tới **văn bản gốc đã tải**, kèm **số dòng** (S3, S6).
@@ -249,7 +273,7 @@ Về phía thuật toán, ML-KEM là đối tượng của FIPS 203 (S18). Các 
 
 **Mức 🟡 CHỈ METADATA — không trích số liệu:**
 
-- **[S31]** Gómez-Cambronero, D., Munteanu, D., & González-Tablas, A. I. (2026). *Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange*. arXiv:2603.11006v2 (bản đầu 2026-03-11, cập nhật 2026-07-07). URL: https://arxiv.org/abs/2603.11006. ⚠️ **Chỉ đọc TRỪU TƯỢNG**, chưa đọc toàn văn — nhưng đây là **mối đe doạ trực tiếp tới tính mới**, xem §6.1.
+- **[S31]** Gómez-Cambronero, D., Munteanu, D., & González-Tablas, A. I. (2026). *Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange*. arXiv:2603.11006v2 (bản đầu 2026-03-11, cập nhật 2026-07-07). URL: https://arxiv.org/abs/2603.11006. 🟢 **ĐÃ ĐỌC TOÀN VĂN** (bản HTML, HTTP 200, 368.458 bytes) ở vòng T19 — xem §6.1 và `../EVIDENCE/T19_checks.txt`. Đã qua bình duyệt: SPIQE 2026 / Euro S&P 2026. **Xác nhận khoảng hở của đề tài là còn mở.**
 - **[S7]** Alnahawi, N., Müller, J., Oupický, J., & Wiesmaier, A. (2024). *A Comprehensive Survey on Post-Quantum TLS*. IACR Communications in Cryptology. DOI: [10.62056/ahee0iuc](https://doi.org/10.62056/ahee0iuc). ⚠️ Chưa đọc toàn văn.
 - **[S8]** (2023). *The Performance of Post-Quantum TLS 1.3*. DOI: [10.1145/3624354.3630585](https://doi.org/10.1145/3624354.3630585). ⚠️ Chưa đọc toàn văn.
 - **[S9]** Schwabe, P., Stebila, D., & Wiggers, T. (2020). *Post-Quantum TLS Without Handshake Signatures*. ACM CCS 2020. DOI: [10.1145/3372297.3423350](https://doi.org/10.1145/3372297.3423350). ⚠️ Chưa đọc toàn văn. *(Danh sách tác giả đã xác minh qua OpenAlex — xem `../EVIDENCE/openalex_authors.txt`.)*

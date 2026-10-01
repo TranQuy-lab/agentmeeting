@@ -32,6 +32,8 @@ Tác giả khai báo trước những điểm mà bản thân **biết là yếu
 | A6 | **Không có thực nghiệm nào được chạy.** Toàn bộ §3 của PROPOSAL là thiết kế | `PROPOSAL.md` §10 |
 | A7 | Chi phí tiền tệ để ở mức `chưa xác minh` — tác giả cố ý không quy đổi | `PROPOSAL.md` §8 |
 | A8 | Tính mới là tính mới của **tổ hợp**, không phải của từng mảnh | `LITREVIEW.md` §7 mẫu hình 4 |
+| A9 | **CẬP NHẬT T19:** N của T1 đã được ghi lại từ **2 → 4** sau khi tác giả **tự đọc toàn văn S31**. Việc hạ rồi nâng lại theo dữ liệu là do **bằng chứng**, không do uy quyền. Reviewer1 hãy kiểm chính việc nâng lại này. | `RANKING.md` §2.1; `EVIDENCE/T19_checks.txt` |
+| A10 | **CẬP NHẬT T19:** tác giả từng **suýt kết luận sai rằng Reviewer1 nêu sai venue của S31**, vì lần grep đầu trên bản HTML trả về rỗng. Venue là **THẬT**, nằm ở trường `<arxiv:comment>`. Một lần grep rỗng **không** phải bằng chứng phủ định. | `EVIDENCE/T19_checks.txt` mục VIỆC 2 |
 
 ---
 
@@ -46,6 +48,7 @@ Tác giả khai báo trước những điểm mà bản thân **biết là yếu
 | B1.3 | Chạy `pdftotext -layout` trên PDF đó. **Dòng 622, 667, 673, 678 có khớp nguyên văn** với `../EVIDENCE/quote_extracts.txt` mục A không? | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 | B1.4 | Tải `https://lirias.kuleuven.be/retrieve/14e501bd-e6bb-41d6-bf72-360c4850443a`. Trích xuất. **Dòng 46–48 có chứa câu "negligible performance overhead"** như đã trích không? | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 | B1.5 | Tải RFC 8446 và RFC 9370 từ `rfc-editor.org`. Kích thước có khớp 337.736 và 81.487 bytes? | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
+| B1.0 | **(T19)** Chạy lại 6 lệnh `curl` ở `EVIDENCE/T19_checks.txt` mục VIỆC 1 — xác nhận `ICICT`→404 và `iccit`→200/202 trên cả 3 dịch vụ | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 | B1.6 | Kiểm 5 mục ở `SOURCES.md` §D (X1–X5): các mục đó có **thực sự không xác minh được** không, hay tác giả đã bỏ sót nguồn xác minh được? | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 
 ### B2. Kiểm tra tính mới (bắt buộc — đây là chỗ dễ sai nhất)
@@ -54,6 +57,7 @@ Tác giả khai báo trước những điểm mà bản thân **biết là yếu
 |---|---|---|---|
 | B2.1 | Tự chạy một tìm kiếm **độc lập** (khác truy vấn của tác giả) cho: *hybrid ML-KEM TLS 1.3 measurement edge MTU middlebox dataset* | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 | B2.2 | Tự chạy một tìm kiếm độc lập cho: *post-quantum migration priority model traffic class HNDL* — **có tồn tại mô hình tương tự không?** | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
+| B2.2b | **(T19)** Chạy lại `curl -sL https://arxiv.org/html/2603.11006v2` và tự đếm lại 8 từ khoá. Con số **0** có tái lập được không? | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 | B2.3 | Kiểm tra S7 (khảo sát PQC TLS, Alnahawi et al.) — **tìm cách đọc được toàn văn**. Trong đó có mô hình ưu tiên di trú không? | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 | B2.4 | Nếu B2.2 hoặc B2.3 tìm ra công trình trùng ý tưởng → **tính mới phải bị hạ cấp**. Ghi rõ mức hạ cấp. | ⛔ CHƯA ĐIỀN | ⛔ CHƯA ĐIỀN |
 

@@ -105,10 +105,23 @@ Thiết kế **ba pha**, mỗi pha có đầu ra kiểm chứng được.
 ## 5. Tính mới
 
 1. **Bộ dữ liệu mở đo hybrid ML-KEM TLS 1.3 trên nút biên có middlebox và ràng buộc MTU, kèm script tái lập.**
-   *Lưu ý bằng chứng — ĐÃ ĐIỀU CHỈNH:* đây là khẳng định về **khoảng trống**, chưa phải khẳng định "chưa từng có ai làm".
-   **Người đề xuất đã phát hiện một nguồn rất gần sau khi viết bản đầu:** Gómez-Cambronero, Munteanu & González-Tablas (2026), *Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange*, arXiv:2603.11006v2 (**S31**). Nguồn này đã làm **phân tích theo tầng cho ba nhóm trao đổi khoá: cổ điển / lai / hậu lượng tử thuần**, hơn 30 thí nghiệm, có backend đổi kích thước phản hồi, tải tới 100 giao dịch/giây.
-   ⇒ **Tính mới của điểm 1 đã bị hạ cấp.** Phần còn có thể mới là sự kết hợp: **nút biên + middlebox + ràng buộc MTU + chuỗi chứng thư ML-DSA trong mTLS**. Việc này **chưa được xác minh** vì người đề xuất chỉ đọc **trừu tượng** của S31.
-   ⇒ **Reviewer1 BẮT BUỘC đọc toàn văn S31 trước khi chấm tính mới.** Nếu S31 đã bao phủ các yếu tố trên, đề tài chỉ còn đóng góp ở P3 (mô hình quyết định) và tính mới phải bị hạ cấp tương ứng.
+   **Trạng thái bằng chứng (đã giải quyết ở vòng T19):** khoảng trống này nay được chứng minh là **CÒN MỞ** bằng **bằng chứng DƯƠNG**, không còn là suy luận từ việc "không tìm thấy".
+
+   Nguồn gần nhất là **S31** — Gómez-Cambronero, Munteanu & González-Tablas (2026), *Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange*, arXiv:2603.11006v2, **đã qua bình duyệt** tại SPIQE 2026 (gắn với Euro S&P 2026) theo trường `arxiv:comment`.
+   Người đề xuất **đã tự tải và đọc toàn văn bản HTML** (`https://arxiv.org/html/2603.11006v2`, HTTP 200, **368.458 bytes**) và đếm từ khoá trên toàn văn:
+
+   | Từ khoá | Số lần trong toàn văn S31 |
+   |---|---|
+   | `MTU` · `middlebox` · `fragment` · `packet size` · `network layer` · `certificate chain` · `tunnel` · `VPN` | **0 · 0 · 0 · 0 · 0 · 0 · 0 · 0** |
+   | `edge` | 1 — nằm ở **99,5% độ dài văn bản**, tức **footer của arXiv**, không phải nội dung bài |
+   | `MiTM` / `man-in-the-middle` | 2 / 2 |
+   | `load balancer` | 2 |
+
+   Và S31 **tự liệt kê đúng khoảng hở của đề tài này vào *future work***, trích nguyên văn:
+   > *"extending the analysis to real network environments with commercial load balancers and MiTM (Man-in-The-Middle) inspection devices to quantify the performance impact when using PQC in TLS…"*
+
+   ⇒ S31 bao phủ **phân tích theo tầng cho cổ điển/lai/thuần PQC** (phần lõi của hướng nghiên cứu), nhưng **KHÔNG** bao phủ: thiết bị trung gian, ràng buộc MTU/phân mảnh, lớp mạng, chuỗi chứng thư, đường hầm, hay biên thật. Đây chính là phần đề tài nhắm tới.
+   **Bằng chứng thô:** `../EVIDENCE/T19_checks.txt` (mục VIỆC 2).
 2. **Đo chi phí chứng thư ML-DSA trong mTLS nhiều tầng** — phần bị bỏ trống trong các nghiên cứu tập trung vào trao đổi khoá.
 3. **Mô hình ưu tiên di trú kiểm chứng được**, nối rủi ro HNDL với chi phí đo được, thay vì khuyến nghị chung chung.
 

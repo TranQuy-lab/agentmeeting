@@ -78,7 +78,7 @@
 | S26 | Simple and precise static analysis of untrusted Linux kernel extensions | — | `10.1145/3314221.3314590` | ACM PLDI, 2019 | 99 | Không truy cập được |
 | S27 | Optimizing network microsegmentation policy for cyber resilience | Noel, S., et al. | `10.1177/15485129211051386` | J. Defense Modeling & Simulation, 2021-10-08 | 12 | Không có bản mở. **Trừu tượng** có đọc được qua OpenAlex — xem ghi chú bên dưới |
 | S28 | Automated Microsegmentation for Lateral Movement Prevention in Industrial Internet of Things (IIoT) | — | `10.1109/SIN54109.2021.9699232` | IEEE SIN, 2021-12-15 | 18 | Không đọc toàn văn. **Trừu tượng** đọc được qua OpenAlex |
-| S29 | Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, RBAC, and ABAC | — | `10.1109/ICICT63348.2025.10989392` | IEEE ICCIT, 2025-04-13 | 9 | 🔴 **Không có bản mở. RỦI RO CAO cho tính mới — xem §D** |
+| S29 | Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, RBAC, and ABAC | — | `10.1109/iccit63348.2025.10989392` | IEEE ICCIT, 2025-04-13 | 9 | 🔴 **Không có bản mở. RỦI RO CAO cho tính mới — xem §D** |
 
 **Ghi chú về trừu tượng OpenAlex:** với S27, S28, S29, người lập **có** đọc trừu tượng do OpenAlex cung cấp (lưu trong `EVIDENCE/openalex_queries.txt`). Tuy nhiên các trừu tượng này **không đầy đủ** như trừu tượng chính thức của nhà xuất bản (OpenAlex tái tạo từ chỉ mục ngược). Vì vậy các nguồn này vẫn bị xếp mức 🟡 và **không được trích số liệu**.
 
@@ -136,3 +136,25 @@ curl -s "https://docs.cilium.io/en/stable/security/policy/"
 
 Công cụ: `curl`, `python3`, `pdftotext` (poppler), `web_search`, `web_fetch`.
 Không dùng CSDL trả phí. Không trích từ trí nhớ. Danh sách tác giả xác minh qua OpenAlex (`../EVIDENCE/openalex_authors.txt`).
+
+---
+
+## G. BÀI HỌC TỪ DISSENT-6 — DOI phân biệt HOA/THƯỜNG khi truy vấn
+
+**Phát hiện (đã tự kiểm lại bằng `curl`, bằng chứng thô ở `../EVIDENCE/T19_checks.txt` mục VIỆC 1):**
+
+| Chuỗi DOI | Crossref REST | OpenAlex REST | doi.org |
+|---|---|---|---|
+| `10.1109/`**`ICICT`**`63348.2025.10989392` | **404** | **404** | **404** |
+| `10.1109/`**`iccit`**`63348.2025.10989392` | **200** | **200** | **202** |
+
+⇒ Trong thực tế vận hành, **hoa/thường của phần hậu tố DOI quyết định 404 hay 200**. Đây là lỗi
+**chép sai hoa/thường**, **KHÔNG phải bịa nguồn** — metadata `iccit` đã được xác minh thật từ vòng T2
+(`../EVIDENCE/crossref_lookups.txt` dòng 18).
+
+**Đã sửa 4 vị trí** (yêu cầu DISSENT-6): `ebpf-microsegmentation/BLINDCHECK.md:53`,
+`ebpf-microsegmentation/LITREVIEW.md:264` (2 lần: văn bản + liên kết), `ebpf-microsegmentation/SOURCES.md:81`,
+`pqc-tls-migration/SOURCES.md:109`. Sau khi sửa: `grep -rn "ICICT63348" research/` → **0 match**.
+Đồng thời hết **tự mâu thuẫn nội bộ**: hàng `SOURCES.md:81` nay ghi venue `IEEE ICCIT` và DOI `iccit63348` — khớp nhau.
+
+**Quy tắc từ nay cho mọi hồ sơ:** **luôn dán DOI nguyên văn từ output API**, không gõ lại bằng tay.
