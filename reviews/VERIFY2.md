@@ -2855,3 +2855,110 @@ Họ cũng **tự giới hạn** đúng theo D-026/REJECT: không nói *"ngoài 
 1. Tôi kiểm **`github/SCOPE.md`**, không chấm `cloudflare/SCOPE.md` §1a và `gitlab/SCOPE.md` §2a của T34.
 2. Tôi **không** kết luận T34 sai toàn bộ — chỉ nêu **1 lỗi vị trí** cụ thể.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T32/T38/T39) kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #27 (T8): bổ sung cho canary D-028 — vùng NGOÀI fence cũng đổi
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/CROSS.md` §T40 (Reviewer1) + `agent/bounty-recon/T34` @ `c097df8`
+**Bối cảnh:** Reviewer1 công bố canary `D-028`: *"fence §1 `github/SCOPE.md` KHÔNG ĐỔI MỘT BYTE"*. **Đúng.**
+Nhưng canary đó **chỉ phủ code fence**. Tôi kiểm **phần §1 NGOÀI fence** — và tìm thấy thay đổi.
+
+---
+
+## 1. Cả hai phát hiện đều ĐÚNG — chúng phủ hai vùng KHÁC NHAU
+
+**Bản đồ §1 `github/SCOPE.md` tại hai revision:**
+
+```text
+=== main ===
+  44| ## 1. TRÍCH NGUYÊN VĂN — IN SCOPE
+  49| ```text          <- FENCE mở
+ 108| ```              <- FENCE đóng
+ 110| **Tài sản phi-tên-miền trong scope** (trích `instruction` ...)   <- NGUYÊN VĂN, NGOÀI fence
+ 112| ```text
+ 117| ```
+
+=== T34 ===
+  44| ## 1. TRÍCH NGUYÊN VĂN — IN SCOPE
+  49| ```text
+ 108| ```
+ 110| ### 1b. Bảng tài sản GitHub kèm `archived_at` (AUTHORED — KHÔNG phải nguyên văn)  <- CHÈN VÀO
+ 311| **Tài sản phi-tên-miền trong scope** (trích `instruction` ...)   <- NGUYÊN VĂN, nay DƯỚI §1b
+ 313| ```text
+ 318| ```
+```
+
+| Kiểm định viên | Vùng kiểm | Kết luận |
+|---|---|---|
+| **Reviewer1 (D-028)** | **fence 49–108** | ✅ *"KHÔNG ĐỔI MỘT BYTE"* — **ĐÚNG** |
+| **Tôi (verify #27)** | **§1 ngoài fence (110–117)** | ⚠️ **CÓ ĐỔI VỊ TRÍ** — cũng đúng |
+
+⇒ **Không mâu thuẫn.** Canary `D-028` **không phủ** khối nguyên văn nằm **sau** fence.
+
+## 2. Điều gì thực sự xảy ra
+
+`### 1b.` (mục **AUTHORED — KHÔNG phải nguyên văn**) được chèn ở **dòng 110**, tức
+**ngay sau fence §1 và TRƯỚC** khối *"Tài sản phi-tên-miền trong scope"*.
+
+Hệ quả: khối đó — vốn là **trích NGUYÊN VĂN** (`trích instruction từ structured_scopes`) —
+nay nằm **dưới một tiêu đề nói rõ "KHÔNG phải nguyên văn"**.
+
+```text
+Trước:  §1 [fence 49-108] + [khối nguyên văn 110-117]           -> cả hai thuộc §1
+Sau:    §1 [fence 49-108] + §1b (AUTHORED) [ ... + khối nguyên văn ở dòng 311]
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ bị nuốt vào mục AUTHORED
+```
+
+## 3. Kiểm chặt: nội dung có mất không?
+
+```text
+so dong nguyen van (>40 ky tu) bi thieu: 0
+```
+
+⇒ **0 dòng nguyên văn mất.** Đây là lỗi **VỊ TRÍ/PHÂN LOẠI**, không phải mất dữ liệu.
+Nội dung vẫn nằm nguyên trong file, chỉ **sai mục chứa**. ✅
+
+## 4. Vì sao đây là đóng góp thật của lớp 2 (không phải bắt bẻ)
+
+```text
+CANARY CỦA REVIEWER1 ĐÚNG TRONG PHẠM VI NÓ KHAI.
+NHƯNG: một canary chỉ bảo vệ được VÙNG NÓ PHỦ.
+
+Reviewer1 chọn fence §1 (49-108) làm canary -> hợp lý, vì đó là khối trích chính.
+Khối nguyên văn ở 110-117 NGOÀI fence -> canary không phủ -> không bị bắt.
+
+=> BÀI HỌC: canary phải phủ TOÀN BỘ vùng nguyên văn, không chỉ khối fence lớn nhất.
+   Với file này, vùng nguyên văn của §1 = fence 49-108 + khối 110-117.
+```
+
+Tôi **không** nói canary của Reviewer1 sai — nó **đúng và hữu ích**. Tôi nói nó **chưa đủ phủ**,
+và Reviewer1 có thể **mở rộng canary** để lần sau bắt được cả khối 110-117.
+
+## 5. Kết luận verify #27
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Canary `D-028` (fence 49–108) đúng | ✅ **XÁC NHẬN** — không đổi byte nào |
+| 2 | §1 ngoài fence (khối nguyên văn 110–117) không đổi | ❌ **ĐÃ ĐỔI VỊ TRÍ** |
+| 3 | Nội dung nguyên văn có mất không | ✅ **KHÔNG — 0 dòng mất** |
+| 4 | Khối nguyên văn nằm dưới mục AUTHORED | ❌ **SAI — cần sửa** |
+
+**Không phát hiện vi phạm.** Có **1 lỗi vị trí** cần sửa + **1 đề nghị mở rộng canary**.
+
+## 6. Đề nghị (nêu rõ là ĐỀ NGHỊ)
+
+```text
+1. [BountyRecon] Chuyển `### 1b.` xuống SAU khối "Tài sản phi-tên-miền trong scope",
+   để khối nguyên văn nằm đúng trong §1 (không bị mục AUTHORED nuốt).
+2. [Reviewer1] Mở rộng canary `D-028` phủ TOÀN BỘ vùng nguyên văn của §1
+   (fence 49-108 + khối 110-117), không chỉ fence.
+3. [Admin] Ghi bài học: "canary chỉ bảo vệ vùng nó phủ" — vào quy trình kiểm định.
+Quyết định thuộc Admin.
+```
+
+## 7. Tự khai giới hạn
+
+1. Tôi kiểm **`github/SCOPE.md` §1**; **không** kiểm §2/§3/§4 hay file khác của T34.
+2. Tôi **không** nói canary của Reviewer1 sai — nó đúng trong phạm vi nó khai.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1/Auditor2 kiểm; bất đồng ⇒ Auditor2 chốt.
