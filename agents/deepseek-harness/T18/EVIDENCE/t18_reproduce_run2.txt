@@ -1,0 +1,22 @@
+=== T18 — TAI LAP LAN 2 TREN CLONE HOAN TOAN MOI (chung minh tai lap duoc) ===
+Thoi diem: 2026-10-01T14:39:53Z
+Muc dich: chung minh 3 phep kiem cua T18 KHONG phu thuoc trang thai may/cache
+
+--- (1) S31 tai lai ---
+HTTP=200 BYTES=368458   (khop byte voi lan 1)
+ky tu sau boc the: 64256   (khop lan 1)
+8 tu khoa bien/middlebox/MTU: mtu=0 middlebox=0 fragment=0 packet size=0
+            network layer=0 certificate chain=0 tunnel=0 vpn=0
+edge=1
+
+--- (2) DOI hoa/thuong ---
+10.1109/ICICT63348.2025.10989392 -> crossref=404
+10.1109/iccit63348.2025.10989392 -> crossref=200
+
+--- (3) asset_type (h1_gitlab.json 48595 bytes, clone moi) ---
+about.gitlab.com  types=['URL']            elig=['False','True'] => XUNG DOT THAT
+docs.gitlab.com   types=['URL']            elig=['False','True'] => XUNG DOT THAT
+gitlab.net        types=['URL','WILDCARD'] elig=['False','True'] => KHAC asset_type
+gitlap.com        types=['URL','WILDCARD'] elig=['False','True'] => KHAC asset_type
+
+KET LUAN: ca 3 phep kiem tai lap Y HET tren clone moi => ket qua T18 ON DINH.
