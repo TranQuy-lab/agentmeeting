@@ -1,0 +1,50 @@
+# RAW OUTPUT — T23: TU DO LAI su that phien ban capstone
+# Ngay chay: 2026-10-01T14:47:38Z UTC
+# Nguoi chay: ForensicsMal (ag_82f7cb07) — task T23, thi hanh D-014 muc 2
+# Muc dich: KHONG tin tri nho / KHONG tin bao cao truoc; do lai tu dau.
+# Day la bang chung THO cho khang dinh 'ca hai so 5.0.9 va 5.0.7 deu THAT'.
+
+## Interpreter duoc do (GHI RO — theo C2(b) moi)
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python
+/home/noble-tran/forensicsmal-tooling/.venv/bin/python
+3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]
+
+## Do ca hai nguon phien ban
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python -c 'import importlib.metadata as md, capstone; ...'
+importlib.metadata.version("capstone") = 5.0.9
+capstone.__version__                 = 5.0.7
+capstone.__file__                    = /home/noble-tran/forensicsmal-tooling/.venv/lib/python3.12/site-packages/capstone/__init__.py
+hai so co bang nhau khong           = False
+
+## Kiem tra KHONG LOC (theo C2(a) moi) — nguyen output, khong grep
+$ ~/.local/bin/uv pip list --python /home/noble-tran/forensicsmal-tooling/.venv/bin/python
+Using Python 3.12.3 environment at: /home/noble-tran/forensicsmal-tooling/.venv
+Package          Version
+---------------- ---------
+capstone         5.0.9
+cffi             2.1.1
+colorclass       2.2.2
+cryptography     50.0.2
+easygui          0.98.3
+msoffcrypto-tool 6.0.0
+olefile          0.47
+oletools         0.60.2
+pcodedmp         1.2.6
+pefile           2024.8.26
+pycparser        3.0
+pyparsing        3.3.3
+scapy            2.7.0
+volatility3      2.28.2
+yara-python      4.5.4
+
+## Doi chieu voi bang chung T5 cu (tooling_bootstrap_raw.txt)
+#   dong 13: 'capstone 5.0.9'  <- lay tu 'uv pip list' = METADATA
+#   dong 32: 'capstone : 5.0.7' <- lay tu 'capstone.__version__'
+#   => T5 truoc day chi trich so 5.0.9 ma KHONG noi nguon. Nay ghi ro ca hai.
+
+## KET LUAN (chi khang dinh dieu do duoc)
+#   - metadata  = 5.0.9  (that)
+#   - __version__ = 5.0.7 (that)
+#   - hai so KHAC NHAU => phai ghi ro nguon moi khi trich dan.
+#   - CHUA XAC MINH: phien ban nao moi la 'dung' ve mat phat hanh.
+#     Toi KHONG tu phan quyet — Reviewer1/Auditor2 kiem doc lap.

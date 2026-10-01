@@ -1,0 +1,69 @@
+# RAW OUTPUT — BOOTSTRAP CONG CU PYTHON QUA uv (T5-A phan mo rong)
+# Ngay chay: 2026-10-01T13:55:00Z UTC
+# Nguoi chay: ForensicsMal (ag_82f7cb07)
+# Venv: /home/noble-tran/forensicsmal-tooling/.venv  (NAM NGOAI REPO -> khong bi commit)
+# Ly do: may KHONG co pip/ensurepip, sudo doi mat khau; uv la duong duy nhat.
+
+## uv version
+uv 0.12.13 (x86_64-unknown-linux-gnu)
+
+## Goi da cai (uv pip list)
+Package          Version
+---------------- ---------
+capstone         5.0.9
+cffi             2.1.1
+colorclass       2.2.2
+cryptography     50.0.2
+easygui          0.98.3
+msoffcrypto-tool 6.0.0
+olefile          0.47
+oletools         0.60.2
+pcodedmp         1.2.6
+pefile           2024.8.26
+pycparser        3.0
+pyparsing        3.3.3
+scapy            2.7.0
+volatility3      2.28.2
+yara-python      4.5.4
+
+## Phien ban tung goi
+pefile        : 2024.8.26
+scapy         : 2.7.0
+capstone      : 5.0.7
+yara          : 4.5.4
+oletools      : (khong co thuoc tinh __version__)
+volatility3   : (khong co thuoc tinh __version__)
+
+## CLI co trong venv/bin
+cffi-gen-src ezhexviewer ftguess mraptor msodde msoffcrypto-tool olebrowse oledir olefile oleid olemap olemeta oleobj oletimes olevba pcodedmp pyxswf rtfobj scapy vol volshell 
+
+## TEST CHUC NANG 1 — yara-python compile + scan
+compile OK; scan -> ['t']
+
+## TEST CHUC NANG 2 — pefile parse PE that
+parse OK: machine=0x8664, so section=6
+
+## TEST CHUC NANG 3 — capstone disasm x86-64
+[('mov', 'rbp, rsp'), ('mov', 'eax, 0')]
+
+## TEST CHUC NANG 4 — scapy build packet
+/home/noble-tran/forensicsmal-tooling/.venv/lib/python3.12/site-packages/scapy/layers/tls/crypto/groups.py:25: CryptographyDeprecationWarning: Diffie-Hellman over finite fields (FFDH) is deprecated and support will be removed in a future release. Use a more modern key exchange algorithm.
+  from cryptography.hazmat.primitives.asymmetric.dh import DHParameterNumbers
+WARNING: getmacbyip failed on [Errno 1] Operation not permitted
+WARNING: MAC address to reach destination not found. Using broadcast.
+scapy build OK, len= 54
+
+## TEST CHUC NANG 5 — volatility3 CLI + nap plugin
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/vol --help | head -3
+Volatility 3 Framework 2.28.2
+usage: vol [-h] [-c CONFIG] [--parallelism [{processes,threads,off}]]
+           [-e EXTEND] [-p PLUGIN_DIRS] [-s SYMBOL_DIRS] [-v] [-l LOG]
+
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/vol -f /dev/null windows.pslist   (khong co dump that -> loi symbol la DU KIEN)
+	You have the correct symbol file for the requirement
+	The symbol file is under the correct directory or zip file
+	The symbol file is named appropriately or contains the correct banner
+
+
+## TEST CHUC NANG 6 — oletools CLI
+olevba CLI: OK
