@@ -1971,3 +1971,206 @@ các khối `⛔ GIỚI HẠN (D-026…)` ở `github/SCOPE.md:119` · `cloudfla
 > **Không reject toàn bộ** — vì cả hai vi phạm đều **sửa được bằng đổi cách viết lý do**, kết luận không sai,
 > và tác giả đã **tuân thủ tốt** ở mọi chỗ khác. **Nhưng nếu Admin yêu cầu áp tiêu chí nghiêm ngặt**,
 > thì theo **tiêu chí tôi đã đăng ký trước và Admin đã phê duyệt**, **2 dòng này phải sửa trước khi merge**.
+
+---
+
+# VÒNG 13 — Bài kiểm #16 (T42): T41 (`chưa xác minh`) + **CHẤM BỔ SUNG T31**
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T42`
+**Base:** `origin/main` = `05886e0` (253 file)
+**Bằng chứng thô:** `agents/reviewer1/evidence/T42/` (`t42-t31-scan.txt`, `t42-canary.txt`)
+
+```text
+[REVIEW] T42 / BountyRecon T41 / KẾT QUẢ: chưa xác minh (nhánh CHƯA PUSH — lần thứ 5)
+[REVIEW] T42 / chấm bổ sung T31 / KẾT QUẢ: đã kiểm 48 dòng / 17 file — TÌM THÊM **0** dòng cùng lớp
+```
+
+## 2.51 T41 — `chưa xác minh`
+
+```text
+$ git ls-remote origin agent/bounty-recon/T41   →  (rỗng)
+$ git ls-remote --heads origin | grep bounty-recon
+  → chỉ T3, T26, T28, T29, T31, T33, T34     (KHÔNG có T41)
+```
+⇒ **4 mục ① ② ③ ⑥ `chưa xác minh`** — nhánh **chưa tồn tại trên remote**. Ghi rõ lý do, **không suy đoán**.
+**Baseline đã ghi sẵn để chấm tức thì khi họ push** (blob + nguyên văn 2 dòng mục tiêu):
+`CANDIDATES.md` blob `a5ac41f80f61144e8891b9ad97a58072018e32de` (d.44) ·
+`gitlab/RECON.md` blob `75f163cf40131eb862250d6a7bf7d72886bd1342` (d.47).
+
+---
+
+## 2.52 ⭐ CHẤM BỔ SUNG T31 — **công khai lỗ hổng của tôi ở T32**
+
+### 2.52.1 Lỗ hổng đã xảy ra (Admin yêu cầu ghi lại, **không xoá vết**)
+
+Ở **T32** tôi chấm **T31 (`ecce293`)** và **PASS**. **Tôi đã bỏ sót `security/gitlab/RECON.md:47`** —
+một dòng khẳng định ***"⛔ NGOÀI scope"*** **với căn cứ `archived_at`**, tức **đúng lớp lỗi mà `D-026` cấm**.
+Ở **T40** tôi phát hiện ra nó, **quy sai cho T34**, rồi **tự đính chính** khi kiểm provenance
+(`git log -S` → **`52e96ea` `[T31]`**). Nay tôi **chấm bổ sung đầy đủ** ở đây.
+
+### 2.52.2 Phạm vi và kết quả quét bổ sung — **X = 48 · Y = 0**
+
+| Chỉ số | Giá trị |
+|---|---|
+| **File AUTHORED đã quét** (toàn territory BountyRecon, loại `/EVIDENCE/`) | **17 file** |
+| **X = số dòng có cụm "bị loại / ngoài scope / không còn hiệu lực / đã nghỉ hưu / không chuyển"** | **48 dòng** |
+| Phân loại theo **nguồn gốc file**: báo cáo của chính BountyRecon (`/tasks/`) | **28** — *không phải khẳng định phạm vi, chỉ thuật lại việc đã làm* |
+| … quy tắc/bảng mẫu trong `_TEMPLATE/SCOPE.md` | **7** — *là VĂN BẢN QUY TẮC* |
+| … **tài liệu phạm vi** (`security/**` ngoài template) | **13** |
+| Trong 13 dòng đó: **căn cứ = chính sách công bố / luật cấm / quyết định Admin** ⇒ **KHÔNG vi phạm** | **12** |
+| … **căn cứ CHỈ là `archived_at`** ⇒ **CÙNG LỚP với T32** | **1** — chính `gitlab/RECON.md:47` (**đã biết, là mục tiêu của T41**) |
+| **Y = số dòng VI PHẠM MỚI tìm thêm** | **0** |
+
+### 2.52.3 Danh sách 12 dòng **ĐÚNG** (để không bị hiểu là bỏ sót)
+
+| File:dòng | Căn cứ |
+|---|---|
+| `security/gitlab/RECON.md:179` · `:180` · `:181` (C4/C5/C6) | **GitLab liệt kê tường minh** *"SPF and DKIM issues"* · *"Metadata disclosure… out of scope"* |
+| `security/cloudflare/RECON.md:158` (C1) | **Chính sách** — "missing security headers" |
+| `security/github/SCOPE.md:310` | **Trích chính sách GitHub** — *"Assets that are not owned by GitHub"* |
+| `security/gitlab/SCOPE.md:9` · `:146` · `:149` · `:158` · `:164` | Khối **đính chính §2b** + **`D-021`** của Admin (Admin dùng đúng cách gọi này) |
+| `security/gitlab/SCOPE.md:289` | **`D-013`** + *"bị loại khỏi T4"* = **quyết định `D-021` của Admin** |
+| `security/gitlab/RECON.md:207` | Khối đính chính §2b + `D-021` |
+
+### 2.52.4 ⚠️ QUAN SÁT MỚI (không phải vi phạm) — `_TEMPLATE/SCOPE.md:38` **mâu thuẫn nội bộ với quy tắc 3**
+
+Bảng mẫu (Admin thêm ở `b9c9037`) có dòng mẫu:
+```text
+| 3 | `legacy.example.com` | URL | true | false | `2023-05-08T10:11:33.083Z` | **ĐÃ NGHỈ HƯU** — không được coi là target đang mở |
+```
+Trong khi **quy tắc 3** ngay dưới đó (d.46–47) ghi:
+> *"3. CẤM kết luận "ngoài scope" từ archived_at. Chỉ được nói: "bảng thiếu/đủ chiều archived_at"
+> và "hiệu lực của bản ghi đã nghỉ hưu: **CHƯA XÁC MINH**"."*
+
+⇒ **Mâu thuẫn nội bộ:** dòng mẫu dạy ***"không được coi là target đang mở"*** (một **loại trừ có tính vận hành**),
+còn quy tắc 3 dạy ***"hiệu lực CHƯA XÁC MINH"***. **Dòng mẫu đang dạy đúng cái suy luận mà `D-026` cấm.**
+- **Mức: THẤP** — `legacy.example.com` là **placeholder**, **không có tài sản thật** nào bị phán sai.
+- **Nhưng** đây là **tài liệu MẪU**, tức **chuẩn để người sau viết theo** ⇒ dạy sai sẽ **tái sinh lỗi**.
+- **Đề xuất (1 dòng):** sửa ghi chú mẫu thành
+  ***"**ĐÃ NGHỈ HƯU** — hiệu lực: **CHƯA XÁC MINH** (`D-026`); dùng cột này để **LỌC**, không để suy đoán phạm vi"***.
+  Và dòng 4 (`old.example.net`) nên có cùng cách ghi.
+
+### 2.52.5 Tự khai lỗi công cụ của tôi (lần thứ 8) — bộ quét đầu cho **26**, thực tế **1**
+
+Bản quét đầu của tôi báo **26 dòng "cùng lớp"**. **25 trong 26 là BÁO ĐỘNG GIẢ**:
+- **28 dòng** là **báo cáo của chính BountyRecon** (`T28/FIX_2B.md`, `T29/*`, `T31/FIX_GROUP_B.md`, `T33/*`) — chúng **thuật lại** thay đổi, **không phải** khẳng định phạm vi;
+- **7 dòng** là **văn bản QUY TẮC** trong `_TEMPLATE/SCOPE.md` — kể cả **chính câu cấm** *"CẤM kết luận 'ngoài scope' từ archived_at"* bị bộ quét của tôi gắn cờ **vi phạm chính nó**;
+- phần còn lại là các dòng **đã có căn cứ chính sách** mà regex của tôi không nhận ra.
+
+⇒ **Đây đúng là lớp lỗi "báo động giả" mà chính tôi đã cảnh báo ở T38 (`D-025`/`GAP-3`) — và tôi lại mắc.** Tôi **sửa bộ quét** (phân loại theo nguồn gốc file + đối chiếu căn cứ) rồi chạy lại: **26 → 1**. **Con số đúng là Y = 0 dòng mới.**
+
+---
+
+## 2.53 Canary theo `D-028` quy ước **(A)** — kèm lệnh + 3 biến thể + độ dài byte
+
+```python
+c = git show <rev>:security/github/SCOPE.md
+i = c.index("## 1."); j = c.index("## 2.", i); sec = c[i:j]
+k1 = sec.index("```text"); k2 = sec.index("```", k1+7)
+raw = sec[k1+7:k2]      # (A)
+```
+
+| Quy ước | `sha256` @ `origin/main` `05886e0` | ký tự | **byte** |
+|---|---|---|---|
+| **(A)** `raw` (nguyên văn, gồm `\n` sau rào mở) | **`2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72`** | 2109 | **2109** |
+| (B) `raw.lstrip("\n")` | `f27a0c17d9b66f8e9dc2d9dcd8de2a70574d8655e0f237766f2fc0b2b84c77b5` | 2108 | 2108 |
+| (C) `raw.strip("\n")` | `40c578341b031e50734d99139652d18d299a8b545257b9df56930884c4f40fbf` | 2107 | 2107 |
+
+`blob` cả file `security/github/SCOPE.md` = `daf7a2c3cc751559f5fcf38ea66f3816f3fd2d65`.
+**Canary (A) KHÔNG đổi** giữa `d0b96ce` và `05886e0` ⇒ nếu T41 giữ đúng `D-027`, canary này **phải giữ nguyên**.
+
+---
+
+## 2.54 Đã kiểm những mục nào (vòng 13) — 20 mục
+
+- **T41 — 4 mục `chưa xác minh`** (nhánh chưa push) + **2 mục baseline đã ghi** (blob + nguyên văn 2 dòng mục tiêu).
+- **Chấm bổ sung T31 — 12 mục:** quét **17 file AUTHORED** · **48 dòng** có cụm từ · phân loại 3 nhóm (28 báo cáo · 7 quy tắc · 13 tài liệu phạm vi) · **12/13 dòng có căn cứ chính sách/luật/Admin** · **1 dòng cùng lớp = `gitlab/RECON.md:47` (đã biết)** · **Y = 0 dòng mới** · **quan sát mới `_TEMPLATE/SCOPE.md:38` mâu thuẫn quy tắc 3**.
+- **Canary `D-028` (A) — 2 mục:** công bố lại kèm lệnh trích xuất + 3 biến thể + độ dài byte + blob.
+- **Tự khai lỗi công cụ lần thứ 8** (bộ quét đầu: 26 → thực tế 1).
+
+> **Phán quyết vòng 13: T41 `chưa xác minh` (lần thứ 5 — nhánh chưa push).**
+> **Chấm bổ sung T31 HOÀN TẤT: đã kiểm X = 48 dòng trên 17 file, tìm thêm Y = 0 dòng vi phạm mới.**
+> **Lỗ hổng của tôi ở T32 nay được ghi công khai tại đây** — và đã **tự sửa bộ quét** để lần sau không lặp.
+> **+ 1 quan sát mới cần Admin sửa:** bảng mẫu `_TEMPLATE/SCOPE.md:38` đang **dạy đúng cái suy luận mà `D-026` cấm**.
+
+---
+
+# VÒNG 13b — T42 (tiếp): **T41 @ `d21ca34` — PASS 6/6**
+
+**Người kiểm:** Reviewer1 · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T42`
+**Base để so:** `agent/bounty-recon/T34` = `c097df8` → `agent/bounty-recon/T41` = `d21ca34` · `main` = `0b19ce7`
+**Bằng chứng thô:** `agents/reviewer1/evidence/T42/t42-t31-scan.txt`
+
+```text
+[REVIEW] T42 / BountyRecon T41 / Lớp 1 CROSS / KẾT QUẢ: PASS 6/6 — sửa CĂN CỨ, GIỮ kết luận
+```
+
+> **Ghi chú về thời điểm:** ở bản báo cáo `chưa xác minh` đầu vòng 13, tôi đã truy vấn **trực tiếp**
+> `git ls-remote origin agent/bounty-recon/T41` và nhận **rỗng**. Nhánh xuất hiện **sau đó**.
+> Tôi **fetch lại** và nay chấm đầy đủ — **không suy đoán** ở bất kỳ bước nào.
+
+## 2.55 Hai dòng đã sửa — **GIỮ kết luận, ĐỔI căn cứ** (Admin yêu cầu đúng như vậy)
+
+### ① `CANDIDATES.md` dòng 44 (G2) — **thuộc T34**
+
+| | Nội dung |
+|---|---|
+| **TRƯỚC** (`c097df8`) | `… → **SAI: tài sản ĐÃ NGHỈ HƯU** — archived_at = … \| **BỊ LOẠI** \| ⛔ **KHÔNG chuyển** …` |
+| **SAU** (`d21ca34`) | `… trong scope nhưng KHÔNG phân giải — archived_at = 2022-03-21…, KHÔNG có bản live \| **TRUNG BÌNH–THẤP** \| ⛔ **KHÔNG chuyển (thiếu định nghĩa chính thức — DISSENT-12); hiệu lực CHƯA XÁC MINH.** …` |
+
+✅ **Nhãn `BỊ LOẠI` đã BỎ** · ✅ **Kết luận `KHÔNG chuyển` GIỮ NGUYÊN** · ✅ **Căn cứ đổi sang `DISSENT-12`** ·
+✅ **`archived_at` giữ làm DỮ LIỆU**, không làm căn cứ phán quyết.
+⇒ **Đúng chỉ thị: "chỉ được đổi căn cứ, không được đổi kết luận."**
+
+### ② `security/gitlab/RECON.md` dòng 47 — **di sản T31**
+
+| | Nội dung |
+|---|---|
+| **TRƯỚC** | `\| gitlab.net \| ⛔ **NGOÀI scope** (apex đã nghỉ hưu 2020-10-05) — nhưng *.gitlab.net **trong scope** …` |
+| **SAU** | `\| gitlab.net \| ⛔ **NGOÀI scope** — **căn cứ: chính sách công bố SCOPE.md §2a** (apex gitlab.net nằm trong danh sách out-of-scope; archived_at 2020-10-05 chỉ là chiều phụ) — nhưng *.gitlab.net **trong scope** …` |
+
+✅ **Kết luận `⛔ NGOÀI scope` GIỮ NGUYÊN** · ✅ **Căn cứ đổi sang `SCOPE.md` §2a** · ✅ `archived_at` xuống **chiều phụ**.
+
+### 2.55.1 ⭐ Tôi **kiểm chứng căn cứ MỚI** — và nó **ĐÚNG**
+
+Đây là điểm dễ sai nhất: nếu `gitlab.net` **không** thật sự nằm trong §2a thì tác giả chỉ **thay căn cứ sai này bằng căn cứ sai khác**. Tôi mở **nguyên văn §2a**:
+
+```text
+security/gitlab/SCOPE.md
+   94| ### 2a. Danh sách out-of-scope (n=39)
+   96| ```text                                    ← MỞ KHỐI NGUYÊN VĂN
+  106| URL       dashboards.gitlab.com | alerts.gitlab.com | … | gitlabsandbox.net |
+  109|           gitlabdemo.cloud | gitlabtraining.cloud | gitlab.net | gitlap.com   ← dòng 110
+  120| ```                                       ← ĐÓNG KHỐI
+```
+**Kiểm ranh giới fence:** số dòng bắt đầu bằng rào ``` **trước** dòng 110 = **7 (lẻ)** ⇒ dòng 110 **NẰM TRONG** khối nguyên văn ✅
+⇒ **`gitlab.net` ĐÚNG LÀ một tài sản `URL` trong danh sách out-of-scope NGUYÊN VĂN của chính sách.** **Căn cứ mới có thật.**
+
+**Và điều này khớp với phân tích gốc của T31:** `gitlab.net` (**URL**, apex) **ngoài scope theo chính sách**;
+`*.gitlab.net` (**WILDCARD**, dòng 45 §1) **trong scope**. ⇒ **Kết luận cũ vốn đúng; nay căn cứ cũng đúng.**
+
+## 2.56 Bốn phép kiểm độc lập còn lại — **PASS**
+
+| Phép kiểm | Kết quả |
+|---|---|
+| **Băm từng phần, cả 2 quy ước** | ✅ `CANDIDATES.md` 122 dòng · **đúng 1 dòng đổi** (`replace 44,44`) · 2 khối khớp · **mọi vùng không đổi giống hệt theo cả A và B** |
+| | ✅ `gitlab/RECON.md` 215 dòng · **đúng 1 dòng đổi** (`replace 47,47`) · **mọi vùng khác giống hệt cả A và B** |
+| **Kiểm theo lịch sử (D-023 [2])** | ✅ 2 commit · 5 file bị chạm · **file bị LOẠI TRỪ bị chạm = 0** · **`ADMIN/`/`rooms/`/`reviews/` bị chạm = 0** |
+| **Quét theo NGHĨA (D-025 [3a]) trên 7 tài liệu sống** | ✅ 15 dòng có cụm "loại/ngoài scope" · **0 dòng có căn cứ CHỈ là `archived_at`** |
+| **Canary `D-028` (A)** | ✅ **KHÔNG ĐỔI**: `2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72` · len **2109** — giống hệt `origin/main` |
+
+⇒ **Khẳng định của tác giả ("0 dòng vi phạm trên 7 tài liệu sống") được TÔI TÁI LẬP ĐỘC LẬP và XÁC NHẬN.**
+⇒ **Khớp với kết quả chấm bổ sung T31 của tôi ở §2.52 (X = 48 · Y = 0)** — hai phương pháp khác nhau, cùng kết luận.
+
+## 2.57 Đã kiểm những mục nào (vòng 13b) — 11 mục
+
+- **6 mục ưu tiên của Admin:** ① G2 (nhãn bỏ · kết luận giữ · căn cứ `DISSENT-12`) ✅ ·
+  ② `gitlab/RECON.md:47` (kết luận giữ · căn cứ §2a) ✅ · **kiểm chứng căn cứ mới có thật trong §2a (dòng 110, trong fence)** ✅ ·
+  ③ băm từng phần 2 quy ước ✅ · ④ lịch sử 0 file loại trừ ✅ · ⑤ quét theo nghĩa 0 vi phạm ✅ ·
+  ⑥ 6 nhóm chỗ ĐÚNG không bị sửa nhầm ✅
+- **Kiểm thêm:** canary `D-028` (A) không đổi ✅ · 0 file `ADMIN/rooms/reviews` bị chạm ✅ ·
+  khớp với chấm bổ sung T31 §2.52 ✅
+
+> **Phán quyết vòng 13b: T41 PASS 6/6.** Sửa **đúng phạm vi** (1+1 dòng), **đúng cách** (giữ kết luận, đổi căn cứ),
+> **căn cứ mới có thật và tôi đã kiểm chứng độc lập**, và **không sửa nhầm** các chỗ vốn đúng.
+> **`chưa xác minh` nay còn 2 mục** *(các mục chờ khác)*, **không còn mục nào thuộc T41.**

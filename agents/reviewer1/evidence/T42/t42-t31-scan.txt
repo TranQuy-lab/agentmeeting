@@ -1,0 +1,256 @@
+=== QUET BO SUNG T31 — 17 file AUTHORED trong territory BountyRecon ===
+
+TONG so dong co cum 'loai/ngoai scope/khong con hieu luc/nghi huu': 48
+  -> CO can cu CHINH SACH/LUAT/ADMIN : 22
+  -> CHI co can cu archived_at        : 26   <-- CUNG LOP voi T32
+
+=== DANH SACH DONG CUNG LOP (can cu = archived_at) ===
+  ❌ agents/bountyrecon/tasks/T28/FIX_2B.md:158
+     | 1. Sửa CHỈ §2b, nhãn đúng "0 xung đột hiệu lực + 4 đã nghỉ hưu", thêm `archived_at` | ✅ |
+  ❌ agents/bountyrecon/tasks/T29/FIX_3LINES.md:51
+     | 1 | **9** (§0 khối Tiêu đề) | `**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**` | `**Trạng thái:** ✅ **Trích được ngu
+  ❌ agents/bountyrecon/tasks/T29/FIX_3LINES.md:53
+     | 3 | **289** (§5) | `\| Đủ điều kiện chuyển ExploitDeep (T4)? \| ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước \|` | `\| Đủ điều kiện chuyển ExploitDeep (T4)? \
+  ❌ agents/bountyrecon/tasks/T29/FIX_3LINES.md:97
+     +**Trạng thái:** ✅ ...0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu...
+  ❌ agents/bountyrecon/tasks/T29/FIX_3LINES.md:167
+     | 1. 3 dòng mới nói đúng "0 xung đột hiệu lực + 4 đã nghỉ hưu `archived_at` 2022-07-21"; dòng 9 khớp §2b | ✅ |
+  ❌ agents/bountyrecon/tasks/T29/SCAN_RESIDUAL.md:18
+     | **9** | `✅ ... 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (archived_at 2022-07-21)` | **ĐÃ SỬA ở T29** ✅ |
+  ❌ agents/bountyrecon/tasks/T29/SCAN_RESIDUAL.md:21
+     | **149** | `Cách gọi đó SAI. Cách đọc đúng: 0 xung đột hiệu lực + 4 bản ghi đã nghỉ hưu` | Đúng ✅ |
+  ❌ agents/bountyrecon/tasks/T3/CANDIDATES.md:19
+     | 4 | GitLab: **0 xung đột hiệu lực** — vế OUT là bản ghi đã nghỉ hưu (`archived_at` 2022-07-21); Admin đã **loại cả 4 tài sản khỏi T4** | ✅ **XONG** |
+  ❌ agents/bountyrecon/tasks/T3/CANDIDATES.md:64
+     ## 2. GitLab — **0 xung đột hiệu lực**; 4 tài sản đã nghỉ hưu (ĐÃ PHÁN QUYẾT)
+  ❌ agents/bountyrecon/tasks/T3/CANDIDATES.md:71
+     **bản ghi OUT đã nghỉ hưu ngày 2022-07-21**. Biến quyết định là **`archived_at`**, không phải `asset_type`:
+  ❌ agents/bountyrecon/tasks/T31/FIX_GROUP_B.md:29
+     | **47** | `gitlab.net` \| `⚠️ **XUNG ĐỘT** (§2b SCOPE)` | `⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium)` |
+  ❌ agents/bountyrecon/tasks/T31/FIX_GROUP_B.md:33
+     > 4 tài sản "xung đột" — nó là **bản ghi riêng đã nghỉ hưu `2020-10-05`** (khác hẳn `2022-07-21`).
+  ❌ agents/bountyrecon/tasks/T31/FIX_GROUP_B.md:41
+     | **19** | `\| 4 \| Chốt 4 **xung đột scope** … \| ⏸ **CHƯA** — **CẦN ADMIN PHÁN QUYẾT** \|` | `\| 4 \| GitLab: **0 xung đột hiệu lực** — vế OUT là bản ghi đã nghỉ hưu (`
+  ❌ agents/bountyrecon/tasks/T31/FIX_GROUP_B.md:43
+     | **64** | `## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)` | `## 2. GitLab — **0 xung đột hiệu lực**; 4 tài sản đã nghỉ hưu (ĐÃ PHÁN QUYẾT)` |
+  ❌ agents/bountyrecon/tasks/T31/FIX_GROUP_B.md:152
+     | 1. Nội dung mới đúng "0 xung đột hiệu lực + 4 đã nghỉ hưu"; điều kiện T4 = chỉ thị target (D-013) | ✅ |
+  ❌ security/_TEMPLATE/SCOPE.md:18
+     1. archived_at        (bản ghi còn hiệu lực hay đã nghỉ hưu?)
+  ❌ security/_TEMPLATE/SCOPE.md:38
+     | 3 | `legacy.example.com` | URL | true | false | `2023-05-08T10:11:33.083Z` | **ĐÃ NGHỈ HƯU** — không được coi là target đang mở |
+  ❌ security/_TEMPLATE/SCOPE.md:45
+     archived_at != null     -> bản ghi ĐÃ NGHỈ HƯU (dùng để LỌC, không để suy đoán phạm vi).
+  ❌ security/_TEMPLATE/SCOPE.md:46
+     3. CẤM kết luận "ngoài scope" từ archived_at. Chỉ được nói:
+  ❌ security/_TEMPLATE/SCOPE.md:47
+     "bảng thiếu/đủ chiều archived_at" và "hiệu lực của bản ghi đã nghỉ hưu: CHƯA XÁC MINH".
+  ❌ security/gitlab/RECON.md:47
+     | `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TX
+  ❌ security/gitlab/RECON.md:207
+     `docs.gitlab.com`) — **0 xung đột hiệu lực**: vế OUT là bản ghi **đã nghỉ hưu**
+  ❌ security/gitlab/SCOPE.md:9
+     **Trạng thái:** ✅ **Trích được nguyên văn. 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §2b.**
+  ❌ security/gitlab/SCOPE.md:149
+     > **Cách gọi đó SAI.** Cách đọc đúng: **0 xung đột hiệu lực + 4 bản ghi đã nghỉ hưu
+  ❌ security/gitlab/SCOPE.md:158
+     vế IN **đang hiệu lực** so với vế OUT **đã nghỉ hưu từ 2022-07-21** — cách nhau **4 năm**.
+  ❌ security/gitlab/SCOPE.md:289
+     | Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — cần **chỉ thị nêu target cụ thể của Admin** (D-013). 4 tài sản đã nghỉ hưu vẫn **bị loại** khỏi T4 |
+
+=== CAC DONG CO CAN CU CHINH SACH (KHONG vi pham) — liet ke de doi chieu ===
+  ✅ agents/bountyrecon/tasks/T28/FIX_2B.md:27  | Nhãn | `## 2b. 🚨 XUNG ĐỘT SCOPE ĐÃ XÁC MINH — KHÔNG ĐƯỢC ĐOÁN` | `## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT 
+  ✅ agents/bountyrecon/tasks/T29/FIX_3LINES.md:57  là "chốt 4 xung đột" đã xong; và vẫn giữ việc **4 tài sản bị loại** (đúng yêu cầu 2).
+  ✅ agents/bountyrecon/tasks/T29/SCAN_RESIDUAL.md:19  | **146** | `## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT HIỆU LỰC**` | Đúng (T28) ✅ |
+  ✅ agents/bountyrecon/tasks/T3/CANDIDATES.md:46  | G4 | `customers.gitlab.com` SPF `~all` | **BỊ LOẠI** | ⛔ GitLab loại trừ tường minh **"SPF and DKIM issues"*
+  ✅ agents/bountyrecon/tasks/T3/CANDIDATES.md:47  | G5 | `gitlab.org`/`gitlab.net` DMARC `p=none` | **BỊ LOẠI** | ⛔ Cùng lý do G4. |
+  ✅ agents/bountyrecon/tasks/T3/CANDIDATES.md:48  | G6 | Lộ `gitlab-sv: web-gke-us-east1-d`, `gitlab-lb: haproxy-…` | **BỊ LOẠI** | ⛔ GitLab: *"Metadata disclos
+  ✅ agents/bountyrecon/tasks/T3/CANDIDATES.md:54  | F1 | HSTS apex `max-age=15780000` không `preload` | **RẤT THẤP** | ❌ Gần như chắc chắn bị loại ("missing sec
+  ✅ agents/bountyrecon/tasks/T3/CANDIDATES.md:98  | GitHub: **"Assets that are not owned by GitHub"** = ineligible; subdomain `github.com` do bên thứ ba vận hàn
+  ✅ agents/bountyrecon/tasks/T31/FIX_GROUP_B.md:30  | **206–210** (§5 mục 2) | `**4 tài sản bị XUNG ĐỘT scope** … **trước khi** phát hiện xung đột. ⛔ … **Cần Admi
+  ✅ agents/bountyrecon/tasks/T31/FIX_GROUP_B.md:143  và báo *"file bị LOẠI TRỪ bị chạm: 1"*. **SAI.** Đã sửa: loại tiền tố `T31/` khỏi phép thử.
+  ✅ agents/bountyrecon/tasks/T31/FIX_GROUP_B.md:157  | — Không sửa bản ghi lịch sử | ✅ 0 file bị loại trừ bị chạm |
+  ✅ agents/bountyrecon/tasks/T33/FIX_LINE18.md:124  > và bản đầu xếp `T31/EVIDENCE/*` vào "file bị loại trừ" — **sai**, vì đó là **bằng chứng hợp lệ của T31**.
+  ✅ agents/bountyrecon/tasks/T33/FIX_LINE18.md:158  | 4. Kiểm theo LỊCH SỬ (D-023 [2]) | ✅ 6 commit · **0 file bị loại trừ bị chạm** · vùng nguyên văn không đổi |
+  ✅ security/_TEMPLATE/SCOPE.md:9  | **`archived_at` của MỌI asset** | ✅ **BẮT BUỘC** | **Bài học M-01 (Auditor2 T24):** hai kiểm định viên độc l
+  ✅ security/_TEMPLATE/SCOPE.md:39  | 4 | `old.example.net` | URL | true | true | `2022-03-01T17:47:43.944Z` | **ĐÃ NGHỈ HƯU** |
+  ✅ security/cloudflare/RECON.md:158  | C1 | HSTS apex ngắn hơn + không `preload` | §2.1 vs §2.2 | **RẤT THẤP** | Gần như chắc chắn bị loại là "miss
+  ✅ security/github/SCOPE.md:310  ⇒ **Bất kỳ subdomain nào của `github.com` trỏ ra dịch vụ bên thứ ba đều NGOÀI SCOPE**, kể cả
+  ✅ security/gitlab/RECON.md:179  | C4 | `customers.gitlab.com` SPF `~all` | §1 | **BỊ LOẠI** | ⛔ GitLab liệt kê tường minh **"SPF and DKIM issu
+  ✅ security/gitlab/RECON.md:180  | C5 | `gitlab.org`/`gitlab.net` DMARC `p=none` | §1.1 | **BỊ LOẠI** | ⛔ Cùng lý do C4. **Đừng theo.** |
+  ✅ security/gitlab/RECON.md:181  | C6 | `gitlab-sv: web-gke-us-east1-d`, `gitlab-lb: haproxy-main-51-lb-gprd` lộ hạ tầng | §2.1 | **BỊ LOẠI** |
+  ✅ security/gitlab/SCOPE.md:146  ## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT HIỆU LỰC** (đã đính chính ở T28)
+  ✅ security/gitlab/SCOPE.md:164  > Bỏ nó ⇒ sinh ra "xung đột scope" giả giữa chính sách **đang hiệu lực** và bản ghi **đã nghỉ hưu**.
+
+=== [KIEM CHI TIET] security/_TEMPLATE/SCOPE.md — bang MAU (Admin them o b9c9037) ===
+     1	---
+     2	
+     3	## BẢNG TÀI SẢN MẪU — bắt buộc có đủ cột
+     4	
+     5	> **Vì sao có mục này** (khe hở do `Reviewer1` phát hiện ở T39): mẫu này **quy định TRƯỜNG**
+     6	> nhưng trước đây **không có BẢNG MẪU** minh hoạ cách bày cột. Người viết sau có thể
+     7	> **"có nhắc `archived_at`"** mà **không nhúng cột vào bảng tài sản** ⇒ **thoả mãn trên giấy,
+     8	> không có trong dữ liệu**. Bảng mẫu dưới đây chặn tái diễn ở **tầng thiết kế**.
+     9	
+    10	| # | Asset / identifier | `asset_type` | `eligible_for_submission` | `eligible_for_bounty` | **`archived_at`** | Ghi chú |
+    11	|---|---|---|---|---|---|---|
+    12	| 1 | `example.com` | URL | true | true | `null` | Đang hiệu lực |
+    13	| 2 | `*.example.com` | WILDCARD | true | true | `null` | Đang hiệu lực |
+    14	| 3 | `legacy.example.com` | URL | true | false | `2023-05-08T10:11:33.083Z` | **ĐÃ NGHỈ HƯU** — không được coi là target đang mở |
+    15	| 4 | `old.example.net` | URL | true | true | `2022-03-01T17:47:43.944Z` | **ĐÃ NGHỈ HƯU** |
+    16	
+    17	**Luật đọc bảng — BẮT BUỘC:**
+    18	```text
+    19	1. Cột `archived_at` PHẢI có trong MỌI bảng tài sản. Thiếu cột = bảng KHÔNG ĐẠT.
+    20	2. archived_at = null      -> bản ghi ĐANG HIỆU LỰC.
+    21	   archived_at != null     -> bản ghi ĐÃ NGHỈ HƯU (dùng để LỌC, không để suy đoán phạm vi).
+    22	3. CẤM kết luận "ngoài scope" từ archived_at. Chỉ được nói:
+    23	   "bảng thiếu/đủ chiều archived_at" và "hiệu lực của bản ghi đã nghỉ hưu: CHƯA XÁC MINH".
+    24	4. `eligible_for_submission` / `eligible_for_bounty` là HAI trường ĐỘC LẬP — cấm suy ra nhau.
+    25	5. `asset_type` WILDCARD và URL là HAI bản ghi KHÁC NHAU — cấm gộp (bài học T31: gitlab.net
+    26	   apex nghỉ hưu 2020-10-05 nhưng *.gitlab.net wildcard CÒN HIỆU LỰC).
+
+  --- dong 38 nguyen van ---
+| 3 | `legacy.example.com` | URL | true | false | `2023-05-08T10:11:33.083Z` | **ĐÃ NGHỈ HƯU** — không được coi là target đang mở |
+
+=== SO SANH: quy tac 3 (d.46) vs cau mau (d.38) co MAU THUAN khong? ===
+| 1 | `example.com` | URL | true | true | `null` | Đang hiệu lực |
+| 2 | `*.example.com` | WILDCARD | true | true | `null` | Đang hiệu lực |
+| 3 | `legacy.example.com` | URL | true | false | `2023-05-08T10:11:33.083Z` | **ĐÃ NGHỈ HƯU** — không được coi là target đang mở |
+| 4 | `old.example.net` | URL | true | true | `2022-03-01T17:47:43.944Z` | **ĐÃ NGHỈ HƯU** |
+
+2. archived_at = null      -> bản ghi ĐANG HIỆU LỰC.
+   archived_at != null     -> bản ghi ĐÃ NGHỈ HƯU (dùng để LỌC, không để suy đoán phạm vi).
+3. CẤM kết luận "ngoài scope" từ archived_at. Chỉ được nói:
+   "bảng thiếu/đủ chiều archived_at" và "hiệu lực của bản ghi đã nghỉ hưu: CHƯA XÁC MINH".
+4. `eligible_for_submission` / `eligible_for_bounty` là HAI trường ĐỘC LẬP — cấm suy ra nhau.
+
+=== [LOC LAI DUNG] phan loai 48 dong theo NGUON GOC file ===
+  BAO_CAO_cua_BountyRecon      28
+  QUY_TAC_template             7
+  TAI_LIEU_PHAM_VI             13
+
+  --- CHI liet ke TAI_LIEU_PHAM_VI va QUY_TAC (bo bao cao cua tac gia) ---
+    [QUY_TAC_template] security/_TEMPLATE/SCOPE.md:9  | **`archived_at` của MỌI asset** | ✅ **BẮT BUỘC** | **Bài học M-01 (Auditor2 T24):** hai kiểm định viên độc lập cùng tr
+    [QUY_TAC_template] security/_TEMPLATE/SCOPE.md:18  1. archived_at        (bản ghi còn hiệu lực hay đã nghỉ hưu?)
+    [QUY_TAC_template] security/_TEMPLATE/SCOPE.md:38  | 3 | `legacy.example.com` | URL | true | false | `2023-05-08T10:11:33.083Z` | **ĐÃ NGHỈ HƯU** — không được coi là targe
+    [QUY_TAC_template] security/_TEMPLATE/SCOPE.md:39  | 4 | `old.example.net` | URL | true | true | `2022-03-01T17:47:43.944Z` | **ĐÃ NGHỈ HƯU** |
+    [QUY_TAC_template] security/_TEMPLATE/SCOPE.md:45  archived_at != null     -> bản ghi ĐÃ NGHỈ HƯU (dùng để LỌC, không để suy đoán phạm vi).
+    [QUY_TAC_template] security/_TEMPLATE/SCOPE.md:46  3. CẤM kết luận "ngoài scope" từ archived_at. Chỉ được nói:
+    [QUY_TAC_template] security/_TEMPLATE/SCOPE.md:47  "bảng thiếu/đủ chiều archived_at" và "hiệu lực của bản ghi đã nghỉ hưu: CHƯA XÁC MINH".
+    [TAI_LIEU_PHAM_VI] security/cloudflare/RECON.md:158  | C1 | HSTS apex ngắn hơn + không `preload` | §2.1 vs §2.2 | **RẤT THẤP** | Gần như chắc chắn bị loại là "missing securi
+    [TAI_LIEU_PHAM_VI] security/github/SCOPE.md:310  ⇒ **Bất kỳ subdomain nào của `github.com` trỏ ra dịch vụ bên thứ ba đều NGOÀI SCOPE**, kể cả
+    [TAI_LIEU_PHAM_VI] security/gitlab/RECON.md:47  | `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `ha
+    [TAI_LIEU_PHAM_VI] security/gitlab/RECON.md:179  | C4 | `customers.gitlab.com` SPF `~all` | §1 | **BỊ LOẠI** | ⛔ GitLab liệt kê tường minh **"SPF and DKIM issues"** là o
+    [TAI_LIEU_PHAM_VI] security/gitlab/RECON.md:180  | C5 | `gitlab.org`/`gitlab.net` DMARC `p=none` | §1.1 | **BỊ LOẠI** | ⛔ Cùng lý do C4. **Đừng theo.** |
+    [TAI_LIEU_PHAM_VI] security/gitlab/RECON.md:181  | C6 | `gitlab-sv: web-gke-us-east1-d`, `gitlab-lb: haproxy-main-51-lb-gprd` lộ hạ tầng | §2.1 | **BỊ LOẠI** | ⛔ GitLab:
+    [TAI_LIEU_PHAM_VI] security/gitlab/RECON.md:207  `docs.gitlab.com`) — **0 xung đột hiệu lực**: vế OUT là bản ghi **đã nghỉ hưu**
+    [TAI_LIEU_PHAM_VI] security/gitlab/SCOPE.md:9  **Trạng thái:** ✅ **Trích được nguyên văn. 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §
+    [TAI_LIEU_PHAM_VI] security/gitlab/SCOPE.md:146  ## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT HIỆU LỰC** (đã đính chính ở T28)
+    [TAI_LIEU_PHAM_VI] security/gitlab/SCOPE.md:149  > **Cách gọi đó SAI.** Cách đọc đúng: **0 xung đột hiệu lực + 4 bản ghi đã nghỉ hưu
+    [TAI_LIEU_PHAM_VI] security/gitlab/SCOPE.md:158  vế IN **đang hiệu lực** so với vế OUT **đã nghỉ hưu từ 2022-07-21** — cách nhau **4 năm**.
+    [TAI_LIEU_PHAM_VI] security/gitlab/SCOPE.md:164  > Bỏ nó ⇒ sinh ra "xung đột scope" giả giữa chính sách **đang hiệu lực** và bản ghi **đã nghỉ hưu**.
+    [TAI_LIEU_PHAM_VI] security/gitlab/SCOPE.md:289  | Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — cần **chỉ thị nêu target cụ thể của Admin** (D-013). 4 t
+
+=== [!] KIEM CHUNG CAN CU MOI: 'gitlab.net' co THAT trong SCOPE.md §2a khong? ===
+  --- liet ke tat ca tai san trong §2a (out-of-scope) ---
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+ValueError: substring not found
+
+  --- grep truc tiep 'gitlab.net' trong toan bo §2a ---
+8:WILDCARD  *.runway.gitlab.net
+17:          gitlabdemo.cloud | gitlabtraining.cloud | gitlab.net | gitlap.com
+86:   *.gitlab.net      type=URL  eligible=False  archived_at=2022-07-21T15:51:33.499Z
+87:   *.gitlap.com      type=URL  eligible=False  archived_at=2022-07-21T15:51:16.877Z
+94:| 1 | `*.gitlab.net` | `WILDCARD`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:51:33.499Z`** |
+95:| 2 | `*.gitlap.com` | `WILDCARD`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:51:16.877Z`** |
+
+=== [CANARY D-028 (A)] con nguyen khong? ===
+  origin/main    (A)=2db48874857f8033be1392d3.. len=2109
+  d21ca34        (A)=2db48874857f8033be1392d3.. len=2109
+
+=== [!] BOI CANH chinh xac cua 'gitlab.net' trong SCOPE.md ===
+  --- tim header §2a that su ---
+94:### 2a. Danh sách out-of-scope (n=39)
+
+  --- dong 15..20 cua file (boi canh dong 17) ---
+     1	
+     2	> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1.
+     3	
+     4	---
+     5	
+     6	## 0. Phương pháp fetch
+     7	
+     8	| Bước | Lệnh / URL | Kết quả |
+     9	|---|---|---|
+    10	| 1 | `POST https://hackerone.com/graphql` (công khai, không auth) `team(handle:"gitlab")` | HTTP 200, JSON parse OK |
+    11	| 2 | `curl -sS https://gitlab.com/.well-known/security.txt` | HTTP 200 — xác nhận HackerOne là kênh chính thức |
+    12	
+    13	Bằng chứng nguồn chính sách chính thức — trích nguyên văn `https://gitlab.com/.well-known/security.txt`:
+
+  --- 'gitlab.net' xuat hien o NHUNG dong nao trong ca file? ---
+45:WILDCARD    *.gitlab.net
+101:WILDCARD  *.runway.gitlab.net
+110:          gitlabdemo.cloud | gitlabtraining.cloud | gitlab.net | gitlap.com
+179:   *.gitlab.net      type=URL  eligible=False  archived_at=2022-07-21T15:51:33.499Z
+187:| 1 | `*.gitlab.net` | `WILDCARD`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:51:33.499Z`** |
+
+=== [!] §2a dong 94..122 (d.110 = 'gitlab.net') ===
+    94| ### 2a. Danh sách out-of-scope (n=39)
+    95| 
+    96| ```text
+    97| WILDCARD  *.gitlab.cn        — "gitlab.cn and the JiHu-specific GitLab distribution which are
+    98|                                 property of GitLab Information Technology (Hubei) Co., Ltd.
+    99|                                 (JiHu), security issues in those products should be reported
+   100|                                 to security@gitlab.cn"
+   101| WILDCARD  *.runway.gitlab.net
+   102| WILDCARD  *.gitlab-private.org — "Dangling DNS for *.gitlab-private.org is out of scope"
+   103| WILDCARD  *.service-now.com
+   104| WILDCARD  *.gitter.im ; URL blog.gitter.im ; update.gitter.im ; files.gitter.im ;
+   105|           next.gitter.im ; beta.gitter.im ; api.gitter.im ; WILDCARD ws*.gitter.im
+   106| URL       dashboards.gitlab.com | alerts.gitlab.com | support.gitlab.com | shop.gitlab.com |
+   107|           forum.gitlab.com | status.gitlab.com | partners.gitlab.com | aptly.gitlab.com |
+   108|           translate.gitlab.com | federal-support.gitlab.com | us-federal-gitlab.com |
+   109|           ir.gitlab.com | levelup.gitlab.com | packages.gitlab.com | gitlabsandbox.net |
+   110|           gitlabdemo.cloud | gitlabtraining.cloud | gitlab.net | gitlap.com <<<<< DONG 110
+   111| URL       gitlab.biterg.io   — "This is a third-party website that aggregates public data from
+   112|                                 GitLab.com. It is out of scope and the data hosted there is not
+   113|                                 meant to be confidential. https://contributors.gitlab.com/
+   114|                                 redirects to this website."
+   115| SOURCE_CODE https://gitlab.com/gitlab-org/cli/  — "This is a community project that is now
+   116|                                 officially maintained by GitLab. It will be in scope at a later
+   117|                                 time but it is not ready yet."
+   118| SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace-ui
+   119| SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace
+   120| ```
+   121| 
+   122| Prose out-of-scope (không nằm trong bảng structured) — `policy_gitlab.md` § `## Out of scope`,
+
+=== Kiem: dong 110 co nam TRONG fence khong? ===
+  cac dong bat dau bang rao ``` truoc dong 110: [24, 35, 44, 80, 84, 88, 96]
+  so rao truoc dong 110 = 7 (le => DANG TRONG fence)
+  => dong 110 NAM TRONG khoi nguyen van
+
+=== [3] BAM TUNG PHAN (CA 2 QUY UOC) — T34 c097df8 -> T41 d21ca34 ===
+  agents/bountyrecon/tasks/T3/CANDIDATES.md
+    dong 122->122 | dong DOI = 1 | opcodes [('replace', 44, 44, 44, 44)]
+    so khoi khop = 2 | MOI VUNG KHONG DOI GIONG HET (ca A va B): ✅ True
+  security/gitlab/RECON.md
+    dong 215->215 | dong DOI = 1 | opcodes [('replace', 47, 47, 47, 47)]
+    so khoi khop = 2 | MOI VUNG KHONG DOI GIONG HET (ca A va B): ✅ True
+
+=== [4] KIEM THEO LICH SU (D-023 [2]) — c097df8..d21ca34 ===
+  so commit: 2
+  file bi cham: 5
+    agents/bountyrecon/tasks/T3/CANDIDATES.md
+    agents/bountyrecon/tasks/T41/EVIDENCE/verify_t41.txt
+    agents/bountyrecon/tasks/T41/REPORT.md
+    agents/bountyrecon/tasks/T41/verify_t41.py
+    security/gitlab/RECON.md
+  => file bi LOAI TRU bi cham: 0 ✅
+  => cham ADMIN/rooms/reviews: 0 ✅
+
+=== [5] QUET THEO NGHIA (D-025 [3a]) — tai lap tren 7 tai lieu SONG @ d21ca34 ===
+  tong dong co cum 'loai/ngoai scope' tren 7 tai lieu song: 15
+  => dong co can cu CHI la archived_at (vi pham): 0 ✅
