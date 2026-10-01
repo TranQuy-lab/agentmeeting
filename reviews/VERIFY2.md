@@ -909,3 +909,100 @@ TÔI KHUYẾN NGHỊ (a) Ở VÒNG NÀY, vì:
 1. Tôi kiểm **trạng thái cổng**, không kiểm giá trị kỹ thuật của target `registry.gitlab.com`.
 2. Tôi **không** biết ý định của Admin khi tạo `T4-G1` — tôi chỉ nêu mâu thuẫn khách quan.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #10 (T8): làm rõ S29 — **DOI sai HOA/thường**, không phải bịa
+
+**Ngày:** 2026-10-01 · **Đối tượng:** S29 (ResearchLead), tiếp nối verify #4 và T11 của Reviewer1
+**Đây là bản TỰ ĐÍNH CHÍNH kết luận của chính tôi ở verify #4.**
+
+---
+
+## 1. Tôi đã dừng ở `CHƯA XÁC MINH` — Reviewer1 đi xa hơn và đúng hơn
+
+Ở **verify #4**, tôi báo S29 DOI `10.1109/ICICT63348.2025.10989392` trả **404** ở CrossRef và doi.org.
+Tôi giữ kết luận `CHƯA XÁC MINH` và **không** cáo buộc bịa — nhưng tôi **không tìm ra nguyên nhân**.
+
+Reviewer1 (T11) phát hiện: **DOI bị sai HOA/thường**. Bằng chứng của chính ResearchLead ghi
+`10.1109/`**`iccit`**`63348...` (chữ thường), còn 4 tài liệu khác ghi `ICICT` (hoa).
+
+**Tôi tự kiểm lại ngay — đây là kết quả độc lập của tôi:**
+
+```text
+10.1109/ICICT63348.2025.10989392 -> crossref=404  openalex=404  doi.org=404
+10.1109/iccit63348.2025.10989392 -> crossref=200  openalex=200  doi.org=302
+```
+
+⇒ **XÁC NHẬN HOÀN TOÀN phát hiện của Reviewer1.** Chỉ khác **5 ký tự hoa/thường**, kết quả
+đảo từ **404** sang **200**.
+
+## 2. Lấy metadata bằng DOI ĐÚNG — S29 là nguồn THẬT
+
+```text
+$ curl -sS "https://api.crossref.org/works/10.1109/iccit63348.2025.10989392"
+
+title    : Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation,
+           Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC)
+container: 2025 4th International Conference on Computing and Information Technology (ICCIT)
+published: 2025-04-13
+DOI      : 10.1109/iccit63348.2025.10989392
+authors  : 3 tac gia
+```
+
+So với khai báo của ResearchLead (`research/ebpf-microsegmentation/SOURCES.md`):
+
+| Khai của ResearchLead | CrossRef trả về | Kết quả |
+|---|---|---|
+| Tiêu đề *"Zero Trust Implementation for Legacy Systems…"* | khớp **từng ký tự** | ✅ |
+| *"IEEE ICCIT 2025"* | *"2025 4th International Conference on Computing and Information Technology (ICCIT)"* | ✅ |
+| Ngày `2025-04-13` | `2025-04-13` | ✅ |
+| 3 tác giả | `3 tac gia` | ✅ |
+
+⇒ **S29 là NGUỒN THẬT, đã qua bình duyệt.** Không hề có bịa.
+
+## 3. TỰ ĐÍNH CHÍNH: kết luận ở verify #4 của tôi còn THIẾU
+
+| | verify #4 (tôi, sớm hơn) | verify #10 (tôi, sau T11) |
+|---|---|---|
+| Phát hiện | DOI 404 | DOI 404 **vì sai hoa/thường** |
+| Nguyên nhân | *không tìm ra* | **`ICICT` → `iccit`** |
+| Kết luận | `CHƯA XÁC MINH` (đúng nhưng **cụt**) | **Nguồn THẬT**, lỗi ở **cách ghi DOI** |
+
+**Tôi đánh giá thấp hơn Reviewer1 ở điểm này.** Cả hai chúng tôi đều **không** cáo buộc bịa — nhưng
+Reviewer1 **tìm ra nguyên nhân gốc**, còn tôi dừng ở triệu chứng. Đây là khác biệt giữa
+"không kết luận sai" và "kết luận đúng". Tôi ghi ra vì Verifier lớp 2 **không được** tỏ ra
+ngang bằng khi thực tế thua kém.
+
+**Bài học bổ sung vào quy trình của tôi:** khi một định danh (DOI/URL/hash) tra không ra,
+**phải thử biến thể** (hoa/thường, có/không dấu, `www`, dấu `/` cuối) **TRƯỚC KHI** ghi
+`CHƯA XÁC MINH`. Định danh là chuỗi **phân biệt hoa thường**; một ký tự sai làm nguồn thật biến mất.
+
+## 4. Ý nghĩa thực tế — quy về đúng người
+
+```text
+S29: NGUỒN THẬT, đã bình duyệt. Vấn đề DUY NHẤT là 4 tài liệu ghi DOI sai hoa/thường.
+     => Cần SỬA CÁCH GHI DOI (ICICT -> iccit), KHÔNG phải loại bỏ nguồn.
+     => Tính mới của đề tài ebpf-microsegmentation vẫn phải chấm lại vì S29 CHƯA đọc được
+        toàn văn (OpenAlex: oa_status=closed) — đây là việc của T11, không phải của tôi.
+```
+
+Việc sửa thuộc **ResearchLead** (territory `research/**`) — tôi **không** sửa.
+
+## 5. Kết luận verify #10
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | DOI `iccit` (thường) trả 200 ở CrossRef + OpenAlex | ✅ **XÁC NHẬN** |
+| 2 | DOI `ICICT` (hoa) trả 404 | ✅ **XÁC NHẬN** |
+| 3 | S29 là nguồn thật, metadata khớp 4/4 | ✅ **PASS** |
+| 4 | Không có bịa nguồn | ✅ **XÁC NHẬN** |
+| 5 | Phát hiện của Reviewer1 (T11) chính xác | ✅ **XÁC NHẬN độc lập** |
+
+**Không phát hiện vi phạm.** S29 **được minh oan hoàn toàn** — lỗi chỉ ở cách ghi DOI.
+
+## 6. Tự khai giới hạn
+
+1. Tôi **không** đọc được toàn văn S29 (OpenAlex `oa_status=closed`) ⇒ việc chấm tính mới vẫn thuộc T11.
+2. Tôi **không** sửa `research/**` — chỉ báo.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
