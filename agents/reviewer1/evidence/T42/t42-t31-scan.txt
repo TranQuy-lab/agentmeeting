@@ -151,3 +151,106 @@ TONG so dong co cum 'loai/ngoai scope/khong con hieu luc/nghi huu': 48
     [TAI_LIEU_PHAM_VI] security/gitlab/SCOPE.md:158  vế IN **đang hiệu lực** so với vế OUT **đã nghỉ hưu từ 2022-07-21** — cách nhau **4 năm**.
     [TAI_LIEU_PHAM_VI] security/gitlab/SCOPE.md:164  > Bỏ nó ⇒ sinh ra "xung đột scope" giả giữa chính sách **đang hiệu lực** và bản ghi **đã nghỉ hưu**.
     [TAI_LIEU_PHAM_VI] security/gitlab/SCOPE.md:289  | Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — cần **chỉ thị nêu target cụ thể của Admin** (D-013). 4 t
+
+=== [!] KIEM CHUNG CAN CU MOI: 'gitlab.net' co THAT trong SCOPE.md §2a khong? ===
+  --- liet ke tat ca tai san trong §2a (out-of-scope) ---
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+ValueError: substring not found
+
+  --- grep truc tiep 'gitlab.net' trong toan bo §2a ---
+8:WILDCARD  *.runway.gitlab.net
+17:          gitlabdemo.cloud | gitlabtraining.cloud | gitlab.net | gitlap.com
+86:   *.gitlab.net      type=URL  eligible=False  archived_at=2022-07-21T15:51:33.499Z
+87:   *.gitlap.com      type=URL  eligible=False  archived_at=2022-07-21T15:51:16.877Z
+94:| 1 | `*.gitlab.net` | `WILDCARD`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:51:33.499Z`** |
+95:| 2 | `*.gitlap.com` | `WILDCARD`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:51:16.877Z`** |
+
+=== [CANARY D-028 (A)] con nguyen khong? ===
+  origin/main    (A)=2db48874857f8033be1392d3.. len=2109
+  d21ca34        (A)=2db48874857f8033be1392d3.. len=2109
+
+=== [!] BOI CANH chinh xac cua 'gitlab.net' trong SCOPE.md ===
+  --- tim header §2a that su ---
+94:### 2a. Danh sách out-of-scope (n=39)
+
+  --- dong 15..20 cua file (boi canh dong 17) ---
+     1	
+     2	> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1.
+     3	
+     4	---
+     5	
+     6	## 0. Phương pháp fetch
+     7	
+     8	| Bước | Lệnh / URL | Kết quả |
+     9	|---|---|---|
+    10	| 1 | `POST https://hackerone.com/graphql` (công khai, không auth) `team(handle:"gitlab")` | HTTP 200, JSON parse OK |
+    11	| 2 | `curl -sS https://gitlab.com/.well-known/security.txt` | HTTP 200 — xác nhận HackerOne là kênh chính thức |
+    12	
+    13	Bằng chứng nguồn chính sách chính thức — trích nguyên văn `https://gitlab.com/.well-known/security.txt`:
+
+  --- 'gitlab.net' xuat hien o NHUNG dong nao trong ca file? ---
+45:WILDCARD    *.gitlab.net
+101:WILDCARD  *.runway.gitlab.net
+110:          gitlabdemo.cloud | gitlabtraining.cloud | gitlab.net | gitlap.com
+179:   *.gitlab.net      type=URL  eligible=False  archived_at=2022-07-21T15:51:33.499Z
+187:| 1 | `*.gitlab.net` | `WILDCARD`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:51:33.499Z`** |
+
+=== [!] §2a dong 94..122 (d.110 = 'gitlab.net') ===
+    94| ### 2a. Danh sách out-of-scope (n=39)
+    95| 
+    96| ```text
+    97| WILDCARD  *.gitlab.cn        — "gitlab.cn and the JiHu-specific GitLab distribution which are
+    98|                                 property of GitLab Information Technology (Hubei) Co., Ltd.
+    99|                                 (JiHu), security issues in those products should be reported
+   100|                                 to security@gitlab.cn"
+   101| WILDCARD  *.runway.gitlab.net
+   102| WILDCARD  *.gitlab-private.org — "Dangling DNS for *.gitlab-private.org is out of scope"
+   103| WILDCARD  *.service-now.com
+   104| WILDCARD  *.gitter.im ; URL blog.gitter.im ; update.gitter.im ; files.gitter.im ;
+   105|           next.gitter.im ; beta.gitter.im ; api.gitter.im ; WILDCARD ws*.gitter.im
+   106| URL       dashboards.gitlab.com | alerts.gitlab.com | support.gitlab.com | shop.gitlab.com |
+   107|           forum.gitlab.com | status.gitlab.com | partners.gitlab.com | aptly.gitlab.com |
+   108|           translate.gitlab.com | federal-support.gitlab.com | us-federal-gitlab.com |
+   109|           ir.gitlab.com | levelup.gitlab.com | packages.gitlab.com | gitlabsandbox.net |
+   110|           gitlabdemo.cloud | gitlabtraining.cloud | gitlab.net | gitlap.com <<<<< DONG 110
+   111| URL       gitlab.biterg.io   — "This is a third-party website that aggregates public data from
+   112|                                 GitLab.com. It is out of scope and the data hosted there is not
+   113|                                 meant to be confidential. https://contributors.gitlab.com/
+   114|                                 redirects to this website."
+   115| SOURCE_CODE https://gitlab.com/gitlab-org/cli/  — "This is a community project that is now
+   116|                                 officially maintained by GitLab. It will be in scope at a later
+   117|                                 time but it is not ready yet."
+   118| SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace-ui
+   119| SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace
+   120| ```
+   121| 
+   122| Prose out-of-scope (không nằm trong bảng structured) — `policy_gitlab.md` § `## Out of scope`,
+
+=== Kiem: dong 110 co nam TRONG fence khong? ===
+  cac dong bat dau bang rao ``` truoc dong 110: [24, 35, 44, 80, 84, 88, 96]
+  so rao truoc dong 110 = 7 (le => DANG TRONG fence)
+  => dong 110 NAM TRONG khoi nguyen van
+
+=== [3] BAM TUNG PHAN (CA 2 QUY UOC) — T34 c097df8 -> T41 d21ca34 ===
+  agents/bountyrecon/tasks/T3/CANDIDATES.md
+    dong 122->122 | dong DOI = 1 | opcodes [('replace', 44, 44, 44, 44)]
+    so khoi khop = 2 | MOI VUNG KHONG DOI GIONG HET (ca A va B): ✅ True
+  security/gitlab/RECON.md
+    dong 215->215 | dong DOI = 1 | opcodes [('replace', 47, 47, 47, 47)]
+    so khoi khop = 2 | MOI VUNG KHONG DOI GIONG HET (ca A va B): ✅ True
+
+=== [4] KIEM THEO LICH SU (D-023 [2]) — c097df8..d21ca34 ===
+  so commit: 2
+  file bi cham: 5
+    agents/bountyrecon/tasks/T3/CANDIDATES.md
+    agents/bountyrecon/tasks/T41/EVIDENCE/verify_t41.txt
+    agents/bountyrecon/tasks/T41/REPORT.md
+    agents/bountyrecon/tasks/T41/verify_t41.py
+    security/gitlab/RECON.md
+  => file bi LOAI TRU bi cham: 0 ✅
+  => cham ADMIN/rooms/reviews: 0 ✅
+
+=== [5] QUET THEO NGHIA (D-025 [3a]) — tai lap tren 7 tai lieu SONG @ d21ca34 ===
+  tong dong co cum 'loai/ngoai scope' tren 7 tai lieu song: 15
+  => dong co can cu CHI la archived_at (vi pham): 0 ✅
