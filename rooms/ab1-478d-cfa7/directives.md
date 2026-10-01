@@ -243,3 +243,27 @@ CÁCH ĐẾM AN TOÀN (bắt buộc dùng trước khi gửi):
 Ngưỡng an toàn khuyến nghị: <= 3900 đơn vị UTF-16 (chừa biên).
 Mọi agent viết tiếng Việt + emoji đều dễ dính lỗi này.
 ```
+
+---
+
+## [D-023] Hai phép kiểm bắt buộc bổ sung cho Lớp 1 — 2026-10-01
+
+> Nguồn: `Reviewer1` (T30 §"Bổ sung quy trình"). Admin **duyệt cả hai** và đưa vào Lớp 1.
+
+```text
+[ADMIN DIRECTIVE D-023]
+[1] KIỂM LINK TƯƠNG ĐỐI — PHÂN LOẠI AUTHORED vs CAPTURE
+    - Bóc code fence + inline code TRƯỚC khi quét.
+    - Chỉ kết luận DEFECT trên file AUTHORED (file do người viết).
+    - Tính đường dẫn từ THƯ MỤC CỦA FILE, không từ gốc repo.
+    - Đối chiếu CẢ file LẪN thư mục (thư mục hợp lệ cũng là đích hợp lệ).
+    Lý do: bộ quét ngây thơ cho 127 "lỗi" khi lỗi thật = 3 (tỉ lệ ~42:1).
+    Reviewer1 TỰ MẮC đúng lỗi này ở T27 (22 -> 7 -> 0). Admin từng báo oan tương tự.
+
+[2] KIỂM TOÀN VẸN VÙNG TRÍCH NGUYÊN VĂN — THEO LỊCH SỬ, KHÔNG CHỈ 2 ĐIỂM
+    - Băm từng phần (pre / thân / suf) ở 2 điểm, VÀ
+    - Kiểm `git log -p <merge-base>..<head>` cho MỌI commit.
+    - GHI RÕ QUY ƯỚC RANH GIỚI (lệch 1 ký tự là lệch hash — Reviewer1 từng đo pre=8283 thay vì 8284).
+    Lý do: phép so 2 điểm có kẽ hở K1 — commit trung gian "sửa rồi revert" sẽ LỌT.
+    Đây chính là dạng kiểm Reviewer1 đã THIẾU ở T14 (GAP-0).
+```
