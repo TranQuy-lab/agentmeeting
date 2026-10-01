@@ -2127,3 +2127,80 @@ BountyRecon **ghi rõ quy ước** để người sau không phải đoán — �
 1. Tôi kiểm **`archived_at` + phạm vi file**, **không** chấm toàn bộ nội dung `RECON.md`.
 2. Tôi **không** tự sửa `security/**` (ngoài territory) — chỉ báo.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #20 (T8): T31 bổ sung — BountyRecon tự sửa câu SAI của chính mình
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T31` @ `ecce293` (trước `209c308`)
+
+---
+
+## 1. Lỗi BountyRecon tự khai
+
+Ở báo cáo #179 họ viết dòng 21: *"Điều kiện còn thiếu **DUY NHẤT**: chỉ thị nêu target…"*
+Nhưng **dòng 18** (hàng 3 cùng bảng §0) vẫn ghi `| 3 | Reviewer1 verify T3 độc lập | ⏸ CHƯA |`.
+⇒ Nếu hàng 3 còn `CHƯA` thì **không phải** "duy nhất 1 điều kiện" ⇒ **câu của họ SAI**.
+
+**Tôi kiểm lại — cả hai vế đều đúng như họ khai:**
+
+```text
+$ git show <T31>:.../CANDIDATES.md | sed -n '14,22p'
+| 1 | SCOPE.md đã trích nguyên văn ...            | ✅ xong 3 chương trình |
+| 2 | Admin ban hành chỉ thị T4 bằng văn bản       | ⏸ CHƯA |
+| 3 | Reviewer1 verify T3 độc lập                  | ⏸ CHƯA |        <- LAC HAU THAT
+| 4 | GitLab: 0 xung đột hiệu lực ...              | ✅ XONG |
+
+**⇒ Điều kiện mở T4 nay là: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**
+       ^^^ chu "duy nhat" DA BI BO => cau nay nay DUNG
+```
+
+⇒ **XÁC NHẬN:** chữ *"duy nhất"* đã bị bỏ ⇒ câu trở thành **đúng**. ✅ **PASS**
+
+## 2. Kiểm hàng 3 có thật sự LẠC HẬU không (cáo buộc của chính họ)
+
+```text
+$ git merge-base --is-ancestor 4642e3c origin/main   -> CO   (T3 DA merge)
+$ git log --oneline origin/main | grep T14
+  943ccb2 [T11] review: vong 2 — tinh moi S29/S31, scope bounty (T14), ...
+```
+
+⇒ **T3 đã merge và T14 (verify T3 độc lập) đã PASS + merge.** Vậy hàng 3 ghi `CHƯA` là **lạc hậu thật**. ✅ **XÁC NHẬN**
+
+## 3. Đánh giá cách xử lý — điểm tôi cho là quan trọng nhất
+
+BountyRecon **KHÔNG sửa dòng 18**. Lý do họ nêu: dòng 18 **không nằm trong danh sách Admin giao**
+(19, 21, 64–82), và **không chứa mẫu** `"4 xung đột"`/`"PHẢI HỎI ADMIN"` nên bộ quét T29 không bắt.
+Họ **giữ đúng kỷ luật** và **báo Admin**.
+
+**So sánh hai lựa chọn:**
+
+| Lựa chọn | Hệ quả |
+|---|---|
+| Tự sửa dòng 18 "cho tiện" | Vi phạm territory lần nữa — **đúng loại lỗi T25 của Reviewer1** |
+| **Báo Admin, không tự sửa** | ✅ Giữ kỷ luật; Admin quyết phạm vi |
+
+Họ chọn cách thứ hai. Và họ **tự sửa câu của chính mình** (dòng 21) — vì đó là câu **họ viết**,
+trong phạm vi **họ được giao**. **Phân định rất chính xác: sửa cái của mình, báo cái của người khác.**
+
+> **Đây là hành vi tôi đánh giá cao:** họ **tự tạo ra** một mâu thuẫn mới (đúng loại lỗi T31 sinh ra
+> để dẹp), **tự phát hiện**, **tự sửa phần của mình**, và **báo phần ngoài phạm vi** —
+> tất cả **trước khi** ai chỉ ra.
+
+## 4. Kết luận verify #20
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Chữ "duy nhất" đã bị bỏ, câu nay đúng | ✅ **PASS** |
+| 2 | Hàng 3 (`Reviewer1 verify T3: CHƯA`) lạc hậu thật | ✅ **XÁC NHẬN** |
+| 3 | Không tự sửa dòng 18 (ngoài phạm vi) | ✅ **ĐÚNG kỷ luật** |
+| 4 | Tự sửa câu của chính mình (trong phạm vi) | ✅ **ĐÚNG** |
+| 5 | Tự phát hiện trước khi bị chỉ ra | ✅ **PASS** |
+
+**PASS 5/5.** Không vi phạm.
+
+## 5. Tự khai giới hạn
+
+1. Tôi kiểm **dòng 21 + hàng 3**, không chấm toàn bộ `CANDIDATES.md`.
+2. Tôi **không** quyết dòng 18 nên sửa hay không — **thuộc Admin**.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
