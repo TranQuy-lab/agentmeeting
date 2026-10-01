@@ -1,0 +1,335 @@
+# RAW OUTPUT — T15-4 KIEM CHUAN volatility3 (that bai SACH SE)
+# Ngay chay: 2026-10-01T14:25:54Z UTC
+# Nguoi chay: ForensicsMal (ag_82f7cb07)
+# Input: RONG / KHONG HOP LE do chung ta tao (byte rac, seed co dinh).
+# KHONG co mau doc hai. KHONG chay ma. Phan tich DONG van DINH CHI.
+# Muc tieu: chung minh vol3 KHONG crash / KHONG treo khi gap input rac.
+
+## Phien ban cong cu
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python -c 'import importlib.metadata as md; print(md.version("volatility3"))'
+2.28.2
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/vol --version
+usage: vol [-h] [-c CONFIG] [--parallelism [{processes,threads,off}]]
+           [-e EXTEND] [-p PLUGIN_DIRS] [-s SYMBOL_DIRS] [-v] [-l LOG]
+           [-o OUTPUT_DIR] [-q] [-f FILE] [--write-config]
+           [--save-config SAVE_CONFIG] [--clear-cache]
+           [--cache-path CACHE_PATH] [--offline | -u URL] [--filters FILTERS]
+           [--hide-columns [HIDE_COLUMNS ...]] [-r RENDERER]
+           [--single-location SINGLE_LOCATION] [--stackers [STACKERS ...]]
+           [--single-swap-locations [SINGLE_SWAP_LOCATIONS ...]]
+           PLUGIN ...
+vol: error: unrecognized arguments: --version
+Volatility 3 Framework 2.28.2
+
+## Chay kiem chuan
+
+======================================================================
+BUOC 0 — Chuan bi input RONG / KHONG HOP LE (vo hai)
+======================================================================
+  invalid_empty.bin                0 byte  (RONG hoan toan)
+  invalid_garbage.bin          65536 byte  (byte ngau nhien, seed=1337)
+  invalid_short.bin               16 byte  (16 byte)
+  invalid_zeros.bin             4096 byte  (toan so 0)
+  khong_ton_tai_bao_gio.bin  (khong ton tai)
+  /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus (thu muc, khong phai file)
+
+# vol binary: /home/noble-tran/forensicsmal-tooling/.venv/bin/vol
+# vol ton tai: True
+# timeout moi lan chay: 90s
+
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/vol --version
+exit=2
+Volatility 3 Framework 2.28.2
+usage: vol [-h] [-c CONFIG] [--parallelism [{processes,threads,off}]]
+           [-e EXTEND] [-p PLUGIN_DIRS] [-s SYMBOL_DIRS] [-v] [-l LOG]
+           [-o OUTPUT_DIR] [-q] [-f FILE] [--write-config]
+           [--save-config SAVE_CONFIG] [--clear-cache]
+           [--cache-path CACHE_PATH] [--offline | -u URL] [--filters FILTERS]
+           [--hide-columns [HIDE_COLUMNS ...]] [-r RENDERER]
+           [--single-location SINGLE_LOCATION] [--stackers [STACKERS ...]]
+           [--single-swap-locations [SINGLE_SWAP_LOCATIONS ...]]
+           PLUGIN ...
+vol: error: unrecognized arguments: --version
+
+======================================================================
+BUOC 1 — Chay vol tren tung input KHONG HOP LE
+======================================================================
+
+----------------------------------------------------------------------
+### file RONG (0 byte)
+$ vol -f /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/invalid_empty.bin windows.pslist
+  thoi gian : 0.26s   
+  exit code : 1
+  Python traceback (dau hieu CRASH): KHONG
+  co thong bao loi : CO
+  --- stdout (715 ky tu) ---
+    Volatility 3 Framework 2.28.2
+    
+    Unsatisfied requirement plugins.PsList.kernel.layer_name: 
+    Unsatisfied requirement plugins.PsList.kernel.symbol_table_name: 
+    
+    A translation layer requirement was not fulfilled.  Please verify that:
+    	A file was provided to create this layer (by -f, --single-location or by config)
+    	The file exists and is readable
+    	The file is a valid memory image and was acquired cleanly
+    
+    A symbol table requirement was not fulfilled.  Please verify that:
+    	The associated translation layer requirement was fulfilled
+    	You have the correct symbol file for the requirement
+    	The symbol file is under the correct directory or zip file
+    	The symbol file is named appropriately or contains the correct banner
+  --- stderr (216 ky tu) ---
+    Progress:  100.00		Stacking attempts finished
+    
+    Progress:  100.00		PDB scanning finished     
+    Unable to validate the plugin requirements: ['plugins.PsList.kernel.layer_name', 'plugins.PsList.kernel.symbol_table_name']
+
+----------------------------------------------------------------------
+### byte ngau nhien 64KB
+$ vol -f /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/invalid_garbage.bin windows.pslist
+  thoi gian : 0.31s   
+  exit code : 1
+  Python traceback (dau hieu CRASH): KHONG
+  co thong bao loi : CO
+  --- stdout (715 ky tu) ---
+    Volatility 3 Framework 2.28.2
+    
+    Unsatisfied requirement plugins.PsList.kernel.layer_name: 
+    Unsatisfied requirement plugins.PsList.kernel.symbol_table_name: 
+    
+    A translation layer requirement was not fulfilled.  Please verify that:
+    	A file was provided to create this layer (by -f, --single-location or by config)
+    	The file exists and is readable
+    	The file is a valid memory image and was acquired cleanly
+    
+    A symbol table requirement was not fulfilled.  Please verify that:
+    	The associated translation layer requirement was fulfilled
+    	You have the correct symbol file for the requirement
+    	The symbol file is under the correct directory or zip file
+    	The symbol file is named appropriately or contains the correct banner
+  --- stderr (216 ky tu) ---
+    Progress:  100.00		Stacking attempts finished
+    
+    Progress:  100.00		PDB scanning finished     
+    Unable to validate the plugin requirements: ['plugins.PsList.kernel.layer_name', 'plugins.PsList.kernel.symbol_table_name']
+
+----------------------------------------------------------------------
+### file 16 byte
+$ vol -f /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/invalid_short.bin windows.pslist
+  thoi gian : 0.26s   
+  exit code : 1
+  Python traceback (dau hieu CRASH): KHONG
+  co thong bao loi : CO
+  --- stdout (715 ky tu) ---
+    Volatility 3 Framework 2.28.2
+    
+    Unsatisfied requirement plugins.PsList.kernel.layer_name: 
+    Unsatisfied requirement plugins.PsList.kernel.symbol_table_name: 
+    
+    A translation layer requirement was not fulfilled.  Please verify that:
+    	A file was provided to create this layer (by -f, --single-location or by config)
+    	The file exists and is readable
+    	The file is a valid memory image and was acquired cleanly
+    
+    A symbol table requirement was not fulfilled.  Please verify that:
+    	The associated translation layer requirement was fulfilled
+    	You have the correct symbol file for the requirement
+    	The symbol file is under the correct directory or zip file
+    	The symbol file is named appropriately or contains the correct banner
+  --- stderr (216 ky tu) ---
+    Progress:  100.00		Stacking attempts finished
+    
+    Progress:  100.00		PDB scanning finished     
+    Unable to validate the plugin requirements: ['plugins.PsList.kernel.layer_name', 'plugins.PsList.kernel.symbol_table_name']
+
+----------------------------------------------------------------------
+### toan so 0 4KB
+$ vol -f /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/invalid_zeros.bin windows.pslist
+  thoi gian : 0.25s   
+  exit code : 1
+  Python traceback (dau hieu CRASH): KHONG
+  co thong bao loi : CO
+  --- stdout (715 ky tu) ---
+    Volatility 3 Framework 2.28.2
+    
+    Unsatisfied requirement plugins.PsList.kernel.layer_name: 
+    Unsatisfied requirement plugins.PsList.kernel.symbol_table_name: 
+    
+    A translation layer requirement was not fulfilled.  Please verify that:
+    	A file was provided to create this layer (by -f, --single-location or by config)
+    	The file exists and is readable
+    	The file is a valid memory image and was acquired cleanly
+    
+    A symbol table requirement was not fulfilled.  Please verify that:
+    	The associated translation layer requirement was fulfilled
+    	You have the correct symbol file for the requirement
+    	The symbol file is under the correct directory or zip file
+    	The symbol file is named appropriately or contains the correct banner
+  --- stderr (216 ky tu) ---
+    Progress:  100.00		Stacking attempts finished
+    
+    Progress:  100.00		PDB scanning finished     
+    Unable to validate the plugin requirements: ['plugins.PsList.kernel.layer_name', 'plugins.PsList.kernel.symbol_table_name']
+
+----------------------------------------------------------------------
+### file KHONG ton tai
+$ vol -f /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/khong_ton_tai_bao_gio.bin windows.pslist
+  thoi gian : 0.22s   
+  exit code : 2
+  Python traceback (dau hieu CRASH): KHONG
+  co thong bao loi : CO
+  --- stdout (29 ky tu) ---
+    Volatility 3 Framework 2.28.2
+  --- stderr (688 ky tu) ---
+    usage: vol [-h] [-c CONFIG] [--parallelism [{processes,threads,off}]]
+               [-e EXTEND] [-p PLUGIN_DIRS] [-s SYMBOL_DIRS] [-v] [-l LOG]
+               [-o OUTPUT_DIR] [-q] [-f FILE] [--write-config]
+               [--save-config SAVE_CONFIG] [--clear-cache]
+               [--cache-path CACHE_PATH] [--offline | -u URL] [--filters FILTERS]
+               [--hide-columns [HIDE_COLUMNS ...]] [-r RENDERER]
+               [--single-location SINGLE_LOCATION] [--stackers [STACKERS ...]]
+               [--single-swap-locations [SINGLE_SWAP_LOCATIONS ...]]
+               PLUGIN ...
+    vol: error: File does not exist: /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/khong_ton_tai_bao_gio.bin
+
+----------------------------------------------------------------------
+### thu muc thay vi file
+$ vol -f /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus windows.pslist
+  thoi gian : 0.25s   
+  exit code : 1
+  Python traceback (dau hieu CRASH): KHONG
+  co thong bao loi : CO
+  --- stdout (715 ky tu) ---
+    Volatility 3 Framework 2.28.2
+    
+    Unsatisfied requirement plugins.PsList.kernel.layer_name: 
+    Unsatisfied requirement plugins.PsList.kernel.symbol_table_name: 
+    
+    A translation layer requirement was not fulfilled.  Please verify that:
+    	A file was provided to create this layer (by -f, --single-location or by config)
+    	The file exists and is readable
+    	The file is a valid memory image and was acquired cleanly
+    
+    A symbol table requirement was not fulfilled.  Please verify that:
+    	The associated translation layer requirement was fulfilled
+    	You have the correct symbol file for the requirement
+    	The symbol file is under the correct directory or zip file
+    	The symbol file is named appropriately or contains the correct banner
+  --- stderr (376 ky tu) ---
+    Progress:  100.00		PDB scanning finished
+    WARNING  volatility3.framework.plugins: Automagic exception occurred: urllib.error.URLError: <urlopen error [Errno 21] Is a directory: '/home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus'>
+    Unable to validate the plugin requirements: ['plugins.PsList.kernel.layer_name', 'plugins.PsList.kernel.symbol_table_name']
+
+----------------------------------------------------------------------
+### KHONG truyen -f
+$ vol windows.pslist
+  thoi gian : 0.20s   
+  exit code : 1
+  Python traceback (dau hieu CRASH): KHONG
+  co thong bao loi : CO
+  --- stdout (715 ky tu) ---
+    Volatility 3 Framework 2.28.2
+    
+    Unsatisfied requirement plugins.PsList.kernel.layer_name: 
+    Unsatisfied requirement plugins.PsList.kernel.symbol_table_name: 
+    
+    A translation layer requirement was not fulfilled.  Please verify that:
+    	A file was provided to create this layer (by -f, --single-location or by config)
+    	The file exists and is readable
+    	The file is a valid memory image and was acquired cleanly
+    
+    A symbol table requirement was not fulfilled.  Please verify that:
+    	The associated translation layer requirement was fulfilled
+    	You have the correct symbol file for the requirement
+    	The symbol file is under the correct directory or zip file
+    	The symbol file is named appropriately or contains the correct banner
+  --- stderr (313 ky tu) ---
+    Progress:  100.00		PDB scanning finished
+    WARNING  volatility3.framework.plugins: Automagic exception occurred: ValueError: Unable to run LayerStacker, single_location parameter not provided
+    Unable to validate the plugin requirements: ['plugins.PsList.kernel.layer_name', 'plugins.PsList.kernel.symbol_table_name']
+
+----------------------------------------------------------------------
+### plugin KHONG ton tai
+$ vol -f /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/invalid_garbage.bin windows.plugin_khong_ton_tai_xyz
+  thoi gian : 0.18s   
+  exit code : 2
+  Python traceback (dau hieu CRASH): KHONG
+  co thong bao loi : CO
+  --- stdout (0 ky tu) ---
+    (rong)
+  --- stderr (6362 ky tu) ---
+    usage: vol [-h] [-c CONFIG] [--parallelism [{processes,threads,off}]]
+               [-e EXTEND] [-p PLUGIN_DIRS] [-s SYMBOL_DIRS] [-v] [-l LOG]
+               [-o OUTPUT_DIR] [-q] [-f FILE] [--write-config]
+               [--save-config SAVE_CONFIG] [--clear-cache]
+               [--cache-path CACHE_PATH] [--offline | -u URL] [--filters FILTERS]
+               [--hide-columns [HIDE_COLUMNS ...]] [-r RENDERER]
+               [--single-location SINGLE_LOCATION] [--stackers [STACKERS ...]]
+               [--single-swap-locations [SINGLE_SWAP_LOCATIONS ...]]
+               PLUGIN ...
+    vol: error: argument PLUGIN: invalid choice windows.plugin_khong_ton_tai_xyz (choose from banners.Banners, configwriter.ConfigWriter, frameworkinfo.FrameworkInfo, isfinfo.IsfInfo, layerwriter.LayerWriter, linux.bash.Bash, linux.boottime.Boottime, linux.capabilities.Capabilities, linux.check_afinfo.Check_afinfo, linux.check_creds.Check_creds, linux.check_idt.Check_idt, linux.check_modules.Check_modules, linux.check_syscall.Check_syscall, linux.ebpf.EBPF, linux.elfs.Elfs, linux.envars.Envars, linux.graphics.fbdev.Fbdev, linux.hidden_modules.Hidden_modules, linux.iomem.IOMem, linux.ip.Addr, linux.ip.Link, linux.kallsyms.Kallsyms, linux.keyboard_notifiers.Keyboard_notifiers, linux.kmsg.Kmsg, linux.kthreads.Kthreads, linux.library_list.LibraryList, linux.lsmod.Lsmod, linux.lsof.Lsof, linux.malfind.Malfind, linux.malware.check_afinfo.Check_afinfo, linux.malware.check_creds.Check_creds, linux.malware.check_idt.Check_idt, linux.malware.check_modules.Check_modules, linux.malware.check_syscall.Check_syscall, linux.malware.hidden_modules.Hidden_modules, linux.malware.keyboard_notifiers.Keyboard_notifiers, linux.malware.malfind.Malfind, linux.malware.modxview.Modxview, linux.malware.netfilter.Netfilter, linux.malware.process_spoofing.ProcessSpoofing, linux.malware.tty_check.Tty_Check, linux.module_extract.ModuleExtract, linux.modxview.Modxview, linux.mountinfo.MountInfo, linux.netfilter.Netfilter, linux.pagecache.Files, linux.pagecache.InodePages, linux.pagecache.RecoverFs, linux.pidhashtable.PIDHashTable, linux.proc.Maps, linux.psaux.PsAux, linux.pscallstack.PsCallStack, linux.pslist.PsList, linux.psscan.PsScan, linux.pstree.PsTree, linux.ptrace.Ptrace, linux.sockscan.Sockscan, linux.sockstat.Sockstat, linux.tracing.ftrace.CheckFtrace, linux.tracing.perf_events.PerfEvents, linux.tracing.tracepoints.CheckTracepoints, linux.tty_check.tty_check, linux.vmaregexscan.VmaRegExScan, linux.vmayarascan.VmaYaraScan, linux.vmcoreinfo.VMCoreInfo, mac.bash.Bash, mac.check_syscall.Check_syscall, mac.check_sysctl.Check_sysctl, mac.check_trap_table.Check_trap_table, mac.dmesg.Dmesg, mac.ifconfig.Ifconfig, mac.kauth_listeners.Kauth_listeners, mac.kauth_scopes.Kauth_scopes, mac.kevents.Kevents, mac.list_files.List_Files, mac.lsmod.Lsmod, mac.lsof.Lsof, mac.malfind.Malfind, mac.mount.Mount, mac.netstat.Netstat, mac.proc_maps.Maps, mac.psaux.Psaux, mac.pslist.PsList, mac.pstree.PsTree, mac.socket_filters.Socket_filters, mac.timers.Timers, mac.trustedbsd.Trustedbsd, mac.vfsevents.VFSevents, regexscan.RegExScan, timeliner.Timeliner, vmscan.Vmscan, windows.amcache.Amcache, windows.bigpools.BigPools, windows.callbacks.Callbacks, windows.cmdline.CmdLine, windows.cmdscan.CmdScan, windows.consoles.Consoles, windows.crashinfo.Crashinfo, windows.debugregisters.DebugRegisters, windows.deskscan.DeskScan, windows.desktops.Desktops, windows.devicetree.DeviceTree, windows.direct_system_calls.DirectSystemCalls, windows.dlllist.DllList, windows.driverirp.DriverIrp, windows.drivermodule.DriverModule, windows.driverscan.DriverScan, windows.dumpfiles.DumpFiles, windows.envars.Envars, windows.etwpatch.EtwPatch, windows.filescan.FileScan, windows.getservicesids.GetServiceSIDs, windows.getsids.GetSIDs, windows.handles.Handles, windows.hollowprocesses.HollowProcesses, windows.iat.IAT, windows.indirect_system_calls.IndirectSystemCalls, windows.info.Info, windows.joblinks.JobLinks, windows.kpcrs.KPCRs, windows.ldrmodules.LdrModules, windows.malfind.Malfind, windows.malware.direct_system_calls.DirectSystemCalls, windows.malware.drivermodule.DriverModule, windows.malware.hollowprocesses.HollowProcesses, windows.malware.indirect_system_calls.IndirectSystemCalls, windows.malware.ldrmodules.LdrModules, windows.malware.malfind.Malfind, windows.malware.pebmasquerade.PebMasquerade, windows.malware.processghosting.ProcessGhosting, windows.malware.psxview.PsXView, windows.malware.skeleton_key_check.Skeleton_Key_Check, windows.malware.suspicious_threads.SuspiciousThreads, windows.malware.svcdiff.SvcDiff, windows.malware.unhooked_system_calls.UnhookedSystemCalls, windows.mbrscan.MBRScan, windows.memmap.Memmap, windows.mftscan.ADS, windows.mftscan.MFTScan, windows.mftscan.ResidentData, windows.modscan.ModScan, windows.modules.Modules, windows.mutantscan.MutantScan, windows.netscan.NetScan, windows.netstat.NetStat, windows.orphan_kernel_threads.Threads, windows.pe_symbols.PESymbols, windows.pedump.PEDump, windows.poolscanner.PoolScanner, windows.privileges.Privs, windows.processghosting.ProcessGhosting, windows.pslist.PsList, windows.psscan.PsScan, windows.pstree.PsTree, windows.psxview.PsXView, windows.registry.amcache.Amcache, windows.registry.certificates.Certificates, windows.registry.getcellroutine.GetCellRoutine, windows.registry.hivelist.HiveList, windows.registry.hivescan.HiveScan, windows.registry.printkey.PrintKey, windows.registry.scheduled_tasks.ScheduledTasks, windows.registry.userassist.UserAssist, windows.scheduled_tasks.ScheduledTasks, windows.sessions.Sessions, windows.shimcachemem.ShimcacheMem, windows.skeleton_key_check.Skeleton_Key_Check, windows.ssdt.SSDT, windows.statistics.Statistics, windows.strings.Strings, windows.suspended_threads.SuspendedThreads, windows.suspicious_threads.SuspiciousThreads, windows.svcdiff.SvcDiff, windows.svclist.SvcList, windows.svcscan.SvcScan, windows.symlinkscan.SymlinkScan, windows.thrdscan.ThrdScan, windows.threads.Threads, windows.timers.Timers, windows.truecrypt.Passphrase, windows.unhooked_system_calls.unhooked_system_calls, windows.unloadedmodules.UnloadedModules, windows.vadinfo.VadInfo, windows.vadregexscan.VadRegExScan, windows.vadwalk.VadWalk, windows.vadyarascan.VadYaraScan, windows.verinfo.VerInfo, windows.virtmap.VirtMap, windows.windows.Windows, windows.windowstations.WindowStations, yarascan.YaraScan)
+
+----------------------------------------------------------------------
+### plugin linux tren input rac
+$ vol -f /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/invalid_garbage.bin linux.pslist
+  thoi gian : 0.21s   
+  exit code : 1
+  Python traceback (dau hieu CRASH): KHONG
+  co thong bao loi : CO
+  --- stdout (715 ky tu) ---
+    Volatility 3 Framework 2.28.2
+    
+    Unsatisfied requirement plugins.PsList.kernel.layer_name: 
+    Unsatisfied requirement plugins.PsList.kernel.symbol_table_name: 
+    
+    A translation layer requirement was not fulfilled.  Please verify that:
+    	A file was provided to create this layer (by -f, --single-location or by config)
+    	The file exists and is readable
+    	The file is a valid memory image and was acquired cleanly
+    
+    A symbol table requirement was not fulfilled.  Please verify that:
+    	The associated translation layer requirement was fulfilled
+    	You have the correct symbol file for the requirement
+    	The symbol file is under the correct directory or zip file
+    	The symbol file is named appropriately or contains the correct banner
+  --- stderr (169 ky tu) ---
+    Progress:  100.00		Stacking attempts finished
+    Unable to validate the plugin requirements: ['plugins.PsList.kernel.layer_name', 'plugins.PsList.kernel.symbol_table_name']
+
+======================================================================
+BUOC 2 — TONG HOP: co that bai SACH SE khong?
+======================================================================
+  case                            exit   giay   treo  traceback  co bao loi
+  file RONG (0 byte)                 1   0.26  khong      khong          CO
+  byte ngau nhien 64KB               1   0.31  khong      khong          CO
+  file 16 byte                       1   0.26  khong      khong          CO
+  toan so 0 4KB                      1   0.25  khong      khong          CO
+  file KHONG ton tai                 2   0.22  khong      khong          CO
+  thu muc thay vi file               1   0.25  khong      khong          CO
+  KHONG truyen -f                    1   0.20  khong      khong          CO
+  plugin KHONG ton tai               2   0.18  khong      khong          CO
+  plugin linux tren input rac        1   0.21  khong      khong          CO
+
+  Tong so ca thu        : 9
+  CRASH (co traceback)  : 0 
+  TREO (timeout)        : 0 
+  IM LANG (khong bao loi): 0 
+
+======================================================================
+KET LUAN T15-4
+======================================================================
+  Day KHONG phai kiem nang luc phan tich dump — ma la kiem
+  'graceful failure': vol3 gap input rac thi xu su the nao.
+
+>>> KET QUA: vol3 THAT BAI SACH SE tren toan bo input khong hop le:
+    - 0 crash (khong Python traceback) tren 9 ca
+    - 0 treo (moi ca ket thuc < 90s)
+    - 9/9 ca co thong bao loi ro rang
+
+    => vol3 dung KHUNG framework dung: nap plugin OK, roi bao thieu
+       yeu cau (symbol / memory layer) thay vi crash.
+    => CO SO de tin: khi co dump THAT, loi se la loi du lieu chu khong
+       phai loi framework. NHUNG van CHUA chung minh phan tich duoc dump
+       that — muc do van la 'cong cu san sang, CHUA thuc chien'.
+
+## Exit code cua script: 0

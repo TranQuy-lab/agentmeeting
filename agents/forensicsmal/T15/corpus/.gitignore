@@ -1,0 +1,9 @@
+# Corpus T15 — KHÔNG commit artifact sinh ra
+# Mọi file dưới đây tái lập được bằng ../scripts/*.py
+# Hash của chúng vẫn được neo tại ../EVIDENCE/t15_0_corpus_hashes.txt
+
+bench_elf
+bench_elf.text.bin
+*.bin
+*.pcap
+invalid_*

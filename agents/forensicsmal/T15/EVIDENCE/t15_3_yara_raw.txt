@@ -1,0 +1,229 @@
+# RAW OUTPUT — T15-3 KIEM CHUAN YARA (co kiem AM TINH GIA)
+# Ngay chay: 2026-10-01T14:25:37Z UTC
+# Nguoi chay: ForensicsMal (ag_82f7cb07)
+# Corpus: VO HAI 100%, tu tao. KHONG mau doc hai. KHONG goi mang.
+# Chu y: corpus co 2 BAY AM TINH GIA that su (F: straddle chunk 4KB; G: UTF-16LE).
+
+## Phien ban cong cu
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python -c 'import yara, importlib.metadata as md; print(md.version("yara-python"), yara.__version__)'
+4.5.4 4.5.4
+$ which yara
+(THIEU yara CLI — scan qua API yara-python, da ghi ro)
+
+## Chay kiem chuan
+
+======================================================================
+BUOC 1 — Tao corpus VO HAI co NHAN ground-truth
+======================================================================
+  [F] marker dat tai offset 4086..4114 (STRADDLE moc chunk 4096: 4086 < 4096 < 4115)
+  A_marker_upper   yara_A_marker_upper.txt          52 byte  sha256=4d02818a81e717ec...
+  B_url            yara_B_url.txt                   56 byte  sha256=36c77dd53cf8c2d8...
+  C_lowercase      yara_C_lowercase.txt             52 byte  sha256=19ad65685f1e4721...
+  D_clean          yara_D_clean.txt                 65 byte  sha256=9d3bbf2293079a47...
+  E_elf_binary     bench_elf                     15872 byte  sha256=aeb9293d3878b9c2...
+  F_boundary       yara_F_boundary.bin           16384 byte  sha256=21d825a9df8d4f19...
+  G_wide_utf16     yara_G_wide.bin                  77 byte  sha256=79e74e9cda460a65...
+
+  'host.t15.invalid' dung TLD .invalid (RFC 2606) => khong the phan giai that.
+
+======================================================================
+BUOC 2 — Bo rule YARA (co y do ro rang cho tung rule)
+======================================================================
+# rule file: t15_rules.yar (1590 byte) sha256=93af88e86c243ac3086083fbe8c9a4d1d845ff67ae02ce3b67d7bee30df66927
+
+/* T15 — bo rule kiem chuan. Corpus VO HAI do ForensicsMal tu tao. */
+
+rule t15_marker_alpha
+{
+    meta:
+        y_don_do = "PHAI khop A; PHAI KHONG khop B/C/D/E (case-sensitive)"
+    strings:
+        $m = "FORENSICSMAL_T15_MARKER_ALPHA"
+    condition:
+        $m
+}
+
+rule t15_url_invalid
+{
+    meta:
+        y_don_do = "PHAI khop B; PHAI KHONG khop A/C/D"
+    strings:
+        $u = /https?:\/\/[a-z0-9.\-]+\.invalid(\/[^\s]*)?/
+    condition:
+        $u
+}
+
+rule t15_case_insensitive
+{
+    meta:
+        y_don_do = "PHAI khop CA A va C (nocase); PHAI KHONG khop D"
+    strings:
+        $m = "forensicsmal_t15_marker_alpha" nocase
+    condition:
+        $m
+}
+
+rule t15_absent_string
+{
+    meta:
+        y_don_do = "KHONG duoc khop BAT KY file nao (bay bat duong tinh gia)"
+    strings:
+        $x = "THIS_MARKER_MUST_NOT_EXIST_ANYWHERE_T15"
+    condition:
+        $x
+}
+
+rule t15_mz_header_pe
+{
+    meta:
+        y_don_do = "KHONG duoc khop file van ban nao (bay duong tinh gia); corpus khong co PE"
+    condition:
+        uint16(0) == 0x5A4D
+}
+
+rule t15_elf_magic
+{
+    meta:
+        y_don_do = "PHAI khop E (ELF); KHONG khop file van ban"
+    condition:
+        uint32(0) == 0x464C457F
+}
+
+rule t15_boundary_marker
+{
+    meta:
+        y_don_do = "PHAI khop F (marker STRADDLE moc chunk 4KB) — bay AM TINH GIA"
+    strings:
+        $m = "FORENSICSMAL_T15_MARKER_ALPHA"
+    condition:
+        $m
+}
+
+rule t15_wide_marker
+{
+    meta:
+        y_don_do = "PHAI khop G (UTF-16LE); KHONG khop A (ASCII)"
+    strings:
+        $m = "FORENSICSMAL_T15_MARKER_ALPHA" wide
+    condition:
+        $m
+}
+
+# yara-python: package metadata = 4.5.4; module __version__ = 4.5.4
+# LUU Y: KHONG co `yara` CLI tren may nay => scan qua API yara-python.
+
+======================================================================
+BUOC 3 — Ma tran MONG DOI (ground truth do nguoi viet dat ra)
+======================================================================
+  rule                       A   B   C   D   E   F   G
+  t15_marker_alpha           M   .   .   .   .   M   .
+  t15_url_invalid            .   M   .   .   .   .   .
+  t15_case_insensitive       M   .   M   .   .   M   .
+  t15_absent_string          .   .   .   .   .   .   .
+  t15_mz_header_pe           .   .   .   .   .   .   .
+  t15_elf_magic              .   .   .   .   M   .   .
+  t15_boundary_marker        M   .   .   .   .   M   .
+  t15_wide_marker            .   .   .   .   .   .   M
+  (M = PHAI khop; . = PHAI KHONG khop)
+
+======================================================================
+BUOC 4 — Chay scan that bang yara-python
+======================================================================
+$ python3 -c "import yara; r=yara.compile(filepath='t15_rules.yar'); r.match(<file>)"
+
+  --- Ket qua THO tung file (rule nao khop) ---
+  A_marker_upper   yara_A_marker_upper.txt      -> ['t15_boundary_marker', 't15_case_insensitive', 't15_marker_alpha']
+  B_url            yara_B_url.txt               -> ['t15_url_invalid']
+  C_lowercase      yara_C_lowercase.txt         -> ['t15_case_insensitive']
+  D_clean          yara_D_clean.txt             -> KHONG rule nao khop
+  E_elf_binary     bench_elf                    -> ['t15_elf_magic']
+  F_boundary       yara_F_boundary.bin          -> ['t15_boundary_marker', 't15_case_insensitive', 't15_marker_alpha']
+  G_wide_utf16     yara_G_wide.bin              -> ['t15_wide_marker']
+
+======================================================================
+BUOC 5 — Doi chieu: TP / TN / FP (duong tinh gia) / FN (AM TINH GIA)
+======================================================================
+  rule                    file             mong doi  thuc te   ket qua
+  t15_marker_alpha        A_marker_upper       KHOP     KHOP   TP
+  t15_marker_alpha        B_url               khong    khong   TN
+  t15_marker_alpha        C_lowercase         khong    khong   TN
+  t15_marker_alpha        D_clean             khong    khong   TN
+  t15_marker_alpha        E_elf_binary        khong    khong   TN
+  t15_marker_alpha        F_boundary           KHOP     KHOP   TP
+  t15_marker_alpha        G_wide_utf16        khong    khong   TN
+  t15_url_invalid         A_marker_upper      khong    khong   TN
+  t15_url_invalid         B_url                KHOP     KHOP   TP
+  t15_url_invalid         C_lowercase         khong    khong   TN
+  t15_url_invalid         D_clean             khong    khong   TN
+  t15_url_invalid         E_elf_binary        khong    khong   TN
+  t15_url_invalid         F_boundary          khong    khong   TN
+  t15_url_invalid         G_wide_utf16        khong    khong   TN
+  t15_case_insensitive    A_marker_upper       KHOP     KHOP   TP
+  t15_case_insensitive    B_url               khong    khong   TN
+  t15_case_insensitive    C_lowercase          KHOP     KHOP   TP
+  t15_case_insensitive    D_clean             khong    khong   TN
+  t15_case_insensitive    E_elf_binary        khong    khong   TN
+  t15_case_insensitive    F_boundary           KHOP     KHOP   TP
+  t15_case_insensitive    G_wide_utf16        khong    khong   TN
+  t15_absent_string       A_marker_upper      khong    khong   TN
+  t15_absent_string       B_url               khong    khong   TN
+  t15_absent_string       C_lowercase         khong    khong   TN
+  t15_absent_string       D_clean             khong    khong   TN
+  t15_absent_string       E_elf_binary        khong    khong   TN
+  t15_absent_string       F_boundary          khong    khong   TN
+  t15_absent_string       G_wide_utf16        khong    khong   TN
+  t15_mz_header_pe        A_marker_upper      khong    khong   TN
+  t15_mz_header_pe        B_url               khong    khong   TN
+  t15_mz_header_pe        C_lowercase         khong    khong   TN
+  t15_mz_header_pe        D_clean             khong    khong   TN
+  t15_mz_header_pe        E_elf_binary        khong    khong   TN
+  t15_mz_header_pe        F_boundary          khong    khong   TN
+  t15_mz_header_pe        G_wide_utf16        khong    khong   TN
+  t15_elf_magic           A_marker_upper      khong    khong   TN
+  t15_elf_magic           B_url               khong    khong   TN
+  t15_elf_magic           C_lowercase         khong    khong   TN
+  t15_elf_magic           D_clean             khong    khong   TN
+  t15_elf_magic           E_elf_binary         KHOP     KHOP   TP
+  t15_elf_magic           F_boundary          khong    khong   TN
+  t15_elf_magic           G_wide_utf16        khong    khong   TN
+  t15_boundary_marker     A_marker_upper       KHOP     KHOP   TP
+  t15_boundary_marker     B_url               khong    khong   TN
+  t15_boundary_marker     C_lowercase         khong    khong   TN
+  t15_boundary_marker     D_clean             khong    khong   TN
+  t15_boundary_marker     E_elf_binary        khong    khong   TN
+  t15_boundary_marker     F_boundary           KHOP     KHOP   TP
+  t15_boundary_marker     G_wide_utf16        khong    khong   TN
+  t15_wide_marker         A_marker_upper      khong    khong   TN
+  t15_wide_marker         B_url               khong    khong   TN
+  t15_wide_marker         C_lowercase         khong    khong   TN
+  t15_wide_marker         D_clean             khong    khong   TN
+  t15_wide_marker         E_elf_binary        khong    khong   TN
+  t15_wide_marker         F_boundary          khong    khong   TN
+  t15_wide_marker         G_wide_utf16         KHOP     KHOP   TP
+
+  TONG: TP=10  TN=46  FP(duong tinh gia)=0  FN(AM TINH GIA)=0
+  Tong so phep kiem: 56
+
+======================================================================
+KET LUAN T15-3
+======================================================================
+  Do chinh xac tren corpus co nhan: 100.0%  (56/56)
+  Rule PHAI khop, da khop (TP)          : 10
+  Rule PHAI KHONG khop, da khong khop   : 46
+  DUONG TINH GIA (FP)                   : 0
+  AM TINH GIA (FN)                      : 0
+
+>>> KET QUA: 0 duong tinh gia, 0 AM TINH GIA tren 56 phep kiem.
+    => yara-python phan loai DUNG ca hai chieu tren corpus co nhan.
+    => Rule t15_absent_string va t15_mz_header_pe la BAY duong tinh gia:
+       ca hai deu KHONG khop file nao — neu khop thi la bug.
+    => Rule t15_case_insensitive khop CA chu HOA (A) va chu thuong (C),
+       con t15_marker_alpha chi khop chu HOA => kiem duoc CA hai chieu
+       cua tinh phan biet chu hoa/thuong.
+    => BAY AM TINH GIA THAT SU (khong de):
+       F: marker STRADDLE moc chunk 4KB cua YARA -> t15_boundary_marker
+          PHAI khop; neu YARA xu ly overlap sai thi day chinh la FN.
+       G: marker ma hoa UTF-16LE -> t15_wide_marker PHAI khop G
+          va PHAI KHONG khop A (ASCII) => kiem ca hai chieu cua 'wide'.
+
+## Exit code cua script: 0

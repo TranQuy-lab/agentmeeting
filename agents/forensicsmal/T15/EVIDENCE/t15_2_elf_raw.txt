@@ -1,0 +1,327 @@
+# RAW OUTPUT — T15-2 KIEM CHUAN ELF (capstone <-> objdump <-> readelf)
+# Ngay chay: 2026-10-01T14:24:35Z UTC
+# Nguoi chay: ForensicsMal (ag_82f7cb07)
+# Corpus: chuong trinh C VO HAI do ForensicsMal tu viet. KHONG mau doc hai.
+# CHI disassemble TINH — KHONG chay file. Phan tich dong van DINH CHI.
+
+## Phien ban cong cu
+$ gcc --version | head -1
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+$ objdump --version | head -1
+GNU objdump (GNU Binutils for Ubuntu) 2.42
+$ readelf --version | head -1
+GNU readelf (GNU Binutils for Ubuntu) 2.42
+$ objcopy --version | head -1
+GNU objcopy (GNU Binutils for Ubuntu) 2.42
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python -c 'import capstone; print(capstone.__version__)'
+5.0.7
+
+## Chay kiem chuan
+
+======================================================================
+BUOC 1 — Bien dich chuong trinh C toi gian (gcc)
+======================================================================
+# nguon: /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/bench_elf.c (374 byte) — vo hai, tu viet
+/* Corpus vo hai do ForensicsMal tu viet cho T15-2. Chi de disassemble TINH. */
+int add(int a, int b) { return a + b; }
+long loop_sum(long n) {
+    long s = 0;
+    for (long i = 0; i < n; i++) s += i;
+    return s;
+}
+int classify(int x) {
+    if (x < 0) return -1;
+    if (x == 0) return 0;
+    return 1;
+}
+int main(void) { return classify(add(1, 2)) + (int)loop_sum(10); }
+
+# gcc: gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+
+$ /usr/bin/gcc -O1 -fno-asynchronous-unwind-tables -fno-stack-protector -o /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/bench_elf /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/bench_elf.c
+exit=0
+(khong co stdout)
+(khong co stderr)
+# -> /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/bench_elf (15872 byte)
+
+======================================================================
+BUOC 2 — readelf: thong tin ELF va section .text
+======================================================================
+$ readelf -h /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/bench_elf
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Position-Independent Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x1040
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          14016 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         13
+  Size of section headers:           64 (bytes)
+  Number of section headers:         29
+  Section header string table index: 28
+  => Entry point = 0x1040
+
+$ readelf -S -W /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/bench_elf
+There are 29 section headers, starting at offset 0x36c0:
+
+Section Headers:
+  [Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            0000000000000000 000000 000000 00      0   0  0
+  [ 1] .interp           PROGBITS        0000000000000318 000318 00001c 00   A  0   0  1
+  [ 2] .note.gnu.property NOTE            0000000000000338 000338 000030 00   A  0   0  8
+  [ 3] .note.gnu.build-id NOTE            0000000000000368 000368 000024 00   A  0   0  4
+  [ 4] .note.ABI-tag     NOTE            000000000000038c 00038c 000020 00   A  0   0  4
+  [ 5] .gnu.hash         GNU_HASH        00000000000003b0 0003b0 000024 00   A  6   0  8
+  [ 6] .dynsym           DYNSYM          00000000000003d8 0003d8 000090 18   A  7   1  8
+  [ 7] .dynstr           STRTAB          0000000000000468 000468 000088 00   A  0   0  1
+  [ 8] .gnu.version      VERSYM          00000000000004f0 0004f0 00000c 02   A  6   0  2
+  [ 9] .gnu.version_r    VERNEED         0000000000000500 000500 000030 00   A  7   1  8
+  [10] .rela.dyn         RELA            0000000000000530 000530 0000c0 18   A  6   0  8
+  [11] .init             PROGBITS        0000000000001000 001000 00001b 00  AX  0   0  4
+  [12] .plt              PROGBITS        0000000000001020 001020 000010 10  AX  0   0 16
+  [13] .plt.got          PROGBITS        0000000000001030 001030 000010 10  AX  0   0 16
+  [14] .text             PROGBITS        0000000000001040 001040 00014e 00  AX  0   0 16
+  [15] .fini             PROGBITS        0000000000001190 001190 00000d 00  AX  0   0  4
+  [16] .rodata           PROGBITS        0000000000002000 002000 000004 04  AM  0   0  4
+  [17] .eh_frame_hdr     PROGBITS        0000000000002004 002004 000024 00   A  0   0  4
+  [18] .eh_frame         PROGBITS        0000000000002028 002028 000070 00   A  0   0  8
+  [19] .init_array       INIT_ARRAY      0000000000003df0 002df0 000008 08  WA  0   0  8
+  [20] .fini_array       FINI_ARRAY      0000000000003df8 002df8 000008 08  WA  0   0  8
+  [21] .dynamic          DYNAMIC         0000000000003e00 002e00 0001c0 10  WA  7   0  8
+  [22] .got              PROGBITS        0000000000003fc0 002fc0 000040 08  WA  0   0  8
+  [23] .data             PROGBITS        0000000000004000 003000 000010 00  WA  0   0  8
+  [24] .bss              NOBITS          0000000000004010 003010 000008 00  WA  0   0  1
+  [25] .comment          PROGBITS        0000000000000000 003010 00002d 01  MS  0   0  1
+  [26] .symtab           SYMTAB          0000000000000000 003040 000390 18     27  18  8
+  [27] .strtab           STRTAB          0000000000000000 0033d0 0001e4 00      0   0  1
+  [28] .shstrtab         STRTAB          0000000000000000 0035b4 00010c 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), l (large), p (processor specific)
+
+  [dong readelf khop] [14] .text             PROGBITS        0000000000001040 001040 00014e 00  AX  0   0 16
+
+  => .text: addr=0x1040 offset=0x1040 size=0x14e
+
+======================================================================
+BUOC 3 — Trich byte tho cua .text bang objcopy
+======================================================================
+$ objcopy -O binary --only-section=.text /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/bench_elf /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/bench_elf.text.bin
+exit=0 
+  => bench_elf.text.bin: 334 byte (readelf bao 334 byte) => KHOP
+  => 32 byte dau: f3 0f 1e fa 31 ed 49 89 d1 5e 48 89 e2 48 83 e4 f0 50 54 45 31 c0 31 c9 48 8d 3d 10 01 00 00 ff
+
+======================================================================
+BUOC 4 — capstone disassemble .text
+======================================================================
+# capstone package metadata vs module __version__:
+  package metadata : 5.0.9
+  module __version__: 5.0.7
+
+$ python3 -c "capstone.Cs(CS_ARCH_X86, CS_MODE_64).disasm(text_bytes, 0x1040)"
+  => capstone: 92 instruction
+     0x001040:  endbr64 
+     0x001044:  xor     ebp, ebp
+     0x001046:  mov     r9, rdx
+     0x001049:  pop     rsi
+     0x00104a:  mov     rdx, rsp
+     0x00104d:  and     rsp, 0xfffffffffffffff0
+     0x001051:  push    rax
+     0x001052:  push    rsp
+     0x001053:  xor     r8d, r8d
+     0x001056:  xor     ecx, ecx
+     0x001058:  lea     rdi, [rip + 0x110]
+     0x00105f:  call    qword ptr [rip + 0x2f73]
+     ... (+80 instruction nua)
+
+======================================================================
+BUOC 5 — objdump disassemble (Intel syntax)
+======================================================================
+$ objdump -d -M intel --section=.text /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/bench_elf
+
+/home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/bench_elf:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000001040 <_start>:
+    1040:	f3 0f 1e fa          	endbr64
+    1044:	31 ed                	xor    ebp,ebp
+    1046:	49 89 d1             	mov    r9,rdx
+    1049:	5e                   	pop    rsi
+    104a:	48 89 e2             	mov    rdx,rsp
+    104d:	48 83 e4 f0          	and    rsp,0xfffffffffffffff0
+    1051:	50                   	push   rax
+    1052:	54                   	push   rsp
+    1053:	45 31 c0             	xor    r8d,r8d
+    1056:	31 c9                	xor    ecx,ecx
+    1058:	48 8d 3d 10 01 00 00 	lea    rdi,[rip+0x110]        # 116f <main>
+    105f:	ff 15 73 2f 00 00    	call   QWORD PTR [rip+0x2f73]        # 3fd8 <__libc_start_main@GLIBC_2.34>
+    1065:	f4                   	hlt
+    1066:	66 2e 0f 1f 84 00 00 	cs nop WORD PTR [rax+rax*1+0x0]
+    106d:	00 00 00 
+
+0000000000001070 <deregister_tm_clones>:
+    1070:	48 8d 3d 99 2f 00 00 	lea    rdi,[rip+0x2f99]        # 4010 <__TMC_END__>
+    1077:	48 8d 05 92 2f 00 00 	lea    rax,[rip+0x2f92]        # 4010 <__TMC_END__>
+    107e:	48 39 f8             	cmp    rax,rdi
+    1081:	74 15                	je     1098 <deregister_tm_clones+0x28>
+    1083:	48 8b 05 56 2f 00 00 	mov    rax,QWORD PTR [rip+0x2f56]        # 3fe0 <_ITM_deregisterTMCloneTable@Base>
+    108a:	48 85 c0             	test   rax,rax
+    108d:	74 09                	je     1098 <deregister_tm_clones+0x28>
+    108f:	ff e0                	jmp    rax
+    1091:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+    1098:	c3                   	ret
+    1099:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+
+00000000000010a0 <register_tm_clones>:
+    10a0:	48 8d 3d 69 2f 00 00 	lea    rdi,[rip+0x2f69]        # 4010 <__TMC_END__>
+    10a7:	48 8d 35 62 2f 00 00 	lea    rsi,[rip+0x2f62]        # 4010 <__TMC_END__>
+    10ae:	48 29 fe             	sub    rsi,rdi
+    10b1:	48 89 f0             	mov    rax,rsi
+    10b4:	48 c1 ee 3f          	shr    rsi,0x3f
+    10b8:	48 c1 f8 03          	sar    rax,0x3
+    10bc:	48 01 c6             	add    rsi,rax
+    10bf:	48 d1 fe             	sar    rsi,1
+    10c2:	74 14                	je     10d8 <register_tm_clones+0x38>
+    10c4:	48 8b 05 25 2f 00 00 	mov    rax,QWORD PTR [rip+0x2f25]        # 3ff0 <_ITM_registerTMCloneTable@Base>
+    10cb:	48 85 c0             	test   rax,rax
+    10ce:	74 08                	je     10d8 <register_tm_clones+0x38>
+    10d0:	ff e0                	jmp    rax
+    10d2:	66 0f 1f 44 00 00    	nop    WORD PTR [rax+rax*1+0x0]
+    10d8:	c3                   	ret
+    10d9:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+
+00000000000010e0 <__do_global_dtors_aux>:
+    10e0:	f3 0f 1e fa          	endbr64
+    10e4:	80 3d 25 2f 00 00 00 	cmp    BYTE PTR [rip+0x2f25],0x0        # 4010 <__TMC_END__>
+    10eb:	75 2b                	jne    1118 <__do_global_dtors_aux+0x38>
+    10ed:	55                   	push   rbp
+    10ee:	48 83 3d 02 2f 00 00 	cmp    QWORD PTR [rip+0x2f02],0x0        # 3ff8 <__cxa_finalize@GLIBC_2.2.5>
+    10f5:	00 
+    10f6:	48 89 e5             	mov    rbp,rsp
+    10f9:	74 0c                	je     1107 <__do_global_dtors_aux+0x27>
+    10fb:	48 8b 3d 06 2f 00 00 	mov    rdi,QWORD PTR [rip+0x2f06]        # 4008 <__dso_handle>
+    1102:	e8 29 ff ff ff       	call   1030 <__cxa_finalize@plt>
+    1107:	e8 64 ff ff ff       	call   1070 <deregister_tm_clones>
+    110c:	c6 05 fd 2e 00 00 01 	mov    BYTE PTR [rip+0x2efd],0x1        # 4010 <__TMC_END__>
+    1113:	5d                   	pop    rbp
+    1114:	c3                   	ret
+    1115:	0f 1f 00             	nop    DWORD PTR [rax]
+    1118:	c3                   	ret
+    1119:	0f 1f 80 00 00 00 00 	nop    DWORD PTR [rax+0x0]
+
+0000000000001120 <frame_dummy>:
+    1120:	f3 0f 1e fa          	endbr64
+    1124:	e9 77 ff ff ff       	jmp    10a0 <register_tm_clones>
+
+0000000000001129 <add>:
+    1129:	f3 0f 1e fa          	endbr64
+    112d:	8d 04 37             	lea    eax,[rdi+rsi*1]
+    1130:	c3                   	ret
+
+0000000000001131 <loop_sum>:
+    1131:	f3 0f 1e fa          	endbr64
+    1135:	48 85 ff             	test   rdi,rdi
+    1138:	7e 1a                	jle    1154 <loop_sum+0x23>
+    113a:	b8 00 00 00 00       	mov    eax,0x0
+    113f:	ba 00 00 00 00       	mov    edx,0x0
+    1144:	48 01 c2             	add    rdx,rax
+    1147:	48 83 c0 01          	add    rax,0x1
+    114b:	48 39 c7             	cmp    rdi,rax
+    114e:	75 f4                	jne    1144 <loop_sum+0x13>
+    1150:	48 89 d0             	mov    rax,rdx
+    1153:	c3                   	ret
+    1154:	ba 00 00 00 00       	mov    edx,0x0
+    1159:	eb f5                	jmp    1150 <loop_sum+0x1f>
+
+000000000000115b <classify>:
+    115b:	f3 0f 1e fa          	endbr64
+    115f:	b8 ff ff ff ff       	mov    eax,0xffffffff
+    1164:	85 ff                	test   edi,edi
+    1166:	78 06                	js     116e <classify+0x13>
+    1168:	0f 95 c0             	setne  al
+    116b:	0f b6 c0             	movzx  eax,al
+    116e:	c3                   	ret
+
+000000000000116f <main>:
+    116f:	f3 0f 1e fa          	endbr64
+    1173:	53                   	push   rbx
+    1174:	bf 03 00 00 00       	mov    edi,0x3
+    1179:	e8 dd ff ff ff       	call   115b <classify>
+    117e:	89 c3                	mov    ebx,eax
+    1180:	bf 0a 00 00 00       	mov    edi,0xa
+    1185:	e8 a7 ff ff ff       	call   1131 <loop_sum>
+    118a:	01 d8                	add    eax,ebx
+    118c:	5b                   	pop    rbx
+    118d:	c3                   	ret
+
+  => objdump: 92 instruction
+
+======================================================================
+BUOC 6 — DOI CHIEU capstone vs objdump
+======================================================================
+  So instruction : capstone=92  objdump=92  => KHOP
+
+  [6a] SO SANH THO (so chuoi truc tiep, CHUA chuan hoa)
+  Lech DIA CHI      : 0
+  Lech MNEMONIC     : 1
+  Lech TOAN HANG    : 41  (khac dinh dang/ky phap la binh thuong)
+
+  --- LECH MNEMONIC (so sanh THO) ---
+    #13 @0x1066: capstone='nop' objdump='cs'
+
+  [6b] SO SANH SAU KHI CHUAN HOA TIEN TO (folding)
+  Lech CUNG (hard)               : 0
+  Lech GIAI THICH DUOC (tien to) : 1
+
+  --- LECH GIAI THICH DUOC: objdump tach tien to thanh token rieng ---
+    #13 @0x1066:
+        capstone : nop word ptr cs:[rax + rax]
+        objdump  : cs nop WORD PTR [rax+rax*1+0x0]
+        => tien to ('cs',) nam trong toan hang capstone; CUNG 1 lenh.
+
+======================================================================
+KET LUAN T15-2
+======================================================================
+  Entry point (readelf)          : 0x1040
+  .text addr/size (readelf)      : 0x1040 / 334 byte
+  .text byte trich (objcopy)     : 334 byte => KHOP readelf
+  Instruction capstone           : 92
+  Instruction objdump            : 92
+  Lech so luong instruction      : KHONG
+  Lech DIA CHI                   : 0
+  Lech MNEMONIC (tho)            : 1
+  -> trong do GIAI THICH DUOC    : 1 (tien to cs/lock...)
+  -> trong do LECH CUNG          : 0
+  Lech TOAN HANG (dinh dang)     : 41
+
+>>> KET QUA: capstone va objdump KHOP ve so luong, DIA CHI va MNEMONIC
+    sau khi chuan hoa tien to. KHONG co lech giai ma thuc su.
+    1 khac biet do OBJDUMP tach tien to thanh token rieng
+    (vi du 'cs nop ...' vs capstone 'nop ... cs:[...]') — CUNG 1 lenh,
+    da doi chieu byte tho: 66 2e 0f 1f 84 00 00 00 00 00 @0x1066.
+    41 khac biet TOAN HANG chi ve CACH VIET (comment symbol cua
+    objdump '<main>', 'WORD PTR' vs 'word ptr', '0x3' vs '3', 'rax*1+0x0').
+
+    GHI CHU PHIEN BAN: uv cai capstone==5.0.9 (metadata) nhung module
+    capstone.__version__ = 5.0.7 => KHAI BAO PHIEN BAN KHONG NHAT QUAN.
+    Khi trich dan phai ghi ro dang dung metadata hay __version__.
+
+## Exit code cua script: 0
+
+## sha256 cua corpus (chung minh khong doi trong qua trinh phan tich)
+519fe0eee0a08a57deb711cd65415e293109e313d6055b60c9d1b173e02d0b0e  corpus/bench_elf.c
+aeb9293d3878b9c2b93e6093e8faa03aef657d7e3e3b1b6e2b47b85683af4ff5  corpus/bench_elf
+3a2b04e563063aa01fb1fa7ba18b9e623ab124ae0bbb1c7b9161b937a9c78b90  corpus/bench_elf.text.bin
