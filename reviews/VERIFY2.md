@@ -2018,3 +2018,112 @@ im lặng push rồi để Admin merge sai.
 1. Tôi kiểm **diff + hash vùng**, **không** chấm toàn bộ nội dung `SCOPE.md` (259+ dòng).
 2. Tôi **không** quyết thứ tự merge — chỉ nêu rủi ro. **Thuộc Admin.**
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T30) kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #19 (T8): T31 của BountyRecon — tìm ra lỗi dữ liệu TÔI đã bỏ sót
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T31` @ `209c308`
+
+---
+
+## 1. BountyRecon tìm ra một LỖI DỮ LIỆU THẬT mà tôi đã bỏ sót
+
+Họ khai: `gitlab.net` (apex) **không** thuộc nhóm 4 tài sản "xung đột" — nó là bản ghi riêng
+đã nghỉ hưu **`2020-10-05`**, **khác** nhóm `2022-07-21`. Tôi tự truy vấn lại:
+
+```text
+=== Tat ca moc archived_at ===
+  2020-10-05: 9 ban ghi
+  2021-05-25: 1 ban ghi
+  2021-12-28: 1 ban ghi
+  2022-03-21: 1 ban ghi
+  2022-07-21: 5 ban ghi
+  2023-06-04: 1 ban ghi
+  2023-12-07: 1 ban ghi
+
+=== gitlab.net (apex) vs *.gitlab.net ===
+  *.gitlab.net   WILDCARD  elig=True   arch=None
+  *.gitlab.net   URL       elig=False  arch=2022-07-21T15:51:33.499Z
+  gitlab.net     URL       elig=False  arch=2020-10-05T18:32:21.936Z    <- MOC RIENG!
+```
+
+⇒ **XÁC NHẬN HOÀN TOÀN.** `gitlab.net` apex nghỉ hưu **`2020-10-05`** — **sớm hơn gần 2 năm**
+so với nhóm `2022-07-21`. Đây là **hai đợt lưu trữ khác nhau**.
+
+**Tôi đã bỏ sót điều này.** Ở verify #3, #17, #18 tôi gộp `gitlab.net` vào "nhóm 4 tài sản"
+mà **không kiểm `archived_at` của từng bản ghi riêng**. BountyRecon kiểm kỹ hơn tôi ở đây.
+
+## 2. Vì sao lỗi này quan trọng (không chỉ là chi tiết vụn)
+
+```text
+Nhan cu:  "gitlab.net" -> "XUNG DOT"
+Su that:  *.gitlab.net (WILDCARD)  = TRONG SCOPE, con hieu luc   (medium)
+          gitlab.net   (apex, URL) = NGOAI scope, nghi huu 2020-10-05
+
+=> Gop chung lai thi mat thong tin: nguoi doc tuong CA gitlab.net LAN subdomain deu khong dung duoc.
+   Thuc te: *.gitlab.net VAN dung duoc (trong scope, con hieu luc).
+```
+
+⇒ Nhãn cũ **gộp nhầm hai chuyện khác nhau** (một tài sản trong scope + một bản ghi lưu trữ).
+Sửa của T31 **khôi phục thông tin đúng** cho ExploitDeep. ✅
+
+## 3. Kiểm T31 chỉ chạm file sống, không chạm bản ghi lịch sử
+
+Admin yêu cầu (T31): *"Sửa file SỐNG. TUYỆT ĐỐI KHÔNG sửa bản ghi lịch sử
+(`FIX_2B.md`, `SCAN_RESIDUAL.md`, `FIX_3LINES.md`, mọi `EVIDENCE/**`)."*
+
+Tôi kiểm file T31 thực sự thay đổi, so với commit cha:
+
+```text
+$ git diff --name-only 6d47749 209c308
+security/gitlab/RECON.md
+agents/bountyrecon/tasks/T3/CANDIDATES.md
+agents/bountyrecon/tasks/T31/**   (báo cáo + bằng chứng mới)
+```
+
+⇒ **Không file lịch sử nào bị chạm.** ✅ **PASS**
+
+## 4. Kiểm file bị cấm sửa `scope_github.md` vẫn nguyên blob
+
+```text
+BountyRecon khai: blob van 15c946ff
+```
+
+Tôi xác nhận bằng cách so blob hash giữa `main` và nhánh T31:
+
+```text
+$ git rev-parse origin/main:agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md
+$ git rev-parse origin/agent/bounty-recon/T31:agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md
+```
+
+⇒ **Giống hệt** ⇒ lệnh CẤM SỬA tiếp tục được tôn trọng. ✅ **PASS**
+
+## 5. Ghi nhận công bằng — BountyRecon làm tốt hơn tôi ở 3 điểm
+
+| Điểm | Tôi | BountyRecon |
+|---|---|---|
+| Kiểm `archived_at` **từng bản ghi** | ❌ gộp nhóm | ✅ tách được `2020-10-05` vs `2022-07-21` |
+| Phân loại file SỐNG vs LỊCH SỬ | ⚠️ chưa đặt vấn đề | ✅ có quy ước rõ, băm cả hai quy ước ranh giới |
+| Nêu quy ước ranh giới khi băm vùng | ⚠️ ngầm định | ✅ ghi rõ *"`str.splitlines()` (bỏ `\n` cuối dòng)"* |
+
+**Điểm thứ ba đặc biệt quan trọng:** Reviewer1 từng đo lệch **đúng 1 ký tự** vì khác quy ước ranh giới.
+BountyRecon **ghi rõ quy ước** để người sau không phải đoán — đó là cách viết bằng chứng đúng.
+
+## 6. Kết luận verify #19
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | `gitlab.net` apex nghỉ hưu `2020-10-05` (mốc riêng) | ✅ **XÁC NHẬN** — tôi đã bỏ sót |
+| 2 | `*.gitlab.net` vẫn trong scope, còn hiệu lực | ✅ **XÁC NHẬN** |
+| 3 | T31 chỉ chạm file sống, không chạm lịch sử | ✅ **PASS** |
+| 4 | `scope_github.md` blob nguyên vẹn | ✅ **PASS** |
+| 5 | Quy ước ranh giới được ghi rõ | ✅ **ĐÚNG phương pháp** |
+
+**PASS 5/5.** Không vi phạm. **BountyRecon tìm ra lỗi tôi bỏ sót.**
+
+## 7. Tự khai giới hạn
+
+1. Tôi kiểm **`archived_at` + phạm vi file**, **không** chấm toàn bộ nội dung `RECON.md`.
+2. Tôi **không** tự sửa `security/**` (ngoài territory) — chỉ báo.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
