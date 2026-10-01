@@ -1,0 +1,45 @@
+### T20-B — Reviewer1 kiem T16 ExploitDeep @ 741aee6
+### Thoi diem: 2026-10-01T14:34:51Z UTC
+
+=== [B1] unicorn theo TUNG interpreter (import that) ===
+$ /usr/bin/python3 -c 'import unicorn; ...'   (SYSTEM)
+ModuleNotFoundError: No module named 'unicorn'
+$ /home/noble-tran/.venvs/ed/bin/python -c 'import unicorn; ...'   (VENV_ED)
+  VENV_ED: CO 2.1.2
+
+=== [B5] nmap, gmpy2, fpylll, angr, sage — THIEU o CA HAI interpreter? ===
+  goi      | SYSTEM                                     | VENV_ED                                   
+  gmpy2    | ModuleNotFoundError: No module named 'gm   | ModuleNotFoundError: No module named 'gm  
+  fpylll   | ModuleNotFoundError: No module named 'fp   | ModuleNotFoundError: No module named 'fp  
+  angr     | ModuleNotFoundError: No module named 'an   | ModuleNotFoundError: No module named 'an  
+  nmap     | THIEU (command not found)                  | THIEU (command not found)                 
+  sage     | THIEU (khong co trong PATH)                | THIEU (khong co trong PATH)               
+
+=== [B3] Script moi co con 'pip list | grep' loc tay khong? ===
+$ git show 741aee6:agents/exploitdeep/T16/inventory_per_interpreter.sh | grep -n 'pip list\|grep'
+6:#   Quy trình cũ dùng `pip list | grep -Ei '<danh sách viết tay>'` rồi đọc kết quả
+7:#   đã LỌC để kết luận "thiếu". Vì chuỗi grep không chứa `unicorn`, gói `unicorn 2.1.2`
+13:#   1. KHÔNG lọc tay. Dùng `pip freeze` (và `pip list`) KHÔNG lọc, lưu nguyên output.
+79:  printf '$ %s -m pip list (KHONG LOC)\n' "$py"
+80:  "$py" -m pip list 2>&1
+113:"$VENVPY" -m pip show unicorn 2>&1 | grep -E '^(Name|Version|Required-by|Requires):'
+114:printf '$ ls -la --time-style=full-iso <site-packages> | grep -i unicorn   # [VENV_ED]\n'
+115:ls -la --time-style=full-iso /home/noble-tran/.venvs/ed/lib/python3.12/site-packages/ 2>&1 | grep -i unicorn
+
+$ git show 741aee6:agents/exploitdeep/T16/EVIDENCE/pip-freeze-VENV_ED.txt | grep -n unicorn
+45:unicorn==2.1.2
+
+$ git show 741aee6:agents/exploitdeep/T16/EVIDENCE/pip-freeze-SYSTEM.txt
+### [SYSTEM] /usr/bin/python3 -m pip freeze   (KHONG LOC — nguyen van, gom ca loi)
+### thoi diem: 2026-10-01T14:04:39Z (UTC)
+/usr/bin/python3: No module named pip
+exit=1
+
+=== [B2] READINESS.md: co 2 cot moi truong khong? co dong nao tron khong? ===
+$ git show 741aee6:agents/exploitdeep/T4/READINESS.md | grep -n 'SYSTEM\|VENV_ED\|Venv\|venv'
+79:| CLI | `/usr/bin` (SYSTEM) | `/home/noble-tran/.venvs/ed/bin` (VENV_ED) |
+164:   - [`EVIDENCE/pip-freeze-VENV_ED.txt`](../T16/EVIDENCE/pip-freeze-VENV_ED.txt)
+165:   - [`EVIDENCE/pip-list-VENV_ED.txt`](../T16/EVIDENCE/pip-list-VENV_ED.txt)
+166:   - [`EVIDENCE/pip-freeze-SYSTEM.txt`](../T16/EVIDENCE/pip-freeze-SYSTEM.txt) (ghi cả lỗi thật)
+167:   - [`EVIDENCE/pip-list-SYSTEM.txt`](../T16/EVIDENCE/pip-list-SYSTEM.txt)
+170:3. **Mỗi dòng output mang NHÃN MÔI TRƯỜNG** `[SYSTEM]` hoặc `[VENV_ED]`; bảng phải có cột môi trường.

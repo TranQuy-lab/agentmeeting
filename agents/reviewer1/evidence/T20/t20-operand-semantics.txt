@@ -1,0 +1,554 @@
+### T20-A-phu — Reviewer1 kiem DOC LAP: 41 lech toan hang co ngu nghia khong?
+### Thoi diem: 2026-10-01T14:33:42Z UTC
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python rv1_operand_semantics.py
+gcc rc: 0 
+entry=0x401020 .text=0x401020 size=4128 blob=331
+capstone: 94  objdump: 94
+
+LECH THO (raw)        : 64
+LECH SAU CHUAN HOA MANH: 19  <-- con lai moi la NGHI NGU NGHIA
+  @0x401046
+     capstone: nop word ptr cs:[rax + rax]   -> norm: ('nop', 'cs:[rax+rax]')
+     objdump : cs nop WORD PTR [rax+rax*1+0x0]   -> norm: ('cs', 'nop[rax+rax]')
+  @0x401055
+     capstone: nop word ptr cs:[rax + rax]   -> norm: ('nop', 'cs:[rax+rax]')
+     objdump : cs nop WORD PTR [rax+rax*1+0x0]   -> norm: ('cs', 'nop[rax+rax]')
+  @0x40106b
+     capstone: je 0x401080   -> norm: ('je', '4198528')
+     objdump : je 401080 <deregister_tm_clones+0x20>   -> norm: ('je', '401080')
+  @0x401075
+     capstone: je 0x401080   -> norm: ('je', '4198528')
+     objdump : je 401080 <deregister_tm_clones+0x20>   -> norm: ('je', '401080')
+  @0x40107e
+     capstone: nop    -> norm: ('nop', '')
+     objdump : xchg ax,ax   -> norm: ('xchg', 'ax,ax')
+  @0x401081
+     capstone: nop word ptr cs:[rax + rax]   -> norm: ('nop', 'cs:[rax+rax]')
+     objdump : data16 cs nop WORD PTR [rax+rax*1+0x0]   -> norm: ('data16', 'csnop[rax+rax]')
+  @0x4010ad
+     capstone: je 0x4010c0   -> norm: ('je', '4198592')
+     objdump : je 4010c0 <register_tm_clones+0x30>   -> norm: ('je', '4010c0')
+  @0x4010b7
+     capstone: je 0x4010c0   -> norm: ('je', '4198592')
+     objdump : je 4010c0 <register_tm_clones+0x30>   -> norm: ('je', '4010c0')
+  @0x4010c1
+     capstone: nop word ptr cs:[rax + rax]   -> norm: ('nop', 'cs:[rax+rax]')
+     objdump : data16 cs nop WORD PTR [rax+rax*1+0x0]   -> norm: ('data16', 'csnop[rax+rax]')
+  @0x4010db
+     capstone: jne 0x4010f0   -> norm: ('jne', '4198640')
+     objdump : jne 4010f0 <__do_global_dtors_aux+0x20>   -> norm: ('jne', '4010f0')
+  @0x4010e1
+     capstone: call 0x401060   -> norm: ('call', '4198496')
+     objdump : call 401060 <deregister_tm_clones>   -> norm: ('call', '401060')
+  @0x4010f1
+     capstone: nop word ptr cs:[rax + rax]   -> norm: ('nop', 'cs:[rax+rax]')
+     objdump : data16 cs nop WORD PTR [rax+rax*1+0x0]   -> norm: ('data16', 'csnop[rax+rax]')
+  @0x401104
+     capstone: jmp 0x401090   -> norm: ('jmp', '4198544')
+     objdump : jmp 401090 <register_tm_clones>   -> norm: ('jmp', '401090')
+  @0x401115
+     capstone: jle 0x401131   -> norm: ('jle', '4198705')
+     objdump : jle 401131 <loop_sum+0x23>   -> norm: ('jle', '401131')
+  @0x40112b
+     capstone: jne 0x401121   -> norm: ('jne', '4198689')
+     objdump : jne 401121 <loop_sum+0x13>   -> norm: ('jne', '401121')
+  @0x401136
+     capstone: jmp 0x40112d   -> norm: ('jmp', '4198701')
+     objdump : jmp 40112d <loop_sum+0x1f>   -> norm: ('jmp', '40112d')
+  @0x401143
+     capstone: js 0x40114b   -> norm: ('js', '4198731')
+     objdump : js 40114b <classify+0x13>   -> norm: ('js', '40114b')
+  @0x401156
+     capstone: call 0x401138   -> norm: ('call', '4198712')
+     objdump : call 401138 <classify>   -> norm: ('call', '401138')
+  @0x401162
+     capstone: call 0x40110e   -> norm: ('call', '4198670')
+     objdump : call 40110e <loop_sum>   -> norm: ('call', '40110e')
+
+--- 41 lech tho: liet ke toan bo mnemonic+operand 2 ben ---
+  @0x401024 | cap=xor 'ebp, ebp' | obj=xor 'ebp,ebp'
+  @0x401026 | cap=mov 'r9, rdx' | obj=mov 'r9,rdx'
+  @0x40102a | cap=mov 'rdx, rsp' | obj=mov 'rdx,rsp'
+  @0x40102d | cap=and 'rsp, 0xfffffffffffffff0' | obj=and 'rsp,0xfffffffffffffff0'
+  @0x401033 | cap=xor 'r8d, r8d' | obj=xor 'r8d,r8d'
+  @0x401036 | cap=xor 'ecx, ecx' | obj=xor 'ecx,ecx'
+  @0x401038 | cap=mov 'rdi, 0x40114c' | obj=mov 'rdi,0x40114c'
+  @0x40103f | cap=call 'qword ptr [rip + 0x2f93]' | obj=call 'QWORD PTR [rip+0x2f93]        # 403fd8 <__libc_start_main@GLIBC_2.34>'
+  @0x401046 | cap=nop 'word ptr cs:[rax + rax]' | obj=cs 'nop WORD PTR [rax+rax*1+0x0]'
+  @0x401055 | cap=nop 'word ptr cs:[rax + rax]' | obj=cs 'nop WORD PTR [rax+rax*1+0x0]'
+  @0x401060 | cap=mov 'eax, 0x404010' | obj=mov 'eax,0x404010'
+  @0x401065 | cap=cmp 'rax, 0x404010' | obj=cmp 'rax,0x404010'
+  @0x40106b | cap=je '0x401080' | obj=je '401080 <deregister_tm_clones+0x20>'
+  @0x40106d | cap=mov 'eax, 0' | obj=mov 'eax,0x0'
+  @0x401072 | cap=test 'rax, rax' | obj=test 'rax,rax'
+  @0x401075 | cap=je '0x401080' | obj=je '401080 <deregister_tm_clones+0x20>'
+  @0x401077 | cap=mov 'edi, 0x404010' | obj=mov 'edi,0x404010'
+  @0x40107e | cap=nop '' | obj=xchg 'ax,ax'
+  @0x401081 | cap=nop 'word ptr cs:[rax + rax]' | obj=data16 'cs nop WORD PTR [rax+rax*1+0x0]'
+  @0x40108c | cap=nop 'dword ptr [rax]' | obj=nop 'DWORD PTR [rax+0x0]'
+  @0x401090 | cap=mov 'esi, 0x404010' | obj=mov 'esi,0x404010'
+  @0x401095 | cap=sub 'rsi, 0x404010' | obj=sub 'rsi,0x404010'
+  @0x40109c | cap=mov 'rax, rsi' | obj=mov 'rax,rsi'
+  @0x40109f | cap=shr 'rsi, 0x3f' | obj=shr 'rsi,0x3f'
+  @0x4010a3 | cap=sar 'rax, 3' | obj=sar 'rax,0x3'
+  @0x4010a7 | cap=add 'rsi, rax' | obj=add 'rsi,rax'
+  @0x4010aa | cap=sar 'rsi, 1' | obj=sar 'rsi,1'
+  @0x4010ad | cap=je '0x4010c0' | obj=je '4010c0 <register_tm_clones+0x30>'
+  @0x4010af | cap=mov 'eax, 0' | obj=mov 'eax,0x0'
+  @0x4010b4 | cap=test 'rax, rax' | obj=test 'rax,rax'
+  @0x4010b7 | cap=je '0x4010c0' | obj=je '4010c0 <register_tm_clones+0x30>'
+  @0x4010b9 | cap=mov 'edi, 0x404010' | obj=mov 'edi,0x404010'
+  @0x4010c1 | cap=nop 'word ptr cs:[rax + rax]' | obj=data16 'cs nop WORD PTR [rax+rax*1+0x0]'
+  @0x4010cc | cap=nop 'dword ptr [rax]' | obj=nop 'DWORD PTR [rax+0x0]'
+  @0x4010d4 | cap=cmp 'byte ptr [rip + 0x2f35], 0' | obj=cmp 'BYTE PTR [rip+0x2f35],0x0        # 404010 <__TMC_END__>'
+  @0x4010db | cap=jne '0x4010f0' | obj=jne '4010f0 <__do_global_dtors_aux+0x20>'
+  @0x4010de | cap=mov 'rbp, rsp' | obj=mov 'rbp,rsp'
+  @0x4010e1 | cap=call '0x401060' | obj=call '401060 <deregister_tm_clones>'
+  @0x4010e6 | cap=mov 'byte ptr [rip + 0x2f23], 1' | obj=mov 'BYTE PTR [rip+0x2f23],0x1        # 404010 <__TMC_END__>'
+  @0x4010f1 | cap=nop 'word ptr cs:[rax + rax]' | obj=data16 'cs nop WORD PTR [rax+rax*1+0x0]'
+  @0x4010fc | cap=nop 'dword ptr [rax]' | obj=nop 'DWORD PTR [rax+0x0]'
+  @0x401104 | cap=jmp '0x401090' | obj=jmp '401090 <register_tm_clones>'
+  @0x40110a | cap=lea 'eax, [rdi + rsi]' | obj=lea 'eax,[rdi+rsi*1]'
+  @0x401112 | cap=test 'rdi, rdi' | obj=test 'rdi,rdi'
+  @0x401115 | cap=jle '0x401131' | obj=jle '401131 <loop_sum+0x23>'
+  @0x401117 | cap=mov 'eax, 0' | obj=mov 'eax,0x0'
+  @0x40111c | cap=mov 'edx, 0' | obj=mov 'edx,0x0'
+  @0x401121 | cap=add 'rdx, rax' | obj=add 'rdx,rax'
+  @0x401124 | cap=add 'rax, 1' | obj=add 'rax,0x1'
+  @0x401128 | cap=cmp 'rdi, rax' | obj=cmp 'rdi,rax'
+  @0x40112b | cap=jne '0x401121' | obj=jne '401121 <loop_sum+0x13>'
+  @0x40112d | cap=mov 'rax, rdx' | obj=mov 'rax,rdx'
+  @0x401131 | cap=mov 'edx, 0' | obj=mov 'edx,0x0'
+  @0x401136 | cap=jmp '0x40112d' | obj=jmp '40112d <loop_sum+0x1f>'
+  @0x40113c | cap=mov 'eax, 0xffffffff' | obj=mov 'eax,0xffffffff'
+  @0x401141 | cap=test 'edi, edi' | obj=test 'edi,edi'
+  @0x401143 | cap=js '0x40114b' | obj=js '40114b <classify+0x13>'
+  @0x401148 | cap=movzx 'eax, al' | obj=movzx 'eax,al'
+  @0x401151 | cap=mov 'edi, 3' | obj=mov 'edi,0x3'
+  @0x401156 | cap=call '0x401138' | obj=call '401138 <classify>'
+  @0x40115b | cap=mov 'ebx, eax' | obj=mov 'ebx,eax'
+  @0x40115d | cap=mov 'edi, 0xa' | obj=mov 'edi,0xa'
+  @0x401162 | cap=call '0x40110e' | obj=call '40110e <loop_sum>'
+  @0x401167 | cap=add 'eax, ebx' | obj=add 'eax,ebx'
+
+### T20-A-phu2 — dung DUNG co gcc cua tac gia (khong -no-pie) => CUNG binary
+### Thoi diem: 2026-10-01T14:33:59Z UTC
+$ gcc -O1 -fno-asynchronous-unwind-tables -fno-stack-protector -o /tmp/rv1-operand2/bench_elf /tmp/rv1-operand2/bench_elf.c
+exit= 0 
+entry=0x1040 | .text=0x1040 size=4160 | blob=334 byte
+capstone=92 objdump=92
+
+[THO - dung quy tac tac gia] dia chi=0 | mnemonic=1 | toan hang=41
+
+[Sau chuan hoa manh] con lai 41 dong khac:
+  @0x1058 [hex/dec+comment (cach viet)]
+      cap: lea 'rdi, [rip + 0x110]' -> 'rdi,[rip+272]'
+      obj: lea 'rdi,[rip+0x110]        # 116f <main>' -> 'rdi,[rip+272]'
+  @0x105f [hex/dec+comment (cach viet)]
+      cap: call 'qword ptr [rip + 0x2f73]' -> '[rip+12147]'
+      obj: call 'QWORD PTR [rip+0x2f73]        # 3fd8 <__libc_start_main@GLIBC_2.34>' -> '[rip+12147]'
+  @0x1066 [KHAC NGU NGHIA THAT SU]
+      cap: nop 'word ptr cs:[rax + rax]' -> 'cs:[rax+rax]'
+      obj: cs 'nop WORD PTR [rax+rax*1+0x0]' -> 'nop[rax+rax]'
+  @0x1070 [hex/dec+comment (cach viet)]
+      cap: lea 'rdi, [rip + 0x2f99]' -> 'rdi,[rip+12185]'
+      obj: lea 'rdi,[rip+0x2f99]        # 4010 <__TMC_END__>' -> 'rdi,[rip+12185]'
+  @0x1077 [hex/dec+comment (cach viet)]
+      cap: lea 'rax, [rip + 0x2f92]' -> 'rax,[rip+12178]'
+      obj: lea 'rax,[rip+0x2f92]        # 4010 <__TMC_END__>' -> 'rax,[rip+12178]'
+  @0x1081 [KHAC NGU NGHIA THAT SU]
+      cap: je '0x1098' -> '4248'
+      obj: je '1098 <deregister_tm_clones+0x28>' -> '1098'
+  @0x1083 [hex/dec+comment (cach viet)]
+      cap: mov 'rax, qword ptr [rip + 0x2f56]' -> 'rax,[rip+12118]'
+      obj: mov 'rax,QWORD PTR [rip+0x2f56]        # 3fe0 <_ITM_deregisterTMCloneTable@Base>' -> 'rax,[rip+12118]'
+  @0x108d [KHAC NGU NGHIA THAT SU]
+      cap: je '0x1098' -> '4248'
+      obj: je '1098 <deregister_tm_clones+0x28>' -> '1098'
+  @0x1091 [hex/dec+comment (cach viet)]
+      cap: nop 'dword ptr [rax]' -> '[rax]'
+      obj: nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x1099 [hex/dec+comment (cach viet)]
+      cap: nop 'dword ptr [rax]' -> '[rax]'
+      obj: nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x10a0 [hex/dec+comment (cach viet)]
+      cap: lea 'rdi, [rip + 0x2f69]' -> 'rdi,[rip+12137]'
+      obj: lea 'rdi,[rip+0x2f69]        # 4010 <__TMC_END__>' -> 'rdi,[rip+12137]'
+  @0x10a7 [hex/dec+comment (cach viet)]
+      cap: lea 'rsi, [rip + 0x2f62]' -> 'rsi,[rip+12130]'
+      obj: lea 'rsi,[rip+0x2f62]        # 4010 <__TMC_END__>' -> 'rsi,[rip+12130]'
+  @0x10b8 [hex/dec+comment (cach viet)]
+      cap: sar 'rax, 3' -> 'rax,3'
+      obj: sar 'rax,0x3' -> 'rax,3'
+  @0x10c2 [KHAC NGU NGHIA THAT SU]
+      cap: je '0x10d8' -> '4312'
+      obj: je '10d8 <register_tm_clones+0x38>' -> '10d8'
+  @0x10c4 [hex/dec+comment (cach viet)]
+      cap: mov 'rax, qword ptr [rip + 0x2f25]' -> 'rax,[rip+12069]'
+      obj: mov 'rax,QWORD PTR [rip+0x2f25]        # 3ff0 <_ITM_registerTMCloneTable@Base>' -> 'rax,[rip+12069]'
+  @0x10ce [KHAC NGU NGHIA THAT SU]
+      cap: je '0x10d8' -> '4312'
+      obj: je '10d8 <register_tm_clones+0x38>' -> '10d8'
+  @0x10d2 [hex/dec+comment (cach viet)]
+      cap: nop 'word ptr [rax + rax]' -> '[rax+rax]'
+      obj: nop 'WORD PTR [rax+rax*1+0x0]' -> '[rax+rax]'
+  @0x10d9 [hex/dec+comment (cach viet)]
+      cap: nop 'dword ptr [rax]' -> '[rax]'
+      obj: nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x10e4 [hex/dec+comment (cach viet)]
+      cap: cmp 'byte ptr [rip + 0x2f25], 0' -> '[rip+12069],0'
+      obj: cmp 'BYTE PTR [rip+0x2f25],0x0        # 4010 <__TMC_END__>' -> '[rip+12069],0'
+  @0x10eb [KHAC NGU NGHIA THAT SU]
+      cap: jne '0x1118' -> '4376'
+      obj: jne '1118 <__do_global_dtors_aux+0x38>' -> '1118'
+  @0x10ee [hex/dec+comment (cach viet)]
+      cap: cmp 'qword ptr [rip + 0x2f02], 0' -> '[rip+12034],0'
+      obj: cmp 'QWORD PTR [rip+0x2f02],0x0        # 3ff8 <__cxa_finalize@GLIBC_2.2.5>' -> '[rip+12034],0'
+  @0x10f9 [KHAC NGU NGHIA THAT SU]
+      cap: je '0x1107' -> '4359'
+      obj: je '1107 <__do_global_dtors_aux+0x27>' -> '1107'
+  @0x10fb [hex/dec+comment (cach viet)]
+      cap: mov 'rdi, qword ptr [rip + 0x2f06]' -> 'rdi,[rip+12038]'
+      obj: mov 'rdi,QWORD PTR [rip+0x2f06]        # 4008 <__dso_handle>' -> 'rdi,[rip+12038]'
+  @0x1102 [KHAC NGU NGHIA THAT SU]
+      cap: call '0x1030' -> '4144'
+      obj: call '1030 <__cxa_finalize@plt>' -> '1030'
+  @0x1107 [KHAC NGU NGHIA THAT SU]
+      cap: call '0x1070' -> '4208'
+      obj: call '1070 <deregister_tm_clones>' -> '1070'
+  @0x110c [hex/dec+comment (cach viet)]
+      cap: mov 'byte ptr [rip + 0x2efd], 1' -> '[rip+12029],1'
+      obj: mov 'BYTE PTR [rip+0x2efd],0x1        # 4010 <__TMC_END__>' -> '[rip+12029],1'
+  @0x1115 [hex/dec+comment (cach viet)]
+      cap: nop 'dword ptr [rax]' -> '[rax]'
+      obj: nop 'DWORD PTR [rax]' -> '[rax]'
+  @0x1119 [hex/dec+comment (cach viet)]
+      cap: nop 'dword ptr [rax]' -> '[rax]'
+      obj: nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x1124 [KHAC NGU NGHIA THAT SU]
+      cap: jmp '0x10a0' -> '4256'
+      obj: jmp '10a0 <register_tm_clones>' -> '10a0'
+  @0x112d [hex/dec+comment (cach viet)]
+      cap: lea 'eax, [rdi + rsi]' -> 'eax,[rdi+rsi]'
+      obj: lea 'eax,[rdi+rsi*1]' -> 'eax,[rdi+rsi]'
+  @0x1138 [KHAC NGU NGHIA THAT SU]
+      cap: jle '0x1154' -> '4436'
+      obj: jle '1154 <loop_sum+0x23>' -> '1154'
+  @0x113a [hex/dec+comment (cach viet)]
+      cap: mov 'eax, 0' -> 'eax,0'
+      obj: mov 'eax,0x0' -> 'eax,0'
+  @0x113f [hex/dec+comment (cach viet)]
+      cap: mov 'edx, 0' -> 'edx,0'
+      obj: mov 'edx,0x0' -> 'edx,0'
+  @0x1147 [hex/dec+comment (cach viet)]
+      cap: add 'rax, 1' -> 'rax,1'
+      obj: add 'rax,0x1' -> 'rax,1'
+  @0x114e [KHAC NGU NGHIA THAT SU]
+      cap: jne '0x1144' -> '4420'
+      obj: jne '1144 <loop_sum+0x13>' -> '1144'
+  @0x1154 [hex/dec+comment (cach viet)]
+      cap: mov 'edx, 0' -> 'edx,0'
+      obj: mov 'edx,0x0' -> 'edx,0'
+  @0x1159 [KHAC NGU NGHIA THAT SU]
+      cap: jmp '0x1150' -> '4432'
+      obj: jmp '1150 <loop_sum+0x1f>' -> '1150'
+  @0x1166 [KHAC NGU NGHIA THAT SU]
+      cap: js '0x116e' -> '4462'
+      obj: js '116e <classify+0x13>' -> '116e'
+  @0x1174 [hex/dec+comment (cach viet)]
+      cap: mov 'edi, 3' -> 'edi,3'
+      obj: mov 'edi,0x3' -> 'edi,3'
+  @0x1179 [KHAC NGU NGHIA THAT SU]
+      cap: call '0x115b' -> '4443'
+      obj: call '115b <classify>' -> '115b'
+  @0x1185 [KHAC NGU NGHIA THAT SU]
+      cap: call '0x1131' -> '4401'
+      obj: call '1131 <loop_sum>' -> '1131'
+
+=== TONG KET PHAN LOAI ===
+   25  hex/dec+comment (cach viet)
+    0  tien to (data16/cs)
+    0  alias cung ma lenh
+    0  toan hang an (*1, +0)
+   16  KHAC NGU NGHIA THAT SU
+
+=== KET LUAN ===
+  ❌ CO lech NGU NGHIA THAT SU -> khang dinh cua tac gia SAI o muc nay.
+
+### T20-A-phu3 — BAN 3, DA SUA LOI CHUAN HOA CUA TOI (ban 2 bao oan 16 dong)
+### Thoi diem: 2026-10-01T14:34:10Z UTC
+entry=0x1040 .text=0x1040 blob=334  (DUNG co gcc cua tac gia)
+capstone=92 objdump=92
+[THO - dung quy tac tac gia] mnemonic=1 | toan hang=41
+
+=== PHAN LOAI 41 DONG CON KHAC SAU CHUAN HOA ===
+  @0x1058 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=lea 'rdi, [rip + 0x110]' -> 'rdi,[rip+272]'
+      obj=lea 'rdi,[rip+0x110]        # 116f <main>' -> 'rdi,[rip+272]'
+  @0x105f [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=call 'qword ptr [rip + 0x2f73]' -> '[rip+12147]'
+      obj=call 'QWORD PTR [rip+0x2f73]        # 3fd8 <__libc_start_main@GLIBC_2.34>' -> '[rip+12147]'
+  @0x1066 [KHAC NGU NGHIA THAT SU]
+      cap=nop 'word ptr cs:[rax + rax]' -> 'cs:[rax+rax]'
+      obj=cs 'nop WORD PTR [rax+rax*1+0x0]' -> 'nop[rax+rax]'
+  @0x1070 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=lea 'rdi, [rip + 0x2f99]' -> 'rdi,[rip+12185]'
+      obj=lea 'rdi,[rip+0x2f99]        # 4010 <__TMC_END__>' -> 'rdi,[rip+12185]'
+  @0x1077 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=lea 'rax, [rip + 0x2f92]' -> 'rax,[rip+12178]'
+      obj=lea 'rax,[rip+0x2f92]        # 4010 <__TMC_END__>' -> 'rax,[rip+12178]'
+  @0x1081 [KHAC NGU NGHIA THAT SU]
+      cap=je '0x1098' -> '4248'
+      obj=je '1098 <deregister_tm_clones+0x28>' -> '1098'
+  @0x1083 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=mov 'rax, qword ptr [rip + 0x2f56]' -> 'rax,[rip+12118]'
+      obj=mov 'rax,QWORD PTR [rip+0x2f56]        # 3fe0 <_ITM_deregisterTMCloneTable@Base>' -> 'rax,[rip+12118]'
+  @0x108d [KHAC NGU NGHIA THAT SU]
+      cap=je '0x1098' -> '4248'
+      obj=je '1098 <deregister_tm_clones+0x28>' -> '1098'
+  @0x1091 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=nop 'dword ptr [rax]' -> '[rax]'
+      obj=nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x1099 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=nop 'dword ptr [rax]' -> '[rax]'
+      obj=nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x10a0 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=lea 'rdi, [rip + 0x2f69]' -> 'rdi,[rip+12137]'
+      obj=lea 'rdi,[rip+0x2f69]        # 4010 <__TMC_END__>' -> 'rdi,[rip+12137]'
+  @0x10a7 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=lea 'rsi, [rip + 0x2f62]' -> 'rsi,[rip+12130]'
+      obj=lea 'rsi,[rip+0x2f62]        # 4010 <__TMC_END__>' -> 'rsi,[rip+12130]'
+  @0x10b8 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=sar 'rax, 3' -> 'rax,3'
+      obj=sar 'rax,0x3' -> 'rax,3'
+  @0x10c2 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=je '0x10d8' -> '4312'
+      obj=je '10d8 <register_tm_clones+0x38>' -> '4312'
+  @0x10c4 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=mov 'rax, qword ptr [rip + 0x2f25]' -> 'rax,[rip+12069]'
+      obj=mov 'rax,QWORD PTR [rip+0x2f25]        # 3ff0 <_ITM_registerTMCloneTable@Base>' -> 'rax,[rip+12069]'
+  @0x10ce [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=je '0x10d8' -> '4312'
+      obj=je '10d8 <register_tm_clones+0x38>' -> '4312'
+  @0x10d2 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=nop 'word ptr [rax + rax]' -> '[rax+rax]'
+      obj=nop 'WORD PTR [rax+rax*1+0x0]' -> '[rax+rax]'
+  @0x10d9 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=nop 'dword ptr [rax]' -> '[rax]'
+      obj=nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x10e4 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=cmp 'byte ptr [rip + 0x2f25], 0' -> '[rip+12069],0'
+      obj=cmp 'BYTE PTR [rip+0x2f25],0x0        # 4010 <__TMC_END__>' -> '[rip+12069],0'
+  @0x10eb [KHAC NGU NGHIA THAT SU]
+      cap=jne '0x1118' -> '4376'
+      obj=jne '1118 <__do_global_dtors_aux+0x38>' -> '1118'
+  @0x10ee [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=cmp 'qword ptr [rip + 0x2f02], 0' -> '[rip+12034],0'
+      obj=cmp 'QWORD PTR [rip+0x2f02],0x0        # 3ff8 <__cxa_finalize@GLIBC_2.2.5>' -> '[rip+12034],0'
+  @0x10f9 [KHAC NGU NGHIA THAT SU]
+      cap=je '0x1107' -> '4359'
+      obj=je '1107 <__do_global_dtors_aux+0x27>' -> '1107'
+  @0x10fb [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=mov 'rdi, qword ptr [rip + 0x2f06]' -> 'rdi,[rip+12038]'
+      obj=mov 'rdi,QWORD PTR [rip+0x2f06]        # 4008 <__dso_handle>' -> 'rdi,[rip+12038]'
+  @0x1102 [KHAC NGU NGHIA THAT SU]
+      cap=call '0x1030' -> '4144'
+      obj=call '1030 <__cxa_finalize@plt>' -> '1030'
+  @0x1107 [KHAC NGU NGHIA THAT SU]
+      cap=call '0x1070' -> '4208'
+      obj=call '1070 <deregister_tm_clones>' -> '1070'
+  @0x110c [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=mov 'byte ptr [rip + 0x2efd], 1' -> '[rip+12029],1'
+      obj=mov 'BYTE PTR [rip+0x2efd],0x1        # 4010 <__TMC_END__>' -> '[rip+12029],1'
+  @0x1115 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=nop 'dword ptr [rax]' -> '[rax]'
+      obj=nop 'DWORD PTR [rax]' -> '[rax]'
+  @0x1119 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=nop 'dword ptr [rax]' -> '[rax]'
+      obj=nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x1124 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=jmp '0x10a0' -> '4256'
+      obj=jmp '10a0 <register_tm_clones>' -> '4256'
+  @0x112d [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=lea 'eax, [rdi + rsi]' -> 'eax,[rdi+rsi]'
+      obj=lea 'eax,[rdi+rsi*1]' -> 'eax,[rdi+rsi]'
+  @0x1138 [KHAC NGU NGHIA THAT SU]
+      cap=jle '0x1154' -> '4436'
+      obj=jle '1154 <loop_sum+0x23>' -> '1154'
+  @0x113a [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=mov 'eax, 0' -> 'eax,0'
+      obj=mov 'eax,0x0' -> 'eax,0'
+  @0x113f [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=mov 'edx, 0' -> 'edx,0'
+      obj=mov 'edx,0x0' -> 'edx,0'
+  @0x1147 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=add 'rax, 1' -> 'rax,1'
+      obj=add 'rax,0x1' -> 'rax,1'
+  @0x114e [KHAC NGU NGHIA THAT SU]
+      cap=jne '0x1144' -> '4420'
+      obj=jne '1144 <loop_sum+0x13>' -> '1144'
+  @0x1154 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=mov 'edx, 0' -> 'edx,0'
+      obj=mov 'edx,0x0' -> 'edx,0'
+  @0x1159 [KHAC NGU NGHIA THAT SU]
+      cap=jmp '0x1150' -> '4432'
+      obj=jmp '1150 <loop_sum+0x1f>' -> '1150'
+  @0x1166 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=js '0x116e' -> '4462'
+      obj=js '116e <classify+0x13>' -> '4462'
+  @0x1174 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=mov 'edi, 3' -> 'edi,3'
+      obj=mov 'edi,0x3' -> 'edi,3'
+  @0x1179 [CACH VIET (hex/thap phan, comment symbol, 'ptr')]
+      cap=call '0x115b' -> '4443'
+      obj=call '115b <classify>' -> '4443'
+  @0x1185 [KHAC NGU NGHIA THAT SU]
+      cap=call '0x1131' -> '4401'
+      obj=call '1131 <loop_sum>' -> '1131'
+
+=== TONG ===
+   30  CACH VIET (hex/thap phan, comment symbol, 'ptr')
+   11  KHAC NGU NGHIA THAT SU
+
+=== KET LUAN ===
+  ❌ 11 dong NGHI NGU NGHIA — can xem tay.
+  => Khang dinh '41 lech toan hang thuan cach viet' cua tac gia: SAI
+
+### T20-A-phu4 — BAN 4: da sua dung quy uoc HEX TRAN cua objdump
+### Thoi diem: 2026-10-01T14:34:31Z UTC
+entry=0x1040 .text=0x1040 blob=334 (DUNG co gcc tac gia)
+capstone=92 objdump=92
+[THO - dung quy tac tac gia] mnemonic=1 | toan hang=41
+
+=== TONG 41 dong con khac SAU CHUAN HOA (da tinh ca alias/tien to) ===
+  @0x1058 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=lea 'rdi, [rip + 0x110]' -> 'rdi,[rip+272]'
+      obj=lea 'rdi,[rip+0x110]        # 116f <main>' -> 'rdi,[rip+272]'
+  @0x105f [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=call 'qword ptr [rip + 0x2f73]' -> '[rip+12147]'
+      obj=call 'QWORD PTR [rip+0x2f73]        # 3fd8 <__libc_start_main@GLIBC_2.34>' -> '[rip+12147]'
+  @0x1066 [KHAC NGU NGHIA THAT SU]
+      cap=nop 'word ptr cs:[rax + rax]' -> 'cs:[rax+rax]'
+      obj=cs 'nop WORD PTR [rax+rax*1+0x0]' -> 'nop[rax+rax]'
+  @0x1070 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=lea 'rdi, [rip + 0x2f99]' -> 'rdi,[rip+12185]'
+      obj=lea 'rdi,[rip+0x2f99]        # 4010 <__TMC_END__>' -> 'rdi,[rip+12185]'
+  @0x1077 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=lea 'rax, [rip + 0x2f92]' -> 'rax,[rip+12178]'
+      obj=lea 'rax,[rip+0x2f92]        # 4010 <__TMC_END__>' -> 'rax,[rip+12178]'
+  @0x1081 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=je '0x1098' -> '4248'
+      obj=je '1098 <deregister_tm_clones+0x28>' -> '4248'
+  @0x1083 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=mov 'rax, qword ptr [rip + 0x2f56]' -> 'rax,[rip+12118]'
+      obj=mov 'rax,QWORD PTR [rip+0x2f56]        # 3fe0 <_ITM_deregisterTMCloneTable@Base>' -> 'rax,[rip+12118]'
+  @0x108d [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=je '0x1098' -> '4248'
+      obj=je '1098 <deregister_tm_clones+0x28>' -> '4248'
+  @0x1091 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=nop 'dword ptr [rax]' -> '[rax]'
+      obj=nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x1099 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=nop 'dword ptr [rax]' -> '[rax]'
+      obj=nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x10a0 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=lea 'rdi, [rip + 0x2f69]' -> 'rdi,[rip+12137]'
+      obj=lea 'rdi,[rip+0x2f69]        # 4010 <__TMC_END__>' -> 'rdi,[rip+12137]'
+  @0x10a7 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=lea 'rsi, [rip + 0x2f62]' -> 'rsi,[rip+12130]'
+      obj=lea 'rsi,[rip+0x2f62]        # 4010 <__TMC_END__>' -> 'rsi,[rip+12130]'
+  @0x10b8 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=sar 'rax, 3' -> 'rax,3'
+      obj=sar 'rax,0x3' -> 'rax,3'
+  @0x10c2 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=je '0x10d8' -> '4312'
+      obj=je '10d8 <register_tm_clones+0x38>' -> '4312'
+  @0x10c4 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=mov 'rax, qword ptr [rip + 0x2f25]' -> 'rax,[rip+12069]'
+      obj=mov 'rax,QWORD PTR [rip+0x2f25]        # 3ff0 <_ITM_registerTMCloneTable@Base>' -> 'rax,[rip+12069]'
+  @0x10ce [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=je '0x10d8' -> '4312'
+      obj=je '10d8 <register_tm_clones+0x38>' -> '4312'
+  @0x10d2 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=nop 'word ptr [rax + rax]' -> '[rax+rax]'
+      obj=nop 'WORD PTR [rax+rax*1+0x0]' -> '[rax+rax]'
+  @0x10d9 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=nop 'dword ptr [rax]' -> '[rax]'
+      obj=nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x10e4 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=cmp 'byte ptr [rip + 0x2f25], 0' -> '[rip+12069],0'
+      obj=cmp 'BYTE PTR [rip+0x2f25],0x0        # 4010 <__TMC_END__>' -> '[rip+12069],0'
+  @0x10eb [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=jne '0x1118' -> '4376'
+      obj=jne '1118 <__do_global_dtors_aux+0x38>' -> '4376'
+  @0x10ee [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=cmp 'qword ptr [rip + 0x2f02], 0' -> '[rip+12034],0'
+      obj=cmp 'QWORD PTR [rip+0x2f02],0x0        # 3ff8 <__cxa_finalize@GLIBC_2.2.5>' -> '[rip+12034],0'
+  @0x10f9 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=je '0x1107' -> '4359'
+      obj=je '1107 <__do_global_dtors_aux+0x27>' -> '4359'
+  @0x10fb [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=mov 'rdi, qword ptr [rip + 0x2f06]' -> 'rdi,[rip+12038]'
+      obj=mov 'rdi,QWORD PTR [rip+0x2f06]        # 4008 <__dso_handle>' -> 'rdi,[rip+12038]'
+  @0x1102 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=call '0x1030' -> '4144'
+      obj=call '1030 <__cxa_finalize@plt>' -> '4144'
+  @0x1107 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=call '0x1070' -> '4208'
+      obj=call '1070 <deregister_tm_clones>' -> '4208'
+  @0x110c [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=mov 'byte ptr [rip + 0x2efd], 1' -> '[rip+12029],1'
+      obj=mov 'BYTE PTR [rip+0x2efd],0x1        # 4010 <__TMC_END__>' -> '[rip+12029],1'
+  @0x1115 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=nop 'dword ptr [rax]' -> '[rax]'
+      obj=nop 'DWORD PTR [rax]' -> '[rax]'
+  @0x1119 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=nop 'dword ptr [rax]' -> '[rax]'
+      obj=nop 'DWORD PTR [rax+0x0]' -> '[rax]'
+  @0x1124 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=jmp '0x10a0' -> '4256'
+      obj=jmp '10a0 <register_tm_clones>' -> '4256'
+  @0x112d [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=lea 'eax, [rdi + rsi]' -> 'eax,[rdi+rsi]'
+      obj=lea 'eax,[rdi+rsi*1]' -> 'eax,[rdi+rsi]'
+  @0x1138 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=jle '0x1154' -> '4436'
+      obj=jle '1154 <loop_sum+0x23>' -> '4436'
+  @0x113a [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=mov 'eax, 0' -> 'eax,0'
+      obj=mov 'eax,0x0' -> 'eax,0'
+  @0x113f [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=mov 'edx, 0' -> 'edx,0'
+      obj=mov 'edx,0x0' -> 'edx,0'
+  @0x1147 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=add 'rax, 1' -> 'rax,1'
+      obj=add 'rax,0x1' -> 'rax,1'
+  @0x114e [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=jne '0x1144' -> '4420'
+      obj=jne '1144 <loop_sum+0x13>' -> '4420'
+  @0x1154 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=mov 'edx, 0' -> 'edx,0'
+      obj=mov 'edx,0x0' -> 'edx,0'
+  @0x1159 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=jmp '0x1150' -> '4432'
+      obj=jmp '1150 <loop_sum+0x1f>' -> '4432'
+  @0x1166 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=js '0x116e' -> '4462'
+      obj=js '116e <classify+0x13>' -> '4462'
+  @0x1174 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=mov 'edi, 3' -> 'edi,3'
+      obj=mov 'edi,0x3' -> 'edi,3'
+  @0x1179 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=call '0x115b' -> '4443'
+      obj=call '115b <classify>' -> '4443'
+  @0x1185 [CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)]
+      cap=call '0x1131' -> '4401'
+      obj=call '1131 <loop_sum>' -> '4401'
+
+=== TONG THEO NHOM ===
+   40  CACH VIET (hex/dec, comment symbol, 'ptr' hoa/thuong)
+    1  KHAC NGU NGHIA THAT SU
+
+=== KET LUAN ===
+  ❌ 1 dong con khac sau chuan hoa — PHAI xem tay.
+  => Khang dinh '41 lech toan hang thuan cach viet' cua ForensicsMal: SAI ❌

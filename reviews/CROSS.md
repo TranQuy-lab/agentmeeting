@@ -266,3 +266,115 @@ phần finding, chưa có `FINDING.md`), T5 (ForensicsMal), T7 (Auditor2), T8 (D
 > nên tôi **không reject** commit khung, nhưng **yêu cầu Admin sửa 7 mục** trước khi nghiệm thu bất kỳ báo cáo cuối nào.
 >
 > **Điểm đã sửa đúng (ghi nhận công bằng):** `a414944` thêm `DeepSeek-Harness` vào `ADMIN/ROSTER.md` **đúng trong bảng**.
+
+---
+
+# VÒNG 3 — Bài kiểm #6 (T20): T15 ForensicsMal + T16 ExploitDeep
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T20`
+**Base:** `origin/main` = `a1e026f` · **Thời điểm kiểm:** `2026-10-01T14:33Z` → `14:35Z`
+**Bằng chứng thô:** `agents/reviewer1/evidence/T20/`
+
+---
+
+## 2.11 Bài kiểm #6A — T15 ForensicsMal @ `78c0464`
+
+```text
+[REVIEW] T20-A / ForensicsMal (ag_82f7cb07) / Lớp 1 CROSS / KẾT QUẢ: PASS — 4/4 hạng mục tái lập chính xác
+```
+
+**Cách kiểm:** tôi `git archive 78c0464 agents/forensicsmal/T15 | tar -x -C /tmp/rv1-t15` —
+tức chạy trong **thư mục riêng của tôi**, không dùng clone/thư mục của tác giả — rồi chạy lại
+**cả 4 script** bằng toolchain `/home/noble-tran/forensicsmal-tooling/.venv/bin/python`.
+
+| # | Khẳng định của ForensicsMal | Tôi đo lại | Kết quả |
+|---|---|---|---|
+| T15-1 | PCAP: **0 lệch giá trị**, 3 lệch biểu diễn / 14 trường | `failures_value_mismatch: []` · `repr_only_differences` = 3 (`dns.id` 4660 vs `0x1234`; `dns.flags.response` 0 vs `False`; `dns.qry.class` 1 vs `0x0001`) · `So truong doi chieu: 14` | **✅ PASS** từng con số |
+| T15-2 | ELF: 92 instruction, **0 lệch địa chỉ**, 1 lệch mnemonic (`0x1066`, tiền tố `cs`), 41 lệch toán hạng | `entry=0x1040`, `.text`=0x1040/**334 byte** (`objcopy` = 334 byte ⇒ khớp `readelf`); capstone=**92**, objdump=**92**; địa chỉ=**0**; mnemonic thô=**1** (`#13 @0x1066: capstone='nop' objdump='cs'`); lệch cứng sau gập tiền tố=**0**; toán hạng=**41** | **✅ PASS** từng con số |
+| T15-3 | YARA: **TP=10, TN=46, FP=0, FN=0** (56 phép kiểm) | In đúng ma trận đầy đủ: `TONG: TP=10 TN=46 FP=0 FN=0`, `Tong so phep kiem: 56`. Hai bẫy FP (`t15_absent_string`, `t15_mz_header_pe`) đều không khớp; hai bẫy FN thật (`t15_boundary_marker` vắt mốc 4096, `t15_wide_marker` UTF-16LE) đều khớp | **✅ PASS** |
+| T15-4 | volatility3: 9 ca, **0 crash, 0 treo, 9/9 báo lỗi rõ** | In đủ bảng 9 ca: exit ∈ {1,2}, thời gian 0.18–0.29 s, `treo=khong` ×9, `traceback=khong` ×9, `co bao loi=CO` ×9 | **✅ PASS** |
+
+### 2.11.1 Kiểm hai chỗ ForensicsMal **tự nhận yếu** (Admin yêu cầu riêng)
+
+**(a) `capstone` metadata 5.0.9 vs `__version__` 5.0.7 — xác nhận CẢ HAI, không chọn bên nào:**
+
+```text
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python -c "import capstone, importlib.metadata as md; ..."
+  capstone: import=5.0.7   metadata=5.0.9
+```
+
+⇒ **Cả hai giá trị đều ĐÚNG.** `importlib.metadata.version("capstone")` = **5.0.9**;
+`capstone.__version__` = **5.0.7**. Đây là **không nhất quán của chính gói capstone** (wheel metadata
+khai một đằng, module khai một nẻo), **không phải** lỗi đọc của tác giả. ForensicsMal ghi cả hai và
+**từ chối phán quyết cái nào "đúng"** — đó là hành vi **đúng**; tôi xác nhận và **không** chọn thay.
+**Khuyến nghị:** mọi trích dẫn phải ghi rõ *nguồn của số phiên bản* (metadata hay `__version__`).
+
+**(b) 41 lệch toán hạng có cái nào **thực sự ngữ nghĩa** không? — tôi tự viết bộ chuẩn hoá riêng:**
+
+Lần 1 và 2 của tôi báo **sai** (16 rồi 11 dòng "khác ngữ nghĩa"). **Nguyên nhân là lỗi của TÔI**:
+`objdump` in đích nhảy/gọi ở dạng **hex trần** (`je 1098`) còn capstone in `0x1098`, nên bộ chuẩn hoá
+của tôi parse `1098` thành **thập phân** ⇒ báo oan. Tôi ghi lại cả 4 phiên bản trong
+`t20-operand-semantics.txt` để việc sửa sai của chính tôi kiểm chứng được.
+
+**Kết quả đúng (bản 4, đã sửa quy ước hex trần):**
+
+| Nhóm | Số dòng | Bản chất |
+|---|---|---|
+| Cách viết (hex↔thập phân, comment symbol `<main>`, `PTR` hoa/thường, `+0x0`/`*1` ẩn) | **40** | Cùng giá trị, cùng ngữ nghĩa |
+| Tiền tố `cs` bị `objdump` tách thành token riêng (`@0x1066`) | **1** | **Cùng một lệnh**: byte thô `66 2e 0f 1f 84 00 00 00 00 00` |
+| **Khác ngữ nghĩa thật sự** | **0** | — |
+
+⇒ **Khẳng định của ForensicsMal ĐÚNG**: **không có lệch giải mã thực sự**. Một tinh chỉnh nhỏ:
+trong 41 dòng, **1 dòng (`@0x1066`) không phải "cách viết" thuần** mà là ca **tách tiền tố** —
+nhưng tác giả **đã báo ca đó riêng** ở mục "lệch mnemonic" và giải thích đúng bằng byte thô.
+Nên **không có sai sót nào bị bỏ lọt**.
+
+### 2.11.2 Ghi nhận công bằng (những gì T15 làm tốt)
+
+- Tự tạo **bẫy âm tính giả thật** (marker vắt mốc chunk 4096 của YARA; marker UTF-16LE) thay vì chỉ
+  đếm dương tính — đây là mức kiểm **cao hơn** mức thông thường.
+- Chủ động **hạ mức** `volatility3` xuống "công cụ sẵn sàng, CHƯA thực chiến" và ghi rõ T15-4
+  **không** chứng minh phân tích được dump thật.
+- Ghi rõ **hệ quả của việc không có `sudo`** (không carving đĩa, không stego, không `zeek`/`binwalk`,
+  không `yara` CLI) — biến một thiếu sót thành thông tin dùng được.
+- Mục §6 "CHƯA XÁC MINH" có **7 mục** và **không rỗng** — đúng tinh thần D-004.
+
+**Phán quyết T20-A: PASS — 4/4 hạng mục tái lập chính xác, 0 lệch ngữ nghĩa, tác giả không bịa.**
+
+---
+
+## 2.12 Bài kiểm #6B — T16 ExploitDeep @ `741aee6`
+
+```text
+[REVIEW] T20-B / ExploitDeep (ag_367372ea) / Lớp 1 CROSS / KẾT QUẢ: PASS — 5/5 mục
+```
+
+| # | Mục Admin yêu cầu | Lệnh đã chạy lại | Output thô | Kết quả |
+|---|---|---|---|---|
+| B1 | `unicorn` CÓ ở VENV_ED, THIẾU ở SYSTEM | `/usr/bin/python3 -c "import unicorn"` · `/home/noble-tran/.venvs/ed/bin/python -c "import unicorn"` | SYSTEM: `ModuleNotFoundError: No module named 'unicorn'` · VENV_ED: `VENV_ED: CO 2.1.2` | **✅ PASS** khớp từng môi trường |
+| B2 | Bảng có **2 cột môi trường**, nhãn từng dòng, không dòng nào trộn | đọc `T4/READINESS.md` §1.2 | Hai bảng đều có **tiêu đề 2 cột** `SYSTEM` / `VENV_ED`; 16 dòng tool + 7 dòng CLI, **mỗi dòng mang cả hai giá trị**, không dòng nào trộn. Dòng `gdb objdump readelf …` ghi `✅ CÓ (SYSTEM)` / `❌ không có trong bin của venv, nhưng dùng được — venv thừa hưởng PATH` — **phân biệt rõ ràng**, không lẫn | **✅ PASS** |
+| B3 | Quy trình mới **không còn `pip list \| grep` lọc tay**; `pip freeze` thô có `unicorn==2.1.2` | đọc `T16/inventory_per_interpreter.sh` + 2 file freeze | Dòng 79-80: `printf '$ %s -m pip list (KHONG LOC)'` rồi `"$py" -m pip list` — **không grep**. `pip-freeze-VENV_ED.txt:**45**: unicorn==2.1.2` ✅. `pip-freeze-SYSTEM.txt` ghi nguyên văn `/usr/bin/python3: No module named pip` + `exit=1` (trung thực). `grep` **còn** ở dòng 113-115 nhưng chỉ cho **probe đích danh** `pip show unicorn`/`ls … unicorn` — **không phải** lọc kiểm kê ⇒ đúng | **✅ PASS** |
+| B4 | File raw cũ `T4/EVIDENCE/tool_inventory_raw.txt` **không bị viết lại** | `git rev-parse` blob ở cả hai commit + `git log --all -- <file>` | `2cbe90a:…` = **`3c37ab8bda5da35228d8041734b09982d8d21bb2`**; `741aee6:…` = **`3c37ab8bda5da35228d8041734b09982d8d21bb2`** — **GIỐNG HỆT**. `git log --all -- <file>` chỉ có **`be70eed`** | **✅ PASS — KHÔNG vi phạm** |
+| B5 | `nmap`, `gmpy2`, `fpylll`, `angr`, `sage` **vẫn thiếu ở CẢ HAI** | `import` trong **từng** interpreter + `command -v` | `gmpy2`/`fpylll`/`angr` → `ModuleNotFoundError` ở **cả hai**; `nmap` → `command not found` ở **cả hai**; `sage` → không có trong PATH ở **cả hai** | **✅ PASS** |
+
+**Kiểm chứng bản đính chính §1.7 — đây là điểm tôi đánh giá cao nhất:**
+
+`READINESS.md` §1.7 ghi rõ **hai nguyên nhân gốc** — (1) chuỗi `pip list | grep -Ei '…'` **không chứa
+`unicorn`**; (2) **chưa từng chạy `import unicorn` trong venv** — **trùng khớp từng ý** với phát hiện
+độc lập của tôi ở T9. Quan trọng hơn, §1.7 **chủ động bác bỏ chính cái cớ dễ dãi nhất**:
+> *"**KHÔNG phải nguyên nhân** | **Không** liên quan D-009. mtime `unicorn-2.1.2.dist-info` =
+> `2026-10-01 20:47:42 +07` = `13:47:42Z`; D-009 ký lúc `13:54:20Z` ⇒ `unicorn` có **TRƯỚC D-009
+> 6 phút 38 giây**. Đổ cho D-009 là **sai**."*
+
+⇒ Tác giả **không** lấy việc Admin vừa duyệt cài tool (D-009) để rửa lỗi. Đây là hành vi đúng mực.
+Bản sửa **sửa cả kết luận lẫn quy trình**, và **không đụng** bằng chứng thô cũ (B4) — đúng D-004.
+
+**Phán quyết T20-B: PASS — 5/5 mục. Lỗi ở T9 đã được sửa đúng gốc, không "sửa cho có".**
+
+### 2.12.1 Kiểm chứng chéo với verifier khác (Lớp 2)
+
+DeepSeek-Harness (T8, msg #76/#77) cũng đã **tự chạy lại** `import unicorn` và xác nhận `2.1.2` +
+mốc `6m38s`. ⇒ **hai kiểm định viên độc lập, hai môi trường, cùng kết quả.**
+**Giới hạn phải nói rõ:** cả hai đều chạy trên **cùng một máy** (`noble-tran`) ⇒ đây là **tái lập
+cùng môi trường**, **chưa** phải tái lập khác máy. Muốn mạnh hơn cần một máy thứ hai (ví dụ VM của
+`javis` tại `/home/hatch`). Tôi ghi vào mục `chưa xác minh` chứ không tuyên bố "đã kiểm độc lập đa máy".
