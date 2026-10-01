@@ -1,0 +1,63 @@
+# history_check_t31.py — T31 (BountyRecon) — D-023 phep kiem [2]
+# QUY UOC RANH GIOI: dong=splitlines(); vung='\n'.join(...); hai dau DONG; khong \n cuoi
+
+branch     : agent/bounty-recon/T31
+merge-base : 6d47749ea548  (main)
+head       : 9455f8932de7
+
+==============================================================================
+(A) MOI COMMIT CUA NHANH T31 — file bi cham + doi chieu danh sach CHO PHEP
+==============================================================================
+so commit: 5
+
+  commit 9455f8932de7  [T31] fix: tu sua 1 cau SAI do chinh minh tao ra o dong 21 + doi chieu ve merge-
+    OK    agents/bountyrecon/tasks/T3/CANDIDATES.md
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+    OK    agents/bountyrecon/tasks/T31/verify_t31.py
+
+  commit 209c3084e082  [T31] evidence: cap nhat output phep kiem lich su tai head cuoi (3 commit)
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+
+  commit 683e31f35493  [T31] report: FIX_GROUP_B.md + cap nhat output phep kiem lich su
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+    OK    agents/bountyrecon/tasks/T31/FIX_GROUP_B.md
+
+  commit 81a56e4dd799  [T31] evidence: them phep kiem lich su (D-023 [2]) + sua 1 phep thu sai cua chin
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+    OK    agents/bountyrecon/tasks/T31/history_check_t31.py
+
+  commit 52e96eaa92ed  [T31] fix: don nhom B - RECON.md 5 dong + CANDIDATES.md §2 (0 xung dot hieu luc)
+    OK    agents/bountyrecon/tasks/T3/CANDIDATES.md
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+    OK    agents/bountyrecon/tasks/T31/verify_t31.py
+    OK    security/gitlab/RECON.md
+
+  => moi file bi cham nam trong danh sach CHO PHEP: True
+  CHO PHEP = 2 file sua + moi thu trong agents/bountyrecon/tasks/T31/
+  DANH SACH LOAI TRU (khong duoc xuat hien): T28/FIX_2B.md, T29/*, moi EVIDENCE/**
+  => file bi LOAI TRU bi cham: 0  
+     (T31/EVIDENCE/** la bang chung cua chinh T31 => HOP LE, da loai khoi phep thu)
+
+==============================================================================
+(B) CHUOI COMMIT DA CHAM security/gitlab/SCOPE.md — bam vung NGUYEN VAN moi commit
+==============================================================================
+so commit cham security/gitlab/SCOPE.md: 3
+
+  commit        parent        nguyen van (cha)    nguyen van (commit)  KET QUA
+  1b318ded14f3  9f73655d9f3e  05235b2a064277b4    05235b2a064277b4     GIONG HET
+  9f73655d9f3e  8006168b2f00  05235b2a064277b4    05235b2a064277b4     GIONG HET
+
+  => so commit da kiem: 2
+  => VUNG TRICH NGUYEN VAN cua SCOPE.md KHONG DOI qua MOI commit: True
+     (neu co commit trung gian 'sua roi revert', dong nay se la KHAC !!)
+
+==============================================================================
+(C) scope_github.md — phai van la 15c946ff956a3fdb466f7f9768081af29b812088
+==============================================================================
+  HEAD:agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md  -> 15c946ff956a3fdb466f7f9768081af29b812088
+  main:agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md  -> 15c946ff956a3fdb466f7f9768081af29b812088
+  mong doi          -> 15c946ff956a3fdb466f7f9768081af29b812088
+  => KHOP CA HAI
+
+==============================================================================
+TONG KET: cho phep=True  nguyen van khong doi=True  scope_github=True

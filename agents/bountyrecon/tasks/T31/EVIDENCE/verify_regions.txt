@@ -1,0 +1,131 @@
+# verify_t31.py — T31 (BountyRecon)
+# DOI CHIEU: 'TRUOC' = merge-base main = 6d47749ea548  ('SAU' = cay lam viec)
+# QUY UOC RANH GIOI: dong = splitlines() (bo \n cuoi dong);
+#   vung = '\n'.join(dong_a..dong_b), 1-based, hai dau DONG; khong co \n o cuoi vung.
+#   Moi vung in hash theo 2 quy uoc: (A) khong \n cuoi, (B) co \n cuoi.
+
+==============================================================================
+FILE: security/gitlab/RECON.md
+  blob TRUOC (HEAD) : 75f163cf40131eb862250d6a7bf7d72886bd1342
+  blob SAU          : 75f163cf40131eb862250d6a7bf7d72886bd1342
+  so dong TRUOC=213  SAU=214
+  opcodes khac: [('replace', 39, 40, 39, 40), ('replace', 47, 47, 47, 47), ('replace', 206, 209, 206, 210)]
+
+  DONG DA SUA (theo difflib):
+    [replace] TRUOC dong 39..40  ->  SAU dong 39..40
+      - | `about.gitlab.com` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | `shaz`/`julio.ns.cloudflare.com` | A `104.18.28.129`, `104.18.29.12
+      - | `docs.gitlab.com` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | — | A `104.18.39.11`, `172.64.148.245` | TXT: `google-site-verificat
+      + | `about.gitlab.com` | ✅ URL (medium) — **Admin loại khỏi T4** (§2b) | `shaz`/`julio.ns.cloudflare.com` | A `104.18.28.1
+      + | `docs.gitlab.com` | ✅ URL (medium) — **Admin loại khỏi T4** (§2b) | — | A `104.18.39.11`, `172.64.148.245` | TXT: `goo
+    [replace] TRUOC dong 47..47  ->  SAU dong 47..47
+      - | `gitlab.net` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verif
+      + | `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `ha
+    [replace] TRUOC dong 206..209  ->  SAU dong 206..210
+      - 2. **4 tài sản bị XUNG ĐỘT scope** (`*.gitlab.net`, `*.gitlap.com`, `about.gitlab.com`,
+      -    `docs.gitlab.com`) — tôi đã trinh sát `about.gitlab.com`, `docs.gitlab.com` và `gitlab.net`
+      -    ở mức **thụ động thuần** (chỉ đọc DNS công khai) **trước khi** phát hiện xung đột.
+      -    ⛔ **Từ thời điểm phát hiện: CẤM chạm.** Xem [`SCOPE.md`](SCOPE.md) §2b. **Cần Admin phán quyết.**
+      + 2. **4 tài sản đã được Admin loại khỏi T4** (`*.gitlab.net`, `*.gitlap.com`, `about.gitlab.com`,
+      +    `docs.gitlab.com`) — **0 xung đột hiệu lực**: vế OUT là bản ghi **đã nghỉ hưu**
+      +    (`archived_at` 2022-07-21). Tôi đã trinh sát `about.gitlab.com`, `docs.gitlab.com` và `gitlab.net`
+      +    ở mức **thụ động thuần** (chỉ đọc DNS công khai) **trước khi** biết điều đó.
+      +    ⛔ **Phán quyết đã xong (D-021): CẤM chạm 4 tài sản này trong T4.** Xem [`SCOPE.md`](SCOPE.md) §2b.
+
+  VUNG KHONG DOI (moi vung phai GIONG HET):
+    V0: TRUOC dong 1..38 (SAU 1..38) n=38
+        (A) khong \n cuoi: 776ef89770730c78 vs 776ef89770730c78  -> GIONG HET
+        (B) co    \n cuoi: 77d226b5cee7f331 vs 77d226b5cee7f331  -> GIONG HET
+    V1: TRUOC dong 41..46 (SAU 41..46) n=6
+        (A) khong \n cuoi: 84baedade6f78a75 vs 84baedade6f78a75  -> GIONG HET
+        (B) co    \n cuoi: ff105a989771d175 vs ff105a989771d175  -> GIONG HET
+    V2: TRUOC dong 48..205 (SAU 48..205) n=158
+        (A) khong \n cuoi: 28f7abc25a838969 vs 28f7abc25a838969  -> GIONG HET
+        (B) co    \n cuoi: 5efe5dea6d9d5bed vs 5efe5dea6d9d5bed  -> GIONG HET
+    V3: TRUOC dong 210..213 (SAU 211..214) n=4
+        (A) khong \n cuoi: 4e126826f6fb027c vs 4e126826f6fb027c  -> GIONG HET
+        (B) co    \n cuoi: eb8682aaf58021e2 vs eb8682aaf58021e2  -> GIONG HET
+
+==============================================================================
+FILE: agents/bountyrecon/tasks/T3/CANDIDATES.md
+  blob TRUOC (HEAD) : ac04b4605a0a8baa66fb827da848cb03c3c514d3
+  blob SAU          : 095006ce5914622f6634d6252793f87af1720df6
+  so dong TRUOC=118  SAU=121
+  opcodes khac: [('replace', 19, 19, 19, 19), ('replace', 21, 21, 21, 21), ('replace', 64, 64, 64, 64), ('replace', 66, 67, 66, 67), ('replace', 69, 69, 69, 73), ('replace', 71, 74, 75, 78), ('replace', 76, 77, 80, 82), ('replace', 79, 82, 84, 85)]
+
+  DONG DA SUA (theo difflib):
+    [replace] TRUOC dong 19..19  ->  SAU dong 19..19
+      - | 4 | Chốt 4 **xung đột scope** của GitLab (xem §2) | ⏸ **CHƯA** — **CẦN ADMIN PHÁN QUYẾT** |
+      + | 4 | GitLab: **0 xung đột hiệu lực** — vế OUT là bản ghi đã nghỉ hưu (`archived_at` 2022-07-21); Admin đã **loại cả 4 t
+    [replace] TRUOC dong 21..21  ->  SAU dong 21..21
+      - **⇒ Chưa đủ 4/4. ĐỀ NGHỊ CHƯA MỞ T4.**
+      + **⇒ Điều kiện mở T4 nay là: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**
+    [replace] TRUOC dong 64..64  ->  SAU dong 64..64
+      - ## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)
+      + ## 2. GitLab — **0 xung đột hiệu lực**; 4 tài sản đã nghỉ hưu (ĐÃ PHÁN QUYẾT)
+    [replace] TRUOC dong 66..67  ->  SAU dong 66..67
+      - Đã xác minh bằng script trên `h1_gitlab.json`. 4 tài sản nằm **đồng thời** ở cả
+      - `eligible_for_submission=true` **và** `=false`:
+      + > 🔄 **ĐÍNH CHÍNH (T31).** Mục này trước đây là *"🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB
+      + > (CẦN ADMIN PHÁN QUYẾT)"*. **Việc phán quyết ĐÃ XONG.** Chi tiết: `security/gitlab/SCOPE.md` §2b.
+    [replace] TRUOC dong 69..69  ->  SAU dong 69..73
+      - | # | Tài sản | IN | OUT |
+      + Bằng chứng (`h1_gitlab.json`; tái lập ở T28 và T31): truy vấn `archived:false` cho
+      + **44 entry · IN=19 · OUT=25 · giao = 0**. Bốn tài sản từng bị coi là "xung đột" thực chất là
+      + **bản ghi OUT đã nghỉ hưu ngày 2022-07-21**. Biến quyết định là **`archived_at`**, không phải `asset_type`:
+      + 
+      + | # | Tài sản | Vế IN (còn hiệu lực) | Vế OUT (`archived_at`) |
+    [replace] TRUOC dong 71..74  ->  SAU dong 75..78
+      - | 1 | `*.gitlab.net` | WILDCARD, bounty=True, medium | URL, bounty=False, none |
+      - | 2 | `*.gitlap.com` | WILDCARD, bounty=True, medium | URL, bounty=False, none |
+      - | 3 | `about.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, none |
+      - | 4 | `docs.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, none |
+      + | 1 | `*.gitlab.net` | WILDCARD, bounty=True, medium | URL, bounty=False, **2022-07-21T15:51:33.499Z** |
+      + | 2 | `*.gitlap.com` | WILDCARD, bounty=True, medium | URL, bounty=False, **2022-07-21T15:51:16.877Z** |
+      + | 3 | `about.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, **2022-07-21T15:53:03.572Z** |
+      + | 4 | `docs.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, **2022-07-21T15:53:13.475Z** |
+    [replace] TRUOC dong 76..77  ->  SAU dong 80..82
+      - ⛔ **Theo D-005 ("Nghi ngờ về phạm vi ⇒ DỪNG, hỏi Admin. KHÔNG tự đoán"):**
+      - **CẤM ExploitDeep chạm 4 tài sản này** cho tới khi Admin phán quyết.
+      + ⛔ **QUYẾT ĐỊNH CỦA ADMIN (giữ nguyên): loại cả 4 tài sản khỏi T4.** Thận trọng hơn mức cần
+      + nhưng **không gây hại**, trong khi khai thác nhầm gây hại không khắc phục được. Nay gọi đúng tên:
+      + **"0 xung đột thật + 4 loại thận trọng"** (D-021; `DISSENT-7`/`DISSENT-8`).
+    [replace] TRUOC dong 79..82  ->  SAU dong 84..85
+      - **Đề nghị Admin chọn 1 trong 2:**
+      - - **(a)** Loại 4 tài sản khỏi mọi hoạt động T4 (an toàn nhất), **hoặc**
+      - - **(b)** Cho phép tôi (BountyRecon) gửi câu hỏi làm rõ tới GitLab qua kênh HackerOne **trước**
+      -   khi T4 chạm.
+      + ⇒ **ExploitDeep: CẤM chạm 4 tài sản này.** Điều kiện mở T4 **không** còn là "chốt xung đột"
+      + (đã xong) mà là **chỉ thị nêu target cụ thể của Admin** (D-013).
+
+  VUNG KHONG DOI (moi vung phai GIONG HET):
+    V0: TRUOC dong 1..18 (SAU 1..18) n=18
+        (A) khong \n cuoi: 5aa4af3d5d6e37c4 vs 5aa4af3d5d6e37c4  -> GIONG HET
+        (B) co    \n cuoi: 1f90b9bfc1e6e4ca vs 1f90b9bfc1e6e4ca  -> GIONG HET
+    V1: TRUOC dong 20..20 (SAU 20..20) n=1
+        (A) khong \n cuoi: e3b0c44298fc1c14 vs e3b0c44298fc1c14  -> GIONG HET
+        (B) co    \n cuoi: 01ba4719c80b6fe9 vs 01ba4719c80b6fe9  -> GIONG HET
+    V2: TRUOC dong 22..63 (SAU 22..63) n=42
+        (A) khong \n cuoi: 91d499bdd55bf3db vs 91d499bdd55bf3db  -> GIONG HET
+        (B) co    \n cuoi: 2a0b7549cdcfc9a6 vs 2a0b7549cdcfc9a6  -> GIONG HET
+    V3: TRUOC dong 65..65 (SAU 65..65) n=1
+        (A) khong \n cuoi: e3b0c44298fc1c14 vs e3b0c44298fc1c14  -> GIONG HET
+        (B) co    \n cuoi: 01ba4719c80b6fe9 vs 01ba4719c80b6fe9  -> GIONG HET
+    V4: TRUOC dong 68..68 (SAU 68..68) n=1
+        (A) khong \n cuoi: e3b0c44298fc1c14 vs e3b0c44298fc1c14  -> GIONG HET
+        (B) co    \n cuoi: 01ba4719c80b6fe9 vs 01ba4719c80b6fe9  -> GIONG HET
+    V5: TRUOC dong 70..70 (SAU 74..74) n=1
+        (A) khong \n cuoi: 4da1ec6f47782090 vs 4da1ec6f47782090  -> GIONG HET
+        (B) co    \n cuoi: 831fe3c04df7a963 vs 831fe3c04df7a963  -> GIONG HET
+    V6: TRUOC dong 75..75 (SAU 79..79) n=1
+        (A) khong \n cuoi: e3b0c44298fc1c14 vs e3b0c44298fc1c14  -> GIONG HET
+        (B) co    \n cuoi: 01ba4719c80b6fe9 vs 01ba4719c80b6fe9  -> GIONG HET
+    V7: TRUOC dong 78..78 (SAU 83..83) n=1
+        (A) khong \n cuoi: e3b0c44298fc1c14 vs e3b0c44298fc1c14  -> GIONG HET
+        (B) co    \n cuoi: 01ba4719c80b6fe9 vs 01ba4719c80b6fe9  -> GIONG HET
+    V8: TRUOC dong 83..118 (SAU 86..121) n=36
+        (A) khong \n cuoi: 6dadecbec68780b1 vs 6dadecbec68780b1  -> GIONG HET
+        (B) co    \n cuoi: cc2de093eef77ed5 vs cc2de093eef77ed5  -> GIONG HET
+
+==============================================================================
+TONG dong da sua (2 file): 23
+KET LUAN: moi vung khong doi GIONG HET theo CA HAI quy uoc: True
