@@ -8,7 +8,8 @@
 **Người lập:** BountyRecon (`ag_579fc4fa`) · **Task:** T3 · **Nhánh:** `agent/bounty-recon/T3`
 **Trạng thái:** ✅ **Trích được nguyên văn. 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §2b.**
 
-> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1.
+> ✅ **Đã verify — T14 PASS** (Reviewer1; `reviews/CROSS.md` §2.8, mốc `03d304b`; đã merge `4642e3c`). Theo D-004, người viết KHÔNG tự verify.
+> 🔄 **Riêng §1 và §2b đã được sửa SAU T14** (T34/T28) — xem ghi chú "supersede" trong từng mục.
 
 ---
 
@@ -39,44 +40,70 @@ Script + JSON thô: `agents/bountyrecon/tasks/T3/EVIDENCE/` (`fetch_h1.py`, `h1_
 
 ---
 
-## 1. TRÍCH NGUYÊN VĂN — IN SCOPE (`eligible_for_submission=true`, n=24)
+## 1. TRÍCH NGUYÊN VĂN — IN SCOPE (`eligible_for_submission=true`)
+
+> ⚠️ **ĐÍNH CHÍNH (T34) — bổ sung trường `archived_at` (BẮT BUỘC theo D-025 [3b] / bài học M-01).**
+> **Thay đổi này supersede chứng thực T14 ở RIÊNG phần §1 được THÊM/BỔ SUNG dưới đây**
+> (trường `archived_at` và bảng 5 bản ghi nghỉ hưu). **Mọi giá trị CŨ (`asset_identifier`,
+> `asset_type`, `eligible_for_bounty`, `max_severity`, `instruction`) KHÔNG bị sửa một ký tự nào**
+> ⇒ chứng thực byte-exact của T14 **vẫn nguyên giá trị cho các giá trị đó**.
+> Truy vấn T3 gốc **không truyền tham số `archived`** ⇒ trả **63 entry**, trong đó
+> `eligible_for_submission=true` = **24**; nhưng **24 đó TRỘN 19 bản còn hiệu lực + 5 bản đã nghỉ hưu**.
+> Truy vấn lại với `archived:false` ⇒ **19**. Đây là **cùng một lỗi gốc** với M-01 (thiếu chiều dữ liệu).
+>
+> 📋 **5 bản ghi ĐÃ NGHỈ HƯU đang bị trộn trong `n=24`** — tôi **tự truy vấn lại ở T34**,
+> khớp **từng mili-giây** với danh sách Admin/Reviewer1 nêu ở T32:
+>
+> | Tài sản | `archived_at` |
+> |---|---|
+> | `https://gitlab.com/gitlab-org/gitlab-workhorse` | **2021-12-28T13:36:15.653Z** |
+> | `license.gitlab.com` | **2022-03-21T22:30:03.041Z** |
+> | `Static websites` | **2022-07-21T16:00:50.221Z** |
+> | `https://gitlab.com/gitlab-org/opstrace/` | **2023-06-04T21:02:31.693Z** |
+> | `GitLab for Jira Cloud Plugin` | **2023-12-07T13:38:09.687Z** |
+>
+> ⛔ **ExploitDeep:** 5 tài sản này **KHÔNG phải target đang mở** — đừng tốn công.
+>
+> ❗ **KHÔNG kết luận ngữ nghĩa:** việc một bản ghi **đã `archived`** vẫn mang
+> `eligible_for_submission=true` **chưa xác minh** nghĩa là gì (Reviewer1 T32 cũng ghi `chưa xác minh`;
+> Admin cũng không đoán). Tôi **ghi hiện tượng, KHÔNG suy ra ngữ nghĩa.**
 
 ```text
-WILDCARD    *.gitlab.net
+WILDCARD    *.gitlab.net                            archived_at=None
             instruction: "Hosts owned and operated by GitLab."
-WILDCARD    *.gitlab.org
+WILDCARD    *.gitlab.org                            archived_at=None
             instruction: "Hosts owned and operated by GitLab."
-WILDCARD    *.gitlap.com
+WILDCARD    *.gitlap.com                            archived_at=None
             instruction: "Hosts owned and operated by GitLab. gitla**p** with a p!"
-URL         gitlab.com                            max_severity=critical
-URL         registry.gitlab.com                   max_severity=critical
-URL         customers.gitlab.com                  max_severity=critical
+URL         gitlab.com                            max_severity=critical    archived_at=None
+URL         registry.gitlab.com                   max_severity=critical    archived_at=None
+URL         customers.gitlab.com                  max_severity=critical    archived_at=None
             instruction: "Server-side Denial of Service is out of scope as per our Policy."
-URL         license.gitlab.com                    max_severity=critical
-URL         about.gitlab.com                      max_severity=medium
+URL         license.gitlab.com                    max_severity=critical    archived_at=2022-03-21T22:30:03.041Z   <-- RETIRED
+URL         about.gitlab.com                      max_severity=medium    archived_at=None
             instruction: "There is no user data therefore no confidentiality impact is possible,
             however we want to know if you can modify the content or make it unavailable."
-URL         docs.gitlab.com                       max_severity=medium   (instruction như trên)
-URL         design.gitlab.com                     max_severity=medium   (instruction như trên)
-URL         advisories.gitlab.com                 max_severity=medium   (instruction như trên)
-OTHER       Your Own GitLab Instance              max_severity=critical
-OTHER       Other non-production infrastructure   max_severity=medium
+URL         docs.gitlab.com                       max_severity=medium    archived_at=None   (instruction như trên)
+URL         design.gitlab.com                     max_severity=medium    archived_at=None   (instruction như trên)
+URL         advisories.gitlab.com                 max_severity=medium    archived_at=None   (instruction như trên)
+OTHER       Your Own GitLab Instance              max_severity=critical    archived_at=None
+OTHER       Other non-production infrastructure   max_severity=medium    archived_at=None
             instruction: "Hosts owned and operated by GitLab other than gitlab.com itself
             and our static websites."
-OTHER       Static websites                       max_severity=medium
+OTHER       Static websites                       max_severity=medium    archived_at=2022-07-21T16:00:50.221Z   <-- RETIRED
             instruction: "Our static websites like the marketing website, the handbook, or the
             documentation. There is no user data therefore no confidentiality impact is possible,
             however we want to know if you can modify the content or make it unavailable."
-OTHER       GitLab for Jira Cloud                 max_severity=medium
-OTHER       GitLab for Jira Cloud Plugin          max_severity=critical
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-runner
-SOURCE_CODE https://gitlab.com/gitlab-org/gitaly
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-pages
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-shell
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-vscode-extension
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-workhorse
-SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/
+OTHER       GitLab for Jira Cloud                 max_severity=medium    archived_at=None
+OTHER       GitLab for Jira Cloud Plugin          max_severity=critical    archived_at=2023-12-07T13:38:09.687Z   <-- RETIRED
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab                    archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-runner             archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitaly                    archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-pages              archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-shell              archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-vscode-extension   archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-workhorse          archived_at=2021-12-28T13:36:15.653Z   <-- RETIRED
+SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/                 archived_at=2023-06-04T21:02:31.693Z   <-- RETIRED
 ```
 
 Policy prose bổ sung — `policy_gitlab.md` § `# Scope`, dòng 87–89:

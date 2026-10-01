@@ -9,7 +9,7 @@
 **Người lập:** BountyRecon (`ag_579fc4fa`) · **Task:** T3 · **Nhánh:** `agent/bounty-recon/T3`
 **Trạng thái:** ✅ **Trích được NGUYÊN VĂN in-scope + out-of-scope + cấm + mức thưởng.**
 
-> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1 kiểm lại.
+> ✅ **Đã verify — T14 PASS** (Reviewer1; `reviews/CROSS.md` §2.8, mốc `03d304b`; đã merge `4642e3c`). Theo D-004, người viết KHÔNG tự verify.
 > Mọi câu trong khối trích dẫn dưới đây là bản sao nguyên văn từ nguồn đã fetch; phần
 > không trích dẫn là tổng hợp của tôi và được ghi rõ.
 

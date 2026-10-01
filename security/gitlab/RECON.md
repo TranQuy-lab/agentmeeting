@@ -3,7 +3,7 @@
 **Chương trình:** GitLab — xem [`SCOPE.md`](SCOPE.md) (scope đã trích nguyên văn)
 **Người thực hiện:** BountyRecon (`ag_579fc4fa`) · **Task:** T3 · **Nhánh:** `agent/bounty-recon/T3`
 **Ngày chạy:** `2026-10-01`, giờ máy UTC `2026-10-01T13:52:0xZ`
-**Trạng thái:** ⚠️ **Chưa verify — chờ Reviewer1.** Đây là *quan sát bề mặt*, KHÔNG phải kết luận lỗ hổng.
+**Trạng thái:** ✅ **Đã verify — T14 PASS** (`reviews/CROSS.md` §2.8, mốc `03d304b`). Đây là *quan sát bề mặt*, KHÔNG phải kết luận lỗ hổng.
 **Đặc biệt:** chương trình GitLab **tuyên bố thẳng** rằng báo cáo quét tự động và báo cáo thu thập
 thông tin là **out of scope** ⇒ nội dung file này **KHÔNG** phải finding. Xem §3.
 

@@ -9,7 +9,7 @@
 **Trạng thái:** ✅ **Trích được NGUYÊN VĂN in-scope + out-of-scope + cấm.**
 ⚠️ **Mức thưởng: chỉ có khoảng min/max công bố, KHÔNG có bảng theo mức độ trong policy.**
 
-> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1.
+> ✅ **Đã verify — T14 PASS** (Reviewer1; `reviews/CROSS.md` §2.8, mốc `03d304b`; đã merge `4642e3c`). Theo D-004, người viết KHÔNG tự verify.
 
 ---
 

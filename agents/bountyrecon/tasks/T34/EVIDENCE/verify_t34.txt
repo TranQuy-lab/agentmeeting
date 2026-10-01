@@ -1,0 +1,76 @@
+# verify_t34.py — T34 + T36 (BountyRecon)
+# merge-base main = 4fe2d609b0d4   head = 4fe2d609b0d4
+# QUY UOC RANH GIOI: dong=splitlines(); vung='\n'.join(...); hai dau DONG; khong \n cuoi
+#   Moi vung bam theo CA HAI quy uoc: (A) khong \n cuoi (B) co \n cuoi
+
+==============================================================================
+[1] BAM TUNG PHAN — moi vung KHONG DOI phai GIONG HET (ca 2 quy uoc)
+==============================================================================
+  security/gitlab/SCOPE.md
+    dong 299 -> 326 | dong sua: 26 | opcodes: [('replace', 11, 11, 11, 12), ('replace', 42, 42, 43, 69), ('replace', 45, 45, 72, 72), ('replace', 47, 47, 74, 74), ('replace', 49, 49, 76, 76), ('replace', 51, 53, 78, 80), ('replace', 55, 56, 82, 83), ('replace', 59, 63, 86, 90), ('replace', 66, 66, 93, 93), ('replace', 70, 79, 97, 106)]
+    moi vung khong doi GIONG HET (ca A va B): True
+  security/github/SCOPE.md
+    dong 314 -> 314 | dong sua: 1 | opcodes: [('replace', 12, 12, 12, 12)]
+    moi vung khong doi GIONG HET (ca A va B): True
+  security/cloudflare/SCOPE.md
+    dong 212 -> 212 | dong sua: 1 | opcodes: [('replace', 12, 12, 12, 12)]
+    moi vung khong doi GIONG HET (ca A va B): True
+  security/gitlab/RECON.md
+    dong 214 -> 214 | dong sua: 1 | opcodes: [('replace', 6, 6, 6, 6)]
+    moi vung khong doi GIONG HET (ca A va B): True
+  security/github/RECON.md
+    dong 201 -> 201 | dong sua: 1 | opcodes: [('replace', 6, 6, 6, 6)]
+    moi vung khong doi GIONG HET (ca A va B): True
+  security/cloudflare/RECON.md
+    dong 196 -> 196 | dong sua: 1 | opcodes: [('replace', 6, 6, 6, 6)]
+    moi vung khong doi GIONG HET (ca A va B): True
+  agents/bountyrecon/tasks/T3/CANDIDATES.md
+    dong 121 -> 121 | dong sua: 2 | opcodes: [('replace', 5, 5, 5, 5), ('replace', 44, 44, 44, 44)]
+    moi vung khong doi GIONG HET (ca A va B): True
+  agents/bountyrecon/tasks/T31/FIX_GROUP_B.md
+    dong 160 -> 185 | dong sua: 2 | opcodes: [('replace', 78, 78, 78, 78), ('insert', 95, 94, 95, 107), ('replace', 120, 120, 133, 134), ('insert', 124, 123, 138, 140), ('insert', 136, 135, 153, 160)]
+    moi vung khong doi GIONG HET (ca A va B): True
+  agents/bountyrecon/tasks/T31/history_check_t31.py
+    dong 158 -> 167 | dong sua: 2 | opcodes: [('replace', 110, 110, 110, 111), ('insert', 115, 114, 116, 117), ('insert', 118, 117, 121, 121), ('insert', 123, 122, 127, 127), ('insert', 126, 125, 131, 131), ('replace', 133, 133, 139, 142)]
+    moi vung khong doi GIONG HET (ca A va B): True
+  agents/bountyrecon/tasks/T31/verify_t31.py
+    dong 101 -> 104 | dong sua: 2 | opcodes: [('replace', 63, 64, 63, 67)]
+    moi vung khong doi GIONG HET (ca A va B): True
+
+  => TONG dong sua (10 file): 39 | tat ca vung khong doi OK: True
+
+==============================================================================
+[2] VUNG NGUYEN VAN BAO VE — phai GIONG HET truoc/sau
+==============================================================================
+  security/gitlab/SCOPE.md :: §1 khoi POLICY PROSE (All GitLab Inc. products...)
+    dong 85..87 (n=3)  A:a9848e719e2fa820/a9848e719e2fa820  B:03ead0ba033248b9/03ead0ba033248b9  -> GIONG HET
+  security/gitlab/SCOPE.md :: §2a out-of-scope
+    dong 94..145 (n=52)  A:c66e5cd27def0a3b/c66e5cd27def0a3b  B:b229ca26c229c9be/b229ca26c229c9be  -> GIONG HET
+  security/gitlab/SCOPE.md :: §3 quy dinh cam
+    dong 204..243 (n=40)  A:bccd8996af78841a/bccd8996af78841a  B:149c20ea04ea7749/149c20ea04ea7749  -> GIONG HET
+  security/gitlab/SCOPE.md :: §4 muc thuong
+    dong 244..279 (n=36)  A:9392dc0ba44abc0c/9392dc0ba44abc0c  B:a0878811a32472b3/a0878811a32472b3  -> GIONG HET
+  security/github/SCOPE.md :: §1 in-scope
+    dong 44..125 (n=82)  A:d0161213634153bf/d0161213634153bf  B:6c13d3112e334a02/6c13d3112e334a02  -> GIONG HET
+  security/github/SCOPE.md :: §4b ineligible
+    dong 240..293 (n=54)  A:84c14e6ef0dcdd3a/84c14e6ef0dcdd3a  B:c8e53de5cd094556/c8e53de5cd094556  -> GIONG HET
+  security/cloudflare/SCOPE.md :: §1 in-scope
+    dong 28..77 (n=50)  A:b44095c4c210ae5d/b44095c4c210ae5d  B:73c34b91c94a80c7/73c34b91c94a80c7  -> GIONG HET
+
+==============================================================================
+[3] KIEM THEO LICH SU (D-023 phep kiem [2])
+==============================================================================
+  so commit trong merge-base..HEAD: 0  (chua commit -> 0 la dung)
+  => file bi LOAI TRU bi cham: 0  
+     LOAI TRU = T28/FIX_2B.md, T28|T29|T30|T32|T33/**, moi EVIDENCE/** khac
+
+==============================================================================
+[4] blob scope_github.md
+==============================================================================
+  HEAD -> 15c946ff956a3fdb466f7f9768081af29b812088
+  main -> 15c946ff956a3fdb466f7f9768081af29b812088
+  mong doi -> 15c946ff956a3fdb466f7f9768081af29b812088
+  => KHOP CA HAI
+
+==============================================================================
+TONG KET: vung khong doi + vung nguyen van OK=True | blob=True
