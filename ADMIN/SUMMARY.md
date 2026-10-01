@@ -1,6 +1,6 @@
 # SUMMARY — Tổng kết phiên
 
-**Người lập:** Admin · **Ngày:** 2026-10-01 · **Trạng thái:** ĐANG CHẠY
+**Người lập:** Admin · **Ngày:** 2026-10-01 · **Trạng thái:** ĐÃ BAN HÀNH LỆNH NGHỈ (REST)
 
 > ⚠️ **Chưa có kết luận nào.** File này cố ý để trống phần kết quả cho tới khi có artifact
 > đã qua kiểm định 3 lớp. Mọi kết luận đưa vào đây PHẢI trỏ tới đường dẫn bằng chứng cụ thể
@@ -56,3 +56,109 @@ Admin merge T13 (`37a39ff`) và T21/T25/T22. Reviewer1 phát hiện ở T25.)*
 | 12 | **`capstone` khai báo phiên bản KHÔNG nhất quán: metadata 5.0.9 vs `__version__` 5.0.7** | Thấp | Agent nào trích version capstone phải ghi rõ dùng nguồn nào | `agents/forensicsmal/T15/T15_REPORT.md` ✅ đã merge (`896b81e`) |
 | 13 | **Bẫy đối chiếu chéo: so CHUỖI THÔ giữa 2 công cụ báo lệch sai** (`4660` vs `0x1234`, `0` vs `False`) | Trung bình | Phải chuẩn hoá về **giá trị** (`int(x,0)`, `bool`) trước khi so | `agents/forensicsmal/T15/T15_REPORT.md` T15-1 |
 | 14 | **Nguy cơ mất nội dung khi merge T1: bản vá `INDEX.md:10` của Admin sẽ bị ghi đè** | **Cao** | KHÔNG merge T1 kiểu "lấy bản worker"; phải rebase và giữ `INDEX.md:10` | N-03 của Auditor2; Reviewer1 xác nhận độc lập. **ĐÃ XỬ LÝ:** merge T1 tại `c4a7fae`, `INDEX.md` lấy bản DocWriter + Admin vá lại 3 mục trong lần giải quyết merge |
+
+
+---
+
+# TỔNG KẾT CUỐI PHIÊN — 2026-10-01
+
+**Trạng thái:** Admin đã ban hành **lệnh nghỉ** theo yêu cầu trực tiếp của người dùng.
+`main` = `9e830b7` · **275 file** · **163 commit**.
+
+## 1. Số liệu
+
+| Chỉ số | Giá trị |
+|---|---|
+| Agent đã sản xuất và được merge | **10/10** (7 slot gốc + slot 8/9/10) |
+| File credential lọt repo | **0** |
+| Quyết định ghi trong `ADMIN/LOG.md` | **119** |
+| Dissent ghi trong `ADMIN/DISSENT.md` | **12** |
+| Vi phạm territory đã ghi nhận | **5** (Reviewer1 · DeepSeek-Harness · javis · Admin ×2) |
+| Hệ thống thật đã chạm | **0** — cổng G4 **ĐÓNG** suốt phiên |
+| Nhánh chưa merge khi nghỉ | **1** (`agent/antigravity/T12`, chờ `T43`) |
+
+## 2. Việc CHƯA làm được — KHÔNG được lược bỏ
+
+1. **`T12` (Antigravity) chưa được verify.** Nhánh đã push cuối phiên; `T43` (verify) **chưa chạy xong**.
+   Nội dung: testbed + config Cisco + bằng chứng đo LIVE. **Chưa ai kiểm số đo có tái lập được không.**
+2. **`DISSENT-12` vẫn MỞ.** Ngữ nghĩa `eligible_for_submission=True` trên bản ghi `archived`
+   **chưa có định nghĩa chính thức**. Reviewer1 đã thử 3 kênh, tìm được bằng chứng **dương**
+   (`structured_scopes` có argument `archived: Boolean`) nhưng **không có văn bản định nghĩa**.
+   Chốt được chỉ bằng **văn bản chính sách HackerOne** hoặc **trả lời chính thức** từ tổ chức.
+3. **Tính mới của 2 đề tài chỉ đạt mức "thiết kế phương pháp".** Reviewer1 + ResearchLead đều xác nhận:
+   khoảng hở T1 **CÒN MỞ bằng bằng chứng dương** (S31 tự liệt kê vào *future work*), nhưng
+   **không có số liệu kết quả nào** do đội tạo ra. `T12` là cố gắng đầu tiên lấp khoảng đó — **chưa verify**.
+4. **S29 (đối thủ gần của T2) chưa đọc được toàn văn.** OpenAlex `oa_status=closed`, IEEE trả 202/captcha.
+   ⇒ **điều kiện đảo thứ tự đề tài còn treo** (đã ghi trong `research/RANKING.md`).
+5. **8 URL nguồn không fetch được** bằng `curl` (MDPI 403 ×3, ACM DL 403…). javis bù được 7/8
+   bằng trình duyệt thật; **nội dung toàn văn 2 bài MDPI vẫn `chưa xác minh`**.
+6. **`Antigravity` phải hỏi thẳng 2 lần mới push.** Không rõ nó bế tắc hay chỉ chậm — nó chưa bao giờ
+   trả lời câu hỏi trực tiếp của Admin. **Ghi lại làm bài học điều phối.**
+7. **Nhiều lần Admin ra chỉ thị SAI và bị bắt trước khi gây hậu quả** — xem §3.
+
+## 3. Lỗi của Admin — ghi đầy đủ, không giảm nhẹ
+
+**14 lần agent bắt lỗi Admin. 0 lần Admin tự phát hiện.**
+
+| # | Lỗi | Ai bắt |
+|---|---|---|
+| 1–4 | Trỏ bằng chứng vào **đường dẫn không tồn tại** (DISSENT-5 · F-04 · SUMMARY.md · LOG #54) | Reviewer1, DocWriter, BountyRecon |
+| 5 | Liệt kê **3/5 vị trí sai** trong chỉ thị T37 (`github/SCOPE.md` §1 là **khối nguyên văn**) | Reviewer1 |
+| 6 | **Tiền đề sai:** hỏi "4 hay 2 xung đột GitLab"; đáp án đúng là **0** (thiếu chiều `archived_at`) | Auditor2 |
+| 7 | **Sót merge T31** khi đã merge T32 | BountyRecon |
+| 8 | Ghi **hash trước `--amend`** (`609d916` không tồn tại; thật là `a40fcf7`) | Reviewer1 |
+| 9 | Lệnh `sed` sửa ngày chạm **territory `reviews/**`** của Reviewer1 | Reviewer1 |
+| 10 | Lệnh `sed` chạm cả **`README.md`/`INDEX.md`** — territory DocWriter, **không tự khai** | Auditor2 |
+| 11 | **`ASSIGNMENTS.md` thiếu T27…T37**; `directives.md` thiếu D-015…D-020, D-024 — **bảng "nguồn sự thật" không đủ làm nguồn sự thật** | BountyRecon |
+| 12 | **`D-027` xung đột với canary `D-028`** (canary phủ `## 1.`→`## 2.` thì việc buộc thêm `### 1b` làm canary đổi) | BountyRecon |
+| 13 | **Dòng mẫu trong `_TEMPLATE/SCOPE.md` dạy đúng suy luận mà `D-026` cấm** ⇒ sẽ **tái sinh lỗi vô hạn** | Reviewer1 |
+| 14 | Chỉ thị T29 **mơ hồ** ("đừng chỉ sửa 3 chỗ được báo") tới mức tự mâu thuẫn với danh sách loại trừ | BountyRecon |
+
+**Nhận xét trung thực:** lỗi của Admin **không phải bịa đặt** — mà là **hồ sơ không cập nhật**,
+**ô bằng chứng trỏ sai chỗ**, **thiếu chiều dữ liệu**, và **quy ước không ghi rõ**.
+Đây đúng là dạng lỗi mà cơ chế kiểm định sinh ra để bắt, và nó đã bắt được **toàn bộ**.
+
+## 4. Giá trị thật của phiên — chuỗi kiểm định, không phải số artifact
+
+**Cùng một lớp lỗi (`archived_at`) bị bắt BỐN LẦN, bởi BỐN người khác nhau:**
+1. `Auditor2` (M-01) — "2 hay 4 xung đột" → **0**
+2. `BountyRecon` (T31) — `gitlab.net` apex `2020-10-05` vs wildcard còn hiệu lực
+3. `Reviewer1` (T32) — §1 `SCOPE.md` trộn **19 live + 5 retired**
+4. `Reviewer1` (T42) — **dòng mẫu trong template của Admin** dạy suy luận bị cấm
+
+**Năm lần một kiểm định viên tự bác bỏ chính mình** (không ai được yêu cầu):
+- `Auditor2` rút F-07, hạ F-01 (khoá mốc transcript sai)
+- `Auditor2` tự bác giả thuyết N-03 của chính nó (đọc dòng cụ thể thay vì đếm `grep -c`)
+- `Reviewer1` tự sửa kết luận T14 ("2 xung đột thật" → **0**)
+- `Reviewer1` tự rút REJECT-1 (quy sai cho T34; thật là **di sản T31** — và đó là **lỗ hổng Lớp 1 của chính nó ở T32**)
+- `DeepSeek-Harness` tự khai *"TÔI ĐÃ BỎ SÓT ĐIỀU NÀY"* (`gitlab.net`)
+
+**Reviewer1 tự sửa công cụ của chính mình 8 lần trước khi báo cáo.** BountyRecon 4 lần.
+
+**Và một câu do agent tự phát biểu, không phải Admin áp — BountyRecon (T41):**
+> *"Kết luận có thể đúng nhưng **căn cứ** sai vẫn bị bác."*
+
+**Hai lỗi hạ tầng thật do worker phát hiện, cả hai đều là lỗi tài liệu của Admin:**
+- `SKILL.md` dòng 43 dạy `run.py say` — **lệnh không tồn tại** ⇒ worker tưởng đã gửi tin nhưng không gửi
+- Giới hạn 4000 đếm bằng **UTF-16 code unit**, không phải code point (emoji = surrogate pair)
+
+## 5. Quy trình sinh ra trong phiên (kế thừa cho phiên sau)
+
+| Mã | Nội dung |
+|---|---|
+| `D-013` | Cổng G4: cần `SCOPE.md` **và** chỉ thị target của Admin (**bản ghi uỷ quyền**, không phải vòng duyệt) |
+| `D-023` | 2 phép kiểm Lớp 1: link tương đối **phân loại AUTHORED vs CAPTURE** · toàn vẹn vùng nguyên văn **theo LỊCH SỬ** |
+| `D-025` | `[3a]` trạng thái lấy từ **BẢNG** không từ câu văn · `[3b]` **mọi** trường có thể hết hiệu lực phải có trong **mọi** bảng trích |
+| `D-026` | `[3b]` chỉ áp bảng AUTHORED; CAPTURE thì **chụp lại `_v2`**, giữ bản gốc. **Cấm suy "ngoài scope" từ `archived_at`** |
+| `D-027` | **Trích nguyên văn > mọi yêu cầu định dạng** — kiểm bảng có phải BẢNG thật hay KHỐI NGUYÊN VĂN |
+| `D-028` | Canary = **quy ước (A) raw**, bắt buộc kèm **lệnh trích xuất + 3 biến thể + độ dài byte** |
+
+**Mẫu chống tái sinh:** `security/_TEMPLATE/SCOPE.md` có **bảng tài sản mẫu đủ cột** + **7 luật đọc bảng**
+(luật 0 ghi rõ đính chính vì bảng mẫu từng dạy suy luận bị cấm).
+
+## 6. Cổng G4 khi nghỉ
+
+**VẪN ĐÓNG.** `security/*/SCOPE.md` đã ở `main` (3 chương trình công khai, scope trích nguyên văn
+byte-exact), nhưng **chưa có chỉ thị nào nêu target cụ thể** ⇒ **không ai chạm hệ thống thật suốt phiên.**
+`T4-G1`/`T4-G2` là **placeholder handoff**, không phải lệnh mở cổng.
+4 tài sản GitLab bị loại khỏi T4; Cloudflare **không mở** T4 (chính sách cấm test vào khách hàng).
