@@ -1,0 +1,106 @@
+=== T29 — YEU CAU 4: blob scope_github.md phai van la 15c946ff... ===
+$ git rev-parse HEAD:$G
+  15c946ff956a3fdb466f7f9768081af29b812088
+$ git hash-object $G
+  15c946ff956a3fdb466f7f9768081af29b812088
+$ git rev-parse origin/main:$G
+  15c946ff956a3fdb466f7f9768081af29b812088
+  So voi gia tri Admin/Reviewer1 neu: 15c946ff956a3fdb466f7f9768081af29b812088
+$ git diff --exit-code HEAD -- $G ; echo exit=$?
+  exit=0
+
+=== T29 — YEU CAU 5: QUET TOAN TERRITORY tim '4 xung dot' / 'PHẢI HỎI ADMIN' ===
+UTC: 2026-10-01T15:04:44Z
+pham vi: agents/bountyrecon/** + security/** (moi file van ban)
+
+--- (5a) mau 'PHẢI HỎI ADMIN' (moi bien the) ---
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:12:=== T29 — YEU CAU 5: QUET TOAN TERRITORY tim '4 xung dot' / 'PHẢI HỎI ADMIN' ===
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:16:--- (5a) mau 'PHẢI HỎI ADMIN' (moi bien the) ---
+  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:31:  -**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:9:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:24:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T28/FIX_2B.md:134:| A | **dòng 9** (khối Tiêu đề/Trạng thái, §0) | `**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**` | Vẫn khẳng định "4 XUNG ĐỘT" + "PHẢI HỎI ADMIN" — nay đã có phán quyết |
+  agents/bountyrecon/tasks/T28/FIX_2B.md:142:> dòng 9 nói "4 XUNG ĐỘT … PHẢI HỎI ADMIN". Người đọc sau sẽ tin dòng 9 (nó ở đầu file).
+
+--- (5b) mau '4 xung đột' / '4 XUNG ĐỘT' (moi bien the) ---
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:12:=== T29 — YEU CAU 5: QUET TOAN TERRITORY tim '4 xung dot' / 'PHẢI HỎI ADMIN' ===
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:17:  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:12:=== T29 — YEU CAU 5: QUET TOAN TERRITORY tim '4 xung dot' / 'PHẢI HỎI ADMIN' ===
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:19:  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:31:  -**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:20:  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:9:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:21:  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:24:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:22:  agents/bountyrecon/tasks/T28/FIX_2B.md:134:| A | **dòng 9** (khối Tiêu đề/Trạng thái, §0) | `**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**` | Vẫn khẳng định "4 XUNG ĐỘT" + "PHẢI HỎI ADMIN" — nay đã có phán quyết |
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:23:  agents/bountyrecon/tasks/T28/FIX_2B.md:142:> dòng 9 nói "4 XUNG ĐỘT … PHẢI HỎI ADMIN". Người đọc sau sẽ tin dòng 9 (nó ở đầu file).
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:25:--- (5b) mau '4 xung đột' / '4 XUNG ĐỘT' (moi bien the) ---
+  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:31:  -**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:37:  -| Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:9:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:14:  | Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:24:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:27:  259:| Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+  agents/bountyrecon/tasks/T28/FIX_2B.md:134:| A | **dòng 9** (khối Tiêu đề/Trạng thái, §0) | `**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**` | Vẫn khẳng định "4 XUNG ĐỘT" + "PHẢI HỎI ADMIN" — nay đã có phán quyết |
+  agents/bountyrecon/tasks/T28/FIX_2B.md:136:| C | **§5, dòng 289** | `\| Đủ điều kiện chuyển ExploitDeep (T4)? \| ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước \|` | Vẫn nói "phải chốt 4 xung đột" — việc chốt **đã xong** (loại cả 4, D-021) |
+  agents/bountyrecon/tasks/T28/FIX_2B.md:142:> dòng 9 nói "4 XUNG ĐỘT … PHẢI HỎI ADMIN". Người đọc sau sẽ tin dòng 9 (nó ở đầu file).
+  agents/bountyrecon/tasks/T3/CANDIDATES.md:64:## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)
+  security/gitlab/SCOPE.md:148:> 🔄 **ĐÍNH CHÍNH (T28, `2026-10-01`).** Mục này trước đây gọi là *"4 XUNG ĐỘT SCOPE ĐÃ XÁC MINH"*.
+
+--- (5c) mau 'xung đột' noi chung (de phan loai dung/sai ngu canh) ---
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:19:  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:31:  -**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:20:  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:9:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:21:  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:24:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:22:  agents/bountyrecon/tasks/T28/FIX_2B.md:134:| A | **dòng 9** (khối Tiêu đề/Trạng thái, §0) | `**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**` | Vẫn khẳng định "4 XUNG ĐỘT" + "PHẢI HỎI ADMIN" — nay đã có phán quyết |
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:23:  agents/bountyrecon/tasks/T28/FIX_2B.md:142:> dòng 9 nói "4 XUNG ĐỘT … PHẢI HỎI ADMIN". Người đọc sau sẽ tin dòng 9 (nó ở đầu file).
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:25:--- (5b) mau '4 xung đột' / '4 XUNG ĐỘT' (moi bien the) ---
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:28:  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:19:  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:31:  -**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:29:  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:20:  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:9:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:30:  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:21:  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:24:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:31:  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:22:  agents/bountyrecon/tasks/T28/FIX_2B.md:134:| A | **dòng 9** (khối Tiêu đề/Trạng thái, §0) | `**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**` | Vẫn khẳng định "4 XUNG ĐỘT" + "PHẢI HỎI ADMIN" — nay đã có phán quyết |
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:32:  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:23:  agents/bountyrecon/tasks/T28/FIX_2B.md:142:> dòng 9 nói "4 XUNG ĐỘT … PHẢI HỎI ADMIN". Người đọc sau sẽ tin dòng 9 (nó ở đầu file).
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:33:  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:25:--- (5b) mau '4 xung đột' / '4 XUNG ĐỘT' (moi bien the) ---
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:34:  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:31:  -**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:35:  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:37:  -| Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:36:  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:9:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:37:  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:14:  | Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:38:  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:24:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:39:  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:27:  259:| Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:40:  agents/bountyrecon/tasks/T28/FIX_2B.md:134:| A | **dòng 9** (khối Tiêu đề/Trạng thái, §0) | `**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**` | Vẫn khẳng định "4 XUNG ĐỘT" + "PHẢI HỎI ADMIN" — nay đã có phán quyết |
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:41:  agents/bountyrecon/tasks/T28/FIX_2B.md:136:| C | **§5, dòng 289** | `\| Đủ điều kiện chuyển ExploitDeep (T4)? \| ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước \|` | Vẫn nói "phải chốt 4 xung đột" — việc chốt **đã xong** (loại cả 4, D-021) |
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:42:  agents/bountyrecon/tasks/T28/FIX_2B.md:142:> dòng 9 nói "4 XUNG ĐỘT … PHẢI HỎI ADMIN". Người đọc sau sẽ tin dòng 9 (nó ở đầu file).
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:43:  agents/bountyrecon/tasks/T3/CANDIDATES.md:64:## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:44:  security/gitlab/SCOPE.md:148:> 🔄 **ĐÍNH CHÍNH (T28, `2026-10-01`).** Mục này trước đây gọi là *"4 XUNG ĐỘT SCOPE ĐÃ XÁC MINH"*.
+  agents/bountyrecon/tasks/T29/EVIDENCE/scan_residual.txt:46:--- (5c) mau 'xung đột' noi chung (de phan loai dung/sai ngu canh) ---
+  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:31:  -**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:32:  +**Trạng thái:** ✅ **Trích được nguyên văn. 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §2b.**
+  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:34:  -| Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột |
+  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:35:  +| Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản). 4 tài sản từng bị coi là xung đột đã **nghỉ hưu** (`archived_at` 2022-07-21) ⇒ **0 xung đột hiệu lực** |
+  agents/bountyrecon/tasks/T29/EVIDENCE/verify_3lines.txt:37:  -| Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:9:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:13:  | Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột |
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:14:  | Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:24:  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:26:  254:| Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột |
+  agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt:27:  259:| Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+  agents/bountyrecon/tasks/T28/FIX_2B.md:27:| Nhãn | `## 2b. 🚨 XUNG ĐỘT SCOPE ĐÃ XÁC MINH — KHÔNG ĐƯỢC ĐOÁN` | `## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT HIỆU LỰC** (đã đính chính ở T28)` |
+  agents/bountyrecon/tasks/T28/FIX_2B.md:134:| A | **dòng 9** (khối Tiêu đề/Trạng thái, §0) | `**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**` | Vẫn khẳng định "4 XUNG ĐỘT" + "PHẢI HỎI ADMIN" — nay đã có phán quyết |
+  agents/bountyrecon/tasks/T28/FIX_2B.md:135:| B | **§5, dòng 284** | `\| Trích được nguyên văn in-scope? \| ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột \|` | Vẫn gọi "xung đột" |
+  agents/bountyrecon/tasks/T28/FIX_2B.md:136:| C | **§5, dòng 289** | `\| Đủ điều kiện chuyển ExploitDeep (T4)? \| ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước \|` | Vẫn nói "phải chốt 4 xung đột" — việc chốt **đã xong** (loại cả 4, D-021) |
+  agents/bountyrecon/tasks/T28/FIX_2B.md:141:> ⚠️ **Hệ quả nếu để nguyên:** tài liệu **tự mâu thuẫn** — §2b nói "0 xung đột hiệu lực" nhưng
+  agents/bountyrecon/tasks/T28/FIX_2B.md:142:> dòng 9 nói "4 XUNG ĐỘT … PHẢI HỎI ADMIN". Người đọc sau sẽ tin dòng 9 (nó ở đầu file).
+  agents/bountyrecon/tasks/T28/FIX_2B.md:158:| 1. Sửa CHỈ §2b, nhãn đúng "0 xung đột hiệu lực + 4 đã nghỉ hưu", thêm `archived_at` | ✅ |
+  agents/bountyrecon/tasks/T3/CANDIDATES.md:19:| 4 | Chốt 4 **xung đột scope** của GitLab (xem §2) | ⏸ **CHƯA** — **CẦN ADMIN PHÁN QUYẾT** |
+  agents/bountyrecon/tasks/T3/CANDIDATES.md:64:## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)
+  security/gitlab/SCOPE.md:9:**Trạng thái:** ✅ **Trích được nguyên văn. 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §2b.**
+  security/gitlab/SCOPE.md:146:## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT HIỆU LỰC** (đã đính chính ở T28)
+  security/gitlab/SCOPE.md:148:> 🔄 **ĐÍNH CHÍNH (T28, `2026-10-01`).** Mục này trước đây gọi là *"4 XUNG ĐỘT SCOPE ĐÃ XÁC MINH"*.
+  security/gitlab/SCOPE.md:149:> **Cách gọi đó SAI.** Cách đọc đúng: **0 xung đột hiệu lực + 4 bản ghi đã nghỉ hưu
+  security/gitlab/SCOPE.md:164:> Bỏ nó ⇒ sinh ra "xung đột scope" giả giữa chính sách **đang hiệu lực** và bản ghi **đã nghỉ hưu**.
+  security/gitlab/SCOPE.md:192:⇒ **0 xung đột hiệu lực.** Cả 4 vế OUT thuộc **một đợt lưu trữ duy nhất ngày 2022-07-21**.
+  security/gitlab/SCOPE.md:195:> Nay gọi đúng tên: **"0 xung đột thật + 4 loại thận trọng"**. Thận trọng hơn mức cần nhưng
+  security/gitlab/SCOPE.md:284:| Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản). 4 tài sản từng bị coi là xung đột đã **nghỉ hưu** (`archived_at` 2022-07-21) ⇒ **0 xung đột hiệu lực** |
+  security/gitlab/RECON.md:39:| `about.gitlab.com` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | `shaz`/`julio.ns.cloudflare.com` | A `104.18.28.129`, `104.18.29.129` | Sau Cloudflare. TXT: `_globalsign-domain-verification=…`. |
+  security/gitlab/RECON.md:40:| `docs.gitlab.com` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | — | A `104.18.39.11`, `172.64.148.245` | TXT: `google-site-verification=YgHoFZLvJOGzjmqfSOAqWD8fU4GnVYXjWojp8Tgxvb4`. |
+  security/gitlab/RECON.md:47:| `gitlab.net` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
+  security/gitlab/RECON.md:206:2. **4 tài sản bị XUNG ĐỘT scope** (`*.gitlab.net`, `*.gitlap.com`, `about.gitlab.com`,
+  security/gitlab/RECON.md:208:   ở mức **thụ động thuần** (chỉ đọc DNS công khai) **trước khi** phát hiện xung đột.
+  security/_TEMPLATE/SCOPE.md:9:| **`archived_at` của MỌI asset** | ✅ **BẮT BUỘC** | **Bài học M-01 (Auditor2 T24):** hai kiểm định viên độc lập cùng truy vấn một tập trường thì **cùng mù một chiều dữ liệu**. Bỏ `archived_at` ⇒ sinh ra "xung đột scope" giả giữa chính sách **đang hiệu lực** và bản ghi **đã nghỉ hưu** |
+  security/_TEMPLATE/SCOPE.md:19:  2. asset_type         (WILDCARD vs URL vs IP — khác loại thì có thể không phải xung đột)
+  security/_TEMPLATE/SCOPE.md:22:Chỉ kết luận "xung đột" sau khi đã loại trừ cả bốn chiều. Ghi rõ đã truy vấn hay chưa.
