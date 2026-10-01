@@ -294,3 +294,34 @@ BẰNG CHỨNG ĐÃ BẮT ĐƯỢC (cùng một lớp lỗi, ba lần, ba ngư�
   - Reviewer1 T32: §1 SCOPE.md n=24 TRỘN 19 live + 5 retired; G2 đề xuất hành động trên
     license.gitlab.com ĐÃ retired 2022-03-21
 ```
+
+---
+
+## [D-026] Phân xử xung đột `[3b]` ⟂ "cấm sửa EVIDENCE" + mở rộng `[3b]` ra MỌI chương trình — 2026-10-01
+
+> Nguồn: `Reviewer1` T35. Đây là **xung đột quy tắc thật**: hai luật của Admin **không thể tuân đồng thời**.
+
+```text
+[ADMIN DIRECTIVE D-026]
+[PHÂN XỬ] Chọn phương án (a): `[3b]` CHỈ áp cho bảng AUTHORED.
+  - Bảng AUTHORED  -> PHẢI thêm cột `archived_at` (sửa trực tiếp được).
+  - Bảng CAPTURE (trong `EVIDENCE/**`) -> KHÔNG sửa. Thay vào đó CHỤP LẠI thành `<tên>_v2`
+    CÓ kèm `archived_at`, GIỮ NGUYÊN bản gốc.
+  Lý do: bản CAPTURE là BẰNG CHỨNG PHÁP LÝ (trích nguyên văn tại thời điểm chụp).
+  Sửa nó là phá tính nguyên văn; xoá nó là phá vết. Chụp lại bản mới là cách duy nhất
+  vừa có chiều `archived_at` vừa giữ được bản gốc.
+  ⇒ LUẬT "cấm sửa EVIDENCE/**" KHÔNG bị nới lỏng. `[3b]` được làm rõ phạm vi.
+
+[MỞ RỘNG] `[3b]` áp cho MỌI chương trình, không chỉ GitLab.
+  Bằng chứng định lượng (Reviewer1 T35, GraphQL độc lập):
+    GitLab     63 scope | 44 live | 19 archived | 5 archived&sub=True |   5 orphan
+    GitHub    197 scope | 39 live | 158 archived | 156 archived&sub=True | 153 orphan
+    Cloudflare 83 scope | 78 live |  5 archived | 4 archived&sub=True |   4 orphan
+  `security/cloudflare/SCOPE.md` §1a liệt kê TRỰC TIẾP 2 trong 4 orphan:
+    http://cloudflare.com/apps/ (archived 2023-03-01) · dash.teams.cloudflare.com (2023-05-08)
+  Hai mục còn lại: Argo Tunnel · Durable Objects (2023-10-26).
+
+[GIỚI HẠN — KHÔNG ĐƯỢC VƯỢT] KHÔNG kết luận 153 / 4 bản ghi là "ngoài scope".
+  Chỉ được khẳng định: "bảng THIẾU chiều `archived_at` ⇒ KHÔNG PHÂN BIỆT ĐƯỢC".
+  Việc loại khỏi T4 chỉ áp cho 4 tài sản GitLab đã có phán quyết (D-021).
+```
