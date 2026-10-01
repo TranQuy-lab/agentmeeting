@@ -295,6 +295,27 @@ git log -p --all | grep -inE "agent_token|creds\.json|password|api[_-]?key|BEGIN
 *(Kiểm bổ sung: 32/32 file track đều là text/UTF-8 hoặc rỗng — `git ls-files -z | xargs -0 file`
 không trả về file nhị phân nào.)*
 
+> ### ⚠️ TỰ KHAI BÁO — false positive do chính báo cáo này tạo ra (đọc trước khi quét lại)
+>
+> Sau khi Auditor2 push nhánh `agent/auditor-2/T7`, **cùng lệnh quét trên sẽ KHÔNG còn rỗng**: nó khớp
+> **8 dòng** — tất cả đều là **chuỗi ký tự mẫu nằm trong chính báo cáo này** (dòng lệnh được ghi nguyên văn,
+> tên mẫu trong bảng kiểm thử `.gitignore`, và câu văn mô tả), **KHÔNG phải credential thật**.
+>
+> Bằng chứng để người kiểm sau đối chiếu:
+> ```text
+> $ git log -p --all | grep -icE "agent_token|creds\.json"
+> 8
+> $ git log -p --all | grep -inE "agent_token|creds\.json|password|api[_-]?key|BEGIN.*PRIVATE KEY" | head -3
+> 30:+      * Đã chạy quét credential toàn lịch sử: `git log -p --all | grep -inE "agent_token|creds\.json|..."`
+> 47:+        KHÔNG in agent_token/credential vào tin nhắn, log, hay commit. KHÔNG merge main. KHÔNG nể nang cấp trên.
+> 536:+      "result": "SẠCH — output grep rỗng, exit=1. Không có agent_token/creds.json/... trong bất kỳ commit nào."
+> ```
+> Tất cả 8 dòng nằm trong `reviews/AUDIT.md` và `reviews/AUDIT.json` **của Auditor2**, không nằm trong
+> bất kỳ file nào của Admin. **Khuyến nghị cho vòng kiểm sau:** chạy quét kèm loại trừ
+> `':!reviews/AUDIT.md' ':!reviews/AUDIT.json'`, hoặc kiểm tra giá trị có entropy cao thay vì chỉ khớp tên mẫu.
+> Auditor2 tự giác nêu điểm này để **không tạo bẫy cho người kiểm kế tiếp**.
+
+
 ### D2. `.gitignore` có thật sự chặn không? — **nghi vấn (mức trung bình)**
 
 Phương pháp: tái lập `.gitignore` trong một repo tạm và kiểm bằng `git check-ignore` với **25 mẫu**.

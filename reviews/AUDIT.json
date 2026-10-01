@@ -539,7 +539,8 @@
     "Không dùng được admin_cli.py (bị cấm) nên không xác minh độc lập được trạng thái kicked của ag_9026ba92 và không liệt kê được danh sách agent của phòng.",
     "Không thể chứng minh VẮNG MẶT của force-push xảy ra trước thời điểm clone (reflog chỉ có 1 mục clone). Kết luận là 'không quan sát thấy'.",
     "Phòng đang sống: số tin tăng 10->11 trong lúc kiểm. Báo cáo khoá tại commit 879d69d + transcript 11 tin.",
-    "Không có quyền ghi ngoài reviews/AUDIT.* và agents/auditor2/**; mọi phát hiện chỉ ở mức báo cáo."
+    "Không có quyền ghi ngoài reviews/AUDIT.* và agents/auditor2/**; mọi phát hiện chỉ ở mức báo cáo.",
+    "Báo cáo tự tạo 8 false positive cho lệnh quét credential (xem self_disclosure). Đã tự khai báo để không gây bẫy cho vòng kiểm sau."
   ],
   "user_notified": true,
   "user_notification_summary": "Đã báo trong báo cáo phòng [AUDIT] và trong return: KHÔNG phát hiện bịa bằng chứng, KHÔNG phát hiện merge khống, KHÔNG phát hiện rò rỉ credential. Phát hiện thật: hồ sơ điều hành không đầy đủ/không cập nhật (F-01, F-02 — mức cao) và trích dẫn bằng chứng sai/lỗi thời (F-03, F-04, F-05).",
@@ -556,5 +557,15 @@
     "no_issue_items": 8,
     "checked_items": 15
   },
-  "conclusion": "Không phát hiện bịa bằng chứng, merge khống, hay rò rỉ credential. Phát hiện 5 vi phạm (2 mức cao), 5 nghi vấn, 6 thiếu sót trình bày."
+  "conclusion": "Không phát hiện bịa bằng chứng, merge khống, hay rò rỉ credential. Phát hiện 5 vi phạm (2 mức cao), 5 nghi vấn, 6 thiếu sót trình bày. Lưu ý: chính báo cáo này tạo 8 false positive cho lệnh quét credential — đã tự khai báo trong self_disclosure.",
+  "self_disclosure": {
+    "issue": "Báo cáo này tự tạo false positive cho chính lệnh quét credential đã dùng.",
+    "detail": "Sau khi push nhánh agent/auditor-2/T7, 'git log -p --all | grep -inE \"agent_token|creds\\.json|password|api[_-]?key|BEGIN.*PRIVATE KEY\"' khớp 8 dòng, TẤT CẢ là chuỗi mẫu nằm trong reviews/AUDIT.md và reviews/AUDIT.json của Auditor2 (dòng lệnh ghi nguyên văn, tên mẫu trong bảng kiểm thử .gitignore, câu mô tả). KHÔNG có credential thật. Không có dòng nào nằm trong file của Admin.",
+    "proof": {
+      "cmd": "git log -p --all | grep -icE \"agent_token|creds\\.json\"",
+      "result": "8",
+      "commit": "bc51cee"
+    },
+    "recommendation_for_next_auditor": "Chạy quét kèm loại trừ ':!reviews/AUDIT.md' ':!reviews/AUDIT.json', hoặc kiểm tra entropy thay vì chỉ khớp tên mẫu."
+  }
 }
