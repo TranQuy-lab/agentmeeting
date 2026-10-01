@@ -2174,3 +2174,167 @@ security/gitlab/SCOPE.md
 > **Phán quyết vòng 13b: T41 PASS 6/6.** Sửa **đúng phạm vi** (1+1 dòng), **đúng cách** (giữ kết luận, đổi căn cứ),
 > **căn cứ mới có thật và tôi đã kiểm chứng độc lập**, và **không sửa nhầm** các chỗ vốn đúng.
 > **`chưa xác minh` nay còn 2 mục** *(các mục chờ khác)*, **không còn mục nào thuộc T41.**
+
+---
+
+# VÒNG 14 — Bài kiểm #17 (T43): T12 Antigravity — **artifact KỸ THUẬT CÓ SỐ ĐO**
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T43`
+**Base:** `origin/main` = `9e830b7` (275 file) · **Head kiểm:** `agent/antigravity/T12` = `3a3c973` · merge-base = `4fe2d60`
+**Bằng chứng thô:** `agents/reviewer1/evidence/T43/` (`t43-sizes.txt`, `t43-run.txt`)
+
+```text
+[REVIEW] T43 / Antigravity T12 / Lớp 1 CROSS / KẾT QUẢ: REJECT
+         Lý do: artifact khai "THỰC NGHIỆM ĐO LƯỜNG" nhưng (a) 2 file bằng chứng = 0 byte,
+         (b) "benchmark eBPF" KHÔNG có eBPF và số "hội tụ" là time.sleep(), (c) số µs KHÔNG tái lập.
+```
+
+> **Đây là loại artifact đầu tiên trong phiên có SỐ ĐO.** `D-023 [2]` (kiểm theo lịch sử) và băm vùng
+> **không đủ** ở đây — nên tôi áp thêm ba phép kiểm mới: **(1) kích thước/tồn tại của bằng chứng thô**,
+> **(2) ĐỌC CODE trước khi tin số**, **(3) CHẠY LẠI để so số**.
+
+---
+
+## 2.58 ⚠️ PHÁT HIỆN 1 — **HAI FILE BẰNG CHỨNG LÀ 0 BYTE**
+
+| File | byte | dòng |
+|---|---|---|
+| `evidence/pqc_handshake_live_raw.txt` | **0** | **0** |
+| `evidence/classical_handshake_live_raw.txt` | **0** | **0** |
+
+`T12.md` §2.1 khai *"**Thực nghiệm đo lường** trên Docker Netem (OpenSSL 3.5.1 + ML-KEM)"* gồm:
+so sánh bắt tay PQC vs cổ điển · phân mảnh wire-level tại MTU 1280/576 ·
+**"Tái hiện có kiểm soát tình trạng 0/6 kết nối hoàn tất (timeout 8s)"**.
+Và `TESTBED.md` **trỏ tới đúng hai file này** làm bằng chứng — **và cả hai RỖNG.**
+
+### 2.58.1 `chưa xác minh` cho các số §2.1 — **kèm lý do cụ thể**
+
+**Không có lệnh nào được ghi** (không `openssl s_client`/`s_server`, không tham số, không môi trường đầy đủ),
+**và bằng chứng thô rỗng** ⇒ **không thể tái lập**.
+**Nhưng tôi KHÔNG nói các số là bất khả:** chúng **suy ra được từ hằng số công bố** —
+ML-KEM-768 encapsulation key = **1184 B** ✅ · X25519 = **32 B** ✅ · tổng `key_share` = **1216 B** ✅ (đúng phép cộng).
+⇒ đây là **số DẪN XUẤT, không phải số ĐO** — mà lại được đặt dưới tiêu đề *"Thực nghiệm đo lường"*.
+
+## 2.59 ⚠️ PHÁT HIỆN 2 — **"BENCHMARK eBPF" KHÔNG CÓ eBPF NÀO; SỐ "HỘI TỤ" LÀ `time.sleep()`**
+
+### 2.59.1 Script là **mô phỏng Python thuần**
+
+`scripts/ebpf_netns_benchmark.py` (156 dòng) — dù tên có `ebpf` và `netns`, nó **không dùng eBPF, không tạo netns, không chạm kernel**.
+Ba hàm "đo" đều là **vòng lặp Python**:
+```python
+def evaluate_l3_bpf_map(rules, packet):
+    t0 = time.perf_counter_ns()
+    # eBPF map lookup is O(1) hash or O(W) LPM trie     <-- CHÚ THÍCH
+    for r in rules:                                       # <-- CODE: quét TUYẾN TÍNH O(n)
+        if r["dst_cidr"] == packet["dst_ip"]: break
+```
+⇒ **Code MÂU THUẪN với mô hình nó tự khai**: chú thích nói `O(1)`/`O(W)`, code làm **`O(n)` quét tuyến tính**.
+⇒ Số `µs` là **thời gian vòng lặp Python**, **không phải** chi phí tra cứu bpf map.
+(Điều này khớp với chính dữ liệu: p50 tăng ~tuyến tính 0,32 → 2,11 → 22,47 µs theo số quy tắc.)
+
+### 2.59.2 Số **"thời gian hội tụ"** là **`time.sleep()`** — trích nguyên văn dòng 135
+
+```python
+135:                time.sleep(random.uniform(0.0005, 0.0018)) # 0.5ms - 1.8ms per node
+153:    random.seed(20261001)
+```
+⇒ `T12.md` §2.2 khẳng định *"**Nhận diện khoảng hở an ninh Δt_conv từ 3,43 ms đến 14,88 ms** cho bài toán an ninh mạng"* —
+nhưng con số đó **là TỔNG CÁC `sleep` mà chính tác giả chọn**, **không đo** Kubernetes, CNI, `bpf_map_update_elem` hay bất kỳ hệ thống thật nào.
+**Vòng lặp tự chứng minh:** ngủ 0,5–1,8 ms mỗi nút → cộng lại → gọi đó là "cửa sổ hội tụ".
+
+### 2.59.3 Số **µs KHÔNG tái lập** (chạy 4 lần, cùng máy này)
+
+| Quy mô 1000 quy tắc | **Khai báo** | Lần 1 | Lần 2 | Lần 3 |
+|---|---|---|---|---|
+| L3 p50 | **22,47 µs** | 36,49 | 58,69 | 53,27 |
+| L4 p50 | **32,28 µs** | 49,30 | 80,06 | 69,69 |
+| L7 p50 | **31,98 µs** | 47,66 | 51,73 | 70,47 |
+
+⇒ **cao hơn 1,6×–2,6× và dao động mạnh**; các giá trị khai báo **nằm ngoài** dải tôi quan sát.
+Và `ebpf_benchmark_raw.txt` **không có lệnh, không host, không timestamp, không lặp lại** ⇒ **không kiểm toán được**,
+dù tên file là `_raw`.
+
+### 2.59.4 Điều **ngược lại** đáng chú ý: số hội tụ **tái lập GẦN NHƯ CHÍNH XÁC**
+
+| | Khai báo | Tôi chạy |
+|---|---|---|
+| N=3 p50 | 3,43 ms | **3,40 ms** |
+| N=5 p50 | 6,19 ms | **6,19 ms** |
+| N=10 p50 | 12,09 ms | **12,09 ms** |
+
+⇒ **Tái lập được ở đây KHÔNG phải bằng chứng của ĐO LƯỜNG, mà là bằng chứng của `sleep` có seed.**
+Đây là bài học phương pháp: **"tái lập được" chỉ có giá trị khi phép đo thật sự chạm hệ thống.**
+
+## 2.60 ⚠️ PHÁT HIỆN 3 — `docker_pqc_ps_raw.txt` **không chứng minh** điều nó được dùng để chứng minh
+
+Nội dung **3 dòng** (203 byte): `docker ps` liệt kê 2 container `nckh/pqc-node:3.5` (`lab-netem-router`, `lab-pqc-server`) "Up 2 minutes"/"Up About a minute".
+⇒ Chứng minh **container từng chạy**; **KHÔNG** chứng minh bắt tay, ML-KEM, netem hay phân mảnh — và **không có output bắt tay nào tồn tại** (vì §2.58).
+
+## 2.61 ✅ CÔNG BẰNG — `pt_bridge_check_raw.txt` **tự khai trung thực**, và đây là điểm mạnh
+
+File ghi **nguyên văn**: *"Packet Tracer **NO está conectado por ningún canal**"*, `pgrep -fl "PacketTracer" -> exit 1 (0 process)`,
+và kết luận: *"Live deployment channel to Cisco Packet Tracer GUI is **OFFLINE**. All … IOS configuration commands … are
+generated and verified via **static Cisco IOS grammar / MCP schemas** and provided as reproducible **offline artifacts (.cfg)**"*.
+
+⇒ **Trả lời đúng câu hỏi 4 của Admin:** `pt_bridge_check_raw.txt` chứng minh config **CHƯA từng được NẠP** vào thiết bị —
+chúng là **văn bản kiểm bằng ngữ pháp tĩnh**. **Và tác giả đã tự khai điều đó, không che giấu** ✅ — **hành vi đúng.**
+**Cú pháp:** tôi **đọc** 3 file — `cisco2911` (`version 15.1`, `ip cef`), `asa5506` (`ASA Version 9.6(1)`, `security-level`),
+`switch3560` (`version 12.2`, `ip routing`, cấu trúc VLAN/VACL) — **trông hợp dòng thiết bị**, **không tự mâu thuẫn ở mức đọc**.
+**`chưa xác minh`:** tôi **không có thiết bị** để nạp, nên **không xác nhận được cú pháp hợp lệ đầy đủ**.
+
+## 2.62 ⭐ TRẢ LỜI THẲNG CÂU 5 CỦA ADMIN — **T12 KHÔNG lấp được rào cản**
+
+ResearchLead khai rào cản lớn nhất là **"không có testbed mạng và không có cụm K8s"** ⇒ 2 hồ sơ chỉ có thiết kế phương pháp, **không có số liệu**.
+
+| Rào cản | T12 có lấp được? | Vì sao |
+|---|---|---|
+| **Không có cụm K8s / eBPF** | ❌ **KHÔNG** | "Benchmark" là **mô phỏng Python**; số hội tụ là **`time.sleep()`**. **Không đo gì về cụm.** |
+| **Không có testbed mạng** | ❌ **KHÔNG** | Config Cisco **chưa từng được nạp** (chính bằng chứng của tác giả nói kênh **OFFLINE**); bằng chứng bắt tay PQC **rỗng**. |
+| **Không có số liệu** | ⚠️ **MỘT PHẦN** | Có **số**, nhưng là **số mô phỏng/dẫn xuất**, không phải số đo. |
+
+⇒ **Trả lời thẳng: KHÔNG.** T12 bàn giao **thiết kế (topology, config, mã benchmark, khung RQ) + số MÔ PHỎNG** —
+**không phải số đo**. Phần **thiết kế là công việc thật và có giá trị**; nhưng **rào cản "không có số liệu thực nghiệm" vẫn nguyên**.
+
+## 2.63 ⚠️ PHÁT HIỆN 4 — **kết luận VƯỢT bằng chứng** (đúng loại Admin yêu cầu canh)
+
+`T12.md` §4 tự đánh giá:
+```text
+[x] Cấu hình và output mô phỏng thô được ghi nhận đầy đủ, trung thực, có thể tái lập.   <-- HAI file RỖNG; số µs không tái lập
+[x] Không bịa đặt số liệu đo (D-004), phân định rõ giữa số liệu thực nghiệm đo được và dự đoán.  <-- KHÔNG hề phân định
+```
+Và cả hai `TESTBED.md` ghi **"Trạng thái: Hoàn tất thiết kế & kiểm chứng thực nghiệm"** — vế *"kiểm chứng thực nghiệm"* **không được bằng chứng đỡ**.
+**Thêm:** `T12.md` §3.2 (bảng băm SHA-256) để **3 dòng là `*(tự sinh khi commit)*`** ⇒ **bảng liêm chính dữ liệu CHƯA điền.**
+
+## 2.64 Đã kiểm những mục nào (vòng 14) — 22 mục
+
+- **Câu 1 (tái lập bắt tay):** kích thước 5 file evidence · 2 file = **0 byte** · đối chiếu hằng số FIPS 203/RFC 8446 ⇒ `chưa xác minh` **có lý do**.
+- **Câu 2 (docker):** nội dung 3 dòng · đối chiếu với khẳng định nó phải đỡ ⇒ **không chứng minh**.
+- **Câu 3 (benchmark):** đọc **toàn bộ 156 dòng script** · tìm `time.sleep` (d.135) + `random.seed` (d.153) · **chạy 4 lần** · bảng so số (µs không khớp, hội tụ khớp) · nhận xét O(n) vs chú thích O(1).
+- **Câu 4 (Cisco):** `pt_bridge_check_raw.txt` (kênh OFFLINE, tự khai) · đọc 3 config (89/42/68 dòng) · cú pháp `chưa xác minh`.
+- **Câu 5 (rào cản):** trả lời thẳng — **KHÔNG lấp được**.
+- **Câu 6 (liên kết):** mọi file được trỏ **đều tồn tại** ✅; `PROPOSAL.md` ✅; `RANKING.md` ở `research/RANKING.md` *(nhắc bằng chữ, không phải link tương đối gãy)* · `LITREVIEW.md` tồn tại ✅ ⇒ **không phải tài liệu rời**.
+- **Câu 7 (D-026):** **0 hit** `ngoài scope`/`archived_at` ⇒ **không áp dụng** ✅; nhưng **"vượt bằng chứng" thì CÓ** (§2.63).
+- **Territory:** 13 file, **0 file ngoài territory** ✅.
+- **`chưa xác minh`: 3 mục** — (1) các số §2.1 (bằng chứng rỗng, không có lệnh); (2) cú pháp Cisco đầy đủ (không có thiết bị); (3) liệu `openssl 3.5.1` + ML-KEM có thật sự chạy được trong môi trường đó (không có log).
+
+> ## PHÁN QUYẾT T43: **REJECT**
+> 1. **Hai file bằng chứng = 0 byte** trong khi báo cáo viện dẫn chúng cho các số **đo** (§2.58).
+> 2. **"Benchmark eBPF" không có eBPF**; số **hội tụ là `time.sleep()`**; số µs **không tái lập** (§2.59).
+> 3. **Kết luận vượt bằng chứng**: §4 tự khai *"có thể tái lập"* và *"phân định rõ đo được vs dự đoán"* — **cả hai đều không đúng** (§2.63).
+>
+> **Ghi nhận công bằng:** territory **sạch 0 file** ✅ · `pt_bridge_check_raw.txt` **tự khai trung thực** kênh OFFLINE ✅ ·
+> **phần THIẾT KẾ (topology/config/khung RQ) là công việc thật, có giá trị** ✅ · phép cộng `key_share` **đúng** ✅ ·
+> `TESTBED.md` **liên kết thật** vào `PROPOSAL.md` ✅.
+> **Lỗi cốt lõi KHÔNG phải "bịa số"** — mà là **đặt số MÔ PHỎNG/DẪN XUẤT dưới nhãn "THỰC NGHIỆM ĐO LƯỜNG"**,
+> và **để 2 file bằng chứng rỗng** trong khi viện dẫn chúng.
+
+## 2.65 [MỚI 4] Đề xuất quy trình — kiểm **artifact kỹ thuật có số đo**
+
+`D-023 [2]` và băm vùng **không bắt được** lớp lỗi này. Đề nghị thêm **3 phép kiểm bắt buộc**:
+
+| # | Phép kiểm | Cách làm | Vì sao (bằng chứng vòng này) |
+|---|---|---|---|
+| **[4a]** | **Bằng chứng thô phải TỒN TẠI và KHÁC RỖNG** | `git cat-file -s` **mọi** file trong `evidence/`; file **0 byte** = **không có bằng chứng**, không phải "chưa điền" | 2 file `*_handshake_live_raw.txt` = **0 byte** nhưng vẫn được viện dẫn |
+| **[4b]** | **ĐỌC CODE trước khi tin số** | với mọi `scripts/**`, tìm phép đo thật (`perf_counter`, syscall, thư viện) hay **chỉ là mô phỏng/`sleep`**; đối chiếu **chú thích vs code** | `time.sleep()` là nguồn của "khoảng hở an ninh"; chú thích `O(1)` vs code `O(n)` |
+| **[4c]** | **CHẠY LẠI và phân biệt hai loại "tái lập"** | số **thời gian** phải nằm trong dải quan sát qua **≥3 lần**; nếu **tái lập chính xác tuyệt đối** ⇒ nghi **hằng số/`sleep`**, **không** phải đo | µs **không khớp** (1,6–2,6×) còn hội tụ **khớp tuyệt đối** ⇒ hội tụ là `sleep` có seed |
+| **[4d]** | **Nhãn phải khớp bản chất** | cấm đặt số **mô phỏng/dẫn xuất** dưới nhãn *"thực nghiệm đo lường"*; phải ghi rõ **ĐO ĐƯỢC / MÔ PHỎNG / DẪN XUẤT TỪ HẰNG SỐ** | §2.1 và §2.2 đều ghi *"Thực nghiệm đo lường"* |
