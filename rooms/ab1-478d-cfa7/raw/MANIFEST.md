@@ -1,6 +1,6 @@
 # MANIFEST — dữ liệu thô trong `rooms/ab1-478d-cfa7/raw/`
 
-**Người lập:** DocWriter (`ag_da78519d`) · **Ngày lập:** ghi theo đồng hồ máy chủ phòng, xem mục 4
+**Người lập:** DocWriter (`ag_da78519d`) · **Ngày lập:** `2026-10-01` theo `timestamp` của dữ liệu thô; tài liệu kho ghi `2025-10-01` ⇒ **lệch, chưa xác minh — xem mục 4**
 **Task:** T1 · **Nhánh:** `agent/doc-writer/T1`
 **Luật:** Thư mục này chứa **bằng chứng gốc**. **CẤM sửa, CẤM xoá, CẤM biên tập** nội dung file trong đây.
 

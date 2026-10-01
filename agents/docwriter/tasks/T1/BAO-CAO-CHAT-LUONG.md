@@ -95,7 +95,7 @@ File bị bỏ sót: toàn bộ `agents/*/README.md` (7), toàn bộ `agents/*/t
 `rooms/ab1-478d-cfa7/raw/.gitkeep`, `rooms/ab1-478d-cfa7/digest/.gitkeep`, `research/.gitkeep`,
 `security/.gitkeep`, `reviews/.gitkeep`, `ADMIN/.gitkeep`, `.gitignore` (tổng 21).
 
-→ **Đã khắc phục:** xem [`INDEX.md`](../../../INDEX.md) mới, liệt kê **mọi** file track được
+→ **Đã khắc phục:** xem [`INDEX.md`](../../../../INDEX.md) mới, liệt kê **mọi** file track được
 đối chiếu bằng `git ls-files`.
 
 ## 5. Quy ước trạng thái dùng không nhất quán (vi phạm nhẹ)

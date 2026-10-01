@@ -92,10 +92,10 @@ hoặc (b) chấp nhận hoãn tới khi T2/T3 sinh slug thật, và ghi nhận 
 
 | Khiếm khuyết | Xử lý | Artifact |
 |---|---|---|
-| `INDEX.md` thiếu 21 file + 1 link chết | Viết lại bảng đầy đủ, đối chiếu `git ls-files` | [`INDEX.md`](../../../INDEX.md) |
-| `rooms/ab1-478d-cfa7/` không có README | Tạo tài liệu mục đích thư mục | [`rooms/ab1-478d-cfa7/README.md`](../../rooms/ab1-478d-cfa7/README.md) |
-| `digest/` không có quy trình | Tạo quy trình raw → digest | [`rooms/ab1-478d-cfa7/digest/README.md`](../../rooms/ab1-478d-cfa7/digest/README.md) |
-| `agents/docwriter/README.md` thiếu ngày + tác giả | Bổ sung metadata | [`agents/docwriter/README.md`](../README.md) |
+| `INDEX.md` thiếu 21 file + 1 link chết | Viết lại bảng đầy đủ, đối chiếu `git ls-files` | [`INDEX.md`](../../../../INDEX.md) |
+| `rooms/ab1-478d-cfa7/` không có README | Tạo tài liệu mục đích thư mục | [`rooms/ab1-478d-cfa7/README.md`](../../../../rooms/ab1-478d-cfa7/README.md) |
+| `digest/` không có quy trình | Tạo quy trình raw → digest | [`rooms/ab1-478d-cfa7/digest/README.md`](../../../../rooms/ab1-478d-cfa7/digest/README.md) |
+| `agents/docwriter/README.md` thiếu ngày + tác giả | Bổ sung metadata | [`agents/docwriter/README.md`](../../README.md) |
 | Không có hồ sơ task | Tạo hồ sơ T1 | [`agents/docwriter/tasks/T1/`](.) |
 
 ## 5. Chưa khắc phục — chuyển Admin (ngoài territory DocWriter)
