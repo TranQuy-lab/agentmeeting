@@ -42,9 +42,13 @@
 3. **Phân tích mạng PCAP làm được thật, không cần cài thêm.**
    *Bằng chứng:* `tshark --version | head -1` → `TShark (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3).`; `tcpdump` → `/usr/bin/tcpdump`.
 4. **Tự dựng được môi trường công cụ Python mà KHÔNG cần sudo** — đã cài & **test chức năng thật**
-   `volatility3` 2.28.2, `pefile` 2024.8.26, `scapy` 2.7.0, `capstone` 5.0.9,
+   `volatility3` 2.28.2, `pefile` 2024.8.26, `scapy` 2.7.0,
+   `capstone` **5.0.9 (metadata)** / **5.0.7 (`__version__`)**,
    `yara-python` 4.5.4, `oletools` 0.60.2.
    *Bằng chứng:* `/home/noble-tran/.local/bin/uv` (uv 0.12.13) + `EVIDENCE/tooling_bootstrap_raw.txt`.
+   *Riêng `capstone`:* hai số **5.0.9** (metadata) và **5.0.7** (`__version__`) **cả hai đều thật** —
+   đo lại độc lập tại `agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt`
+   (thi hành D-014 mục 2; T5 bản đầu ghi `5.0.9` trần, **thiếu nguồn**).
 5. **Kỷ luật bằng chứng:** mọi kết luận gắn hash + lệnh + phiên bản; không chắc ghi `chưa xác minh`.
 
 ## 5. Điểm YẾU (lý do THẬT, không tô hồng)
@@ -88,7 +92,7 @@
 | `volatility3` | **2.28.2** | CLI `vol --help`; nạp plugin `windows.pslist` | 🟡 chạy được, **chưa có dump thật** |
 | `pefile` | 2024.8.26 | parse `crackme.exe` | ✅ OK, machine=0x8664, 6 section |
 | `scapy` | 2.7.0 | dựng gói Ether/IP/TCP | ✅ OK, 54 byte |
-| `capstone` | 5.0.9 | disasm x86-64 | ✅ `mov rbp,rsp` / `mov eax,0` |
+| `capstone` | **5.0.9 (metadata)** / **5.0.7 (`__version__`)** | disasm x86-64 | ✅ `mov rbp,rsp` / `mov eax,0` |
 | `yara-python` | 4.5.4 | compile rule + scan file | ✅ OK, khớp rule |
 | `oletools` | 0.60.2 | CLI `olevba --help` | ✅ OK |
 
@@ -141,7 +145,7 @@
 | Phân tích **tĩnh** (hash, `file`, `strings`, hex, PE header thô, script/blog giải mã) | 🟢 **SẴN SÀNG** |
 | Phân tích **PE** (`pefile` 2024.8.26 — đã parse PE thật) | 🟢 **SẴN SÀNG** |
 | **Macro Office / OLE** (`oletools` 0.60.2, CLI `olevba`) | 🟢 **SẴN SÀNG** |
-| **Disassembly** (`capstone` 5.0.9 + `objdump`/`readelf`) | 🟢 **SẴN SÀNG** |
+| **Disassembly** (`capstone` 5.0.9 metadata / 5.0.7 `__version__` + `objdump`/`readelf`) | 🟢 **SẴN SÀNG** |
 | Phân tích **PCAP / network** (tshark 4.2.2 + `scapy` 2.7.0) | 🟢 **SẴN SÀNG** |
 | Phân tích **log / text / timeline** | 🟢 **SẴN SÀNG** |
 | **YARA** (soạn + scan qua `yara-python` 4.5.4, đã test) | 🟢 **SẴN SÀNG** (không có CLI) |

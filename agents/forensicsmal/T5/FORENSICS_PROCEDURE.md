@@ -79,8 +79,24 @@ cd work
   tshark --version 2>&1 | head -1
   objdump --version | head -1
   sha256sum --version | head -1
+  # Voi goi Python: GHI RO NGUON (xem C2c). Hai nguon co the KHAC NHAU.
+  python3 - <<'PY'
+  import importlib.metadata as md
+  for p in ("capstone", "volatility3", "pefile", "yara-python", "scapy", "oletools"):
+      try:    meta = md.version(p)
+      except Exception: meta = "(khong co metadata)"
+      try:
+          mod = __import__(p.replace("-", "_")); ver = getattr(mod, "__version__", "(khong co __version__)")
+      except Exception as e:
+          ver = f"(import loi: {e})"
+      print(f"  {p:<14} metadata={meta:<12} __version__={ver}")
+  PY
 } | tee EVIDENCE/tool_versions.txt
 ```
+
+> **Quy ước ghi phiên bản (bắt buộc — C2c):** không bao giờ ghi một số phiên bản trần.
+> Luôn ghi **nguồn**: `(metadata)` hay `(__version__)`. Nếu hai nguồn khác nhau thì ghi **cả hai**
+> và **không** tự chọn một cái làm "đúng".
 
 > **Lưu ý môi trường (đã xác minh thô — xem `EVIDENCE/tool_inventory_raw.txt`
 > và `EVIDENCE/tooling_bootstrap_raw.txt`):**
@@ -90,9 +106,17 @@ cd work
 > `unzip`, và **`uv` 0.12.13**.
 >
 > **ĐÃ BỔ SUNG được qua `uv` (venv ngoài repo, KHÔNG cần sudo):**
-> `volatility3` **2.28.2** (CLI `vol` chạy được), `pefile` 2024.8.26 (parse PE thật OK),
-> `scapy` 2.7.0, `capstone` 5.0.9, `yara-python` 4.5.4 (compile + scan OK),
+> `volatility3` **2.28.2** (metadata; CLI `vol` chạy được), `pefile` 2024.8.26 (parse PE thật OK),
+> `scapy` 2.7.0, `capstone` **5.0.9 (metadata)** / **5.0.7 (`__version__`)**,
+> `yara-python` 4.5.4 (compile + scan OK),
 > `oletools` 0.60.2 (CLI `olevba` OK). Tái lập bằng `scripts/bootstrap_tools.sh`.
+>
+> ⚠️ **Vì sao `capstone` ghi HAI số:** `importlib.metadata.version("capstone")` = **5.0.9** còn
+> `capstone.__version__` = **5.0.7** — **cả hai đều thật, cùng một gói, và khác nhau.** T5 bản
+> đầu chỉ ghi `5.0.9` mà **không nói nguồn** (sai sót do D-014 mục 2 chỉ ra). Nay mọi dòng
+> phiên bản trong tài liệu này **phải ghi rõ nguồn**. Bằng chứng thô đo lại độc lập:
+> `agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt`.
+> **`chưa xác minh`** số nào mới là phiên bản "đúng" về mặt phát hành — tôi không tự phán quyết.
 >
 > **VẪN THIẾU (không cài được — cần sudo/Admin):** `binwalk`, `foremost`, `yara` (CLI),
 > `zeek`, `exiftool`, `steghide`, sleuthkit (`fls`/`icat`/`photorec`), `upx`, `7z`.
@@ -244,6 +268,31 @@ Chạy hết danh sách này **trước khi** push `FORENSICS.md`. Mỗi ô ph�
 - [ ] Output thô của mọi lệnh quan trọng đã lưu trong `EVIDENCE/` và được trích dẫn?
 - [ ] Công cụ tự viết (script) đã ghi đường dẫn + hash + lệnh gọi?
 
+> **C2 — BA Ô CHỐNG "LỌC TAY" (bổ sung ở T23, thi hành D-014 mục 1).**
+> Lý do tồn tại: ở T4, ExploitDeep chạy `pip list | grep -Ei '<danh sách viết tay>'` rồi kết luận
+> một gói "thiếu" mà **không `import` thử** — và kết luận đó **sai**. Danh sách viết tay **luôn**
+> thiếu tên gói, nên `grep` sẽ **luôn** xác nhận cái mình đã tin sẵn. Ba ô dưới đây chặn đúng
+> lỗi đó. **Đây là ô bắt buộc, không phải gợi ý.**
+
+- [ ] **(C2a)** Kiểm kê công cụ đã dùng `pip freeze`/`pip list` **KHÔNG LỌC**, và lưu **nguyên output**
+      vào `EVIDENCE/`? *(Không `grep`, không `--format` rút gọn, không cắt dòng, không "chỉ liệt kê
+      gói liên quan".)*
+      → **Trên máy này không có `pip`** ⇒ dùng lệnh tương đương và **ghi rõ lệnh đã dùng**:
+      `~/.local/bin/uv pip list --python <interpreter>`.
+- [ ] **(C2b)** Mỗi kết luận **"THIẾU"** đã được chứng minh bằng `import <mod>` thực chạy trong
+      **ĐÚNG interpreter đang xét**, và **đã ghi rõ đường dẫn interpreter đó**?
+      → Ghi cả **thông báo lỗi nguyên văn** (`ModuleNotFoundError: No module named '<mod>'`).
+      → "Không thấy tên trong danh sách" **KHÔNG** phải bằng chứng thiếu. **Chỉ `import` thất bại mới là.**
+      → Kiểm trong interpreter nào thì `import` trong **chính** interpreter đó — không suy từ interpreter khác.
+- [ ] **(C2c)** Mỗi dòng **phiên bản** đã ghi rõ lấy từ **metadata** hay **`__version__`**?
+      → Hai nguồn này **có thể khác nhau** trên cùng một gói. Ghi `"X"` trần là **thiếu nguồn**.
+      → Mẫu ghi đúng: `capstone` **5.0.9 (metadata)** / **5.0.7 (`__version__`)**.
+      → Xem tiền lệ đã xác minh ở `agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt`.
+
+> **Câu hỏi tự vấn nếu định kết luận "thiếu":** *"Tôi đã `import` nó chưa, trong đúng interpreter
+> này chưa, và tôi có đang lọc danh sách theo thứ tôi đã tin sẵn không?"* — Trả lời chưa đủ ba vế
+> thì **không được** viết chữ "thiếu".
+
 ### C3. Bằng chứng vs. kết luận — kiểm tra vượt quá bằng chứng
 - [ ] **Mọi IOC đều có hash/output thô làm chỗ dựa?**
 - [ ] Có IOC nào tôi **thêm vào theo kinh nghiệm/thói quen** mà không thấy trong mẫu? → **xoá**
@@ -288,7 +337,7 @@ Kết quả bootstrap + test chức năng: `agents/forensicsmal/T5/EVIDENCE/tool
 | PCAP / network | 🟢 sẵn sàng | tshark **4.2.2**, tcpdump, `scapy` 2.7.0 |
 | Log / timeline | 🟢 sẵn sàng | thuần text, không cần tool ngoài |
 | PE analysis | 🟢 sẵn sàng | `pefile` 2024.8.26 — **đã parse PE thật** (`crackme.exe`, machine=0x8664, 6 section) |
-| Disassembly | 🟢 sẵn sàng | `capstone` 5.0.9 — **đã disasm x86-64**, thêm `objdump`/`readelf` |
+| Disassembly | 🟢 sẵn sàng | `capstone` **5.0.9 metadata / 5.0.7 `__version__`** — **đã disasm x86-64**, thêm `objdump`/`readelf` |
 | Office macro / OLE | 🟢 sẵn sàng | `oletools` 0.60.2 — **CLI `olevba` OK**, có `mraptor`, `rtfobj`, `oleid` |
 | YARA | 🟢 sẵn sàng | `yara-python` 4.5.4 — **đã compile + scan OK**. ⚠️ **không có CLI `yara`** ⇒ scan qua Python API (hoặc tự viết wrapper) |
 | Memory forensics | 🟡 công cụ sẵn sàng, **chưa thực chiến** | `volatility3` **2.28.2**, CLI `vol` chạy, plugin nạp OK — **CHƯA chạy trên dump thật** |

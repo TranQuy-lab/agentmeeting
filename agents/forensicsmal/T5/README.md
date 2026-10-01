@@ -23,7 +23,7 @@
 - **Có sẵn:** Python 3.12.3, `sha256sum`/`sha1sum`/`md5sum`, `file`, `strings`, `xxd`,
   `objdump`/`readelf`/`nm`/`gdb`, `tshark` **4.2.2**, `tcpdump`, `git`, `curl`, `jq`, `unzip`, `uv` 0.12.13.
 - **Đã bổ sung qua `uv` (đã test chức năng thật):** `volatility3` 2.28.2, `pefile` 2024.8.26,
-  `scapy` 2.7.0, `capstone` 5.0.9, `yara-python` 4.5.4, `oletools` 0.60.2.
+  `scapy` 2.7.0, `capstone` **5.0.9 (metadata) / 5.0.7 (`__version__`)**, `yara-python` 4.5.4, `oletools` 0.60.2.
 - **Vẫn thiếu (cần `sudo`/Admin):** `binwalk`, `foremost`, `yara` (CLI), `zeek`,
   `exiftool`, `steghide`, sleuthkit, `upx`, `7z`.
 - **Chưa được coi là năng lực đã kiểm chứng:** phân tích **động** (chưa có môi trường cô lập),

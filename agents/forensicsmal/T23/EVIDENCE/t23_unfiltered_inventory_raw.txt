@@ -1,0 +1,21 @@
+# RAW — uv pip list KHONG LOC (C2a)
+# Interpreter: /home/noble-tran/forensicsmal-tooling/.venv/bin/python
+# Lenh: /home/noble-tran/.local/bin/uv pip list --python /home/noble-tran/forensicsmal-tooling/.venv/bin/python
+
+Package          Version
+---------------- ---------
+capstone         5.0.9
+cffi             2.1.1
+colorclass       2.2.2
+cryptography     50.0.2
+easygui          0.98.3
+msoffcrypto-tool 6.0.0
+olefile          0.47
+oletools         0.60.2
+pcodedmp         1.2.6
+pefile           2024.8.26
+pycparser        3.0
+pyparsing        3.3.3
+scapy            2.7.0
+volatility3      2.28.2
+yara-python      4.5.4

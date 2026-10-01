@@ -1,0 +1,110 @@
+# RAW OUTPUT — T23: TAI HIEN lop loi T4 va chung minh C2 moi bat duoc
+# Ngay chay: 2026-10-01T14:49:04Z UTC
+# Nguoi chay: ForensicsMal (ag_82f7cb07) — T23, thi hanh D-014 muc 1
+# KHONG mau doc hai. KHONG goi mang. Chi doc metadata + import.
+
+
+======================================================================
+C2(a) — Kiem ke KHONG LOC, luu NGUYEN output (khong grep, khong cat)
+======================================================================
+$ /home/noble-tran/.local/bin/uv pip list --python /home/noble-tran/forensicsmal-tooling/.venv/bin/python
+Package          Version
+---------------- ---------
+capstone         5.0.9
+cffi             2.1.1
+colorclass       2.2.2
+cryptography     50.0.2
+easygui          0.98.3
+msoffcrypto-tool 6.0.0
+olefile          0.47
+oletools         0.60.2
+pcodedmp         1.2.6
+pefile           2024.8.26
+pycparser        3.0
+pyparsing        3.3.3
+scapy            2.7.0
+volatility3      2.28.2
+yara-python      4.5.4
+# => 15 goi. Output NGUYEN VEN duoc luu vao EVIDENCE/ (khong loc dong nao).
+
+======================================================================
+TAI HIEN LOI T4 — ket luan 'thieu' tu grep co neo, KHONG import thu
+======================================================================
+# Gia dinh nguoi viet dung danh sach viet tay (ten MODULE) va grep co neo '^<ten> '
+# (neo dau dong + khoang trang => chi khop CHINH XAC ten do)
+
+  grep '^pefile '  -> CO
+  grep '^yara '  -> khong thay
+  grep '^scapy '  -> CO
+  grep '^capstone '  -> CO
+  grep '^volatility3 '  -> CO
+  grep '^oletools '  -> CO
+  grep '^msoffcrypto '  -> khong thay
+  grep '^unicorn '  -> khong thay
+  grep '^dissect '  -> khong thay
+  grep '^pyelftools '  -> khong thay
+
+======================================================================
+C2(b) — Chay `import` trong DUNG interpreter dang xet => su that
+======================================================================
+# Interpreter: /home/noble-tran/forensicsmal-tooling/.venv/bin/python
+# (bat buoc ghi ro interpreter — neu import o interpreter khac thi ket qua vo nghia)
+
+  import pefile         -> THANH CONG
+  import yara           -> THANH CONG
+  import scapy          -> THANH CONG
+  import capstone       -> THANH CONG
+  import volatility3    -> THANH CONG
+  import oletools       -> THANH CONG
+  import msoffcrypto    -> THANH CONG
+  import unicorn        -> THAT BAI: ModuleNotFoundError: No module named 'unicorn'
+  import dissect        -> THAT BAI: ModuleNotFoundError: No module named 'dissect'
+  import pyelftools     -> THAT BAI: ModuleNotFoundError: No module named 'pyelftools'
+
+======================================================================
+SO SANH — grep noi 'thieu' nhung import THANH CONG = KET LUAN SAI
+======================================================================
+  goi/module        grep co neo    import   ket luan
+  pefile                     CO        OK   nhat quan
+  yara                    thieu        OK   GREP SAI  <-- C2(a)/(b) BAT DUOC
+  scapy                      CO        OK   nhat quan
+  capstone                   CO        OK   nhat quan
+  volatility3                CO        OK   nhat quan
+  oletools                   CO        OK   nhat quan
+  msoffcrypto             thieu        OK   GREP SAI  <-- C2(a)/(b) BAT DUOC
+  unicorn                 thieu  that bai   nhat quan
+  dissect                 thieu  that bai   nhat quan
+  pyelftools              thieu  that bai   nhat quan
+
+  So ket luan SAI neu chi dung grep : 2  ['yara', 'msoffcrypto']
+
+======================================================================
+KET LUAN T23 — vi sao 3 o C2 moi la BAT BUOC
+======================================================================
+>>> TAI HIEN THANH CONG lop loi cua T4 tren goi THAT:
+    - module `yara`: grep co neo KHONG thay, nhung `import` THANH CONG (goi that: `yara-python`)
+    - module `msoffcrypto`: grep co neo KHONG thay, nhung `import` THANH CONG (goi that: `msoffcrypto-tool`)
+
+    Nguyen nhan: TEN GOI KHAC TEN MODULE. `pip list` liet ke TEN GOI
+    (`yara-python`, `msoffcrypto-tool`), con `import` dung TEN MODULE
+    (`yara`, `msoffcrypto`). Grep theo ten module se KHONG thay => ket luan
+    'thieu' SAI.
+
+    => C2(a) buoc phai luu inventory KHONG LOC (de khong tu tao diem mu).
+    => C2(b) buoc phai `import` trong DUNG interpreter (de do su that).
+    => Chi khi CA HAI duoc lam thi moi khong lap lai lop loi nay.
+
+    !! GIOI HAN KHANG DINH: day la MOT co che THAT cua lop loi 'loc tay'
+       va toi TAI HIEN duoc no. Toi KHONG khang dinh day la co che cu the
+       da lam T4 ket luan sai ve `unicorn` — toi CHUA doc ban goc T4.
+
+## CHUA XAC MINH
+  - chua xac minh: ban than script nay co bat duoc MOI lop loi loc tay khac khong;
+    no chi tai hien DUOC MOT co che (ten goi != ten module) da kiem chung.
+  - chua xac minh: chi tiet goc ve 'unicorn' o T4 — toi chua doc ban goc T4,
+    chi biet qua D-014/D-020. Khong suy dien them.
+
+## Exit code: 0
+
+## Hash cua script (neo bang chung)
+fc1c74d270c3055fe651f8ca70fcf32acd0d4c7cb655974056f8d8b79cc76681  scripts/t23_c2_gap_demo.py
