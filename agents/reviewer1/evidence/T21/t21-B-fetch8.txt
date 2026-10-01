@@ -1,0 +1,37 @@
+### T21-B — Reviewer1 TU FETCH LAI 8 URL cua T13 (javis) bang curl tren may nay
+### Thoi diem: 2026-10-01T14:40:54Z UTC
+### May: Linux 7.0.0-34-generic x86_64 | hostname=noble-tran-XiaoXin-14-AHP9  (KHONG phai VM /home/hatch cua javis)
+### UA dung: Chrome/125
+
+--- [1/8] https://www.mdpi.com/2413-4155/7/3/91 ---
+  HTTP=403 SIZE=398 CT=text/html REDIRECTS=0 FINAL=https://www.mdpi.com/2413-4155/7/3/91
+  file: HTML document, ASCII text
+
+--- [2/8] https://www.mdpi.com/1099-4300/27/12/1242 ---
+  HTTP=403 SIZE=402 CT=text/html REDIRECTS=0 FINAL=https://www.mdpi.com/1099-4300/27/12/1242
+  file: HTML document, ASCII text
+
+--- [3/8] https://www.mdpi.com/2413-4155/7/3/91/pdf ---
+  HTTP=403 SIZE=406 CT=text/html REDIRECTS=0 FINAL=https://www.mdpi.com/2413-4155/7/3/91/pdf
+  file: HTML document, ASCII text
+
+--- [4/8] https://dl.acm.org/doi/pdf/10.1145/3620678.3624652 ---
+  HTTP=403 SIZE=5728 CT=text/html; charset=UTF-8 REDIRECTS=0 FINAL=https://dl.acm.org/doi/pdf/10.1145/3620678.3624652
+  file: HTML document, ASCII text, with very long lines (5728), with no line terminators
+
+--- [5/8] https://dergipark.org.tr/en/download/article-file/5763310 ---
+  HTTP=200 SIZE=1108312 CT=application/pdf REDIRECTS=0 FINAL=https://dergipark.org.tr/en/download/article-file/5763310
+  file: PDF document, version 1.5, 12 page(s)
+
+--- [6/8] https://doi.org/10.62056/ahee0iuc ---
+  HTTP=200 SIZE=168296 CT=text/html; charset=utf-8 REDIRECTS=1 FINAL=https://cic.iacr.org/p/1/2/6
+  file: HTML document, Unicode text, UTF-8 text, with very long lines (1247)
+
+--- [7/8] https://datatracker.ietf.org/doc/draft-ietf-tls-hybrid-design/ ---
+  HTTP=200 SIZE=80488 CT=text/html; charset=utf-8 REDIRECTS=1 FINAL=https://datatracker.ietf.org/doc/rfc9954/
+  file: HTML document, Unicode text, UTF-8 text, with very long lines (466)
+
+--- [8/8] https://ebpf.io/what-is-ebpf/ ---
+  HTTP=200 SIZE=340219 CT=text/html; charset=UTF-8 REDIRECTS=0 FINAL=https://ebpf.io/what-is-ebpf/
+  file: HTML document, ASCII text, with very long lines (61686)
+

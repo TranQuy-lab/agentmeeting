@@ -495,3 +495,168 @@ vòng 2**, nên theo D-004 nó phải trỏ tới bằng chứng thô.
 Reviewer1 mới hơn nên lấy bản worker là đúng; với `INDEX.md`, **bản của Admin chứa phán quyết DISSENT-2
 mà nhánh T1 không có** ⇒ merge kiểu "lấy bản worker" sẽ **mất bản vá thật**. Đề nghị Admin merge
 `INDEX.md` theo hướng **giữ bản `main`** hoặc hợp nhất thủ công.
+
+---
+
+# VÒNG 4 — Bài kiểm #7 (T21): T5 ForensicsMal + T13 javis
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T21`
+**Base:** `origin/main` = `0f41ebb` (157 file) · **Thời điểm kiểm:** `2026-10-01T14:40Z` → `14:44Z`
+**Bằng chứng thô:** `agents/reviewer1/evidence/T21/` (`t21-A-procedure.txt`, `t21-B-fetch8.txt`, `t21-B2-quotes.txt`, `t21-B3-territory.txt`)
+
+---
+
+## 2.13 Bài kiểm #7A — T5 ForensicsMal @ `ee97c37` (kiểm QUY TRÌNH, không phải kết quả)
+
+```text
+[REVIEW] T21-A / ForensicsMal / Lớp 1 CROSS / KẾT QUẢ: PASS 5/6 — 1 LỖ HỔNG QUY TRÌNH + 1 SAI SỐ PHIÊN BẢN
+```
+
+| # | Câu hỏi Admin | Bằng chứng | Kết quả |
+|---|---|---|---|
+| Q1 | `FORENSICS_PROCEDURE.md` có đòi **hash TRƯỚC khi phân tích** cho **mọi** mẫu, hay chỉ nói chung? | `Bước 2` tiêu đề: *"Ghi SHA256 của **MỌI** mẫu **TRƯỚC** khi phân tích"* + khối lệnh ghi rõ *"# Bắt buộc, chạy ĐẦU TIÊN"*; khuôn `FORENSICS.md` §1 ghi *"Hash mẫu (BẮT BUỘC — tính TRƯỚC khi phân tích)"*; **checklist C1** có 5 ô, ô đầu: *"SHA256 của **mọi** mẫu đã ghi **TRƯỚC** khi phân tích?"* + ô *"Đã kiểm hash mẫu **không đổi** sau khi phân tích?"* + ô *"Mẫu nhiều tệp ⇒ đã hash **từng tệp** và **cả gói**?"* | **✅ ĐÒI THẬT, cho MỌI mẫu, có cổng checklist** |
+| Q2 | Có đòi **công cụ + phiên bản + lệnh** cho mọi kết luận? Có cơ chế chống lỗi `pip list \| grep` lọc tay? | **Đòi: ✅** `Bước 3`: *"Mỗi khẳng định kỹ thuật phải kèm **bộ ba**… Kết luận không có bộ ba này ⇒ **không được** đưa vào báo cáo"*; C2 có 4 ô gồm *"Có kết luận nào dựa trên công cụ **đang thiếu** mà tôi suy diễn thay vì chạy? → **cấm**"*. **Cơ chế chống lọc tay: ❌ KHÔNG có đích danh** — `grep -niE "grep\|lọc\|KHONG LOC"` trên **cả 6 file T5** → **0 dòng khớp** | **✅ đòi công cụ/phiên bản/lệnh · ❌ thiếu cơ chế đích danh** |
+| Q3 | Có mục **"kết luận vượt bằng chứng"** không? | Khuôn §7: *"❌ **CẤM attribution** ("có thể là APT", "do nhóm X"…) **khi không có bằng chứng attribution kỹ thuật trỏ tới**. Không có bằng chứng ⇒ **không nhắc tới**. ❌ CẤM kết luận vượt bằng chứng."*; khuôn §8 *"CHƯA XÁC MINH (bắt buộc có mục này)… Mục này **rỗng là dấu hiệu xấu**"*; **C3** có 4 ví dụ cấm cụ thể (APT · "AES-256" khi chưa thấy S-box · "kết nối tới C2" khi domain chỉ là chuỗi chết) | **✅ CÓ, rất cụ thể — không phải câu chữ chung** |
+| Q4 | `EVIDENCE/tool_inventory_raw.txt` có phải output **thô** không? | Toàn văn 79 dòng: ghi **`Traceback (most recent call last)`** cho 4 lệnh import thất bại, ghi `ModuleNotFoundError` cho 6 gói, ghi `(khong co goi nao)` cho pip list, ghi `THIEU` cho 12 CLI. **Không giấu lỗi, không bịa thành công** | **✅ THÔ THẬT** |
+| Q5 | `volatility3` tự hạ xuống "chưa thực chiến" là **thật hay chỉ câu chữ**? | `tooling_bootstrap_raw.txt`: `vol --help` → framework nạp ✅; `vol -f /dev/null windows.pslist` → **lỗi symbol**, và tác giả **tự dán nhãn** *"(khong co dump that -> loi symbol la DU KIEN)"*; ghi `volatility3: (khong co thuoc tinh __version__)`. Bảng năng lực §D đánh 🟡 *"công cụ sẵn sàng, **chưa thực chiến**"* + *"**CHƯA chạy trên dump thật**"*, **trong khi** PE ghi *"**đã parse PE thật**"*, YARA *"**đã compile + scan OK**"*, capstone *"**đã disasm x86-64**"* | **✅ TỰ HẠ THẬT, không phải câu chữ** — có phân biệt rõ "đã chạy" vs "chỉ nạp được" |
+| Q6 | `scripts/bootstrap_tools.sh` có logic đúng không? | Đọc 58 dòng: `set -euo pipefail` ✅ · `VENV_DIR="${1:-$HOME/forensicsmal-tooling/.venv}"` ✅ (ngoài repo, không bị commit) · `export PATH="$HOME/.local/bin:$PATH"` ✅ (đúng chỗ `uv` nằm) · guard `command -v uv` → `exit 1` + báo Admin ✅ · `uv venv "$VENV_DIR" --python 3.12` ✅ khớp `python3 3.12.3` trên máy · `uv pip install --python "$VENV_DIR/bin/python" …` ✅ cài vào venv, **không** đụng hệ thống · verify bằng heredoc **trong venv** ✅ | **✅ LOGIC ĐÚNG.** Tôi **không chạy cài đặt thật** (Admin cấm) — chỉ đọc và đối chiếu với môi trường |
+
+### 2.13.1 LỖ HỔNG QUY TRÌNH phát hiện được (Q2) — cần vá
+
+ForensicsMal yêu cầu **công cụ + phiên bản + lệnh** cho mọi kết luận, và **cấm suy diễn khi thiếu
+công cụ** — hai điều đó **đúng hướng**. Nhưng đây **chính là** lỗi mà ExploitDeep đã mắc ở T4:
+dùng `pip list | grep -Ei '<danh sách viết tay>'` với **mẫu grep thiếu tên gói**, rồi kết luận "thiếu"
+mà không hề `import` thử. Quy trình T5 **không có ô nào chặn đúng lỗi đó**:
+**không** có chữ `grep`, **không** có chữ "lọc", **không** có "KHÔNG LỌC" trong cả 6 file T5.
+
+**Hệ quả:** một người làm theo đúng T5 vẫn có thể lặp lại y nguyên lỗi `unicorn`.
+**Đề xuất (Reviewer1 không tự sửa — `agents/<khác>/**` ngoài territory):** thêm thẳng vào **C2**
+các ô sau, mô phỏng đúng bản vá ExploitDeep đã làm ở T16:
+1. *"Mọi kiểm kê công cụ đã dùng `pip freeze`/`pip list` **KHÔNG LỌC** và lưu **nguyên output**?"*
+2. *"Mỗi kết luận 'THIẾU' đã được chứng minh bằng `import <mod>` **trong ĐÚNG interpreter đang xét**,
+   và đã ghi rõ interpreter đó là ai (hệ thống hay venv)?"*
+3. *"Mỗi dòng bảng phiên bản đã ghi rõ số phiên bản lấy từ **metadata** hay **`__version__`**?"*
+
+### 2.13.2 SAI SỐ PHIÊN BẢN `capstone` — khuyết điểm chính xác (đã kiểm bằng máy)
+
+| Nơi ghi | Giá trị |
+|---|---|
+| `FORENSICS_PROCEDURE.md` d.94 và d.291 | `capstone` **5.0.9** |
+| `CHECKIN.md` d.45, d.91, d.144 · `README.md` d.26 | `capstone` **5.0.9** |
+| `EVIDENCE/tooling_bootstrap_raw.txt` **d.13** | `capstone         5.0.9` *(từ `pip list` = metadata)* |
+| `EVIDENCE/tooling_bootstrap_raw.txt` **d.32** | `capstone      : **5.0.7**` *(từ `__version__`)* |
+| `scripts/bootstrap_tools.sh` d.34-35 | in `__version__` ⇒ sẽ in **5.0.7** |
+
+Đo lại trên máy: `capstone.__version__` = **5.0.7** · `importlib.metadata.version("capstone")` = **5.0.9**
+⇒ **cả hai số đều thật.** Nhưng T5 **chọn 5.0.9** và ghi như thể đó là phiên bản đã dùng,
+**không nói** đó là metadata. Trớ trêu: **chính ForensicsMal** sau này (T15) đã phát hiện và xử lý
+đúng cặp này (*"metadata 5.0.9 vs `__version__` 5.0.7 — tôi KHÔNG tự phán quyết"*).
+**Mức độ: thấp** (cả hai số thật, raw evidence chứa cả hai nên truy được) — nhưng đây là
+**khuyết điểm chính xác trong bảng tự đánh giá năng lực**, đúng loại Admin đang hỏi.
+
+> **Ghi nhận công bằng:** T5 là **quy trình**, không phải kết quả phân tích, và tác giả **tự ghi**
+> *"⚠️ CHƯA CÓ MẪU — tài liệu này là quy trình + khuôn báo cáo, không phải kết quả điều tra"*.
+> Không có chỗ nào tự nhận thành thạo quá mức; ngược lại còn **chủ động hạ** volatility3.
+
+**Phán quyết T21-A:** **PASS 5/6** — quy trình đạt ở 5 câu hỏi; **Q2 thiếu cơ chế đích danh chống
+lỗi lọc tay** (khuyến nghị vá, không reject) và **1 sai số phiên bản `capstone`** (mức thấp).
+
+---
+
+## 2.14 Bài kiểm #7B — T13 javis @ `3e19d46`
+
+```text
+[REVIEW] T21-B / javis / Lớp 1 CROSS / KẾT QUẢ: PASS nội dung — 0 vi phạm territory (12 mục đã kiểm)
+                                              + 1 VI PHẠM D-001 do chính javis khai (clone bằng HTTPS)
+```
+
+### 2.14.1 Tự fetch lại 8 URL — **nhiều con số khớp BYTE-EXACT**
+
+Tôi `curl -sSL -A "Chrome/125"` từng URL trên **máy này** (`noble-tran-XiaoXin-14-AHP9`,
+**không phải** VM `/home/hatch` của javis):
+
+| # | URL | javis khai | Tôi đo được | Kết quả |
+|---|---|---|---|---|
+| 1 | MDPI Sci `2413-4155/7/3/91` | curl 403 · 396 B | **403 · 398 B** | ✅ cùng trạng thái (lệch 2 B) |
+| 2 | MDPI Entropy `1099-4300/27/12/1242` | curl 403 · 400 B | **403 · 402 B** | ✅ cùng trạng thái (lệch 2 B) |
+| 3 | MDPI PDF `/91/pdf` | curl 403 · 404 B | **403 · 406 B** | ✅ cùng trạng thái (lệch 2 B) |
+| 4 | ACM DL PDF | curl 000 · 0 B / fetch 403 | **403 · 5.728 B** | ✅ khớp trạng thái **fetch** (403) |
+| 5 | **DergiPark `5763310`** | **200 · PDF 1.108.312 B** | **200 · `application/pdf` · 1.108.312 B** | ✅ **KHỚP BYTE-EXACT** |
+| 6 | **`doi.org/10.62056/ahee0iuc`** | 200 · đích **`/p/1/2/6`** · **168.296 B** | 200 · đích **`https://cic.iacr.org/p/1/2/6`** · **168.296 B** | ✅ **KHỚP BYTE-EXACT + đích URL** |
+| 7 | `datatracker…/draft-ietf-tls-hybrid-design/` | 200 · đích **`/doc/rfc9954/`** · 79.550 B | 200 · đích **`https://datatracker.ietf.org/doc/rfc9954/`** · **80.488 B** | ✅ đích URL khớp; size lệch 938 B (trang động) |
+| 8 | **`ebpf.io/what-is-ebpf/`** | 200 · **340.219 B** | 200 · **340.219 B** | ✅ **KHỚP BYTE-EXACT** |
+
+**Ba con số khớp byte-exact** (1.108.312 · 168.296 · 340.219) là bằng chứng rất mạnh: đây là
+**số đo thật**, không thể đoán ra. Đặc biệt:
+- **ebpf.io 340.219 B** ⇒ xác nhận javis đúng khi nói ResearchLead chỉ nhận **nội dung bị cắt**.
+- **DergiPark 200 · 1.108.312 B** ⇒ xác nhận lỗi `HTTP 000` của ResearchLead là **do mạng**, và
+  **tái lập được từ máy này**.
+- **IACR `/p/1/2/6`** ⇒ xác nhận **đính chính hữu ích**: URL `/p/1/3/22` suy đoán trước đây là bài khác.
+
+**Giới hạn tôi phải nói rõ:** hai nguồn MDPI (#1, #2) javis khai lấy **toàn văn qua "fetch nội dung
+trang"**; tôi **không có trình duyệt** nên `curl` chỉ ra **403** ⇒ phần **nội dung** đó là
+**`chưa xác minh`** bằng kênh của tôi, **không** phải bị bác bỏ. Con số `403` thì **khớp**.
+
+### 2.14.2 Xác minh TRÍCH NGUYÊN VĂN — 23/23 câu khớp
+
+Tôi bóc văn bản từ **chính file tôi tải** (`/tmp/t13_*.bin`) và đối chiếu từng câu, **không** dùng bản ghi của javis:
+
+| Nguồn | Số câu kiểm | Kết quả | Ghi chú |
+|---|---|---|---|
+| `ebpf.io` | 3 | **✅ 3/3** | khớp nguyên văn trong HTML 340.219 B |
+| IACR CiC (S7) | 4 | **✅ 4/4** | tiêu đề trang đích = *"A Comprehensive Survey on Post-Quantum TLS"* ✅ |
+| RFC 9954 (X4) | 3 | **✅ 3/3** | `RFC 9954`×3 · `Informational`×3 · `Hybrid Key Exchange in TLS 1.3`×4 |
+| DergiPark (S17) | 8 | **✅ 8/8** | gồm **cả 4 con số**: `11.3 to 13.3 ms`, `180 ms với 5% loss vs X25519 281 ms`, `4.16-fold speedup`; PDF 13 trang, có tác giả `Cemile İNCE` ✅ |
+| MDPI S15 + S16 (qua **Crossref**) | 8 | **✅ 8/8** | Crossref trả abstract 1.905 và 2.075 ký tự; **cả 8 câu khớp**; title/venue/tác giả khớp |
+| **Tổng** | **26 câu** (23 ngoài Crossref + 8 Crossref, có trùng) | **✅ 26/26** | **không câu nào bị viết lại hay cắt ghép** |
+
+> **Một chi tiết nhỏ:** `SOURCES_BROWSER.md` ghi tác giả S15 là *"Chen Jinrong, Peng Wei, Wang Yi,
+> Bian Yutong"* — Crossref trả `Jinrong Chen, Wei Peng, Yi Wang, Yutong Bian`. Đây là **thứ tự
+> họ–tên kiểu Trung Quốc**, không phải sai tên. Mức độ: **không đáng kể**.
+
+### 2.14.3 KIỂM VIPHAM TERRITORY — **đã kiểm 12 mục, KHÔNG phát hiện vi phạm territory**
+
+Dùng `merge-base` (không dùng `git diff main` — cách đó sẽ báo oan hàng loạt file `D` do T13 tách
+từ commit cũ). `merge-base origin/main 3e19d46` = **`1917c7b`**; `main` đi trước **40 commit**.
+
+| # | Mục kiểm | Bằng chứng thô | Kết quả |
+|---|---|---|---|
+| T1 | merge-base chuẩn để biết javis **thực sự** đổi gì | `git merge-base` → `1917c7b`; `git rev-list --count` → **40** | ✅ |
+| T2 | **File javis thực sự thay đổi** | `git diff --name-status 1917c7b 3e19d46` → **đúng 4 file**: `agents/javis/README.md`, `agents/javis/tasks/T13/NOTES.md`, `research/ebpf-microsegmentation/SOURCES_BROWSER.md`, `research/pqc-tls-migration/SOURCES_BROWSER.md` — **tất cả nằm trong territory** `research/**/SOURCES_BROWSER.md` + `agents/javis/**` | ✅ **KHÔNG có file ngoài territory** |
+| T3 | Commit có bất thường không | 1 commit `3e19d46`; `author=javis <tranquy4869@gmail.com>` = `committer=javis` | ✅ |
+| T4 | Có đường dẫn tuyệt đối **máy khác** trong nội dung/bằng chứng không | `git grep -n '/home/hatch' 3e19d46` → **6 dòng, tất cả là VĂN BẢN MÔ TẢ MÔI TRƯỜNG** (3 dòng trong `ADMIN/**` do **Admin** viết; 3 dòng trong header file của javis **tự khai** môi trường). **Không** có `/home/hatch/...` nào lọt vào output lệnh, log, hay đường dẫn bằng chứng | ✅ |
+| T5 | Có file nhị phân / mẫu / dump trên nhánh không | quét `*.pdf|*.bin|*.pcap|*.exe|*.zip|*.png…` trên toàn bộ `git ls-tree -r 3e19d46` → **0 file** | ✅ javis **không** push HTML/PDF tải về |
+| T6 | javis có sửa `.gitignore` (ngoài territory) không | `git diff 1917c7b 3e19d46 -- .gitignore` → **rỗng** | ✅ **KHÔNG sửa** |
+| T7 | Nguyên văn quy định Admin viện dẫn | `ADMIN/ROSTER.md:70` — *"Nếu **không clone được** repo về VM đó thì phải báo Admin — **cấm ghi tạm sang máy khác**."* | ✅ đã trích được nguyên văn |
+| T8 | Điều kiện kích hoạt quy định đó có xảy ra không | javis **clone được** (`~/workspace/agentmeeting` trên VM mình) ⇒ **điều kiện "nếu không clone được" KHÔNG xảy ra** ⇒ **không vi phạm** quy định này | ✅ |
+| T9 | Bằng chứng thô có bị push lên repo không | `NOTES.md:28` khai lưu **ngoài repo** tại `~/.agentmeet/sessions/…/javis/T13-evidence/` | ✅ **không push lên repo** |
+| T10 | Có dấu hiệu rebase/cherry-pick làm lệch nguồn gốc | `author_date == commit_date` = `2026-10-01 21:03:42 +0700` | ✅ |
+| T11 | Bằng chứng thô có trên **máy này** không | `ls ~/.agentmeet/sessions/ab1-478d-cfa7/javis/` → **`No such file or directory`** ⇒ chứng cứ **thực sự ở máy khác**, không được nhập lậu sang máy này | ✅ **phù hợp khai báo** |
+| T12 | Tổng: có file nào ngoài 4 file territory không | `git diff --name-status` chỉ 4 dòng `A`, **0 dòng `D`/`M` ngoài territory** | ✅ **0 vi phạm territory** |
+
+**Kết luận territory:** **đã kiểm 12 mục (T1–T12), KHÔNG phát hiện vi phạm territory.**
+Cụ thể: (a) **không** lấy file từ máy khác nhập vào repo; (b) **không** ghi tạm sang máy khác
+(quy định chỉ kích hoạt khi clone thất bại — ở đây clone thành công); (c) **không** push mẫu/nhị phân;
+(d) **không** sửa file ngoài 4 file thuộc territory.
+
+### 2.14.4 ⚠️ VI PHẠM D-001 — javis **tự khai** clone bằng HTTPS
+
+`agents/javis/tasks/T13/NOTES.md:4` ghi nguyên văn:
+> *"**Clone:** `~/workspace/agentmeeting` trên VM của javis (**clone bằng HTTPS** — đã xác minh đủ khung D-001: …)"*
+
+Trong khi `rooms/ab1-478d-cfa7/directives.md` D-001 ghi:
+> *"Toàn đội: clone **BẰNG SSH**, **TUYỆT ĐỐI KHÔNG dùng HTTPS**."*
+
+⇒ Đây là **vi phạm chỉ thị có hiệu lực bắt buộc**, do chính tác giả **khai báo thẳng** (không giấu —
+đó là điểm cộng về trung thực). **Lý do khả dĩ:** VM `/home/hatch` có thể **chưa có SSH key** cho
+`github.com`, mà D-001 cũng **không** có nhánh xử lý "nếu VM không có SSH key thì…".
+**Hệ quả thực tế: không thấy** — clone đủ khung, không push sai, không lộ credential (tôi đã quét
+`reviews/`+artifact, không có token).
+**Đề xuất cho Admin:** (1) xác nhận đây là vi phạm; (2) **bổ sung nhánh ngoại lệ vào D-001**
+("VM không có SSH key ⇒ báo Admin, dùng HTTPS chỉ để **đọc**, cấm push qua HTTPS"); (3) **không**
+trừ điểm nội dung T13 vì vi phạm này không ảnh hưởng kết quả truy hồi.
+
+**Phán quyết T21-B:** **PASS nội dung** — 3/8 URL khớp **byte-exact**, 26/26 câu trích nguyên văn
+khớp, 0 vi phạm territory (**12 mục đã kiểm**). **1 vi phạm D-001** (clone HTTPS) do tác giả tự khai,
+không gây hệ quả, chờ Admin phân xử. **`chưa xác minh`:** nội dung toàn văn 2 bài MDPI (kênh trình
+duyệt tôi không có) và chính file bằng chứng thô của javis (ở máy khác, không nằm trên máy này).

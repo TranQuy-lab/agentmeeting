@@ -1,0 +1,228 @@
+### T21-A — Reviewer1 kiem T5 ForensicsMal @ ee97c37 (QUY TRINH, khong phai ket qua)
+### Thoi diem: 2026-10-01T14:40:18Z UTC
+
+=== [A2] Co co che chong loi 'loc tay pip list | grep' (loi cua ExploitDeep) khong? ===
+$ git show ee97c37:.../FORENSICS_PROCEDURE.md | grep -niE 'grep|lọc|loc |KHONG LOC|loc tay|danh sách viết tay|thủ công'
+  (KHONG co tu khoa nao)
+
+--- Tim trong TOAN BO artifact T5 ---
+  FORENSICS_PROCEDURE.md : 0 dong chua 'grep|lọc'
+  README.md : 0 dong chua 'grep|lọc'
+  CHECKIN.md : 0 dong chua 'grep|lọc'
+  EVIDENCE/tool_inventory_raw.txt : 0 dong chua 'grep|lọc'
+  EVIDENCE/tooling_bootstrap_raw.txt : 0 dong chua 'grep|lọc'
+  scripts/bootstrap_tools.sh : 0 dong chua 'grep|lọc'
+
+=== [A4] EVIDENCE/tool_inventory_raw.txt — THO hay da bien tap? ===
+--- TOAN VAN ---
+     1	# RAW OUTPUT — Kiem ke cong cu (T5-A)
+     2	# Ngay chay: 2026-10-01T13:46:48Z UTC
+     3	# May: Linux noble-tran-XiaoXin-14-AHP9 7.0.0-34-generic #34~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Sep  4 15:38:29 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+     4	# OS: Ubuntu 24.04.4 LTS
+     5	
+     6	$ python3 --version
+     7	Python 3.12.3
+     8	
+     9	$ which sha256sum file strings xxd binwalk foremost
+    10	/usr/bin/sha256sum
+    11	/usr/bin/file
+    12	/usr/bin/strings
+    13	/usr/bin/xxd
+    14	
+    15	$ which tshark tcpdump
+    16	/usr/bin/tshark
+    17	/usr/bin/tcpdump
+    18	
+    19	$ tshark --version | head -1
+    20	TShark (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3).
+    21	
+    22	$ python3 -c "import volatility3; print(volatility3.__version__)"
+    23	Traceback (most recent call last):
+    24	
+    25	$ python3 -c "import scapy; print('scapy', scapy.__version__)"
+    26	Traceback (most recent call last):
+    27	
+    28	$ python3 -c "import yara; print('yara-python ok')"
+    29	Traceback (most recent call last):
+    30	
+    31	$ which yara zeek
+    32	
+    33	$ python3 -c "import pefile; print('pefile ok')"
+    34	Traceback (most recent call last):
+    35	
+    36	=== CHI TIET LOI IMPORT (dong cuoi) ===
+    37	volatility3    -> ModuleNotFoundError: No module named 'volatility3'
+    38	scapy          -> ModuleNotFoundError: No module named 'scapy'
+    39	yara           -> ModuleNotFoundError: No module named 'yara'
+    40	pefile         -> ModuleNotFoundError: No module named 'pefile'
+    41	capstone       -> ModuleNotFoundError: No module named 'capstone'
+    42	oletools       -> ModuleNotFoundError: No module named 'oletools'
+    43	
+    44	=== pip list (goi lien quan) ===
+    45	(khong co goi nao)
+    46	
+    47	=== command -v ===
+    48	binwalk     : THIEU
+    49	foremost    : THIEU
+    50	yara        : THIEU
+    51	zeek        : THIEU
+    52	vol         : THIEU
+    53	volatility  : THIEU
+    54	exiftool    : THIEU
+    55	steghide    : THIEU
+    56	fls         : THIEU
+    57	icat        : THIEU
+    58	photorec    : THIEU
+    59	
+    60	=== Cong cu CO (bo sung) ===
+    61	python3     : CO -> /usr/bin/python3
+    62	sha256sum   : CO -> /usr/bin/sha256sum
+    63	sha1sum     : CO -> /usr/bin/sha1sum
+    64	md5sum      : CO -> /usr/bin/md5sum
+    65	file        : CO -> /usr/bin/file
+    66	strings     : CO -> /usr/bin/strings
+    67	xxd         : CO -> /usr/bin/xxd
+    68	tshark      : CO -> /usr/bin/tshark
+    69	tcpdump     : CO -> /usr/bin/tcpdump
+    70	objdump     : CO -> /usr/bin/objdump
+    71	readelf     : CO -> /usr/bin/readelf
+    72	nm          : CO -> /usr/bin/nm
+    73	gdb         : CO -> /usr/bin/gdb
+    74	upx         : THIEU
+    75	git         : CO -> /usr/bin/git
+    76	curl        : CO -> /usr/bin/curl
+    77	jq          : CO -> /usr/bin/jq
+    78	unzip       : CO -> /usr/bin/unzip
+    79	7z          : THIEU
+
+=== [A5] volatility3 tu ha xuong 'chua thuc chien' — TU HA THAT hay chi la cau chu? ===
+--- tooling_bootstrap_raw.txt: phan vol ---
+23-pycparser        3.0
+24-pyparsing        3.3.3
+25-scapy            2.7.0
+26:volatility3      2.28.2
+27-yara-python      4.5.4
+28-
+29-## Phien ban tung goi
+30-pefile        : 2024.8.26
+31-scapy         : 2.7.0
+32-capstone      : 5.0.7
+33-yara          : 4.5.4
+34-oletools      : (khong co thuoc tinh __version__)
+35:volatility3   : (khong co thuoc tinh __version__)
+36-
+37-## CLI co trong venv/bin
+38:cffi-gen-src ezhexviewer ftguess mraptor msodde msoffcrypto-tool olebrowse oledir olefile oleid olemap olemeta oleobj oletimes olevba pcodedmp pyxswf rtfobj scapy vol volshell 
+39-
+40-## TEST CHUC NANG 1 — yara-python compile + scan
+41-compile OK; scan -> ['t']
+42-
+43-## TEST CHUC NANG 2 — pefile parse PE that
+44-parse OK: machine=0x8664, so section=6
+45-
+46-## TEST CHUC NANG 3 — capstone disasm x86-64
+47-[('mov', 'rbp, rsp'), ('mov', 'eax, 0')]
+48-
+49-## TEST CHUC NANG 4 — scapy build packet
+50-/home/noble-tran/forensicsmal-tooling/.venv/lib/python3.12/site-packages/scapy/layers/tls/crypto/groups.py:25: CryptographyDeprecationWarning: Diffie-Hellman over finite fields (FFDH) is deprecated and support will be removed in a future release. Use a more modern key exchange algorithm.
+--
+53-WARNING: MAC address to reach destination not found. Using broadcast.
+54-scapy build OK, len= 54
+55-
+56:## TEST CHUC NANG 5 — volatility3 CLI + nap plugin
+57:$ /home/noble-tran/forensicsmal-tooling/.venv/bin/vol --help | head -3
+58:Volatility 3 Framework 2.28.2
+59:usage: vol [-h] [-c CONFIG] [--parallelism [{processes,threads,off}]]
+60-           [-e EXTEND] [-p PLUGIN_DIRS] [-s SYMBOL_DIRS] [-v] [-l LOG]
+61-
+62:$ /home/noble-tran/forensicsmal-tooling/.venv/bin/vol -f /dev/null windows.pslist   (khong co dump that -> loi symbol la DU KIEN)
+63-	You have the correct symbol file for the requirement
+64-	The symbol file is under the correct directory or zip file
+65-	The symbol file is named appropriately or contains the correct banner
+66-
+67-
+68-## TEST CHUC NANG 6 — oletools CLI
+69-olevba CLI: OK
+
+=== [A7] PHAT HIEN: phien ban capstone KHONG NHAT QUAN trong T5 ===
+$ grep -n 'capstone' FORENSICS_PROCEDURE.md
+94:> `scapy` 2.7.0, `capstone` 5.0.9, `yara-python` 4.5.4 (compile + scan OK),
+291:| Disassembly | 🟢 sẵn sàng | `capstone` 5.0.9 — **đã disasm x86-64**, thêm `objdump`/`readelf` |
+300:`scapy`, `capstone`, `oletools`, `volatility3` **không cần sudo** — tái lập bằng
+
+$ grep -n 'capstone' EVIDENCE/tooling_bootstrap_raw.txt
+13:capstone         5.0.9
+32:capstone      : 5.0.7
+46:## TEST CHUC NANG 3 — capstone disasm x86-64
+
+$ grep -n 'capstone' CHECKIN.md README.md
+45:   `volatility3` 2.28.2, `pefile` 2024.8.26, `scapy` 2.7.0, `capstone` 5.0.9,
+91:| `capstone` | 5.0.9 | disasm x86-64 | ✅ `mov rbp,rsp` / `mov eax,0` |
+144:| **Disassembly** (`capstone` 5.0.9 + `objdump`/`readelf`) | 🟢 **SẴN SÀNG** |
+164:2. **Phân tích PE** — `pefile` (header, section, import, entrypoint, entropy) + `objdump`/`capstone`.
+26:  `scapy` 2.7.0, `capstone` 5.0.9, `yara-python` 4.5.4, `oletools` 0.60.2.
+
+--- Kiem tren may: metadata vs __version__ ---
+  capstone.__version__              = 5.0.7
+  importlib.metadata.version        = 5.0.9
+  pip list (metadata)               = 5.0.9
+
+=== [A6] scripts/bootstrap_tools.sh — doc va kiem logic ===
+     1	#!/usr/bin/env bash
+     2	# bootstrap_tools.sh — Dựng môi trường công cụ pháp y Python KHÔNG cần sudo
+     3	#
+     4	# Tác giả: ForensicsMal (ag_82f7cb07) — task T5
+     5	# Bối cảnh: máy này KHÔNG có `pip`/`ensurepip` và `sudo` đòi mật khẩu,
+     6	#           nhưng CÓ `uv` tại ~/.local/bin/uv ⇒ dựng venv riêng là khả thi.
+     7	#           Kiểm chứng thô: EVIDENCE/tool_inventory_raw.txt
+     8	#
+     9	# Dùng:  bash bootstrap_tools.sh [thư_mục_venv]
+    10	# Mặc định thư mục venv: ~/forensicsmal-tooling/.venv  (KHÔNG nằm trong repo ⇒ không bị commit)
+    11	
+    12	set -euo pipefail
+    13	
+    14	VENV_DIR="${1:-$HOME/forensicsmal-tooling/.venv}"
+    15	export PATH="$HOME/.local/bin:$PATH"
+    16	
+    17	echo "[*] Kiểm tra uv..."
+    18	if ! command -v uv >/dev/null 2>&1; then
+    19	  echo "[!] THIẾU uv. Không tự cài được (sudo cần mật khẩu). Báo Admin." >&2
+    20	  exit 1
+    21	fi
+    22	uv --version
+    23	
+    24	echo "[*] Tạo venv tại: $VENV_DIR"
+    25	uv venv "$VENV_DIR" --python 3.12
+    26	
+    27	echo "[*] Cài gói pháp y (pefile, yara-python, scapy, capstone, oletools, volatility3)..."
+    28	uv pip install --python "$VENV_DIR/bin/python" \
+    29	  pefile yara-python scapy capstone oletools volatility3
+    30	
+    31	echo "[*] Kiểm chứng phiên bản..."
+    32	"$VENV_DIR/bin/python" - <<'PY'
+    33	import importlib
+    34	for name, attr in [("pefile","__version__"),("scapy","__version__"),
+    35	                   ("capstone","__version__"),("volatility3","__version__")]:
+    36	    try:
+    37	        m = importlib.import_module(name)
+    38	        print(f"  {name}: {getattr(m, attr, 'ok')}")
+    39	    except Exception as e:
+    40	        print(f"  {name}: LỖI {e}")
+    41	for name in ("yara","oletools"):
+    42	    try:
+    43	        importlib.import_module(name); print(f"  {name}: ok")
+    44	    except Exception as e:
+    45	        print(f"  {name}: LỖI {e}")
+    46	PY
+    47	
+    48	cat <<EOF
+    49	
+    50	[+] Xong. Dùng công cụ qua:
+    51	      $VENV_DIR/bin/python
+    52	      $VENV_DIR/bin/vol        # volatility3 CLI (nếu cài thành công)
+    53	
+    54	[!] LƯU Ý AN TOÀN:
+    55	    - KHÔNG chạy mẫu malware trên máy thật. Phân tích động cần môi trường cô lập ĐÃ XÁC MINH.
+    56	    - Gói hệ thống (binwalk, foremost, sleuthkit, yara CLI, zeek, exiftool) KHÔNG cài được
+    57	      nếu không có sudo/Admin. Ghi thẳng "thiếu" trong báo cáo, KHÔNG suy diễn thay.
+    58	EOF
