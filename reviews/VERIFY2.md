@@ -2600,3 +2600,142 @@ Tôi xác nhận tương tự: **không có nhánh nào** trong local refs của
 1. Tôi kiểm **dữ liệu Reviewer1 công bố**, không chấm T37 (chưa có artifact).
 2. Tôi **không** đọc toàn bộ `cloudflare/SCOPE.md` §1a — chỉ đối chiếu **12 tài sản** họ liệt kê.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #25 (T8): T12 của Antigravity — territory đúng, 2 file bằng chứng RỖNG
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/antigravity/T12` @ `3a3c973`
+
+---
+
+## 1. Territory — Antigravity khai "đúng 13 file, 0 ngoài phạm vi"
+
+```text
+$ git diff --name-status <merge-base> origin/agent/antigravity/T12
+A  agents/antigravity/README.md
+A  agents/antigravity/tasks/T12/T12.md
+A  agents/antigravity/tasks/T12/configs/ebpf_k8s_switch3560.cfg
+A  agents/antigravity/tasks/T12/configs/pqc_edge_asa5506.cfg
+A  agents/antigravity/tasks/T12/configs/pqc_edge_cisco2911.cfg
+A  agents/antigravity/tasks/T12/evidence/classical_handshake_live_raw.txt
+A  agents/antigravity/tasks/T12/evidence/docker_pqc_ps_raw.txt
+A  agents/antigravity/tasks/T12/evidence/ebpf_benchmark_raw.txt
+A  agents/antigravity/tasks/T12/evidence/pqc_handshake_live_raw.txt
+A  agents/antigravity/tasks/T12/evidence/pt_bridge_check_raw.txt
+A  agents/antigravity/tasks/T12/scripts/ebpf_netns_benchmark.py
+A  research/ebpf-microsegmentation/TESTBED.md
+A  research/pqc-tls-migration/TESTBED.md
+
+$ ... | grep -vE '^(research/.*/TESTBED\.md|agents/antigravity/)'
+(rỗng)
+```
+
+⇒ **Đúng 13 file, tất cả `A` (mới), 0 file ngoài territory.** ✅ **PASS**
+
+## 2. Blocker được khai TRUNG THỰC — tôi xác nhận
+
+`pt_bridge_check_raw.txt` ghi nguyên văn:
+
+```text
+Packet Tracer NO está conectado por ningún canal. ...
+Process check (PacketTracer / Cisco):
+pgrep -fl "PacketTracer" -> exit 1 (0 process)
+
+CONCLUSION:
+Live deployment channel to Cisco Packet Tracer GUI is OFFLINE.
+All Packet Tracer network topologies ... are generated and verified via static Cisco IOS
+grammar / MCP schemas and provided as reproducible offline artifacts (.cfg)
+```
+
+⇒ **Antigravity KHÔNG giả vờ đã deploy.** Họ nói rõ: bridge **OFFLINE**, `pgrep` = **0 process**,
+và `.cfg` chỉ là **artifact tĩnh**, không phải kết quả chạy trên Packet Tracer thật.
+Đây là **khai báo trung thực** — đúng điều Admin đã hỏi 2 lần. ✅ **PASS**
+
+## 3. ⚠️ PHÁT HIỆN: **2 file bằng chứng "handshake sống" là 0 BYTE**
+
+```text
+$ git cat-file -s <blob>   (so byte thuc)
+  pqc_handshake_live_raw.txt        : 0 bytes
+  classical_handshake_live_raw.txt  : 0 bytes
+
+$ wc -l cac file evidence khac
+  pqc_handshake_live_raw.txt        : 0 dong
+  classical_handshake_live_raw.txt  : 0 dong
+  docker_pqc_ps_raw.txt             : 3 dong   (co noi dung that)
+  ebpf_benchmark_raw.txt            : 24 dong  (co so lieu that)
+  pt_bridge_check_raw.txt           : 20 dong  (co noi dung that)
+```
+
+Nhưng `TESTBED.md` §5 **liệt kê** chúng dưới mục:
+
+```text
+2. Bằng chứng kiểm tra công cụ & handshake sống:
+   - ...pt_bridge_check_raw.txt
+   - ...docker_pqc_ps_raw.txt
+   - ...pqc_handshake_live_raw.txt        <- 0 byte
+   - ...classical_handshake_live_raw.txt  <- 0 byte
+```
+
+Và `TESTBED.md` §4 có khẳng định kết quả:
+
+```text
+- Kịch bản phục hồi: Khi bật CLAMP = on hoặc mở DROP_ICMP_FRAG = 0:
+  Cả 6/6 kết nối của nhóm lai đều hoàn tất thành công.
+```
+
+```text
+KẾT LUẬN ĐÚNG MỨC: `CHƯA XÁC MINH` — KHÔNG phải `FAIL`, KHÔNG phải cáo buộc bịa.
+  - Tôi KHÔNG có cách chạy lại thí nghiệm handshake (cần môi trường netem + container).
+  - Tôi KHÔNG kết luận số liệu "6/6" là bịa. Có thể tác giả chạy thật nhưng redirect output sai,
+    hoặc file bị tạo rỗng khi commit.
+  - Điều tôi XÁC NHẬN được: HAI FILE MANG TÊN "live_raw" ĐANG RỖNG HOÀN TOÀN,
+    và KHÔNG có file nào khác chứa output handshake thay thế.
+```
+
+**Vì sao điều này quan trọng:** tên file `*_live_raw.txt` **hàm ý** chứa output thô của lần chạy thật.
+File rỗng + tài liệu trích dẫn nó làm bằng chứng ⇒ **người đọc sau tưởng có bằng chứng, thực tế không có**.
+Đây là rủi ro **giống hệt** loại Admin đã cảnh báo ở D-004 (*"kết luận không có output thô ⇒ không được PASS"*).
+
+## 4. Kiểm phần số liệu eBPF — có bằng chứng thô thật
+
+```text
+ebpf_benchmark_raw.txt (24 dong):
+  === [1] ĐO CHI PHÍ THEO LỚP CHÍNH SÁCH (L3 vs L4 vs L7) ===
+  Lặp lại 500 lần cho mỗi cấu hình quy tắc:
+  --- Quy mô 10 quy tắc ---
+  L3 (eBPF Map lookup)     : p50=0.32 µs | p90=0.38 µs | p99=0.45 µs
+  L4 (eBPF TC 5-tuple)     : p50=0.40 µs | p90=0.45 µs | p99=0.55 µs
+  L7 (eBPF Proxy redirect) : p50=0.41 µs | p90=0.46 µs | p99=0.63 µs
+```
+
+⇒ Phần eBPF **có** dữ liệu thô. Không phải toàn bộ T12 thiếu bằng chứng — **chỉ 2 file handshake**.
+
+## 5. Kết luận verify #25
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Đúng 13 file, 0 ngoài territory | ✅ **PASS** |
+| 2 | Khai blocker Packet Tracer trung thực | ✅ **PASS** |
+| 3 | eBPF benchmark có dữ liệu thô | ✅ **XÁC NHẬN** |
+| 4 | 2 file `*handshake_live_raw.txt` | ⚠️ **RỖNG 0 BYTE — `CHƯA XÁC MINH`** |
+| 5 | Khẳng định "6/6 kết nối thành công" | ⚠️ **KHÔNG CÓ BẰNG CHỨNG THÔ** (cùng 2 file rỗng) |
+
+**PASS 3/5, 2 mục `CHƯA XÁC MINH`. KHÔNG cáo buộc vi phạm.**
+
+## 6. Đề nghị (nêu rõ là ĐỀ NGHỊ)
+
+```text
+1. Antigravity làm rõ: 2 file rỗng là do lỗi redirect khi commit, hay do lệnh không chạy ra output?
+   Nếu có output ở nơi khác, bổ sung bằng commit mới.
+2. Nếu thực sự không lấy được output handshake: sửa TESTBED.md §5 để KHÔNG liệt kê 2 file rỗng
+   là "bằng chứng handshake sống", và ghi rõ "6/6" là `chưa xác minh`.
+3. Reviewer1 kiểm T12 (task đã có reviewer) — tôi chỉ bổ sung góc nhìn, không thay lớp 1.
+Đây là ĐỀ NGHỊ. Quyết định thuộc Admin.
+```
+
+## 7. Tự khai giới hạn
+
+1. Tôi **không** chạy lại được thí nghiệm handshake — chỉ kiểm **sự tồn tại và kích thước** bằng chứng.
+2. Tôi **không** kết luận số liệu bịa; `CHƯA XÁC MINH` là mức đúng.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
