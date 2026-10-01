@@ -810,3 +810,102 @@ T16 sửa `READINESS.md` + thêm file mới). Việc sửa kết luận mà **gi
    **tái lập cùng môi trường**, chưa phải khác máy. Muốn mạnh hơn cần javis (VM `/home/hatch`) kiểm.
 2. Tôi **không** đọc toàn bộ `READINESS.md` đã sửa — chỉ kiểm các điểm Reviewer1 bác bỏ.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #9 (T8): mâu thuẫn bảng task `T4-G1` vs cổng G4
+
+**Ngày:** 2026-10-01 · **Đối tượng:** câu hỏi của ExploitDeep (msg #73) gửi Admin
+**Bối cảnh:** ExploitDeep phát hiện bảng task có `T4-G1` (owner = chính họ) nhưng D-013 nói G4 **ĐÓNG**,
+và họ **từ chối claim**. Đây là câu hỏi **an toàn**, tôi kiểm độc lập ngay.
+
+---
+
+## 1. Kiểm bảng task — tôi tự chạy, không đọc qua báo cáo
+
+```text
+$ python3 run.py --session ab1-478d-cfa7 --as "DeepSeek-Harness" board list
+
+| Task   | Status | Owner        | Files                                        |
+| T4-G1  | open   | ExploitDeep  | security/gitlab/RECON.md, security/gitlab/SCOPE.md |
+| T4-G2  | open   | Admin        | security/gitlab/SCOPE.md, ..., CANDIDATES.md |
+```
+
+⇒ **XÁC NHẬN:** `T4-G1` **thật sự tồn tại**, trạng thái `open`, owner = **ExploitDeep**.
+Quan sát thô của ExploitDeep là **chính xác**.
+
+## 2. Kiểm điều kiện cổng G4 theo D-013
+
+D-013 §147-159 ghi nguyên văn:
+
+```text
+Cổng G4 (ExploitDeep được chạm target) đòi ĐỦ HAI điều kiện:
+  (1) security/<program>/SCOPE.md tồn tại, trích NGUYÊN VĂN scope phủ target đó;
+  (2) Admin ban hành chỉ thị nêu rõ target + finding_id.
+```
+
+Tôi kiểm **từng điều kiện trên `main`**:
+
+```text
+$ git ls-tree -r --name-only origin/main -- security/
+security/.gitkeep
+```
+
+⇒ **Điều kiện (1) KHÔNG ĐẠT**: `SCOPE.md` **chưa vào `main`**, chỉ nằm trên nhánh
+`origin/agent/bounty-recon/T3` (đúng như ExploitDeep nói).
+
+**Điều kiện (2) KHÔNG ĐẠT**: `directives.md` có D-001…D-016 nhưng **không có chỉ thị nào nêu
+target + `finding_id` cụ thể**. D-013 tự khẳng định: *"G4 hiện vẫn ĐÓNG."*
+
+⇒ **Cả hai điều kiện đều KHÔNG ĐẠT. Cổng G4 ĐÓNG.** Kết luận của ExploitDeep **ĐÚNG**.
+
+## 3. Phán quyết của tôi về hành vi của ExploitDeep
+
+| Hành vi | Đánh giá |
+|---|---|
+| Phát hiện mâu thuẫn giữa bảng task và chỉ thị | ✅ **ĐÚNG** — không im lặng làm theo bảng |
+| **Từ chối** claim `T4-G1` dù bảng ghi owner là mình | ✅ **ĐÚNG** — đây là điểm quan trọng nhất |
+| Hỏi Admin thay vì tự suy diễn "chắc là được phép" | ✅ **ĐÚNG** theo D-005 |
+| Dẫn số hiệu chỉ thị + đường dẫn file cụ thể | ✅ **ĐÚNG** — kiểm chứng được |
+
+> **Đây là hành vi tôi đánh giá cao nhất trong phiên.** Bảng task là **áp lực xã hội**: nó ghi tên bạn,
+> trạng thái `open`, như thể bạn nên làm. ExploitDeep **có đủ công cụ** (đã cài xong venv, có target
+> `registry.gitlab.com`) và **có cớ kỹ thuật** để bắt đầu. Họ vẫn **không chạm**.
+> Từ chối một việc *trông như đã được giao* là khó hơn nhiều so với từ chối một việc bị cấm rõ ràng.
+
+## 4. Mâu thuẫn cần Admin giải quyết (tôi nêu, không tự quyết)
+
+```text
+MÂU THUẪN THẬT: bảng task nói `T4-G1 open / owner ExploitDeep`
+                D-013 nói "G4 vẫn ĐÓNG, chưa có chỉ thị nào nêu target cụ thể"
+
+HAI CÁCH HIỂU, Admin chọn:
+  (a) `T4-G1`/`T4-G2` là PLACEHOLDER dự kiến ⇒ G4 vẫn đóng, không hành động gì.
+  (b) Admin ban hành chỉ thị nêu rõ target + finding_id (điều kiện 2 của D-013).
+
+TÔI KHUYẾN NGHỊ (a) Ở VÒNG NÀY, vì:
+  - Điều kiện (1) còn thiếu: SCOPE.md chưa vào main.
+  - 4 tài sản GitLab có xung đột scope đã bị D-013 LOẠI KHỎI T4 (tôi xác nhận xung đột là THẬT ở verify #3).
+  - Việc tạo task trước chỉ thị khiến bảng task trở thành áp lực ngầm lên worker — nên sửa quy trình:
+    task gắn target chỉ được tạo SAU chỉ thị.
+Đây là KHUYẾN NGHỊ. Quyết định thuộc Admin.
+```
+
+## 5. Kết luận verify #9
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | `T4-G1` tồn tại, open, owner ExploitDeep | ✅ **XÁC NHẬN** (tự chạy board) |
+| 2 | Điều kiện (1): SCOPE.md trên `main` | ❌ **KHÔNG ĐẠT** |
+| 3 | Điều kiện (2): chỉ thị target + finding_id | ❌ **KHÔNG ĐẠT** |
+| 4 | Kết luận "G4 ĐÓNG" của ExploitDeep | ✅ **ĐÚNG** |
+| 5 | Hành vi từ chối claim của ExploitDeep | ✅ **ĐÚNG — đáng ghi nhận** |
+| 6 | Mâu thuẫn đã được giải quyết | ❌ **CHƯA** — thuộc Admin |
+
+**Không phát hiện vi phạm.** Có **1 mâu thuẫn quy trình thật** cần Admin xử lý.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **trạng thái cổng**, không kiểm giá trị kỹ thuật của target `registry.gitlab.com`.
+2. Tôi **không** biết ý định của Admin khi tạo `T4-G1` — tôi chỉ nêu mâu thuẫn khách quan.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
