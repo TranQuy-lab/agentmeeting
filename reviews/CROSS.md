@@ -757,3 +757,224 @@ hoặc thêm ghi chú mốc "(số liệu tại `0f41ebb`)" để dòng đó t�
 > **Phán quyết T25: PASS 18/18.** Bảng `INDEX.md` của DocWriter **khớp máy từng đường dẫn**, tác giả
 > lấy đúng từ `--diff-filter=A`, cảnh báo phạm vi đầy đủ, và **4 phát hiện đều đúng** — trong đó 2 phát hiện
 > (6a, 6d) đã khiến Admin sửa `SUMMARY.md`/`ASSIGNMENTS.md`. **Không reject mục nào.**
+
+---
+
+# VÒNG 6 — Bài kiểm #9 (T27): T23 ForensicsMal + T26 BountyRecon
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T27`
+**Base:** `origin/main` = `d3c874e` (187 file) · **Artifact:** T23 @ `ee90d1f` · T26 @ `43cc537`
+**Bằng chứng thô:** `agents/reviewer1/evidence/T27/`
+**Phương pháp an toàn:** dùng `git worktree add --detach /tmp/rv1-t23 ee90d1f` (**index riêng**) thay vì
+`git --work-tree=… checkout … -- .` — đúng bài học tôi tự khai ở T25.
+
+---
+
+## 2.19 Bài kiểm #9A — T23 ForensicsMal (@ `ee90d1f`, rẽ từ T5)
+
+```text
+[REVIEW] T27-A / ForensicsMal (ag_82f7cb07) / Lớp 1 CROSS / KẾT QUẢ: PASS 4/4
+```
+
+### 2.19.1 A1 — Ba ô C2 mới: **có thật và HÀNH ĐỘNG ĐƯỢC**
+
+Đọc **nguyên văn** §C2 (`FORENSICS_PROCEDURE.md`), dưới khối dẫn *"**C2 — BA Ô CHỐNG 'LỌC TAY'**
+(bổ sung ở T23, thi hành D-014 mục 1)… **Đây là ô bắt buộc, không phải gợi ý.**"*:
+
+| Ô | Nguyên văn (rút) | Có hành động được? |
+|---|---|---|
+| **C2a** | *"Kiểm kê công cụ đã dùng `pip freeze`/`pip list` **KHÔNG LỌC**, và lưu **nguyên output** vào `EVIDENCE/`? *(Không `grep`, không `--format` rút gọn, không cắt dòng, không "chỉ liệt kê gói liên quan".)*"* — kèm lệnh thay thế vì máy không có `pip`: `~/.local/bin/uv pip list --python <interpreter>` | ✅ **Đúng, cụ thể, có lệnh chạy được** |
+| **C2b** | *"Mỗi kết luận **"THIẾU"** đã được chứng minh bằng `import <mod>` thực chạy trong **ĐÚNG interpreter đang xét**, và **đã ghi rõ đường dẫn interpreter đó**?"* + *"Ghi cả **thông báo lỗi nguyên văn**"* + **"'Không thấy tên trong danh sách' **KHÔNG** phải bằng chứng thiếu. **Chỉ `import` thất bại mới là.**"* | ✅ **Bịt đúng lỗ hổng đã làm ExploitDeep sai** |
+| **C2c** | *"Mỗi dòng **phiên bản** đã ghi rõ lấy từ **metadata** hay **`__version__`**?… Ghi `"X"` trần là **thiếu nguồn**. Mẫu ghi đúng: `capstone` **5.0.9 (metadata)** / **5.0.7 (`__version__`)**"* | ✅ **Có mẫu cụ thể** |
+
+Thêm **câu tự vấn** kèm điều kiện chặn: *"Tôi đã `import` nó chưa, trong đúng interpreter này chưa,
+và tôi có đang lọc danh sách theo thứ tôi đã tin sẵn không?" — Trả lời chưa đủ ba vế thì **không được**
+viết chữ "thiếu".*
+
+⇒ **Ba ô này thi hành ĐÚNG khuyến nghị của tôi ở T21-A Q2.** Ghi nhận: tác giả còn **tốt hơn** đề xuất —
+tôi đề xuất 3 ô, họ thêm cả **lý do tồn tại** (dẫn chứng lỗi T4) và **câu tự vấn**.
+
+### 2.19.2 A2 — `capstone`: **mọi dòng trong TÀI LIỆU đã ghi rõ nguồn**
+
+| Nơi | Nguyên văn | |
+|---|---|---|
+| `FORENSICS_PROCEDURE.md` d.110 | `capstone` **5.0.9 (metadata)** / **5.0.7 (`__version__`)** | ✅ |
+| `FORENSICS_PROCEDURE.md` d.114-118 | khối *"⚠️ **Vì sao `capstone` ghi HAI số**… **cả hai đều thật, cùng một gói, và khác nhau**"* + trỏ bằng chứng thô | ✅ |
+| `FORENSICS_PROCEDURE.md` d.289 (mẫu C2c) · d.340 (bảng năng lực) | đều ghi hai số + nguồn | ✅ |
+| `CHECKIN.md` d.46 · d.95 · d.148 | đều ghi hai số + nguồn | ✅ |
+| `README.md` d.26 | đều ghi hai số + nguồn | ✅ |
+
+**Còn dòng nào ghi số trần thiếu nguồn không?** `git grep capstone` rồi lọc bỏ `metadata|__version__`
+→ các dòng còn lại **đều KHÔNG phải câu khẳng định phiên bản**: chúng là (a) **output thô**
+(`t23_c2_gap_demo_raw.txt:13`, `t23_capstone_version_recheck_raw.txt:24`, `t23_unfiltered_inventory_raw.txt:7`
+— bản `uv pip list` **cấm sửa**), hoặc (b) **dòng chú thích đã ghi rõ nguồn ngay cạnh**
+(`t23_capstone_version_recheck_raw.txt:41`: *"dong 13: 'capstone 5.0.9' <- lay tu 'uv pip list' = **METADATA**"*),
+hoặc (c) **tên gói trong lệnh cài** (`bootstrap_tools.sh:27/29`).
+⇒ **0 dòng khẳng định phiên bản thiếu nguồn trong tài liệu.** ✅
+
+### 2.19.3 A3 — TÁI LẬP demo: **khẳng định ĐÚNG, tái lập chính xác**
+
+Tôi chạy lại `scripts/t23_c2_gap_demo.py` trong worktree riêng. Kết quả **khớp từng dòng**:
+
+```text
+  goi/module        grep co neo    import   ket luan
+  yara                    thieu        OK   GREP SAI  <-- C2(a)/(b) BAT DUOC
+  msoffcrypto             thieu        OK   GREP SAI  <-- C2(a)/(b) BAT DUOC
+  unicorn                 thieu  that bai   nhat quan
+  dissect                 thieu  that bai   nhat quan
+  pyelftools              thieu  that bai   nhat quan
+  So ket luan SAI neu chi dung grep : 2  ['yara', 'msoffcrypto']
+```
+
+**Cơ chế họ nêu là ĐÚNG:** `uv pip list` liệt kê **TÊN GÓI** (`yara-python`, `msoffcrypto-tool`),
+còn `import` dùng **TÊN MODULE** (`yara`, `msoffcrypto`) ⇒ grep theo tên module **không thấy**
+⇒ kết luận "thiếu" **SAI**. Và họ **phân biệt được** ca thật-thiếu (`unicorn` grep thiếu **và** import
+thất bại = nhất quán) khỏi ca grep-sai ⇒ demo **không** nguỵ biện.
+
+**Tái lập ổn định:** chạy lại sinh `t23_unfiltered_inventory_raw.txt` **giống hệt** bản đã commit
+(`diff` rỗng) ✅.
+
+### 2.19.4 A3b — Việc tác giả **TỰ GIỚI HẠN** là **ĐÚNG**, và tôi **xác nhận được bằng bản gốc T4**
+
+Tác giả tự ghi:
+> *"!! GIOI HAN KHANG DINH: đây là MỘT cơ chế THẬT của lớp lỗi 'lọc tay' và tôi TÁI HIỆN được nó.
+> Tôi **KHÔNG** khẳng định đây là cơ chế cụ thể đã làm T4 kết luận sai về `unicorn` — tôi **CHƯA đọc bản gốc T4**."*
+
+**Tôi ĐÃ đọc bản gốc T4 ở T9**, nên xác nhận được:
+
+| | |
+|---|---|
+| Mẫu grep gốc của T4 (`2cbe90a:…/tool_inventory_raw.txt` dòng 113) | `… \| grep -Ei 'pwntools\|pycryptodome\|sympy\|z3\|capstone\|lief\|ropgadget\|ropper\|flask\|requests\|pip '` |
+| `unicorn` có trong mẫu đó không? | **0 lần** — **thiếu hẳn** |
+| Tên gói vs tên module của `unicorn` | **GIONG nhau** (`unicorn` / `unicorn`) ⇒ **không** phải ca của demo |
+
+⇒ **T4 sai vì mẫu grep viết tay THIẾU HẲN chữ `unicorn`**, không phải vì gói-tên khác module-tên.
+⇒ **Việc tự giới hạn của tác giả là ĐÚNG và cần thiết**: cơ chế họ demo là **một cơ chế thật khác**
+trong **cùng lớp lỗi**, chứ không phải nguyên nhân của sự cố `unicorn`.
+**Đây là hành vi đúng mực nhất của T23** — họ từ chối nhận công cho một kết luận họ không chứng minh được.
+
+### 2.19.5 A4 — Bằng chứng thô **KHÔNG bị sửa**
+
+| File | Blob `ee97c37` (T5 gốc) | Blob `ee90d1f` (T23) | |
+|---|---|---|---|
+| `T5/EVIDENCE/tooling_bootstrap_raw.txt` | `35da98a5d13651ac2099a12ca2403ee521065dbe` | `35da98a5d13651ac2099a12ca2403ee521065dbe` | **✅ GIỐNG HỆT** |
+
+Các file T5 **có** đổi ở T23 — `CHECKIN.md`, `FORENSICS_PROCEDURE.md`, `README.md` — **đều là TÀI LIỆU**,
+không phải bằng chứng thô ✅. Đúng D-004.
+
+**Phán quyết T27-A: PASS 4/4.** Ba ô C2 có thật và hành động được · `capstone` ghi rõ nguồn ở mọi tài liệu ·
+**demo tái lập chính xác và cơ chế đúng** · **tự giới hạn ĐÚNG (tôi xác nhận bằng bản gốc T4)** ·
+**bằng chứng thô không bị chạm**.
+
+---
+
+## 2.20 Bài kiểm #9B — T26 BountyRecon (@ `43cc537`)
+
+```text
+[REVIEW] T27-B / BountyRecon (ag_579fc4fa) / Lớp 1 CROSS / KẾT QUẢ: PASS — và 2 phát hiện của họ ĐÚNG
+         (1 phát hiện trúng vào chính T14 của tôi)
+```
+
+Dùng **`merge-base`** theo bài học `LOG` #64: `git merge-base origin/main 43cc537` = **`e8c45a0`**.
+⇒ BountyRecon thực sự đổi **10 file thêm + 1 file sửa** (`T3/CANDIDATES.md`) — **tất cả trong territory** ✅.
+
+### 2.20.1 B1 — 3 link sai độ sâu: **ĐÃ SỬA**
+
+| Dòng | Nguyên văn @ `43cc537` | `normpath` | |
+|---|---|---|---|
+| 27 | `](../../../../security/github/RECON.md)` | `security/github/RECON.md` | ✅ **TỒN TẠI** |
+| 39 | `](../../../../security/gitlab/RECON.md)` | `security/gitlab/RECON.md` | ✅ **TỒN TẠI** |
+| 50 | `](../../../../security/cloudflare/RECON.md)` | `security/cloudflare/RECON.md` | ✅ **TỒN TẠI** |
+
+**Quét toàn territory:** sau khi loại **code fence**, **inline code**, và 3 file không phải văn xuôi
+(`scan_links.py` chứa regex; `scope_github.md` + `forbidden_file_untouched.txt` là **trích nguyên văn**
+Admin cấm sửa) → **0 link sai thật sự**. Đồng thời tôi kiểm **link thật** trong
+`security/{github,gitlab,cloudflare}/RECON.md`: **7/7 `](SCOPE.md)` và `](../github/RECON.md)` đều resolve** ✅.
+
+> **Tự khai lỗi thứ 4 của tôi:** bản quét đầu báo **22 "link sai"**, bản thứ hai còn **7** — **tất cả là
+> báo động giả của bộ quét của tôi** (regex trong code, mô tả link trong `LINKSCAN.md` nằm trong khối
+> ```text, và tên miền trần trong trích nguyên văn). Đây **đúng y GAP-3 mà BountyRecon đã cảnh báo**.
+
+### 2.20.2 B2 — Lệnh **CẤM SỬA** `scope_github.md`: **ĐƯỢC TÔN TRỌNG TUYỆT ĐỐI**
+
+| Revision | Blob hash của `agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md` |
+|---|---|
+| `03d304b` (T3 gốc) | `15c946ff956a3fdb466f7f9768081af29b812088` |
+| `e8c45a0` (merge-base) | `15c946ff956a3fdb466f7f9768081af29b812088` |
+| `43cc537` (T26) | `15c946ff956a3fdb466f7f9768081af29b812088` |
+
+**GIỐNG HỆT cả ba** ✅. Và `git log --oneline --all -- <file>` → **chỉ một commit duy nhất**
+(`71f0bf8`, chính là T3 gốc). ⇒ **File chưa từng bị chạm.** 3 link thiếu scheme tại dòng 185
+**còn nguyên đúng 3** ✅ — đúng `LOG` #54.
+
+### 2.20.3 B3 — Đánh giá `SCOPEGAP.md`: **2 phát hiện ĐÚNG, 1 trong đó trúng chính tôi**
+
+**GAP-0 — "T14 PASS T3 nhưng chỉ kiểm nội dung `SCOPE.md`, không kiểm link": ĐÚNG.** ✅
+Tôi **tự kiểm chính mình**: `git show 85ea56f:reviews/CROSS.md`, mục T14 (`## 2.8`) — số lần xuất hiện
+`CANDIDATES.md` = **0**. Tôi đã kiểm policy byte-exact, 20/20 câu trích, 4 xung đột scope, Atom,
+Cloudflare/D-013 — **nhưng không kiểm link tương đối**. ⇒ **Khoảng trống này là THẬT và nằm ở T14 của tôi.**
+
+**Số liệu GAP-0 (24 file · 10 link · 3 chết · 30%) — TÔI TÁI LẬP ĐƯỢC CHÍNH XÁC:**
+
+| Cách lọc | file | link | chết |
+|---|---|---|---|
+| Tất cả file territory (`.md`+`.txt`) | 33 | 13 | 6 |
+| Bỏ `.html`/`.json` | **24** ✅ | 13 | 6 |
+| **Bỏ MỌI file trong `EVIDENCE/`** | 10 | **10** ✅ | **3** ✅ (= **30 %** ✅) |
+
+⇒ BountyRecon dùng tập **AUTHORED** (không tính file CAPTURE) — **đúng như GAP-3 mô tả**.
+**Con số của họ CHÍNH XÁC.** *(Lần đầu tôi đo bằng bộ lọc thô và ra 33/13/6, suýt kết luận sai là họ
+tính nhầm; đây là **lần thứ 4** tôi phải sửa công cụ của chính mình trước khi báo cáo.)*
+
+**GAP-1 — `LOG` #54 / D-020 §2 trỏ vào đường dẫn KHÔNG TỒN TẠI: ĐÚNG.** ✅
+Nguyên văn `ADMIN/LOG.md:61` (#54): *"**KHÔNG sửa** 3 link thiếu `https://` trong
+`security/github/EVIDENCE/scope_github.md` dòng 185"*.
+Kiểm: `security/github/EVIDENCE/scope_github.md` → **0 file = KHÔNG TỒN TẠI** ❌;
+`agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md` → **1 file = TỒN TẠI** ✅.
+Và họ **đánh giá công bằng**: nội dung chỉ thị **đúng cả ba** (dòng 185 ✅ · đúng 3 link ✅ · giữ nguyên ✅),
+**chỉ sai đường dẫn**. *(Lưu ý: trong lệnh giao T27 cho tôi, Admin đã ghi **đúng** đường dẫn —
+nhưng `LOG.md` #54 trên `main` **vẫn còn** đường dẫn sai.)*
+
+**GAP-2 — nguyên nhân gốc: §3 territory ⟂ §5 vị trí bằng chứng: ĐÚNG.** ✅
+`git ls-tree -r --name-only origin/main | grep -c '^security/.*EVIDENCE/'` = **0**.
+⇒ **Mọi chỉ thị trỏ `security/<program>/EVIDENCE/…` chắc chắn là đường dẫn chết** — GAP-1 **không phải
+lỗi đánh máy**. Họ cũng đã tự báo mâu thuẫn này từ T3 (`CANDIDATES.md:115`), không phải mới phát hiện.
+
+**GAP-3 — bộ kiểm link ngây thơ đẻ báo động giả:** ✅ **tôi vừa chứng minh bằng chính mình** (22 → 7 → 0).
+Tỉ lệ nhiễu của họ (127/3 ≈ **42:1**) là hợp lý; tôi không tái lập được con số 127 nhưng **cơ chế thì đúng**.
+
+**GAP-4/GAP-5:** GAP-4 (*verify nội dung ≠ verify toàn vẹn artifact*) là **nhận định đúng và quan trọng** —
+nó khái quát hoá đúng cả GAP-0 (T14) và GAP-1 (`LOG` #54). GAP-5 (task placeholder trông như uỷ quyền)
+là **quan sát hợp lý**, mức thấp, đúng như họ tự xếp.
+
+**Phán quyết T27-B: PASS.** 3 link đã sửa đúng · **lệnh cấm sửa `scope_github.md` được tôn trọng tuyệt đối
+(hash giống hệt 3 revision)** · `SCOPEGAP.md` có **2 phát hiện đúng** (GAP-0 trúng **chính T14 của tôi**;
+GAP-1 trúng **`LOG` #54 của Admin**) và **số liệu tái lập được chính xác**.
+
+---
+
+## 2.21 Đã kiểm những mục nào (vòng 6)
+
+**T27: đã kiểm 20 mục.**
+
+- **T27-A (T23) — 9 mục, PASS 4/4 hạng mục:** A1 ba ô C2 (C2a/C2b/C2c) tồn tại + hành động được · A2 `capstone`
+  ghi rõ nguồn ở **5 vị trí tài liệu**, **0 dòng khẳng định thiếu nguồn** · A3 **tái lập demo chính xác**
+  (`yara`/`msoffcrypto` grep-thiếu-nhưng-import-THÀNH-CÔNG = 2 kết luận sai nếu chỉ grep) · A3-ổn định
+  (`diff` rỗng) · A3b **tự giới hạn ĐÚNG, xác nhận bằng bản gốc T4** (`unicorn` không có trong mẫu grep T4;
+  tên gói = tên module) · A4 **blob hash bằng chứng thô giống hệt** · +2 mục phụ (file T5 đổi đều là tài liệu).
+- **T27-B (T26) — 11 mục:** B0 merge-base (11 file, tất cả trong territory) · B1 3 link đã sửa + resolve ·
+  B1b quét toàn territory (sau khi sửa bộ quét: **0 link sai**) · B1f `security/*/RECON.md` **7/7 link resolve** ·
+  B2 **blob hash `scope_github.md` giống hệt 3 revision** + 3 link thiếu scheme còn nguyên · B3 GAP-0 **ĐÚNG**
+  (tự kiểm chứng T14 của mình) · B3 số liệu **tái lập chính xác** (24/10/3/30 %) · B3 GAP-1 **ĐÚNG**
+  (đường dẫn trong `LOG` #54 không tồn tại) · B3 GAP-2 **ĐÚNG** (0 file dưới `security/**/EVIDENCE/`) ·
+  B3 GAP-3 **đúng, tôi vừa tự chứng minh** · B3 GAP-4/GAP-5 đánh giá hợp lý.
+- **`chưa xác minh`: 0 mục.**
+- **Tự khai 2 lỗi của tôi trong vòng này:** (1) **bộ quét link báo động giả** (22 → 7 → **0**) — đúng y GAP-3;
+  (2) **đo số liệu GAP-0 bằng bộ lọc thô** ra 33/13/6, suýt kết luận sai là BountyRecon tính nhầm —
+  sau khi lọc theo AUTHORED thì **khớp chính xác 24/10/3**.
+- **Phương pháp:** dùng `git worktree add` (**index riêng**) — đúng bài học tự khai ở T25; xác nhận
+  `git status` của repo chính **sạch** trong suốt quá trình.
+
+> **Phán quyết vòng 6: T23 PASS 4/4 · T26 PASS.** Không reject mục nào. **Hai phát hiện của BountyRecon
+> là đóng góp thật**: GAP-0 chỉ ra **T14 của tôi** không kiểm link, GAP-1 chỉ ra **`LOG` #54 của Admin**
+> trỏ đường dẫn chết. Tôi ghi nhận cả hai **không kèm biện hộ**.

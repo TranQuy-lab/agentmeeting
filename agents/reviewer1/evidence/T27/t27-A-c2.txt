@@ -1,0 +1,171 @@
+### T27-A — Reviewer1 kiem T23 ForensicsMal @ ee90d1f (re tu T5)
+### Thoi diem: 2026-10-01T14:53:57Z UTC
+
+=== [A1] NGUYEN VAN §C2 — 3 o moi C2a/C2b/C2c ===
+     1	### C2. Truy vết công cụ
+     2	- [ ] **Mọi** kết luận đều có công cụ + phiên bản + lệnh nguyên văn?
+     3	- [ ] Có kết luận nào dựa trên công cụ **đang thiếu** mà tôi suy diễn thay vì chạy? → **cấm**
+     4	- [ ] Output thô của mọi lệnh quan trọng đã lưu trong `EVIDENCE/` và được trích dẫn?
+     5	- [ ] Công cụ tự viết (script) đã ghi đường dẫn + hash + lệnh gọi?
+     6	
+     7	> **C2 — BA Ô CHỐNG "LỌC TAY" (bổ sung ở T23, thi hành D-014 mục 1).**
+     8	> Lý do tồn tại: ở T4, ExploitDeep chạy `pip list | grep -Ei '<danh sách viết tay>'` rồi kết luận
+     9	> một gói "thiếu" mà **không `import` thử** — và kết luận đó **sai**. Danh sách viết tay **luôn**
+    10	> thiếu tên gói, nên `grep` sẽ **luôn** xác nhận cái mình đã tin sẵn. Ba ô dưới đây chặn đúng
+    11	> lỗi đó. **Đây là ô bắt buộc, không phải gợi ý.**
+    12	
+    13	- [ ] **(C2a)** Kiểm kê công cụ đã dùng `pip freeze`/`pip list` **KHÔNG LỌC**, và lưu **nguyên output**
+    14	      vào `EVIDENCE/`? *(Không `grep`, không `--format` rút gọn, không cắt dòng, không "chỉ liệt kê
+    15	      gói liên quan".)*
+    16	      → **Trên máy này không có `pip`** ⇒ dùng lệnh tương đương và **ghi rõ lệnh đã dùng**:
+    17	      `~/.local/bin/uv pip list --python <interpreter>`.
+    18	- [ ] **(C2b)** Mỗi kết luận **"THIẾU"** đã được chứng minh bằng `import <mod>` thực chạy trong
+    19	      **ĐÚNG interpreter đang xét**, và **đã ghi rõ đường dẫn interpreter đó**?
+    20	      → Ghi cả **thông báo lỗi nguyên văn** (`ModuleNotFoundError: No module named '<mod>'`).
+    21	      → "Không thấy tên trong danh sách" **KHÔNG** phải bằng chứng thiếu. **Chỉ `import` thất bại mới là.**
+    22	      → Kiểm trong interpreter nào thì `import` trong **chính** interpreter đó — không suy từ interpreter khác.
+    23	- [ ] **(C2c)** Mỗi dòng **phiên bản** đã ghi rõ lấy từ **metadata** hay **`__version__`**?
+    24	      → Hai nguồn này **có thể khác nhau** trên cùng một gói. Ghi `"X"` trần là **thiếu nguồn**.
+    25	      → Mẫu ghi đúng: `capstone` **5.0.9 (metadata)** / **5.0.7 (`__version__`)**.
+    26	      → Xem tiền lệ đã xác minh ở `agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt`.
+    27	
+    28	> **Câu hỏi tự vấn nếu định kết luận "thiếu":** *"Tôi đã `import` nó chưa, trong đúng interpreter
+    29	> này chưa, và tôi có đang lọc danh sách theo thứ tôi đã tin sẵn không?"* — Trả lời chưa đủ ba vế
+    30	> thì **không được** viết chữ "thiếu".
+    31	
+    32	### C3. Bằng chứng vs. kết luận — kiểm tra vượt quá bằng chứng
+
+=== [A2] capstone — 6 cho da ghi ro nguon chua? ===
+$ git grep -n 'capstone' ee90d1f -- agents/forensicsmal/
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_c2_gap_demo_raw.txt:13:capstone         5.0.9
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_c2_gap_demo_raw.txt:39:  grep '^capstone '  -> CO
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_c2_gap_demo_raw.txt:56:  import capstone       -> THANH CONG
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_c2_gap_demo_raw.txt:71:  capstone                   CO        OK   nhat quan
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:1:# RAW OUTPUT — T23: TU DO LAI su that phien ban capstone
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:13:$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python -c 'import importlib.metadata as md, capstone; ...'
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:14:importlib.metadata.version("capstone") = 5.0.9
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:15:capstone.__version__                 = 5.0.7
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:16:capstone.__file__                    = /home/noble-tran/forensicsmal-tooling/.venv/lib/python3.12/site-packages/capstone/__init__.py
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:24:capstone         5.0.9
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:41:#   dong 13: 'capstone 5.0.9'  <- lay tu 'uv pip list' = METADATA
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:42:#   dong 32: 'capstone : 5.0.7' <- lay tu 'capstone.__version__'
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_unfiltered_inventory_raw.txt:7:capstone         5.0.9
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:1:# T23_REPORT.md — Vá C2 của T5 + sửa sai số `capstone`
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:56:| `pefile`, `scapy`, `capstone`, `volatility3`, `oletools` | có | OK | nhất quán |
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:71:## 3. Sửa sai số `capstone` (D-014 mục 2)
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:77:importlib.metadata.version("capstone")   = 5.0.9
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:78:capstone.__version__                     = 5.0.7
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:83:nguồn** — đó là sai sót. Bằng chứng thô: `EVIDENCE/t23_capstone_version_recheck_raw.txt`.
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:89:| `T5/FORENSICS_PROCEDURE.md` | 94 | 110 | `capstone` **5.0.9 (metadata)** / **5.0.7 (`__version__`)** |
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:113:| `T23/EVIDENCE/t23_capstone_version_recheck_raw.txt` | Output thô đo lại hai nguồn phiên bản + inventory **không lọc** |
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:123:- **chưa xác minh** — số `capstone` nào là phiên bản "đúng" về phát hành.
+ee90d1f:agents/forensicsmal/T23/scripts/t23_c2_gap_demo.py:53:HANDWRITTEN = ["pefile", "yara", "scapy", "capstone", "volatility3", "oletools",
+ee90d1f:agents/forensicsmal/T5/CHECKIN.md:46:   `capstone` **5.0.9 (metadata)** / **5.0.7 (`__version__`)**,
+ee90d1f:agents/forensicsmal/T5/CHECKIN.md:49:   *Riêng `capstone`:* hai số **5.0.9** (metadata) và **5.0.7** (`__version__`) **cả hai đều thật** —
+ee90d1f:agents/forensicsmal/T5/CHECKIN.md:50:   đo lại độc lập tại `agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt`
+ee90d1f:agents/forensicsmal/T5/CHECKIN.md:95:| `capstone` | **5.0.9 (metadata)** / **5.0.7 (`__version__`)** | disasm x86-64 | ✅ `mov rbp,rsp` / `mov eax,0` |
+ee90d1f:agents/forensicsmal/T5/CHECKIN.md:148:| **Disassembly** (`capstone` 5.0.9 metadata / 5.0.7 `__version__` + `objdump`/`readelf`) | 🟢 **SẴN SÀNG** |
+ee90d1f:agents/forensicsmal/T5/CHECKIN.md:168:2. **Phân tích PE** — `pefile` (header, section, import, entrypoint, entropy) + `objdump`/`capstone`.
+ee90d1f:agents/forensicsmal/T5/EVIDENCE/tool_inventory_raw.txt:41:capstone       -> ModuleNotFoundError: No module named 'capstone'
+ee90d1f:agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt:13:capstone         5.0.9
+ee90d1f:agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt:32:capstone      : 5.0.7
+ee90d1f:agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt:46:## TEST CHUC NANG 3 — capstone disasm x86-64
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:85:  for p in ("capstone", "volatility3", "pefile", "yara-python", "scapy", "oletools"):
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:110:> `scapy` 2.7.0, `capstone` **5.0.9 (metadata)** / **5.0.7 (`__version__`)**,
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:114:> ⚠️ **Vì sao `capstone` ghi HAI số:** `importlib.metadata.version("capstone")` = **5.0.9** còn
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:115:> `capstone.__version__` = **5.0.7** — **cả hai đều thật, cùng một gói, và khác nhau.** T5 bản
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:118:> `agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt`.
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:289:      → Mẫu ghi đúng: `capstone` **5.0.9 (metadata)** / **5.0.7 (`__version__`)**.
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:290:      → Xem tiền lệ đã xác minh ở `agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt`.
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:340:| Disassembly | 🟢 sẵn sàng | `capstone` **5.0.9 metadata / 5.0.7 `__version__`** — **đã disasm x86-64**, thêm `objdump`/`readelf` |
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:349:`scapy`, `capstone`, `oletools`, `volatility3` **không cần sudo** — tái lập bằng
+ee90d1f:agents/forensicsmal/T5/README.md:26:  `scapy` 2.7.0, `capstone` **5.0.9 (metadata) / 5.0.7 (`__version__`)**, `yara-python` 4.5.4, `oletools` 0.60.2.
+ee90d1f:agents/forensicsmal/T5/scripts/bootstrap_tools.sh:27:echo "[*] Cài gói pháp y (pefile, yara-python, scapy, capstone, oletools, volatility3)..."
+ee90d1f:agents/forensicsmal/T5/scripts/bootstrap_tools.sh:29:  pefile yara-python scapy capstone oletools volatility3
+ee90d1f:agents/forensicsmal/T5/scripts/bootstrap_tools.sh:35:                   ("capstone","__version__"),("volatility3","__version__")]:
+
+--- Kiem: con dong nao ghi so TRAN thieu nguon (metadata|__version__) khong? ---
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_c2_gap_demo_raw.txt:13:capstone         5.0.9
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_c2_gap_demo_raw.txt:39:  grep '^capstone '  -> CO
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_c2_gap_demo_raw.txt:56:  import capstone       -> THANH CONG
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_c2_gap_demo_raw.txt:71:  capstone                   CO        OK   nhat quan
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:1:# RAW OUTPUT — T23: TU DO LAI su that phien ban capstone
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:16:capstone.__file__                    = /home/noble-tran/forensicsmal-tooling/.venv/lib/python3.12/site-packages/capstone/__init__.py
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:24:capstone         5.0.9
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt:41:#   dong 13: 'capstone 5.0.9'  <- lay tu 'uv pip list' = METADATA
+ee90d1f:agents/forensicsmal/T23/EVIDENCE/t23_unfiltered_inventory_raw.txt:7:capstone         5.0.9
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:1:# T23_REPORT.md — Vá C2 của T5 + sửa sai số `capstone`
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:56:| `pefile`, `scapy`, `capstone`, `volatility3`, `oletools` | có | OK | nhất quán |
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:71:## 3. Sửa sai số `capstone` (D-014 mục 2)
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:83:nguồn** — đó là sai sót. Bằng chứng thô: `EVIDENCE/t23_capstone_version_recheck_raw.txt`.
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:113:| `T23/EVIDENCE/t23_capstone_version_recheck_raw.txt` | Output thô đo lại hai nguồn phiên bản + inventory **không lọc** |
+ee90d1f:agents/forensicsmal/T23/T23_REPORT.md:123:- **chưa xác minh** — số `capstone` nào là phiên bản "đúng" về phát hành.
+ee90d1f:agents/forensicsmal/T23/scripts/t23_c2_gap_demo.py:53:HANDWRITTEN = ["pefile", "yara", "scapy", "capstone", "volatility3", "oletools",
+ee90d1f:agents/forensicsmal/T5/CHECKIN.md:50:   đo lại độc lập tại `agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt`
+ee90d1f:agents/forensicsmal/T5/CHECKIN.md:168:2. **Phân tích PE** — `pefile` (header, section, import, entrypoint, entropy) + `objdump`/`capstone`.
+ee90d1f:agents/forensicsmal/T5/EVIDENCE/tool_inventory_raw.txt:41:capstone       -> ModuleNotFoundError: No module named 'capstone'
+ee90d1f:agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt:13:capstone         5.0.9
+ee90d1f:agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt:32:capstone      : 5.0.7
+ee90d1f:agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt:46:## TEST CHUC NANG 3 — capstone disasm x86-64
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:85:  for p in ("capstone", "volatility3", "pefile", "yara-python", "scapy", "oletools"):
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:118:> `agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt`.
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:290:      → Xem tiền lệ đã xác minh ở `agents/forensicsmal/T23/EVIDENCE/t23_capstone_version_recheck_raw.txt`.
+ee90d1f:agents/forensicsmal/T5/FORENSICS_PROCEDURE.md:349:`scapy`, `capstone`, `oletools`, `volatility3` **không cần sudo** — tái lập bằng
+ee90d1f:agents/forensicsmal/T5/scripts/bootstrap_tools.sh:27:echo "[*] Cài gói pháp y (pefile, yara-python, scapy, capstone, oletools, volatility3)..."
+ee90d1f:agents/forensicsmal/T5/scripts/bootstrap_tools.sh:29:  pefile yara-python scapy capstone oletools volatility3
+
+=== [A4] tooling_bootstrap_raw.txt co bi sua khong? (blob hash) ===
+$ git rev-parse ee97c37:agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt   (T5 goc)
+35da98a5d13651ac2099a12ca2403ee521065dbe
+$ git rev-parse ee90d1f:agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt   (T23)
+35da98a5d13651ac2099a12ca2403ee521065dbe
+  ✅ GIONG HET => KHONG bi sua
+
+--- Cac file T5 khac co bi sua o T23 khong? ---
+$ git diff --stat ee97c37 ee90d1f -- agents/forensicsmal/T5/
+ agents/forensicsmal/T5/CHECKIN.md             | 10 +++--
+ agents/forensicsmal/T5/FORENSICS_PROCEDURE.md | 55 +++++++++++++++++++++++++--
+ agents/forensicsmal/T5/README.md              |  2 +-
+ 3 files changed, 60 insertions(+), 7 deletions(-)
+
+=== [A2b] T23 capstone recheck raw ===
+# RAW OUTPUT — T23: TU DO LAI su that phien ban capstone
+# Ngay chay: 2026-10-01T14:47:38Z UTC
+# Nguoi chay: ForensicsMal (ag_82f7cb07) — task T23, thi hanh D-014 muc 2
+# Muc dich: KHONG tin tri nho / KHONG tin bao cao truoc; do lai tu dau.
+# Day la bang chung THO cho khang dinh 'ca hai so 5.0.9 va 5.0.7 deu THAT'.
+
+## Interpreter duoc do (GHI RO — theo C2(b) moi)
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python
+/home/noble-tran/forensicsmal-tooling/.venv/bin/python
+3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]
+
+## Do ca hai nguon phien ban
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python -c 'import importlib.metadata as md, capstone; ...'
+importlib.metadata.version("capstone") = 5.0.9
+capstone.__version__                 = 5.0.7
+capstone.__file__                    = /home/noble-tran/forensicsmal-tooling/.venv/lib/python3.12/site-packages/capstone/__init__.py
+hai so co bang nhau khong           = False
+
+## Kiem tra KHONG LOC (theo C2(a) moi) — nguyen output, khong grep
+$ ~/.local/bin/uv pip list --python /home/noble-tran/forensicsmal-tooling/.venv/bin/python
+Using Python 3.12.3 environment at: /home/noble-tran/forensicsmal-tooling/.venv
+Package          Version
+---------------- ---------
+capstone         5.0.9
+cffi             2.1.1
+colorclass       2.2.2
+cryptography     50.0.2
+easygui          0.98.3
+msoffcrypto-tool 6.0.0
+olefile          0.47
+oletools         0.60.2
+pcodedmp         1.2.6
+pefile           2024.8.26
+pycparser        3.0
+pyparsing        3.3.3
+scapy            2.7.0
+volatility3      2.28.2
+yara-python      4.5.4
+
+## Doi chieu voi bang chung T5 cu (tooling_bootstrap_raw.txt)
