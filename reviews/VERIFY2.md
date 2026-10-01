@@ -1169,3 +1169,107 @@ Reviewer1 đếm `ML-KEM` = **35**; tôi đếm `ml-dsa` = **4**. Đây **không
 3. Tôi **không** chấm lại điểm tính mới N (việc §1 D-017 giao ResearchLead; T11 chấm N=4 và Admin đã quyết).
 4. **File này do tôi viết — tôi KHÔNG tự verify (D-004).** Cần Reviewer1 hoặc Auditor2 kiểm;
    nếu bất đồng ⇒ **Auditor2 chốt**.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #11 (T8): T19 của ResearchLead — sửa DOI + ghi lại N
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/research-lead/T19` @ `8b236bf`
+
+---
+
+## 1. Kiểm 4 vị trí DOI đã sửa — đọc DOI **trực tiếp từ đúng 4 dòng đó**
+
+Tôi không tin bảng khai. Tôi grep DOI **từ chính 4 dòng** trong file, rồi **tra CrossRef**:
+
+```text
+ebpf-microsegmentation/BLINDCHECK.md:53   doi=10.1109/iccit63348.2025.10989392  crossref=200
+ebpf-microsegmentation/LITREVIEW.md:264   doi=10.1109/iccit63348.2025.10989392  crossref=200
+ebpf-microsegmentation/SOURCES.md:81      doi=10.1109/iccit63348.2025.10989392  crossref=200
+pqc-tls-migration/SOURCES.md:109          doi=10.1109/iccit63348.2025.10989392  crossref=200
+```
+
+⇒ **4/4 vị trí sửa ĐÚNG và nay phân giải được** (trước là 404). ✅
+
+## 2. Kiểm không còn sót — và phân loại đúng các match còn lại
+
+```text
+$ grep -rn "ICICT63348" research/
+research/EVIDENCE/T19_checks.txt:12,14,16,23,28   <- output tho cua chinh lenh kiem (dung)
+research/ebpf-microsegmentation/SOURCES.md:157    <- ghi lai lich su sua (dung)
+research/pqc-tls-migration/SOURCES.md:181         <- ghi lai lich su sua (dung)
+```
+
+**Grep thô báo 8 dòng "còn sót" — nhưng KHÔNG phải sót.** Cả 8 đều là **bằng chứng thô** hoặc
+**ghi chú lịch sử** mô tả chính việc sửa đó. **Không còn DOI hoa nào trong câu trích dẫn đang hiệu lực.**
+
+> Đây là **lần thứ tư** trong phiên tôi gặp bẫy này (verify #2, #5, #10). Tôi đã thành thói quen
+> **mở ngữ cảnh trước khi kết luận** — nếu không, tôi đã báo sai "T19 còn sót 8 chỗ".
+
+## 3. Kiểm tính nhất quán nội bộ (tự mâu thuẫn DISSENT-6)
+
+DISSENT-6 nêu: cùng hàng `SOURCES.md:81` ghi venue `IEEE ICCIT` nhưng DOI ghi `ICICT63348`.
+
+```text
+| S29 | ... | `10.1109/iccit63348.2025.10989392` | IEEE ICCIT, 2025-04-13 | 9 | ...
+```
+
+⇒ **Đã hết tự mâu thuẫn**: venue `ICCIT` và DOI `iccit` nay **khớp nhau**. ✅
+
+## 4. Kiểm việc ghi lại N của T1 (Admin yêu cầu N≥3, không phải N=2)
+
+```text
+| **=1** | `RL-T1-PQC-TLS` | Di trú PQC cho TLS 1.3 tại biên | 3 | **4** | 4 | **48** | 3,6 |
+| **=1** | `RL-T2-EBPF-SEG` | Vi phân đoạn động bằng eBPF | 4 | 3 | 4 | **48** | 3,6 |
+```
+
+| Yêu cầu D-017 §1 | Kiểm | Kết quả |
+|---|---|---|
+| N của T1 phải ≥3, **không** giữ N=2 | nay ghi **N=4** | ✅ |
+| Hai đề tài hoà 48–48 được ghi nhận | `3×4×4` và `4×3×4` = **48** cả hai | ✅ |
+| Thứ tự do Admin chốt, không do điểm | §3b ghi rõ *"Điểm số không phân định được thứ tự"* | ✅ |
+
+## 5. Kiểm ĐIỀU KIỆN ĐẢO — Admin yêu cầu **BẮT BUỘC** ghi kèm
+
+```text
+### ⚠️ ĐIỀU KIỆN ĐẢO (BẮT BUỘC ghi kèm — theo Admin)
+
+> Nếu sau này đọc được toàn văn S29 và S29 KHÔNG đo cửa sổ hội tụ
+> ⇒ `RL-T2-EBPF-SEG` TRỞ LẠI HẠNG 1.
+```
+
+Và có **bảng kịch bản** K2/K6 mô tả hệ quả số học:
+
+| Kịch bản | Hệ quả | Điểm | Ai dẫn |
+|---|---|---|---|
+| **K2:** S29 **đã** đo cửa sổ hội tụ | T2: N 3 → 1 | T2 = 16 | T1 dẫn (48 vs 16) |
+| **K6:** S29 **KHÔNG** đo (đọc được toàn văn) | T2: N 3 → 4 | T2 = 64 | **T2 dẫn (64 vs 48)** |
+
+⇒ **Điều kiện đảo ĐÃ ĐƯỢC GHI ĐẦY ĐỦ**, kèm cả hai nhánh và hệ quả định lượng. ✅
+Đây là cách ghi đúng: người sau **không cần suy đoán** ý Admin.
+
+## 6. Kết luận verify #11
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | 4/4 vị trí DOI sửa đúng, nay 200 | ✅ **PASS** |
+| 2 | Không còn DOI hoa trong câu trích dẫn hiệu lực | ✅ **PASS** |
+| 3 | Hết tự mâu thuẫn nội bộ venue/DOI | ✅ **PASS** |
+| 4 | N của T1 = 4 (≥3 như Admin yêu cầu) | ✅ **PASS** |
+| 5 | Hoà 48–48 ghi nhận đúng | ✅ **PASS** |
+| 6 | Điều kiện đảo ghi đầy đủ + bảng kịch bản | ✅ **PASS** |
+
+**PASS 6/6.** Không phát hiện vi phạm.
+
+## 7. Ghi nhận công bằng
+
+ResearchLead **tự kiểm lại bằng `curl` TRƯỚC khi sửa** và dán output thô — đúng quy trình.
+Họ cũng **tự đếm lại** `MTU`/`middlebox`… thay vì chép số của Reviewer1, và ghi rõ **khác biệt nhỏ**
+(`edge` ở 99,5% so với 99,7%) **kèm lý do** (cách bóc thẻ HTML khác nhau, cùng chỉ về footer).
+Đó là **trung thực về sai số đo**, không phải mâu thuẫn.
+
+## 8. Tự khai giới hạn
+
+1. Tôi kiểm **4 DOI + N + điều kiện đảo**, không kiểm toàn bộ nội dung T19.
+2. Tôi **không** đọc được toàn văn S29 ⇒ điều kiện đảo **vẫn treo**, đúng như ResearchLead báo.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1/Auditor2 kiểm; bất đồng ⇒ Auditor2 chốt.
