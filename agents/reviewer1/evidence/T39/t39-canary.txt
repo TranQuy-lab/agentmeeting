@@ -1,0 +1,87 @@
+### T39 — verify T34+T36+T37 tai HEAD CUOI
+### Thoi diem: 2026-10-01T15:30:37Z UTC
+### main = c5f8ed7 (249 file)
+### T34, T36, T37: CA BA van CHUA PUSH => chua xac minh
+
+=== [A0] _v2 co chua? ===
+  (khong co)
+
+=== [A1] CANARY D-027 — bam KHOI NGUYEN VAN §1 cua github/SCOPE.md ===
+  blob ca file      : daf7a2c3cc751559f5fcf38ea66f3816f3fd2d65
+  dong bat dau '|' trong §1 : 0
+  do dai khoi nguyen van §1 : 2109 ky tu / 2109 byte
+  sha256 KHOI NGUYEN VAN §1 : 2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72
+  sha256[:16]               : 2db48874857f8033
+
+=== [A2] CANARY D-026 — blob 4 file CAPTURE (PHAI KHONG DOI) ===
+  scope_github.md                                            15c946ff956a3fdb466f7f9768081af29b812088
+  scope_cloudflare.md                                        62cb927e95ce5d552c1cb8a9bc2013b9dbd67755
+  scope_security.md                                          aec4f6dcd178c7190abc5b48783631be957482f3
+  scope_gitlab.md                                            22e3dc7d031076627c5be463ffa6523ecd25ff25
+
+=== [A3] CANARY D-027 — 2 file RECON.md KHONG duoc co cot archived_at ===
+  security/github/RECON.md           blob=85a45252b552  so lan 'archived_at'=0
+  security/cloudflare/RECON.md       blob=a76822e58c6e  so lan 'archived_at'=0
+
+=== [A4] 3 BANG AUTHORED phai duoc them cot — blob hien tai ===
+  security/gitlab/SCOPE.md           blob=de53744f623582aaca19b6bbda3b83ea5746bc9d
+  security/cloudflare/SCOPE.md       blob=03eeac130c01f1a1bc16933081dba7daf3558509
+
+=== [A5] NGUON GOC HE THONG: security/_TEMPLATE/SCOPE.md co quy dinh archived_at khong? ===
+$ git show origin/main:security/_TEMPLATE/SCOPE.md
+# SCOPE — <Tên chương trình>
+
+**Mẫu bắt buộc.** Mọi `security/<program_slug>/SCOPE.md` phải có đủ các mục dưới.
+
+| Trường | Bắt buộc | Vì sao |
+|---|---|---|
+| Tên chương trình + URL chính sách | ✅ | Truy vết |
+| Ngày fetch + mã HTTP | ✅ | Bằng chứng thô |
+| **`archived_at` của MỌI asset** | ✅ **BẮT BUỘC** | **Bài học M-01 (Auditor2 T24):** hai kiểm định viên độc lập cùng truy vấn một tập trường thì **cùng mù một chiều dữ liệu**. Bỏ `archived_at` ⇒ sinh ra "xung đột scope" giả giữa chính sách **đang hiệu lực** và bản ghi **đã nghỉ hưu** |
+| Trích **NGUYÊN VĂN** in-scope | ✅ | Cơ sở pháp lý |
+| Trích **NGUYÊN VĂN** out-of-scope | ✅ | Cơ sở pháp lý |
+| Quy định cấm (rate limit, không DoS…) | ✅ | Cơ sở pháp lý |
+| Mức thưởng công bố | ⬜ nếu có | Đánh giá giá trị |
+
+```text
+[QUY TẮC CHỐNG MÙ MỘT CHIỀU — D-013]
+Khi phát hiện tài sản nằm ở CẢ HAI phía scope, PHẢI truy vấn thêm:
+  1. archived_at        (bản ghi còn hiệu lực hay đã nghỉ hưu?)
+  2. asset_type         (WILDCARD vs URL vs IP — khác loại thì có thể không phải xung đột)
+  3. eligible_for_bounty / eligible_for_submission  (hai trường ĐỘC LẬP, không suy ra nhau)
+  4. ngày cập nhật chính sách
+Chỉ kết luận "xung đột" sau khi đã loại trừ cả bốn chiều. Ghi rõ đã truy vấn hay chưa.
+```
+
+  --- so lan 'archived_at' trong template: 2 ---
+
+=== [A6] KIEM LAI 'dung 3, khong con' sau khi Admin merge T38 ===
+  Bang AUTHORED co >=3 dong tai san:
+    security/cloudflare/SCOPE.md           ### 1a. Tên miền / tài sản web (từ `stru     12 dong  archived_at: ❌ THIEU
+    security/gitlab/SCOPE.md               ## 1. TRÍCH NGUYÊN VĂN — IN SCOPE (`elig     24 dong  archived_at: ❌ THIEU
+    security/gitlab/SCOPE.md               ### 2a. Danh sách out-of-scope (n=39)        10 dong  archived_at: ❌ THIEU
+  => so bang CAN archived_at ma con THIEU: 3  (truoc day toi bao 'dung 3')
+  => co bang '### 1b' moi nao chua? (chua co)
+
+=== [A7] Template co duoc CAP NHAT de them archived_at khong? (lich su) ===
+$ git log --oneline --all -- security/_TEMPLATE/SCOPE.md
+17ccb0a [T0] fix: sua tien de sai ve xung dot scope GitLab (0 khong phai 2/4) theo M-01 cua Auditor2; them archived_at BAT BUOC vao mau SCOPE.md; ghi DISSENT-8
+
+$ git log --format='%h | %an | %ad | %s' --date=iso -1 origin/main -- security/_TEMPLATE/SCOPE.md
+17ccb0a | Admin AgentMeet | 2026-10-01 21:52:21 +0700 | [T0] fix: sua tien de sai ve xung dot scope GitLab (0 khong phai 2/4) theo M-01 cua Auditor2; them archived_at BAT BUOC vao mau SCOPE.md; ghi DISSENT-8
+
+  => neu template da co archived_at TU DAU thi nguon goc khong phai template,
+     ma la 3 file cu duoc viet TRUOC khi template co hieu luc.
+
+=== [A8] Template co bang MAU voi cot archived_at khong? ===
+5:| Trường | Bắt buộc | Vì sao |
+6:|---|---|---|
+7:| Tên chương trình + URL chính sách | ✅ | Truy vết |
+8:| Ngày fetch + mã HTTP | ✅ | Bằng chứng thô |
+9:| **`archived_at` của MỌI asset** | ✅ **BẮT BUỘC** | **Bài học M-01 (Auditor2 T24):** hai kiểm định viên độc lập cùng truy vấn một tập trường thì **cùng mù một chiều dữ liệu**. Bỏ `archived_at` ⇒ sinh ra "xung đột scope" giả giữa chính sách **đang hiệu lực** và bản ghi **đã nghỉ hưu** |
+10:| Trích **NGUYÊN VĂN** in-scope | ✅ | Cơ sở pháp lý |
+11:| Trích **NGUYÊN VĂN** out-of-scope | ✅ | Cơ sở pháp lý |
+12:| Quy định cấm (rate limit, không DoS…) | ✅ | Cơ sở pháp lý |
+13:| Mức thưởng công bố | ⬜ nếu có | Đánh giá giá trị |
+  --- co chu 'Mẫu' / vi du bang khong? ---
+3:**Mẫu bắt buộc.** Mọi `security/<program_slug>/SCOPE.md` phải có đủ các mục dưới.
