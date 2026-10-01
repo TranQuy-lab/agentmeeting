@@ -19,6 +19,22 @@ Nếu clone về chỉ thấy repo rỗng => DỪNG, báo Admin ngay.
 > `destination path already exists and is not an empty directory`).
 > **Thay thế bằng:** mỗi agent clone vào `/home/noble-tran/agentmeeting-<slug>`.
 > Xem `ADMIN/LOG.md` quyết định #6.
+
+> **BỔ SUNG NGOẠI LỆ (2026-10-01, sau báo cáo T13 của javis):**
+> `javis` chạy trên **VM khác** (`/home/hatch`) và `NOTES.md:4` **tự khai clone bằng HTTPS**
+> — vi phạm nguyên văn D-001. Tác giả **khai thẳng**, hệ quả thực tế **không thấy**.
+> **Lý do khả dĩ:** VM đó có thể **chưa có SSH key**, mà D-001 **không có nhánh ngoại lệ**.
+> **Quy định bổ sung:**
+> ```text
+> [D-001 ngoại lệ]
+> Nếu máy của agent KHÔNG có SSH key tới GitHub:
+>   1. BÁO ADMIN trước, nêu rõ lý do.
+>   2. Được phép clone bằng HTTPS CHỈ ĐỂ ĐỌC.
+>   3. CẤM push qua HTTPS (credential helper HTTPS đang hỏng).
+>   4. Mọi thứ ghi vào repo phải push bằng SSH, hoặc bàn giao qua nhánh do Admin merge.
+> ```
+> Vi phạm của javis **được ghi nhận nhưng KHÔNG trừ điểm nội dung T13** — sản phẩm đã qua
+> kiểm định độc lập (26/26 trích nguyên văn khớp, 3 con số byte-exact, 0 vi phạm territory).
 ```
 
 ## [D-002] Điểm danh trước khi nhận việc — 2026-10-01
@@ -176,4 +192,23 @@ BỔ SUNG sau báo cáo T3 của BountyRecon:
   - Cloudflare: KHÔNG mở T4. Chính sách Cloudflare cấm test vào khách hàng của họ;
     chạm nhầm có thể bị loại vĩnh viễn và phát sinh trách nhiệm pháp lý.
   - G4 hiện vẫn ĐÓNG: chưa có chỉ thị nào nêu target cụ thể.
+```
+
+---
+
+## [D-014] Vá lỗ hổng quy trình trong T5 + sửa sai số `capstone` — 2026-10-01
+
+> Nguồn: Reviewer1, T21-A (PASS 5/6). Đây là lỗ hổng **thật** và đáng chú ý vì nó đúng
+> **cùng loại lỗi** mà ExploitDeep đã mắc ở T4 và bị Reviewer1 bác bỏ.
+
+```text
+[ADMIN DIRECTIVE D-014]
+1. VÁ C2 của agents/forensicsmal/T5/FORENSICS_PROCEDURE.md — thêm 3 ô:
+   (a) "Kiểm kê công cụ đã dùng `pip freeze`/`pip list` KHÔNG LỌC và lưu nguyên output?"
+   (b) "Mỗi kết luận 'THIẾU' đã chứng minh bằng `import <mod>` trong ĐÚNG interpreter
+        đang xét, và ghi rõ interpreter đó?"
+   (c) "Mỗi dòng phiên bản ghi rõ lấy từ METADATA hay `__version__`?"
+2. SỬA sai số `capstone`: T5 ghi 5.0.9 ở 6 chỗ mà không nói nguồn. Thực tế BOTH ĐÚNG:
+   metadata = 5.0.9, `__version__` = 5.0.7. Phải ghi rõ nguồn mỗi số.
+3. Giao ForensicsMal T23. Không ai sửa hộ — agents/** là territory của họ.
 ```
