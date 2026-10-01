@@ -472,3 +472,26 @@ là **ĐÚNG**, và việc họ **tự đính chính** một câu sai trước �
 > (bản T6 của tôi được merge sau, ở `c579d1f`), nên **không phải lỗi lỗi thời** của DocWriter.
 
 **Phán quyết T10:** **PASS — 6/6 mục khớp chính xác, không có sai lệch nào, không mục nào `chưa xác minh`.**
+
+---
+
+## 2.10 Phụ lục — Reviewer1 xác minh độc lập phát hiện N-03 của Auditor2
+
+**Không thuộc task nào của tôi.** Tôi ghi vào đây vì tôi **đã khẳng định việc này với Admin trong báo cáo
+vòng 2**, nên theo D-004 nó phải trỏ tới bằng chứng thô.
+**Bằng chứng:** `agents/reviewer1/evidence/T11/t11-phuluc-N03-INDEX.md.txt`
+
+| Lệnh | Output thô | Ý nghĩa |
+|---|---|---|
+| `git log --oneline origin/agent/doc-writer/T1 -- INDEX.md` | `6977d36` · `3be89fd` · `abe0c3e` | Nhánh T1 **sửa `INDEX.md` ở 2 commit** |
+| `git show 3be89fd --stat` | `INDEX.md \| 179 +++---` | Commit đó đụng `INDEX.md` **179 dòng** |
+| `git diff --stat origin/main origin/agent/doc-writer/T1 -- INDEX.md` | `200 insertions(+), 21 deletions(-)` | **Phân kỳ thật** giữa `main` và T1 trên cùng file |
+| `git merge-base origin/main origin/agent/doc-writer/T1` | `abe0c3e` | T1 tách từ **commit gốc** |
+| `git rev-list --count abe0c3e..origin/main` | `16` | `main` đi trước merge-base **16 commit** |
+| `git show origin/main:INDEX.md \| sed -n '10p'` | `\| 2 \| \`INDEX.md\` \| **Admin** (DocWriter *chuẩn hoá* ở T1 — xem DISSENT-2) \| … ✅ hoàn tất trên \`main\` …` | Ô #2 = **bản vá DISSENT-2 của Admin** |
+| `git show origin/agent/doc-writer/T1:INDEX.md \| sed -n '10p'` | *(dòng trống)* | Ở T1, dòng 10 **không chứa** bản vá đó |
+
+**Kết luận:** xác nhận N-03 của Auditor2. `INDEX.md` **khác** `reviews/**`: với `reviews/**`, bản của
+Reviewer1 mới hơn nên lấy bản worker là đúng; với `INDEX.md`, **bản của Admin chứa phán quyết DISSENT-2
+mà nhánh T1 không có** ⇒ merge kiểu "lấy bản worker" sẽ **mất bản vá thật**. Đề nghị Admin merge
+`INDEX.md` theo hướng **giữ bản `main`** hoặc hợp nhất thủ công.
