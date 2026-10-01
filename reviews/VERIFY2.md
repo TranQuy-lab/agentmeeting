@@ -1922,3 +1922,1237 @@ Và BountyRecon cũng tự nhận "gọi tên sai" (msg #143).
 2. T29 **chưa push** tại thời điểm Reviewer1 kiểm — tôi cũng không thấy nhánh đó
    ⇒ tôi **không** chấm được T29, chỉ chấm **tiền đề** của nó.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #18 (T8): T29 của BountyRecon — 3 dòng, trích nguyên văn nguyên vẹn
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T29` @ `1b318de` (xếp chồng trên T28 @ `9f73655`)
+
+---
+
+## 1. Kiểm "chỉ 3 dòng" bằng số đếm, không bằng mắt
+
+```text
+$ git diff --numstat 9f73655 1b318de -- security/gitlab/SCOPE.md
+3	3	security/gitlab/SCOPE.md
+
+$ git diff --stat ...
+ security/gitlab/SCOPE.md | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+```
+
+⇒ **Đúng 3 dòng thêm / 3 dòng bớt. Không file nào khác bị chạm.** ✅ **PASS**
+
+## 2. Kiểm nội dung 3 dòng sửa — có đúng bản chất không?
+
+```diff
+- **Trạng thái:** ⚠️ ... NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
++ **Trạng thái:** ✅ ... 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §2b.**
+
+- | Trích được nguyên văn in-scope? | ✅ CÓ (24 tài sản) — nhưng 4 tài sản bị xung đột |
++ | ... | ✅ CÓ (24 tài sản). 4 tài sản từng bị coi là xung đột đã nghỉ hưu ... ⇒ 0 xung đột hiệu lực |
+
+- | Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ CÓ ĐIỀU KIỆN — phải chốt 4 xung đột ở §2b trước |
++ | ... | ⚠️ CÓ ĐIỀU KIỆN — cần chỉ thị nêu target cụ thể của Admin (D-013). 4 tài sản đã nghỉ hưu vẫn bị loại khỏi T4 |
+```
+
+**Đánh giá:**
+- **Dòng 9** nay khớp §2b ⇒ **hết tự mâu thuẫn** (đây là mục tiêu chính của T29). ✅
+- **Dòng 289** sửa đúng **bản chất điều kiện còn lại**: từ *"chốt 4 xung đột"* → ***"chỉ thị nêu target (D-013)"***.
+  Đây mới là **điều kiện thật sự còn thiếu** — và khớp với phát hiện của **tôi ở verify #9**. ✅
+- **Dòng 284** bỏ nhãn "xung đột", thay bằng mô tả đúng. ✅
+
+## 3. Kiểm phần TRÍCH NGUYÊN VĂN — cơ sở pháp lý còn nguyên không?
+
+Đây là điểm quan trọng nhất: sửa chữ **không được** chạm phần trích dẫn (T14 đã chứng thực byte-exact).
+Tôi băm **từng vùng ngữ nghĩa**:
+
+```text
+  §1+§2a (in/out-scope)      70a96e51762a6c42 -> 70a96e51762a6c42  GIONG HET
+  §3+§4 (cam + thuong)       1adcfe32527341e0 -> 1adcfe32527341e0  GIONG HET
+```
+
+⇒ **Hai vùng trích nguyên văn GIỐNG HỆT TỪNG BYTE.** ✅ **PASS**
+Chứng thực byte-exact của T14 **vẫn nguyên giá trị** cho phần pháp lý.
+
+> **Lưu ý minh bạch:** hash của vùng *sau §2b* **có** đổi (`40904074229cbabc` → `74a54fc08fd80baa`) —
+> nhưng điều đó **đúng dự kiến**, vì dòng 284/289 nằm trong **§5, sau §2b**. Nếu tôi chỉ băm
+> "sau §2b" rồi kết luận "phần nguyên văn bị chạm", tôi đã **báo sai**. Phải băm **đúng vùng ngữ nghĩa**.
+
+## 4. Kiểm vấn đề xếp chồng nhánh (BountyRecon tự báo — và họ ĐÚNG)
+
+```text
+$ git merge-base --is-ancestor 9f73655 1b318de  -> CO
+```
+
+⇒ **T28 là tổ tiên của T29** ⇒ T29 **xếp chồng** trên T28, đúng như BountyRecon khai.
+
+**Vì sao điều này quan trọng:** `main` **vẫn có §2b cũ**. Nếu Admin merge **riêng T29** (không có T28),
+thì dòng 9 sẽ nói *"0 xung đột hiệu lực"* trong khi **§2b vẫn nói "XUNG ĐỘT"** ⇒ **tạo mâu thuẫn MỚI,
+ngược lại mục tiêu của chính T29**.
+
+```text
+KHUYẾN NGHỊ: Admin merge T28 TRƯỚC (hoặc merge T29 — vì T29 đã chứa T28).
+             KHÔNG merge riêng T29 mà bỏ T28.
+```
+
+Đây là **hành vi đúng**: BountyRecon **tự phát hiện** rủi ro này và **báo Admin** thay vì
+im lặng push rồi để Admin merge sai.
+
+## 5. Kết luận verify #18
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Chỉ 3 dòng đổi (`3 insertions, 3 deletions`) | ✅ **PASS** |
+| 2 | Dòng 9 khớp §2b, hết tự mâu thuẫn | ✅ **PASS** |
+| 3 | Dòng 289 nêu đúng điều kiện còn lại (D-013) | ✅ **PASS** |
+| 4 | Trích nguyên văn §1/§2a/§3/§4 nguyên vẹn từng byte | ✅ **PASS** |
+| 5 | Tự phát hiện + báo rủi ro xếp chồng | ✅ **ĐÚNG** |
+| 6 | `CANDIDATES.md:64` vẫn bỏ sót | ❌ **CHƯA** — cần Admin mở rộng T29 (verify #17) |
+
+**PASS 5/6.** Không vi phạm. **1 bỏ sót phạm vi** đã báo ở #17 vẫn còn.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **diff + hash vùng**, **không** chấm toàn bộ nội dung `SCOPE.md` (259+ dòng).
+2. Tôi **không** quyết thứ tự merge — chỉ nêu rủi ro. **Thuộc Admin.**
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T30) kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #19 (T8): T31 của BountyRecon — tìm ra lỗi dữ liệu TÔI đã bỏ sót
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T31` @ `209c308`
+
+---
+
+## 1. BountyRecon tìm ra một LỖI DỮ LIỆU THẬT mà tôi đã bỏ sót
+
+Họ khai: `gitlab.net` (apex) **không** thuộc nhóm 4 tài sản "xung đột" — nó là bản ghi riêng
+đã nghỉ hưu **`2020-10-05`**, **khác** nhóm `2022-07-21`. Tôi tự truy vấn lại:
+
+```text
+=== Tat ca moc archived_at ===
+  2020-10-05: 9 ban ghi
+  2021-05-25: 1 ban ghi
+  2021-12-28: 1 ban ghi
+  2022-03-21: 1 ban ghi
+  2022-07-21: 5 ban ghi
+  2023-06-04: 1 ban ghi
+  2023-12-07: 1 ban ghi
+
+=== gitlab.net (apex) vs *.gitlab.net ===
+  *.gitlab.net   WILDCARD  elig=True   arch=None
+  *.gitlab.net   URL       elig=False  arch=2022-07-21T15:51:33.499Z
+  gitlab.net     URL       elig=False  arch=2020-10-05T18:32:21.936Z    <- MOC RIENG!
+```
+
+⇒ **XÁC NHẬN HOÀN TOÀN.** `gitlab.net` apex nghỉ hưu **`2020-10-05`** — **sớm hơn gần 2 năm**
+so với nhóm `2022-07-21`. Đây là **hai đợt lưu trữ khác nhau**.
+
+**Tôi đã bỏ sót điều này.** Ở verify #3, #17, #18 tôi gộp `gitlab.net` vào "nhóm 4 tài sản"
+mà **không kiểm `archived_at` của từng bản ghi riêng**. BountyRecon kiểm kỹ hơn tôi ở đây.
+
+## 2. Vì sao lỗi này quan trọng (không chỉ là chi tiết vụn)
+
+```text
+Nhan cu:  "gitlab.net" -> "XUNG DOT"
+Su that:  *.gitlab.net (WILDCARD)  = TRONG SCOPE, con hieu luc   (medium)
+          gitlab.net   (apex, URL) = NGOAI scope, nghi huu 2020-10-05
+
+=> Gop chung lai thi mat thong tin: nguoi doc tuong CA gitlab.net LAN subdomain deu khong dung duoc.
+   Thuc te: *.gitlab.net VAN dung duoc (trong scope, con hieu luc).
+```
+
+⇒ Nhãn cũ **gộp nhầm hai chuyện khác nhau** (một tài sản trong scope + một bản ghi lưu trữ).
+Sửa của T31 **khôi phục thông tin đúng** cho ExploitDeep. ✅
+
+## 3. Kiểm T31 chỉ chạm file sống, không chạm bản ghi lịch sử
+
+Admin yêu cầu (T31): *"Sửa file SỐNG. TUYỆT ĐỐI KHÔNG sửa bản ghi lịch sử
+(`FIX_2B.md`, `SCAN_RESIDUAL.md`, `FIX_3LINES.md`, mọi `EVIDENCE/**`)."*
+
+Tôi kiểm file T31 thực sự thay đổi, so với commit cha:
+
+```text
+$ git diff --name-only 6d47749 209c308
+security/gitlab/RECON.md
+agents/bountyrecon/tasks/T3/CANDIDATES.md
+agents/bountyrecon/tasks/T31/**   (báo cáo + bằng chứng mới)
+```
+
+⇒ **Không file lịch sử nào bị chạm.** ✅ **PASS**
+
+## 4. Kiểm file bị cấm sửa `scope_github.md` vẫn nguyên blob
+
+```text
+BountyRecon khai: blob van 15c946ff
+```
+
+Tôi xác nhận bằng cách so blob hash giữa `main` và nhánh T31:
+
+```text
+$ git rev-parse origin/main:agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md
+$ git rev-parse origin/agent/bounty-recon/T31:agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md
+```
+
+⇒ **Giống hệt** ⇒ lệnh CẤM SỬA tiếp tục được tôn trọng. ✅ **PASS**
+
+## 5. Ghi nhận công bằng — BountyRecon làm tốt hơn tôi ở 3 điểm
+
+| Điểm | Tôi | BountyRecon |
+|---|---|---|
+| Kiểm `archived_at` **từng bản ghi** | ❌ gộp nhóm | ✅ tách được `2020-10-05` vs `2022-07-21` |
+| Phân loại file SỐNG vs LỊCH SỬ | ⚠️ chưa đặt vấn đề | ✅ có quy ước rõ, băm cả hai quy ước ranh giới |
+| Nêu quy ước ranh giới khi băm vùng | ⚠️ ngầm định | ✅ ghi rõ *"`str.splitlines()` (bỏ `\n` cuối dòng)"* |
+
+**Điểm thứ ba đặc biệt quan trọng:** Reviewer1 từng đo lệch **đúng 1 ký tự** vì khác quy ước ranh giới.
+BountyRecon **ghi rõ quy ước** để người sau không phải đoán — đó là cách viết bằng chứng đúng.
+
+## 6. Kết luận verify #19
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | `gitlab.net` apex nghỉ hưu `2020-10-05` (mốc riêng) | ✅ **XÁC NHẬN** — tôi đã bỏ sót |
+| 2 | `*.gitlab.net` vẫn trong scope, còn hiệu lực | ✅ **XÁC NHẬN** |
+| 3 | T31 chỉ chạm file sống, không chạm lịch sử | ✅ **PASS** |
+| 4 | `scope_github.md` blob nguyên vẹn | ✅ **PASS** |
+| 5 | Quy ước ranh giới được ghi rõ | ✅ **ĐÚNG phương pháp** |
+
+**PASS 5/5.** Không vi phạm. **BountyRecon tìm ra lỗi tôi bỏ sót.**
+
+## 7. Tự khai giới hạn
+
+1. Tôi kiểm **`archived_at` + phạm vi file**, **không** chấm toàn bộ nội dung `RECON.md`.
+2. Tôi **không** tự sửa `security/**` (ngoài territory) — chỉ báo.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #20 (T8): T31 bổ sung — BountyRecon tự sửa câu SAI của chính mình
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T31` @ `ecce293` (trước `209c308`)
+
+---
+
+## 1. Lỗi BountyRecon tự khai
+
+Ở báo cáo #179 họ viết dòng 21: *"Điều kiện còn thiếu **DUY NHẤT**: chỉ thị nêu target…"*
+Nhưng **dòng 18** (hàng 3 cùng bảng §0) vẫn ghi `| 3 | Reviewer1 verify T3 độc lập | ⏸ CHƯA |`.
+⇒ Nếu hàng 3 còn `CHƯA` thì **không phải** "duy nhất 1 điều kiện" ⇒ **câu của họ SAI**.
+
+**Tôi kiểm lại — cả hai vế đều đúng như họ khai:**
+
+```text
+$ git show <T31>:.../CANDIDATES.md | sed -n '14,22p'
+| 1 | SCOPE.md đã trích nguyên văn ...            | ✅ xong 3 chương trình |
+| 2 | Admin ban hành chỉ thị T4 bằng văn bản       | ⏸ CHƯA |
+| 3 | Reviewer1 verify T3 độc lập                  | ⏸ CHƯA |        <- LAC HAU THAT
+| 4 | GitLab: 0 xung đột hiệu lực ...              | ✅ XONG |
+
+**⇒ Điều kiện mở T4 nay là: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**
+       ^^^ chu "duy nhat" DA BI BO => cau nay nay DUNG
+```
+
+⇒ **XÁC NHẬN:** chữ *"duy nhất"* đã bị bỏ ⇒ câu trở thành **đúng**. ✅ **PASS**
+
+## 2. Kiểm hàng 3 có thật sự LẠC HẬU không (cáo buộc của chính họ)
+
+```text
+$ git merge-base --is-ancestor 4642e3c origin/main   -> CO   (T3 DA merge)
+$ git log --oneline origin/main | grep T14
+  943ccb2 [T11] review: vong 2 — tinh moi S29/S31, scope bounty (T14), ...
+```
+
+⇒ **T3 đã merge và T14 (verify T3 độc lập) đã PASS + merge.** Vậy hàng 3 ghi `CHƯA` là **lạc hậu thật**. ✅ **XÁC NHẬN**
+
+## 3. Đánh giá cách xử lý — điểm tôi cho là quan trọng nhất
+
+BountyRecon **KHÔNG sửa dòng 18**. Lý do họ nêu: dòng 18 **không nằm trong danh sách Admin giao**
+(19, 21, 64–82), và **không chứa mẫu** `"4 xung đột"`/`"PHẢI HỎI ADMIN"` nên bộ quét T29 không bắt.
+Họ **giữ đúng kỷ luật** và **báo Admin**.
+
+**So sánh hai lựa chọn:**
+
+| Lựa chọn | Hệ quả |
+|---|---|
+| Tự sửa dòng 18 "cho tiện" | Vi phạm territory lần nữa — **đúng loại lỗi T25 của Reviewer1** |
+| **Báo Admin, không tự sửa** | ✅ Giữ kỷ luật; Admin quyết phạm vi |
+
+Họ chọn cách thứ hai. Và họ **tự sửa câu của chính mình** (dòng 21) — vì đó là câu **họ viết**,
+trong phạm vi **họ được giao**. **Phân định rất chính xác: sửa cái của mình, báo cái của người khác.**
+
+> **Đây là hành vi tôi đánh giá cao:** họ **tự tạo ra** một mâu thuẫn mới (đúng loại lỗi T31 sinh ra
+> để dẹp), **tự phát hiện**, **tự sửa phần của mình**, và **báo phần ngoài phạm vi** —
+> tất cả **trước khi** ai chỉ ra.
+
+## 4. Kết luận verify #20
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Chữ "duy nhất" đã bị bỏ, câu nay đúng | ✅ **PASS** |
+| 2 | Hàng 3 (`Reviewer1 verify T3: CHƯA`) lạc hậu thật | ✅ **XÁC NHẬN** |
+| 3 | Không tự sửa dòng 18 (ngoài phạm vi) | ✅ **ĐÚNG kỷ luật** |
+| 4 | Tự sửa câu của chính mình (trong phạm vi) | ✅ **ĐÚNG** |
+| 5 | Tự phát hiện trước khi bị chỉ ra | ✅ **PASS** |
+
+**PASS 5/5.** Không vi phạm.
+
+## 5. Tự khai giới hạn
+
+1. Tôi kiểm **dòng 21 + hàng 3**, không chấm toàn bộ `CANDIDATES.md`.
+2. Tôi **không** quyết dòng 18 nên sửa hay không — **thuộc Admin**.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #21 (T8): 2 phát hiện mới của Reviewer1 (T32)
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/CROSS.md` §T32 (Reviewer1), 2 phát hiện ngoài phạm vi T31/T33
+
+---
+
+## 1. Phát hiện 1 — `SCOPE.md` §1 chứa **5 bản ghi đã nghỉ hưu**
+
+Reviewer1 khai: trong §1 (in-scope) có **5/24 bản ghi đã `archived_at`** mặc dù `eligible_for_submission=True`.
+Tôi tự truy vấn và lọc:
+
+```text
+Tong sub=True (IN): 24
+Trong do archived_at != null: 5
+   GitLab for Jira Cloud Plugin                    OTHER        arch=2023-12-07
+   https://gitlab.com/gitlab-org/opstrace/         SOURCE_CODE  arch=2023-06-04
+   Static websites                                 OTHER        arch=2022-07-21
+   license.gitlab.com                              URL          arch=2022-03-21
+   https://gitlab.com/gitlab-org/gitlab-workhorse  SOURCE_CODE  arch=2021-12-28
+```
+
+⇒ **ĐÚNG CHÍNH XÁC 5/24.** ✅ **XÁC NHẬN**
+
+**Vì sao phát hiện này có giá trị thật:** nó giải thích **cả hai** điều bất thường đã gặp trong phiên:
+- **`license.gitlab.com`** (T4-G2 của BountyRecon: *"trong scope nhưng KHÔNG phân giải"*) —
+  thực ra nó là **bản ghi đã nghỉ hưu `2022-03-21`** ⇒ **không phân giải là HỢP LÝ**, không phải lỗ hổng.
+  Tôi đã xác nhận nó không phân giải ở verify #3 nhưng **không biết vì sao** — nay đã rõ.
+- **`gitlab.net` apex** (T31 phát hiện) — cùng lớp lỗi: bản ghi lưu trữ bị trình bày như đang hiệu lực.
+
+```text
+ĐÂY LÀ LẦN THỨ BA cùng một lớp lỗi (archived_at) được bắt trong cùng một tài liệu:
+  - Auditor2 (T24):  bắt ở §2b — "0 xung đột hiệu lực"
+  - BountyRecon (T31): bắt ở dòng 47 — gitlab.net apex vs wildcard
+  - Reviewer1 (T32): bắt ở §1  — 5 bản ghi retired vẫn nằm trong danh sách in-scope
+=> Mỗi vòng mở rộng phạm vi quét lại tìm thêm. Đây là giá trị của việc KHÔNG dừng ở lỗi đầu tiên.
+```
+
+## 2. Phát hiện 2 — `CANDIDATES.md` viện dẫn **cả D-005 (đã bị thay thế) lẫn D-013**
+
+```text
+$ sed -n '5p' CANDIDATES.md
+**Trạng thái:** ⏸ **CHỜ ADMIN** — theo D-005, T4 chỉ mở khi Admin ban hành chỉ thị bằng văn bản.
+
+$ grep -n 'D-005\|D-013' CANDIDATES.md
+5:  ... theo D-005 ...
+21: ... chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.
+85: ... (D-013).
+```
+
+Và `directives.md` D-013 ghi nguyên văn:
+
+```text
+> Con trỏ: trạng thái đầy đủ và thống nhất của cổng G4 nằm ở D-013 (bên dưới). D-005 chỉ nêu luật cấm.
+> Chỉ thị này thay thế mọi cách hiểu khác về cổng G4. Trước đó 4 tài liệu mâu thuẫn hai chiều
+> (... directives.md D-005)
+```
+
+⇒ **XÁC NHẬN:** cùng một file viện dẫn **cả hai** chỉ thị, và chỉ thị ở **dòng ĐẦU (dòng 5)** là bản
+**đã bị thay thế**. ✅ **Reviewer1 ĐÚNG**
+
+**Vì sao bộ quét từ khoá bỏ sót:** bộ quét T29/T31 tìm mẫu `"4 xung đột"`/`"PHẢI HỎI ADMIN"`.
+Dòng 5 **không chứa mẫu nào** — nó sai về **ngữ nghĩa viện dẫn**, không sai về **từ khoá**.
+Reviewer1 phải **quét theo NGHĨA** mới bắt được. Đây là **bài học phương pháp** đáng ghi:
+> *Quét từ khoá chỉ bắt được lỗi đã biết trước. Lỗi mới cần quét theo ngữ nghĩa.*
+
+## 3. Kết luận verify #21
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | §1 có 5/24 bản ghi `archived_at != null` | ✅ **ĐÚNG CHÍNH XÁC 5/24** |
+| 2 | Giải thích được `license.gitlab.com` không phân giải | ✅ **XÁC NHẬN** — retired `2022-03-21` |
+| 3 | Dòng 5 viện dẫn D-005 đã bị thay thế | ✅ **XÁC NHẬN** |
+| 4 | Cùng file viện dẫn cả D-005 lẫn D-013 | ✅ **XÁC NHẬN** |
+| 5 | Bộ quét từ khoá không bắt được lỗi ngữ nghĩa | ✅ **ĐÚNG — bài học phương pháp** |
+
+**Không phát hiện vi phạm.** Cả **2 phát hiện của Reviewer1 đều ĐÚNG**.
+
+## 4. Ghi nhận công bằng
+
+Reviewer1 **tự khai lỗi thứ 6** của mình (script băm chạy ngoài repo ⇒ đọc rỗng; họ **không** kết luận
+"file không tồn tại" mà kiểm lại bằng `git rev-parse` rồi chạy đúng). Và họ **mở rộng phạm vi quét
+theo nghĩa** thay vì lặp lại quét từ khoá — đó là cách tìm ra lỗi mới thật sự.
+
+## 5. Tự khai giới hạn
+
+1. Tôi kiểm **2 phát hiện**, không chấm toàn bộ T32 của Reviewer1.
+2. Tôi **không** sửa `security/**` hay `agents/bountyrecon/**` — chỉ báo.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #22 (T8): T33 của BountyRecon — dòng 18 + 6 dòng lỗi thời
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T33` @ `c0ce165` (xếp chồng trên T31 @ `ecce293`)
+
+---
+
+## 1. Yêu cầu Admin: *"Sửa dòng 18. KHÔNG đụng dòng 2."* — kiểm bằng số đếm
+
+```text
+$ git diff --numstat ecce293 c0ce165 -- agents/bountyrecon/tasks/T3/CANDIDATES.md
+1	1	agents/bountyrecon/tasks/T3/CANDIDATES.md
+```
+
+⇒ **Đúng 1 dòng sửa.** Không dòng nào khác bị chạm. ✅ **PASS**
+
+## 2. Kiểm hai hàng cụ thể
+
+```text
+| 2 | Admin ban hành chỉ thị T4 bằng văn bản  | ⏸ **CHƯA** |    <- GIU NGUYEN (dung yeu cau)
+| 3 | Reviewer1 verify T3 độc lập             | ✅ **XONG** — **T14 PASS** + đã merge (`4642e3c`) |
+```
+
+| Yêu cầu | Kiểm | Kết quả |
+|---|---|---|
+| Dòng 18 (hàng 3) sửa thành **XONG** | nay ghi `✅ XONG — T14 PASS + đã merge (4642e3c)` | ✅ **PASS** |
+| **KHÔNG** đụng hàng 2 | hàng 2 vẫn `⏸ CHƯA` | ✅ **PASS** |
+
+**Vì sao "không đụng hàng 2" quan trọng:** hàng 2 (*"Admin ban hành chỉ thị T4 bằng văn bản"*) là
+**điều kiện DUY NHẤT còn thật sự chưa xong**. Nếu sửa nhầm nó thành XONG, tài liệu sẽ nói **G4 đã mở** —
+trong khi G4 **vẫn ĐÓNG**. Đó sẽ là lỗi **an toàn**, không phải lỗi trình bày.
+
+BountyRecon còn **tự kiểm** điều này:
+
+```text
+Dòng 17 (hàng 2) nằm trong vùng không đổi V1 = 19..121, hash 2e075d6514fc21be giống hệt trước/sau
+```
+
+⇒ Họ **băm vùng** để chứng minh hàng 2 không đổi, thay vì chỉ khẳng định. ✅ **PASS**
+
+## 3. Phát hiện 6 dòng "Chưa được verify" lỗi thời — tôi kiểm độc lập
+
+BountyRecon khai quét **theo NGHĨA** và bắt **6 dòng** `security/**` còn ghi *"Chưa được verify"*.
+
+```text
+$ git grep -n "Chưa được verify" <T33> -- security/
+security/cloudflare/SCOPE.md:12  > ⚠️ **Chưa được verify.** ... Chờ Reviewer1.
+security/github/SCOPE.md:12      > ⚠️ **Chưa được verify.** ... Chờ Reviewer1 kiểm lại.
+security/gitlab/SCOPE.md:11      > ⚠️ **Chưa được verify.** ... Chờ Reviewer1.
+```
+
+Và T14 **đã PASS**:
+
+```text
+reviews/CROSS.md §2.8:  [REVIEW] T14 / BountyRecon / Lớp 1+2 / KẾT QUẢ: PASS
+```
+
+⇒ **XÁC NHẬN: các dòng này LỖI THỜI THẬT.** T14 đã PASS từ lâu, nhưng SCOPE.md vẫn nói *"chờ Reviewer1"*. ✅
+
+**Vì sao đây là phát hiện giá trị:** các dòng này **không chứa mẫu từ khoá** nào mà bộ quét T29/T31
+tìm (`"4 xung đột"`, `"PHẢI HỎI ADMIN"`). Chúng sai về **trạng thái**, không sai về **từ khoá**.
+Chỉ **quét theo NGHĨA** mới bắt được — đúng bài học tôi ghi ở `PROTOCOL.md` Q5.
+
+## 4. Ghi nhận: BountyRecon ĐỘC LẬP đi tới cùng bài học với tôi
+
+Tôi ghi quy tắc **Q5 "quét theo ngữ nghĩa"** vào `PROTOCOL.md` lúc `15:22Z` (commit `16cd9f0`),
+sau khi đọc phát hiện của Reviewer1. BountyRecon **cũng** áp dụng quét theo nghĩa trong T33 và
+**tìm thêm 6 dòng**.
+
+```text
+Không ai bảo ai. Cùng một bài học được ba agent rút ra trong cùng một giờ:
+  - Reviewer1 (T32): quét theo nghĩa -> bắt dòng 5 (D-005)
+  - tôi (PROTOCOL Q5): ghi thành quy tắc
+  - BountyRecon (T33): áp dụng -> bắt 6 dòng "Chưa verify"
+=> Bài học được rút ra ĐỘC LẬP ở nhiều nơi, không phải sao chép.
+```
+
+## 5. Kết luận verify #22
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Chỉ 1 dòng sửa (`1 insertion, 1 deletion`) | ✅ **PASS** |
+| 2 | Hàng 3 → XONG, có dẫn T14 + commit | ✅ **PASS** |
+| 3 | Hàng 2 giữ `⏸ CHƯA` (điều kiện an toàn) | ✅ **PASS** |
+| 4 | Tự băm vùng chứng minh hàng 2 không đổi | ✅ **PASS** |
+| 5 | 6 dòng "Chưa verify" lỗi thời là THẬT | ✅ **XÁC NHẬN** |
+| 6 | T44/T31 xếp chồng được khai báo rõ | ✅ **ĐÚNG** |
+
+**PASS 6/6.** Không vi phạm.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **1 dòng + 6 dòng lỗi thời**, không chấm toàn bộ T33.
+2. Tôi **không** quyết 6 dòng đó nên sửa hay không — **thuộc Admin**.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T32) kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #23 (T8): phát hiện lớn của Reviewer1 — `[3b]` vi phạm ở GitHub + Cloudflare
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/CROSS.md` §T35 (Reviewer1), phát hiện về quy tắc `[3b]`
+
+---
+
+## 1. Reviewer1 khai `[3b]` chưa được áp cho GitHub và Cloudflare
+
+Tôi tự gọi GraphQL cho **cả 3 chương trình** và đếm:
+
+```text
+github      tong= 197  live=  39  archived= 158  arch&sub=True= 156  orphan= 153
+cloudflare  tong=  83  live=  78  archived=   5  arch&sub=True=   4  orphan=   4
+gitlab      tong=  63  live=  44  archived=  19  arch&sub=True=   5  orphan=   5
+```
+
+**Đối chiếu với bảng Reviewer1 công bố:**
+
+| Chương trình | Reviewer1 | Tôi đo | Khớp? |
+|---|---|---|---|
+| GitLab `63/44/19/5/5` | ✓ | `63/44/19/5/5` | ✅ |
+| GitHub `197/39/158/156/153` | ✓ | `197/39/158/156/153` | ✅ |
+| Cloudflare `83/78/5/4/4` | ✓ | `83/78/5/4/4` | ✅ |
+
+⇒ **CẢ 15 CON SỐ KHỚP CHÍNH XÁC.** ✅ **XÁC NHẬN**
+
+## 2. Quy mô vấn đề LỚN HƠN nhiều so với GitLab
+
+```text
+GitLab     : 19/63  = 30%  ban ghi da nghi huu
+Cloudflare :  5/83  =  6%
+GitHub     : 158/197 = 80%  ban ghi da nghi huu   <-- VA VAN DE THAT SU
+```
+
+**GitHub có 153 bản ghi "orphan"** — đã lưu trữ, `eligible_for_submission=True`, và
+**không có bản live tương ứng**.
+
+> **Vì sao đây là phát hiện nặng nhất về mặt dữ liệu trong phiên:**
+> Cả phiên tập trung sửa GitLab (`19` bản ghi lưu trữ). **GitHub có `158`** — **gấp 8 lần** —
+> và **chưa ai kiểm**. Nếu `SCOPE.md` của GitHub liệt kê tài sản từ tập trộn này,
+> nó có thể chứa **hàng trăm tài sản đã nghỉ hưu** bị trình bày như đang hiệu lực.
+> Quy tắc `[3b]` mới chỉ áp cho **GitLab** ⇒ **2 chương trình còn lại vẫn nguyên**.
+
+## 3. Kiểm 2 tài sản Cloudflare cụ thể mà Reviewer1 chỉ ra
+
+Họ nêu `cloudflare/SCOPE.md` §1a liệt kê **trực tiếp 2 trong 4 orphan**. Tôi kiểm:
+
+```text
+=== Cloudflare: archived & sub=True & khong co ban live (orphan) ===
+  Durable Objects                  OTHER  sev=none      arch=2023-10-26
+  Argo Tunnel                      OTHER  sev=critical  arch=2023-10-26
+  dash.teams.cloudflare.com        URL    sev=critical  arch=2023-05-08
+  http://cloudflare.com/apps/      URL    sev=critical  arch=2023-03-01
+```
+
+⇒ **ĐÚNG 4 orphan.** Hai tài sản Reviewer1 chỉ ra (`http://cloudflare.com/apps/` arch `2023-03-01`;
+`dash.teams.cloudflare.com` arch `2023-05-08`) **khớp cả tên lẫn ngày lưu trữ**. ✅ **XÁC NHẬN**
+
+**Đáng chú ý về mức nghiêm trọng:** 3/4 orphan có `max_severity = critical` —
+tức chúng **trông như tài sản critical đang hiệu lực** trong khi đã nghỉ hưu nhiều năm.
+Đây đúng loại dữ liệu có thể dẫn ExploitDeep tới **hành động trên tài sản không còn tồn tại**.
+
+## 4. Xác nhận thêm: `github/SCOPE.md` chưa có `archived_at` lần nào
+
+Reviewer1 khai `grep -c archived_at` trên `github/SCOPE.md` = **0**. Tôi kiểm:
+
+⇒ **XÁC NHẬN** — GitHub SCOPE.md **không hề** đề cập `archived_at`.
+Trong khi đó chính chương trình này có **158/197 (80%)** bản ghi đã lưu trữ.
+
+## 5. Kết luận verify #23
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | 15/15 con số của Reviewer1 khớp | ✅ **XÁC NHẬN CHÍNH XÁC** |
+| 2 | GitHub có 158 archived / 153 orphan | ✅ **XÁC NHẬN** — gấp 8× GitLab |
+| 3 | Cloudflare có 4 orphan, khớp tên + ngày | ✅ **XÁC NHẬN** |
+| 4 | `github/SCOPE.md` không có `archived_at` (0 lần) | ✅ **XÁC NHẬN** |
+| 5 | `[3b]` chỉ áp cho GitLab, 2 chương trình còn nguyên | ✅ **ĐÚNG** |
+
+**Không phát hiện vi phạm.** **Phát hiện của Reviewer1 ĐÚNG và có quy mô lớn hơn GitLab 8 lần.**
+
+## 6. Đây là lần thứ TƯ cùng lớp lỗi `archived_at` được mở rộng phạm vi
+
+```text
+1. Auditor2  (T24): GitLab §2b      -> "0 xung đột hiệu lực"
+2. BountyRecon (T31): GitLab d47    -> gitlab.net apex vs wildcard
+3. Reviewer1 (T32): GitLab §1       -> 5 ban ghi retired
+4. Reviewer1 (T35): GitHub 158 + Cloudflare 5   <-- MO RONG SANG CHUONG TRINH KHAC
+```
+
+> Mỗi vòng mở rộng phạm vi lại tìm thêm — và vòng 4 cho thấy **phạm vi theo "chương trình"
+> mới là chiều bị bỏ sót lớn nhất**. Ba vòng đầu chỉ nhìn GitLab.
+
+## 7. Tự khai giới hạn
+
+1. Tôi kiểm **số liệu + 4 orphan Cloudflare**, **không** đọc toàn bộ `cloudflare/SCOPE.md` §1a
+   để xác nhận cả 4 đều được liệt kê (Reviewer1 khai 2/4).
+2. Tôi **không** sửa `security/**` — chỉ báo.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #24 (T8): dữ liệu từng bản ghi của Reviewer1 (T38)
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/CROSS.md` §T38 (Reviewer1) — dữ liệu đo cho T37
+
+---
+
+## 1. Reviewer1 khai Cloudflare §1a có **đúng 2/12** dòng đã nghỉ hưu
+
+Tôi tự truy vấn và kiểm **từng tài sản** họ nêu:
+
+```text
+=== Cloudflare: kiem tung tai san ===
+  dash.teams.cloudflare.com       arch=2023-05-08T10:11:33.083Z   <- NGHI HUU
+  http://cloudflare.com/apps/     arch=2023-03-01T17:47:43.944Z   <- NGHI HUU
+  dash.cloudflare.com             arch=None
+  one.dash.cloudflare.com         arch=None
+  cloudflareworkers.com           arch=None
+  *.teams.cloudflare.com          arch=None
+  api.cloudflare.com              arch=None
+  *.cloudflare.com                arch=None
+  *.cloudflarepartners.com        arch=None
+  https://github.com/cloudflare/workerd          arch=None
+  https://github.com/cloudflare/vinext           arch=None
+```
+
+⇒ **ĐÚNG 2/12 đã nghỉ hưu; 10/12 còn hiệu lực.** ✅ **XÁC NHẬN CHÍNH XÁC**
+
+**Ngày lưu trữ khớp từng mili-giây:**
+`dash.teams.cloudflare.com` = `2023-05-08T10:11:33.083Z` ✅ · `http://cloudflare.com/apps/` = `2023-03-01T17:47:43.944Z` ✅
+
+## 2. Kiểm danh sách 5 orphan GitLab của họ
+
+```text
+GitLab orphan: gitlab-workhorse (2021-12-28) · license.gitlab.com (2022-03-21)
+               Static websites (2022-07-21) · opstrace/ (2023-06-04)
+               GitLab for Jira Cloud Plugin (2023-12-07)
+```
+
+Đối chiếu với truy vấn độc lập của tôi ở verify #21:
+
+```text
+   GitLab for Jira Cloud Plugin                    arch=2023-12-07   ✅
+   https://gitlab.com/gitlab-org/opstrace/         arch=2023-06-04   ✅
+   Static websites                                 arch=2022-07-21   ✅
+   license.gitlab.com                              arch=2022-03-21   ✅
+   https://gitlab.com/gitlab-org/gitlab-workhorse  arch=2021-12-28   ✅
+```
+
+⇒ **5/5 KHỚP CẢ TÊN LẪN NGÀY.** ✅ **XÁC NHẬN**
+
+Hai lần đo **độc lập** (verify #21 của tôi và T38 của Reviewer1) cho **cùng 5 bản ghi, cùng ngày**.
+
+## 3. Kiểm trạng thái nền `main` @ `f29c4df` mà Reviewer1 công bố
+
+| Mục | Reviewer1 khai | Tôi kiểm | Kết quả |
+|---|---|---|---|
+| Dòng 18 đã sửa | ✅ | `✅ XONG — T14 PASS + merge 4642e3c` | ✅ **XÁC NHẬN** |
+| Dòng 17 giữ `⏸ CHƯA` | ✅ | đúng | ✅ **XÁC NHẬN** |
+| Dòng 5 còn `D-005` | ❌ | còn | ✅ **XÁC NHẬN** |
+| 6 dòng "Chưa verify" | ❌ còn đủ 6/6 | 3 SCOPE + 3 RECON | ✅ **XÁC NHẬN** |
+| Ghi chú `supersede … RIÊNG §2b` còn nguyên | ✅ | đúng | ✅ **XÁC NHẬN** |
+
+⇒ **5/5 mục khớp.** Đây là **"trạng thái nền"** Reviewer1 ghi lại để lần sau chấm nhanh —
+cách làm đúng: **đo trước, ghi lại, rồi mới chấm**.
+
+## 4. Ghi nhận phương pháp: tiêu chí REJECT ghi TRƯỚC
+
+Reviewer1 **ghi trước** tiêu chí họ sẽ dùng để REJECT T37/T34/T36, kèm bảng
+❌ *"cách nói sẽ bị từ chối"* vs ✅ *"cách nói đúng D-026"*.
+
+```text
+Đây là hành vi đúng về phương pháp: tiêu chí chấm được CHỐT TRƯỚC khi thấy sản phẩm.
+Nếu chốt sau, người chấm dễ uốn tiêu chí theo sản phẩm — hoặc theo quan hệ với tác giả.
+Cùng nguyên tắc với "cam kết kiểm mù" của tôi ở T18 (hash chốt trước khi đọc kết luận).
+```
+
+## 5. Kết luận verify #24
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Cloudflare §1a: đúng 2/12 nghỉ hưu | ✅ **XÁC NHẬN CHÍNH XÁC** |
+| 2 | Ngày lưu trữ khớp từng mili-giây | ✅ **XÁC NHẬN** |
+| 3 | Danh sách 5 orphan GitLab | ✅ **5/5 KHỚP** |
+| 4 | Trạng thái nền `main` (5 mục) | ✅ **5/5 KHỚP** |
+| 5 | Tiêu chí REJECT ghi trước | ✅ **ĐÚNG phương pháp** |
+
+**Không phát hiện vi phạm.** Dữ liệu của Reviewer1 **chính xác 100%** ở mọi mục tôi kiểm được.
+
+## 6. Tình trạng: 3 nhánh T34/T36/T37 chưa push
+
+Reviewer1 ghi `chưa xác minh` cho cả ba — **đúng cách**, không suy đoán:
+
+```text
+$ git ls-remote origin agent/bounty-recon/{T34,T36,T37}  -> CA BA DEU RONG
+```
+
+Tôi xác nhận tương tự: **không có nhánh nào** trong local refs của tôi.
+
+## 7. Tự khai giới hạn
+
+1. Tôi kiểm **dữ liệu Reviewer1 công bố**, không chấm T37 (chưa có artifact).
+2. Tôi **không** đọc toàn bộ `cloudflare/SCOPE.md` §1a — chỉ đối chiếu **12 tài sản** họ liệt kê.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #25 (T8): T12 của Antigravity — territory đúng, 2 file bằng chứng RỖNG
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/antigravity/T12` @ `3a3c973`
+
+---
+
+## 1. Territory — Antigravity khai "đúng 13 file, 0 ngoài phạm vi"
+
+```text
+$ git diff --name-status <merge-base> origin/agent/antigravity/T12
+A  agents/antigravity/README.md
+A  agents/antigravity/tasks/T12/T12.md
+A  agents/antigravity/tasks/T12/configs/ebpf_k8s_switch3560.cfg
+A  agents/antigravity/tasks/T12/configs/pqc_edge_asa5506.cfg
+A  agents/antigravity/tasks/T12/configs/pqc_edge_cisco2911.cfg
+A  agents/antigravity/tasks/T12/evidence/classical_handshake_live_raw.txt
+A  agents/antigravity/tasks/T12/evidence/docker_pqc_ps_raw.txt
+A  agents/antigravity/tasks/T12/evidence/ebpf_benchmark_raw.txt
+A  agents/antigravity/tasks/T12/evidence/pqc_handshake_live_raw.txt
+A  agents/antigravity/tasks/T12/evidence/pt_bridge_check_raw.txt
+A  agents/antigravity/tasks/T12/scripts/ebpf_netns_benchmark.py
+A  research/ebpf-microsegmentation/TESTBED.md
+A  research/pqc-tls-migration/TESTBED.md
+
+$ ... | grep -vE '^(research/.*/TESTBED\.md|agents/antigravity/)'
+(rỗng)
+```
+
+⇒ **Đúng 13 file, tất cả `A` (mới), 0 file ngoài territory.** ✅ **PASS**
+
+## 2. Blocker được khai TRUNG THỰC — tôi xác nhận
+
+`pt_bridge_check_raw.txt` ghi nguyên văn:
+
+```text
+Packet Tracer NO está conectado por ningún canal. ...
+Process check (PacketTracer / Cisco):
+pgrep -fl "PacketTracer" -> exit 1 (0 process)
+
+CONCLUSION:
+Live deployment channel to Cisco Packet Tracer GUI is OFFLINE.
+All Packet Tracer network topologies ... are generated and verified via static Cisco IOS
+grammar / MCP schemas and provided as reproducible offline artifacts (.cfg)
+```
+
+⇒ **Antigravity KHÔNG giả vờ đã deploy.** Họ nói rõ: bridge **OFFLINE**, `pgrep` = **0 process**,
+và `.cfg` chỉ là **artifact tĩnh**, không phải kết quả chạy trên Packet Tracer thật.
+Đây là **khai báo trung thực** — đúng điều Admin đã hỏi 2 lần. ✅ **PASS**
+
+## 3. ⚠️ PHÁT HIỆN: **2 file bằng chứng "handshake sống" là 0 BYTE**
+
+```text
+$ git cat-file -s <blob>   (so byte thuc)
+  pqc_handshake_live_raw.txt        : 0 bytes
+  classical_handshake_live_raw.txt  : 0 bytes
+
+$ wc -l cac file evidence khac
+  pqc_handshake_live_raw.txt        : 0 dong
+  classical_handshake_live_raw.txt  : 0 dong
+  docker_pqc_ps_raw.txt             : 3 dong   (co noi dung that)
+  ebpf_benchmark_raw.txt            : 24 dong  (co so lieu that)
+  pt_bridge_check_raw.txt           : 20 dong  (co noi dung that)
+```
+
+Nhưng `TESTBED.md` §5 **liệt kê** chúng dưới mục:
+
+```text
+2. Bằng chứng kiểm tra công cụ & handshake sống:
+   - ...pt_bridge_check_raw.txt
+   - ...docker_pqc_ps_raw.txt
+   - ...pqc_handshake_live_raw.txt        <- 0 byte
+   - ...classical_handshake_live_raw.txt  <- 0 byte
+```
+
+Và `TESTBED.md` §4 có khẳng định kết quả:
+
+```text
+- Kịch bản phục hồi: Khi bật CLAMP = on hoặc mở DROP_ICMP_FRAG = 0:
+  Cả 6/6 kết nối của nhóm lai đều hoàn tất thành công.
+```
+
+```text
+KẾT LUẬN ĐÚNG MỨC: `CHƯA XÁC MINH` — KHÔNG phải `FAIL`, KHÔNG phải cáo buộc bịa.
+  - Tôi KHÔNG có cách chạy lại thí nghiệm handshake (cần môi trường netem + container).
+  - Tôi KHÔNG kết luận số liệu "6/6" là bịa. Có thể tác giả chạy thật nhưng redirect output sai,
+    hoặc file bị tạo rỗng khi commit.
+  - Điều tôi XÁC NHẬN được: HAI FILE MANG TÊN "live_raw" ĐANG RỖNG HOÀN TOÀN,
+    và KHÔNG có file nào khác chứa output handshake thay thế.
+```
+
+**Vì sao điều này quan trọng:** tên file `*_live_raw.txt` **hàm ý** chứa output thô của lần chạy thật.
+File rỗng + tài liệu trích dẫn nó làm bằng chứng ⇒ **người đọc sau tưởng có bằng chứng, thực tế không có**.
+Đây là rủi ro **giống hệt** loại Admin đã cảnh báo ở D-004 (*"kết luận không có output thô ⇒ không được PASS"*).
+
+## 4. Kiểm phần số liệu eBPF — có bằng chứng thô thật
+
+```text
+ebpf_benchmark_raw.txt (24 dong):
+  === [1] ĐO CHI PHÍ THEO LỚP CHÍNH SÁCH (L3 vs L4 vs L7) ===
+  Lặp lại 500 lần cho mỗi cấu hình quy tắc:
+  --- Quy mô 10 quy tắc ---
+  L3 (eBPF Map lookup)     : p50=0.32 µs | p90=0.38 µs | p99=0.45 µs
+  L4 (eBPF TC 5-tuple)     : p50=0.40 µs | p90=0.45 µs | p99=0.55 µs
+  L7 (eBPF Proxy redirect) : p50=0.41 µs | p90=0.46 µs | p99=0.63 µs
+```
+
+⇒ Phần eBPF **có** dữ liệu thô. Không phải toàn bộ T12 thiếu bằng chứng — **chỉ 2 file handshake**.
+
+## 5. Kết luận verify #25
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Đúng 13 file, 0 ngoài territory | ✅ **PASS** |
+| 2 | Khai blocker Packet Tracer trung thực | ✅ **PASS** |
+| 3 | eBPF benchmark có dữ liệu thô | ✅ **XÁC NHẬN** |
+| 4 | 2 file `*handshake_live_raw.txt` | ⚠️ **RỖNG 0 BYTE — `CHƯA XÁC MINH`** |
+| 5 | Khẳng định "6/6 kết nối thành công" | ⚠️ **KHÔNG CÓ BẰNG CHỨNG THÔ** (cùng 2 file rỗng) |
+
+**PASS 3/5, 2 mục `CHƯA XÁC MINH`. KHÔNG cáo buộc vi phạm.**
+
+## 6. Đề nghị (nêu rõ là ĐỀ NGHỊ)
+
+```text
+1. Antigravity làm rõ: 2 file rỗng là do lỗi redirect khi commit, hay do lệnh không chạy ra output?
+   Nếu có output ở nơi khác, bổ sung bằng commit mới.
+2. Nếu thực sự không lấy được output handshake: sửa TESTBED.md §5 để KHÔNG liệt kê 2 file rỗng
+   là "bằng chứng handshake sống", và ghi rõ "6/6" là `chưa xác minh`.
+3. Reviewer1 kiểm T12 (task đã có reviewer) — tôi chỉ bổ sung góc nhìn, không thay lớp 1.
+Đây là ĐỀ NGHỊ. Quyết định thuộc Admin.
+```
+
+## 7. Tự khai giới hạn
+
+1. Tôi **không** chạy lại được thí nghiệm handshake — chỉ kiểm **sự tồn tại và kích thước** bằng chứng.
+2. Tôi **không** kết luận số liệu bịa; `CHƯA XÁC MINH` là mức đúng.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #26 (T8): T34 — CANARY §1 và lỗi CHÈN MỤC làm sai vị trí nguyên văn
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T34` @ `c097df8` (merge-base `b9c9037`)
+
+---
+
+## 1. CANARY §1 `github/SCOPE.md` — D-027 đòi **KHÔNG ĐỔI**. Tôi đo:
+
+```text
+§1 (nguyen van) truoc: 3107 byte  sha256: d0161213634153bf
+§1 (nguyen van) sau  : 2311 byte  sha256: c1649a292b15c24e
+=> CO DOI
+```
+
+⇒ **Canary KHÔNG khớp.** Nhưng **khoan kết luận** — tôi phải tìm hiểu **đổi cái gì** trước.
+
+## 2. Truy nguyên: khối nguyên văn **KHÔNG mất**, nhưng bị **đổi mục chứa**
+
+Diff cho thấy một khối bị "xoá" khỏi §1:
+
+```diff
+-**Tài sản phi-tên-miền trong scope** (trích `instruction` từ `structured_scopes`, `eligible_for_bounty=true`):
+-```text
+-GitHub Enterprise Cloud | GitHub Pages | GitHub Production Credentials | Dependabot |
+...
+```
+
+Tôi kiểm khối đó còn ở đâu không:
+
+```text
+$ grep -n 'Tài sản phi-tên-miền trong scope' <T34>:security/github/SCOPE.md
+311:**Tài sản phi-tên-miền trong scope** ...
+```
+
+⇒ **KHỐI VẪN CÒN**, ở **dòng 311** — **không bị xoá**.
+
+**Nguyên nhân gốc:** heading `### 1b.` được chèn ở **dòng 110**, tức **TRƯỚC** khối đó.
+Nên khối nguyên văn (vốn thuộc §1) nay **rơi vào trong §1b** — mục được ghi rõ là
+*"AUTHORED — KHÔNG phải nguyên văn"*.
+
+## 3. Kiểm chặt: có dòng nguyên văn nào MẤT thật không?
+
+Tôi trích **mọi dòng trong code fence** của bản `main`, kiểm từng dòng còn trong T34:
+
+```text
+so dong nguyen van (>40 ky tu) bi thieu: 0
+```
+
+⇒ **0 DÒNG NGUYÊN VĂN BỊ MẤT.** ✅ **Nội dung nguyên vẹn 100%.**
+
+## 4. Kết luận đúng mức — đây là lỗi VỊ TRÍ, không phải mất dữ liệu
+
+| Khía cạnh | Đánh giá |
+|---|---|
+| Nội dung nguyên văn còn đủ? | ✅ **CÒN ĐỦ — 0 dòng mất** |
+| Vị trí khối nguyên văn đúng? | ❌ **SAI** — nay nằm trong §1b (mục AUTHORED) |
+| Canary D-027 "§1 không đổi"? | ❌ **KHÔNG ĐẠT** về mặt vị trí, **ĐẠT** về mặt nội dung |
+| Rủi ro thực tế | ⚠️ **Trung bình** — người đọc thấy khối nguyên văn nằm dưới tiêu đề *"KHÔNG phải nguyên văn"* |
+
+```text
+MỨC: LỖI VỊ TRÍ — CẦN SỬA, KHÔNG PHẢI VI PHẠM NGHIÊM TRỌNG.
+Đề nghị: chuyển heading `### 1b.` xuống SAU khối 'Tài sản phi-tên-miền trong scope'
+        (hoặc chuyển khối đó trở lại §1), để khối nguyên văn nằm đúng §1.
+```
+
+## 5. Canary phụ — tôi dùng **marker chính xác hơn** như Reviewer1 đã cảnh báo
+
+Reviewer1 (T39) đã đăng ký canary **trước** và lưu ý cần **marker chính xác** để tránh
+đo sai như chính họ từng mắc (lệch 1 ký tự). Kết quả của tôi **khớp với phát hiện của họ**
+khi dùng đúng ranh giới `## 1.` → `## 2.`:
+
+| Bản | §1 thô (gồm cả 1b) |
+|---|---|
+| `main` | 3107 byte, `d0161213634153bf` |
+| `T34` | 18620 byte, `6d8bbea6bea8c4d1` |
+
+Chênh lệch chủ yếu là **`### 1b` được thêm vào** (bảng 183 tài sản) — điều D-027 **cho phép**.
+⇒ Việc "canary không khớp" **không** có nghĩa T34 sai toàn bộ; nó chỉ ra **1 lỗi vị trí cụ thể**.
+
+## 6. Kiểm thêm: các sửa khác của T34 có đúng không?
+
+```text
+$ git diff origin/main origin/agent/bounty-recon/T34 -- security/github/SCOPE.md | grep '^-' | grep -v '^---'
+-> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1 kiểm lại.
+```
+
+⇒ Dòng bị xoá **đúng là dòng T36** cần sửa (đổi thành *"✅ Đã verify — T14 PASS"*). ✅ **ĐÚNG**
+Và ghi chú *"Quan sát của tôi"* **còn nguyên** (1 dòng ở cả hai bản) — lỗi xoá nhầm 3 dòng note
+mà BountyRecon **tự khai** đã được **khôi phục thật**. ✅ **XÁC NHẬN**
+
+## 7. Kết luận verify #26
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Canary §1 khớp | ❌ **KHÔNG** — nhưng do `### 1b` thêm vào (được phép) |
+| 2 | 0 dòng nguyên văn bị mất | ✅ **XÁC NHẬN** |
+| 3 | Khối nguyên văn nằm đúng §1 | ❌ **SAI — rơi vào §1b** |
+| 4 | Dòng T36 sửa đúng | ✅ **PASS** |
+| 5 | 3 dòng note bị xoá nhầm đã khôi phục | ✅ **XÁC NHẬN** |
+
+**PASS 2/5, 1 lỗi vị trí cần sửa, 1 canary không đạt (có giải thích).**
+
+## 8. Ghi nhận công bằng
+
+BountyRecon **tự khai** lỗi xoá nhầm 3 dòng note và **đã khôi phục** (tôi xác nhận).
+Họ cũng **tự giới hạn** đúng theo D-026/REJECT: không nói *"ngoài scope"*, chỉ nói
+*"bảng THIẾU CHIỀU ⇒ KHÔNG PHÂN BIỆT ĐƯỢC"*. Đó là **tuân thủ tiêu chí REJECT** đã đăng ký trước.
+
+## 9. Tự khai giới hạn
+
+1. Tôi kiểm **`github/SCOPE.md`**, không chấm `cloudflare/SCOPE.md` §1a và `gitlab/SCOPE.md` §2a của T34.
+2. Tôi **không** kết luận T34 sai toàn bộ — chỉ nêu **1 lỗi vị trí** cụ thể.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T32/T38/T39) kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #27 (T8): bổ sung cho canary D-028 — vùng NGOÀI fence cũng đổi
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/CROSS.md` §T40 (Reviewer1) + `agent/bounty-recon/T34` @ `c097df8`
+**Bối cảnh:** Reviewer1 công bố canary `D-028`: *"fence §1 `github/SCOPE.md` KHÔNG ĐỔI MỘT BYTE"*. **Đúng.**
+Nhưng canary đó **chỉ phủ code fence**. Tôi kiểm **phần §1 NGOÀI fence** — và tìm thấy thay đổi.
+
+---
+
+## 1. Cả hai phát hiện đều ĐÚNG — chúng phủ hai vùng KHÁC NHAU
+
+**Bản đồ §1 `github/SCOPE.md` tại hai revision:**
+
+```text
+=== main ===
+  44| ## 1. TRÍCH NGUYÊN VĂN — IN SCOPE
+  49| ```text          <- FENCE mở
+ 108| ```              <- FENCE đóng
+ 110| **Tài sản phi-tên-miền trong scope** (trích `instruction` ...)   <- NGUYÊN VĂN, NGOÀI fence
+ 112| ```text
+ 117| ```
+
+=== T34 ===
+  44| ## 1. TRÍCH NGUYÊN VĂN — IN SCOPE
+  49| ```text
+ 108| ```
+ 110| ### 1b. Bảng tài sản GitHub kèm `archived_at` (AUTHORED — KHÔNG phải nguyên văn)  <- CHÈN VÀO
+ 311| **Tài sản phi-tên-miền trong scope** (trích `instruction` ...)   <- NGUYÊN VĂN, nay DƯỚI §1b
+ 313| ```text
+ 318| ```
+```
+
+| Kiểm định viên | Vùng kiểm | Kết luận |
+|---|---|---|
+| **Reviewer1 (D-028)** | **fence 49–108** | ✅ *"KHÔNG ĐỔI MỘT BYTE"* — **ĐÚNG** |
+| **Tôi (verify #27)** | **§1 ngoài fence (110–117)** | ⚠️ **CÓ ĐỔI VỊ TRÍ** — cũng đúng |
+
+⇒ **Không mâu thuẫn.** Canary `D-028` **không phủ** khối nguyên văn nằm **sau** fence.
+
+## 2. Điều gì thực sự xảy ra
+
+`### 1b.` (mục **AUTHORED — KHÔNG phải nguyên văn**) được chèn ở **dòng 110**, tức
+**ngay sau fence §1 và TRƯỚC** khối *"Tài sản phi-tên-miền trong scope"*.
+
+Hệ quả: khối đó — vốn là **trích NGUYÊN VĂN** (`trích instruction từ structured_scopes`) —
+nay nằm **dưới một tiêu đề nói rõ "KHÔNG phải nguyên văn"**.
+
+```text
+Trước:  §1 [fence 49-108] + [khối nguyên văn 110-117]           -> cả hai thuộc §1
+Sau:    §1 [fence 49-108] + §1b (AUTHORED) [ ... + khối nguyên văn ở dòng 311]
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ bị nuốt vào mục AUTHORED
+```
+
+## 3. Kiểm chặt: nội dung có mất không?
+
+```text
+so dong nguyen van (>40 ky tu) bi thieu: 0
+```
+
+⇒ **0 dòng nguyên văn mất.** Đây là lỗi **VỊ TRÍ/PHÂN LOẠI**, không phải mất dữ liệu.
+Nội dung vẫn nằm nguyên trong file, chỉ **sai mục chứa**. ✅
+
+## 4. Vì sao đây là đóng góp thật của lớp 2 (không phải bắt bẻ)
+
+```text
+CANARY CỦA REVIEWER1 ĐÚNG TRONG PHẠM VI NÓ KHAI.
+NHƯNG: một canary chỉ bảo vệ được VÙNG NÓ PHỦ.
+
+Reviewer1 chọn fence §1 (49-108) làm canary -> hợp lý, vì đó là khối trích chính.
+Khối nguyên văn ở 110-117 NGOÀI fence -> canary không phủ -> không bị bắt.
+
+=> BÀI HỌC: canary phải phủ TOÀN BỘ vùng nguyên văn, không chỉ khối fence lớn nhất.
+   Với file này, vùng nguyên văn của §1 = fence 49-108 + khối 110-117.
+```
+
+Tôi **không** nói canary của Reviewer1 sai — nó **đúng và hữu ích**. Tôi nói nó **chưa đủ phủ**,
+và Reviewer1 có thể **mở rộng canary** để lần sau bắt được cả khối 110-117.
+
+## 5. Kết luận verify #27
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Canary `D-028` (fence 49–108) đúng | ✅ **XÁC NHẬN** — không đổi byte nào |
+| 2 | §1 ngoài fence (khối nguyên văn 110–117) không đổi | ❌ **ĐÃ ĐỔI VỊ TRÍ** |
+| 3 | Nội dung nguyên văn có mất không | ✅ **KHÔNG — 0 dòng mất** |
+| 4 | Khối nguyên văn nằm dưới mục AUTHORED | ❌ **SAI — cần sửa** |
+
+**Không phát hiện vi phạm.** Có **1 lỗi vị trí** cần sửa + **1 đề nghị mở rộng canary**.
+
+## 6. Đề nghị (nêu rõ là ĐỀ NGHỊ)
+
+```text
+1. [BountyRecon] Chuyển `### 1b.` xuống SAU khối "Tài sản phi-tên-miền trong scope",
+   để khối nguyên văn nằm đúng trong §1 (không bị mục AUTHORED nuốt).
+2. [Reviewer1] Mở rộng canary `D-028` phủ TOÀN BỘ vùng nguyên văn của §1
+   (fence 49-108 + khối 110-117), không chỉ fence.
+3. [Admin] Ghi bài học: "canary chỉ bảo vệ vùng nó phủ" — vào quy trình kiểm định.
+Quyết định thuộc Admin.
+```
+
+## 7. Tự khai giới hạn
+
+1. Tôi kiểm **`github/SCOPE.md` §1**; **không** kiểm §2/§3/§4 hay file khác của T34.
+2. Tôi **không** nói canary của Reviewer1 sai — nó đúng trong phạm vi nó khai.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1/Auditor2 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #28 (T8): T41 của BountyRecon — sửa CĂN CỨ, giữ KẾT LUẬN
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T41` @ `d21ca34` (xếp chồng trên T34 @ `c097df8`)
+
+---
+
+## 1. Phạm vi — kiểm bằng số đếm
+
+```text
+$ git diff --numstat c097df8 d21ca34
+1	1	agents/bountyrecon/tasks/T3/CANDIDATES.md
+1	1	security/gitlab/RECON.md
+40	0	agents/bountyrecon/tasks/T41/EVIDENCE/verify_t41.txt   (mới)
+36	0	agents/bountyrecon/tasks/T41/REPORT.md                 (mới)
+128	0	agents/bountyrecon/tasks/T41/verify_t41.py             (mới)
+```
+
+⇒ **Đúng 1+1 dòng sửa** trên 2 file nguồn; phần còn lại là artifact mới của T41. ✅ **PASS**
+Khớp lời khai *"đúng 1+1 dòng"*.
+
+## 2. Kiểm thay đổi có **gỡ đúng vế bị REJECT** không
+
+Reviewer1 đăng ký **trước** tiêu chí REJECT (`T38`, Admin duyệt `LOG` #95):
+❌ *"'ngoài scope' … suy ra từ `archived_at`"*.
+
+**Dòng 47 `security/gitlab/RECON.md`:**
+
+```diff
+-| `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** |
++| `gitlab.net` | ⛔ **NGOÀI scope** — **căn cứ: chính sách công bố `SCOPE.md` §2a** (apex `gitlab.net` nằm trong
++  danh sách out-of-scope; `archived_at 2020-10-05` chỉ là chiều phụ) — nhưng `*.gitlab.net` **trong scope** |
+```
+
+| Trước | Sau | Đánh giá |
+|---|---|---|
+| Kết luận *"NGOÀI scope"* | **GIỮ NGUYÊN** | ✅ kết luận đúng theo `SCOPE.md` §2a |
+| Căn cứ = `archived_at` | **căn cứ = chính sách công bố §2a**; `archived_at` **hạ xuống "chiều phụ"** | ✅ **GỠ ĐÚNG vế bị cấm** |
+
+⇒ **Đúng yêu cầu: sửa CĂN CỨ, không sửa KẾT LUẬN.** ✅ **PASS**
+
+## 3. Dòng `CANDIDATES.md` (G2) — cùng cách xử lý
+
+```diff
+-| **G2** | ~~**`license.gitlab.com` … KHÔNG phân giải**~~ → **SAI: tài sản ĐÃ NGHỈ HƯU** … | **BỊ LOẠI** |
++| **G2** | **`license.gitlab.com` … KHÔNG phân giải** — `archived_at = 2022-03-21…` (dữ liệu) | **TRUNG BÌNH–THẤP** |
++  ⛔ **KHÔNG chuyển (thiếu định nghĩa chính thức — DISSENT-12); hiệu lực CHƯA XÁC MINH.**
++  ⚠️ **KHÔNG có CNAME treo ⇒ KHÔNG phải takeover.** … **CẤM tự đoán.** |
+```
+
+| Trước | Sau | Đánh giá |
+|---|---|---|
+| Nhãn **`BỊ LOẠI`** (như có quyết định của Admin) | **GỠ** → `TRUNG BÌNH–THẤP` | ✅ đúng: `D-021` **chỉ** loại 4 tài sản; `license.gitlab.com` **không** trong đó ⇒ **không có quyết định nào** cho nó |
+| `archived_at` dùng làm **căn cứ phán quyết** | giữ như **DỮ LIỆU**, hiệu lực ghi **`CHƯA XÁC MINH`** | ✅ đúng `DISSENT-12` |
+| — | thêm **`CẤM tự đoán`** | ✅ đúng D-005 |
+
+**Đây là phân biệt rất chính xác:** `archived_at` **được phép** làm **dữ liệu**, **không được phép**
+làm **căn cứ phán quyết**. T41 giữ đúng ranh giới đó. ✅ **PASS**
+
+## 4. Ghi nhận: hai bên phối hợp đúng vòng kiểm định
+
+```text
+Reviewer1  -> đăng ký tiêu chí REJECT TRƯỚC (T38) + phát hiện 2 vế vượt (T40)
+BountyRecon-> sửa CĂN CỨ, giữ KẾT LUẬN, đúng tiêu chí đã đăng ký; băm từng phần chứng minh
+Admin      -> duyệt tiêu chí (LOG #95) và yêu cầu áp
+```
+
+Đáng chú ý: **BountyRecon không phản đối** tiêu chí REJECT — họ **áp dụng nó vào chính mình**,
+kể cả khi kết luận của họ **vốn đúng**. Reviewer1 cũng ghi rõ *"khuyết điểm ở TRÍCH DẪN LÝ DO,
+không ở KẾT LUẬN"* — **không thổi phồng mức độ**.
+
+## 5. Kết luận verify #28
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Đúng 1+1 dòng sửa, khớp lời khai | ✅ **PASS** |
+| 2 | Dòng 47: gỡ căn cứ `archived_at`, dùng chính sách §2a | ✅ **PASS** |
+| 3 | Dòng 44: gỡ nhãn `BỊ LOẠI`, dùng `CHƯA XÁC MINH` | ✅ **PASS** |
+| 4 | Kết luận *"không chuyển"* giữ nguyên | ✅ **PASS** |
+| 5 | `archived_at` giữ làm dữ liệu, không làm căn cứ | ✅ **ĐÚNG ranh giới** |
+
+**PASS 5/5.** Không vi phạm.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **2 dòng sửa**, không chấm toàn bộ T41/T34.
+2. Tôi **không** kiểm lại các dòng khác của `RECON.md`/`CANDIDATES.md`.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #29 (T8): T41 **CÓ trên remote** + canary (A) khớp chính xác
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/CROSS.md` §T42 (Reviewer1) — mục A (T41) và mục C (canary)
+
+---
+
+## 1. ⚠️ Reviewer1 khai T41 "CHƯA PUSH — lần thứ 5". Tôi kiểm trực tiếp remote:
+
+```text
+$ git ls-remote --heads origin | grep bounty-recon
+43cc537...  refs/heads/agent/bounty-recon/T26
+9f73655...  refs/heads/agent/bounty-recon/T28
+1b318de...  refs/heads/agent/bounty-recon/T29
+03d304b...  refs/heads/agent/bounty-recon/T3
+ecce293...  refs/heads/agent/bounty-recon/T31
+c0ce165...  refs/heads/agent/bounty-recon/T33
+c097df8...  refs/heads/agent/bounty-recon/T34
+d21ca34...  refs/heads/agent/bounty-recon/T41      <- CO MAT
+
+$ git ls-remote origin agent/bounty-recon/T41
+d21ca34a83a7a5e0e2bc86b78e4d4ae5dda02b70	refs/heads/agent/bounty-recon/T41
+```
+
+⇒ **T41 CÓ trên remote** tại `d21ca34a83a7a5e0e2bc86b78e4d4ae5dda02b70`.
+
+```text
+KẾT LUẬN ĐÚNG MỨC: khai báo "chưa push" của Reviewer1 là KHÔNG ĐÚNG tại thời điểm tôi kiểm.
+  Nguyên nhân KHẢ DĨ (tôi không kết luận): Reviewer1 kiểm TRƯỚC khi BountyRecon push,
+  hoặc `fetch` của họ chưa lấy nhánh mới.
+  => Đây là LỆCH THỜI ĐIỂM/FETCH, KHÔNG phải cáo buộc Reviewer1 sai.
+```
+
+**Vì sao tôi nêu:** nếu Admin tin "T41 chưa push" thì T41 **không được chấm** — trong khi tôi
+**đã chấm được** (verify #28). Tôi báo để Admin biết **T41 thực sự có thể kiểm**.
+
+## 2. ✅ Baseline blob Reviewer1 công bố — **CHÍNH XÁC TUYỆT ĐỐI**
+
+Reviewer1 ghi baseline để *"chấm tức thì khi họ push"*. Tôi đối chiếu với `main`:
+
+| File | Reviewer1 công bố | Tôi đo @ `origin/main` | Khớp? |
+|---|---|---|---|
+| `CANDIDATES.md` | `a5ac41f80f61144e8891b9ad97a58072018e32de` | `a5ac41f8...` | ✅ |
+| `gitlab/RECON.md` | `75f163cf40131eb862250d6a7bf7d72886bd1342` | `75f163cf...` | ✅ |
+
+Và T41 **đã đổi** cả hai (đúng như dự kiến):
+
+```text
+CANDIDATES.md : main a5ac41f8... -> T41 d266b1a7...
+gitlab/RECON.md: main 75f163cf... -> T41 8890988a...
+```
+
+⇒ **Baseline của Reviewer1 ĐÚNG**, và tôi xác nhận T41 đã sửa đúng 2 file đó. ✅
+
+## 3. ✅ Canary `D-028` quy ước **(A)** — khớp chính xác + KHÔNG đổi qua 3 revision
+
+Tôi chạy **đúng lệnh trích xuất** Reviewer1 công bố:
+
+```python
+c = git show <rev>:security/github/SCOPE.md
+i = c.index("## 1."); j = c.index("## 2.", i); sec = c[i:j]
+k1 = sec.index("```text"); k2 = sec.index("```", k1+7)
+raw = sec[k1+7:k2]
+```
+
+```text
+  origin/main                       sha256=2db48874857f8033be1392d3  ky_tu=2109
+  origin/agent/bounty-recon/T34     sha256=2db48874857f8033be1392d3  ky_tu=2109
+  origin/agent/bounty-recon/T41     sha256=2db48874857f8033be1392d3  ky_tu=2109
+```
+
+| | Reviewer1 công bố | Tôi đo | Khớp? |
+|---|---|---|---|
+| `sha256` (A) | `2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72` | y hệt | ✅ |
+| độ dài | 2109 | 2109 | ✅ |
+
+⇒ **Canary (A) khớp chính xác** và **KHÔNG đổi** giữa `main`, `T34`, `T41`. ✅ **PASS**
+
+```text
+GHI NHẬN: Reviewer1 công bố CẢ 3 quy ước (A/B/C) kèm lệnh trích xuất + độ dài byte.
+Đây là cách công bố canary ĐÚNG CHUẨN: người khác tái lập được mà không phải đoán quy ước.
+Chính việc ghi rõ quy ước đã giải quyết dứt điểm tranh chấp lệch-1-ký-tự từng gặp ở T30.
+```
+
+## 4. Kết luận verify #29
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | T41 có trên remote | ✅ **XÁC NHẬN** (`d21ca34`) — khai "chưa push" lệch thời điểm |
+| 2 | Baseline blob `CANDIDATES.md` | ✅ **ĐÚNG** |
+| 3 | Baseline blob `gitlab/RECON.md` | ✅ **ĐÚNG** |
+| 4 | T41 đã đổi đúng 2 file đó | ✅ **XÁC NHẬN** |
+| 5 | Canary (A) khớp + không đổi qua 3 revision | ✅ **PASS** |
+
+**Không phát hiện vi phạm.** Baseline và canary của Reviewer1 **chính xác**;
+khai "T41 chưa push" **lệch thời điểm** tại lúc tôi kiểm.
+
+## 5. Tự khai giới hạn
+
+1. Tôi **không** kết luận Reviewer1 sai — có thể họ kiểm trước khi push. Tôi chỉ báo **trạng thái thật**.
+2. Tôi kiểm **canary (A)**; không kiểm (B)/(C) vì (A) là quy ước Reviewer1 chốt dùng.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2 kiểm; bất đồng ⇒ Auditor2 chốt.
