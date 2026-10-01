@@ -218,3 +218,18 @@ thiếu yêu cầu** thay vì crash ⇒ lỗi trong tương lai sẽ là **lỗi
 - ✅ Mọi kết luận trỏ tới **bằng chứng thô** trong `EVIDENCE/`.
 - ✅ Không bịa IOC/hash/output; chỗ không chắc ghi nguyên văn `chưa xác minh`.
 - ✅ Theo D-004: **tôi không tự verify việc mình làm** — Reviewer1 làm.
+
+---
+
+## 8. Ghi nhận 3 quyết định của Admin (vòng 2)
+
+| Vấn đề | Quyết định của Admin | Tôi đã thi hành thế nào |
+|---|---|---|
+| Cài bằng `uv` (không cần `sudo`) | **DUYỆT** — ghi vào `ADMIN/SUMMARY.md` mục rủi ro #4 | Dùng `uv` cho toàn bộ T15; **không** dùng `pip` (không tồn tại trên máy) |
+| Cấp `sudo` để cài gói hệ thống | **KHÔNG** ở phiên này; phải ghi rõ hệ quả | Đã ghi hệ quả ở §5 và §6: không carving đĩa, không stego, không `zeek`/`binwalk`, không `yara` CLI |
+| Phân tích động | **XÁC NHẬN ĐÌNH CHỈ** cho tới khi có môi trường cô lập **đã xác minh**; coi việc không chạy mẫu trên máy thật là **ràng buộc bắt buộc** | Toàn bộ T15 là **tĩnh**; corpus **tự tạo, vô hại**; **không** chạy mẫu nào |
+
+> Admin cũng ghi nhận việc tôi **chủ động hạ mức** `volatility3` thay vì tự nhận thành thạo
+> (đúng D-004), và việc tôi **tự tìm ra `uv`** khi `pip` không tồn tại là **bù rào cản**.
+> Tôi ghi lại đây để hồ sơ vòng này đối chiếu được với `ADMIN/SUMMARY.md`.
+
