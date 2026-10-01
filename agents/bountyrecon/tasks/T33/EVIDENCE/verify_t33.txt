@@ -1,6 +1,6 @@
 # verify_t33.py — T33 (BountyRecon)
 # T33 xep chong tren T31: base cua T33 = ecce293d2921 (origin/agent/bounty-recon/T31)
-# merge-base main = 6d47749ea548   head = ecce293d2921  (chua commit -> HEAD = T31)
+# merge-base main = 6d47749ea548   head = 78e030de592c  (chua commit -> HEAD = T31)
 # QUY UOC RANH GIOI: dong=splitlines(); vung='\n'.join(...); hai dau DONG; khong \n cuoi
 
 ==============================================================================
@@ -106,7 +106,14 @@
 ==============================================================================
 [3] KIEM THEO LICH SU (D-023 phep kiem [2]) — moi commit merge-base..HEAD
 ==============================================================================
-  so commit: 6
+  so commit: 7
+    78e030de592c  [T33] fix: dong 18 CANDIDATES.md -> XONG (T14 PASS + merge 4642e3c) + 
+      OK          agents/bountyrecon/tasks/T3/CANDIDATES.md
+      OK          agents/bountyrecon/tasks/T33/EVIDENCE/semantic_scan.txt
+      OK          agents/bountyrecon/tasks/T33/EVIDENCE/verify_t33.txt
+      OK          agents/bountyrecon/tasks/T33/FIX_LINE18.md
+      OK          agents/bountyrecon/tasks/T33/SEMANTIC_SCAN.md
+      OK          agents/bountyrecon/tasks/T33/verify_t33.py
     ecce293d2921  [T31] evidence: phep kiem lich su tai head 9455f89 (5 commit, tat ca t
       OK          agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
     9455f8932de7  [T31] fix: tu sua 1 cau SAI do chinh minh tao ra o dong 21 + doi chieu
@@ -134,7 +141,7 @@
   VUNG TRICH NGUYEN VAN cua security/gitlab/SCOPE.md qua tung commit (tu merge-base tro di):
     commit        parent        cha               commit            KET QUA
     => so commit kiem: 0; VUNG NGUYEN VAN KHONG DOI: True
-    GHI CHU: KHONG commit nao trong khoang 6d47749ea548..ecce293d2921 cham security/gitlab/SCOPE.md
+    GHI CHU: KHONG commit nao trong khoang 6d47749ea548..78e030de592c cham security/gitlab/SCOPE.md
              => vung trich nguyen van duong nhien khong doi (T28/T29 da o trong main)
 
 ==============================================================================
