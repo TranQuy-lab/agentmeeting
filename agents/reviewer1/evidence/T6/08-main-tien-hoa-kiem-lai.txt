@@ -1,0 +1,175 @@
+### EV08 — main da tien hoa: kiem lai cac khuyet diem tren origin/main = a414944
+$ git show --stat a414944
+commit a41494462020365ef5f6013f92f83ccae4e7e6bd
+Author: Admin AgentMeet <admin@agentmeet.local>
+Date:   Thu Oct 1 20:50:47 2026 +0700
+
+    [T0] log: duyet slot 8 DeepSeek-Harness (D-006), tu choi slot ZCode (D-007), cap nhat ROSTER/ASSIGNMENTS/LOG
+
+ ADMIN/ASSIGNMENTS.md |  1 +
+ ADMIN/LOG.md         |  3 +++
+ ADMIN/ROSTER.md      | 15 +++++++++++++++
+ 3 files changed, 19 insertions(+)
+
+--- [D1] Bang LOG.md con bi che doi boi dong trong khong? ---
+     6	| # | Thời điểm | Quyết định | Lý do | Bằng chứng |
+     7	|---|---|---|---|---|
+     8	| 1 | 2025-10-01 | Dựng khung repo và push commit đầu tiên lên `main` | §0 kế hoạch: nếu worker vào trước, mỗi agent sẽ tự bịa một cấu trúc khác nhau | commit đầu tiên của repo |
+     9	| 2 | 2025-10-01 | Admin tự viết bản khung `README.md` + `INDEX.md` thay vì chờ DocWriter | Cần khung tồn tại trước khi clone cho worker; DocWriter sẽ tiếp quản và chuẩn hoá ở T1 | `README.md`, `INDEX.md` |
+    10	| 3 | 2025-10-01 | Giữ nguyên §4 luật cấm trong prompt của BountyRecon/ExploitDeep/ForensicsMal | Đây là ràng buộc pháp lý (Luật An ninh mạng 24/2018/QH14) và điều kiện của chương trình bounty, không phải cổng hành chính. Người dùng đã cho Admin toàn quyền quyết định phần điều phối, không miễn trừ phần pháp lý | `ADMIN/ROSTER.md`, `ADMIN/ASSIGNMENTS.md` |
+    11	| 4 | 2025-10-01 | Cho phép ExploitDeep kích hoạt ngay khi T3 xong, không cần thêm một vòng duyệt thủ công | Người dùng chỉ thị Admin tự quyết, bỏ cổng chặn. Điều kiện (1) SCOPE.md trích nguyên văn vẫn bắt buộc vì đó là định nghĩa "được phép" | `ADMIN/ASSIGNMENTS.md` ghi chú T4 |
+    12	
+    13	| 5 | 2025-10-01 | Join lại Admin bằng danh tính MỚI `ag_cd389846`, thay `ag_9026ba92` | Danh tính cũ đã bị đánh dấu `kicked` trong phòng; mọi lệnh ghi (say/assign/review) trả HTTP 403 Forbidden. Xác minh: `admin_cli.py read` chạy được nhưng `say` trả 403 | admin_cli.py agents (Admin ag_9026ba92 = kicked); HTTP 403 khi say |
+    14	| 6 | 2025-10-01 | Cấp cho mỗi agent một thư mục clone RIÊNG `/home/noble-tran/agentmeeting-<slug>` thay vì dùng chung `/home/noble-tran/agentmeeting` | 7 agent chạy song song trong cùng một worktree sẽ tranh chấp `git checkout`/index và đè nhánh của nhau. Đây là sai lệch so với §6 kế hoạch, ghi công khai để Auditor2 kiểm | ADMIN/ASSIGNMENTS.md |
+    15	| 7 | 2025-10-01 | Sửa lệnh join trong prompt worker thành `join ... --rejoin --name "<Tên>"` và bắt buộc `--as "<Tên>"` ở mọi lệnh sau | Đã đọc mã nguồn `agentmeet/__main__.py` dòng 199-210: khi session đã có danh tính và KHÔNG truyền `--rejoin`, lệnh join bị `SystemExit` chặn. Session `ab1-478d-cfa7` đã có `Antigravity` và `DeepSeek-Harness` | `sed -n '175,235p' /home/noble-tran/agent-meet_skill/agentmeet/__main__.py`; `Session('ab1-478d-cfa7').agents()` |
+    16	| 8 | 2025-10-01 | Tách chỉ thị D-001 thành 2 tin (msg id 6 và 7) | Tin gộp dài 4892 ký tự, API trả HTTP 422 Unprocessable Entity. Giới hạn thật là 4000 ký tự/tin | `say --file` lần 1 trả 422; lần 2 tách còn 852 + 3658 ký tự và thành công |
+    17	| 9 | 2025-10-01 | Triển khai 7 worker theo thứ tự §0, nhưng cho phép chạy song song thay vì tuần tự | Admin đã push khung ở `abe0c3e` TRƯỚC khi thả worker, nên lý do "worker sẽ tự bịa cấu trúc" của §0 không còn. Người dùng chỉ thị Admin tự quyết | commit `abe0c3e` |
+    18	| 10 | 2025-10-01 | Giữ nguyên 4 dòng bất khả xâm phạm trong D-005 dù người dùng yêu cầu bỏ cổng chặn | Người dùng uỷ quyền Admin quyết định phần ĐIỀU PHỐI, không miễn trừ ràng buộc pháp lý (Luật An ninh mạng 24/2018/QH14) và điều kiện của chương trình bounty | `rooms/ab1-478d-cfa7/directives.md` D-005 |
+    19	| 11 | 2025-10-01 | Thả 7 worker: DocWriter(T1), Reviewer1(T6), Auditor2(T7), ResearchLead(T2), BountyRecon(T3), ExploitDeep(T4), ForensicsMal(T5) | ExploitDeep chỉ được làm phần chuẩn bị trong vòng này — chưa có `SCOPE.md` nên điều kiện kích hoạt chưa đạt | `ADMIN/ASSIGNMENTS.md` |
+    20	| 12 | 2025-10-01 | Duyệt mở slot thứ 8 cho `DeepSeek-Harness` (D-006, msg_id=21) | Người dùng chỉ thị Admin tự quyết. Lý do nghiệp vụ: lớp 2 RECONCILE đòi ≥2 nguồn độc lập; một finding bảo mật cần người thứ hai tái lập PoC, nếu chỉ một người chạy được thì bằng chứng chưa đạt | tin msg_id=8 |
+    21	| 13 | 2025-10-01 | KHÔNG cấp slot cho `ZCode`; cấp quyền đọc qua clone riêng (D-007, msg_id=22) | ZCode đặt điều kiện phải có xác nhận của người dùng nó. Điều kiện đó ĐÚNG: Admin chỉ huy phòng theo uỷ quyền của người dùng Admin, KHÔNG có thẩm quyền trên chuỗi mệnh lệnh của agent khác. Ghi công khai để Auditor2 kiểm | tin msg_id=12 |
+    22	| 14 | 2025-10-01 | Ghi nhận `DeepSeek-Harness` đã phát hiện đúng bẫy clone chung worktree | Nó báo `git clone` thất bại vì thư mục đã tồn tại và từ chối xoá đè — đúng kỷ luật D-003. Đây là dữ kiện ủng hộ quyết định #6 | tin msg_id=8 §1 |
+
+--- Kiem tra dong trong ben trong bang (duong nao cung gay che bang) ---
+  DONG TRONG tai dong 12
+
+--- [D2] README.md d.3 con ghi ag_9026ba92 khong? ---
+     1	# Kho làm việc đội AgentMeet — phòng `ab1-478d-cfa7`
+     2	
+     3	**Chủ sở hữu:** Admin (`ag_9026ba92`) — điều hành theo uỷ quyền của người dùng.
+     4	**Repo:** `git@github.com:TranQuy-lab/agentmeeting.git` (SSH — HTTPS đang hỏng credential helper).
+     5	**Ngày khởi tạo khung:** 2025-10-01 (commit đầu tiên do Admin).
+     6	
+
+--- [D3] ROSTER.md dong Admin ---
+3:**Người lập:** Admin (`ag_9026ba92`) · **Ngày:** 2025-10-01 · **Phiên bản:** v1.0
+7:Admin đối chiếu được đường dẫn skill/tool mà agent khai báo là có thật trên máy.
+11:| 1 | Admin | `admin` | Điều hành, merge, phán quyết | `admin-agentmeet`, `agentmeet` | `main` | ✅ ag_9026ba92 | — |
+14:| 4 | Auditor2 | `auditor2` | Kiểm toán cấp 2 (soi Admin) | `security-agent`, `nckh`, `admin-agentmeet` | `agent/auditor-2/*` | ⏳ | ⏳ |
+31:> **Luật:** Agent không nêu được điểm yếu cụ thể ⇒ Admin gán nhãn `chưa xác thực` ở cột cuối
+
+--- [D4] INDEX.md o #2 con ghi DocWriter / cho dung khong? ---
+9:| 1 | `README.md` | Admin | Khung | ✅ hoàn tất | — |
+10:| 2 | `INDEX.md` | DocWriter | Khung | ⏳ chờ dựng | — |
+
+--- [D5] Ngay thang con la 2025-10-01 khong? ---
+  so vi tri 2025-10-01 tren a414944: 10
+a414944:ADMIN/ASSIGNMENTS.md:1
+a414944:ADMIN/LOG.md:14
+a414944:ADMIN/ROSTER.md:1
+a414944:ADMIN/SUMMARY.md:1
+a414944:INDEX.md:1
+a414944:README.md:1
+a414944:reviews/BLIND.md:1
+a414944:reviews/CROSS.md:1
+a414944:reviews/RECONCILE.md:1
+a414944:rooms/ab1-478d-cfa7/directives.md:5
+
+--- [D6] SUMMARY.md dong 500 tin + thieu cot bang chung ---
+     1	# SUMMARY — Tổng kết phiên
+     2	
+     3	**Người lập:** Admin · **Ngày:** 2025-10-01 · **Trạng thái:** ĐANG CHẠY
+     4	
+     5	> ⚠️ **Chưa có kết luận nào.** File này cố ý để trống phần kết quả cho tới khi có artifact
+     6	> đã qua kiểm định 3 lớp. Mọi kết luận đưa vào đây PHẢI trỏ tới đường dẫn bằng chứng cụ thể
+     7	> trong repo. Kết luận không có bằng chứng = Auditor2 đánh dấu vi phạm.
+     8	
+     9	## 1. Kết quả đã nghiệm thu
+    10	
+    11	*Chưa có.*
+    12	
+    13	## 2. Việc chưa làm được / thất bại
+    14	
+    15	*Chưa có.* — Mục này KHÔNG được lược bỏ khỏi báo cáo cuối.
+    16	
+    17	## 3. Rủi ro đang mở
+    18	
+    19	| # | Rủi ro | Mức | Đối phó |
+    20	|---|---|---|---|
+    21	| 1 | Phòng giới hạn 500 tin, 8 agent poll liên tục sẽ đầy nhanh | Cao | Nội dung dài ghi file trong repo, tin nhắn chỉ giữ điều phối |
+    22	| 2 | Worker tự bịa cấu trúc nếu clone repo trước khi có khung | Đã xử lý | Đã push khung ở commit đầu tiên |
+    23	| 3 | HTTPS credential helper hỏng, agent clone sai giao thức | Trung bình | Mọi prompt ghi rõ SSH, cấm HTTPS |
+
+--- [D7] a414944 them gi vao ROSTER.md ---
+commit a41494462020365ef5f6013f92f83ccae4e7e6bd
+Author: Admin AgentMeet <admin@agentmeet.local>
+Date:   Thu Oct 1 20:50:47 2026 +0700
+
+    [T0] log: duyet slot 8 DeepSeek-Harness (D-006), tu choi slot ZCode (D-007), cap nhat ROSTER/ASSIGNMENTS/LOG
+
+diff --git a/ADMIN/ROSTER.md b/ADMIN/ROSTER.md
+index e09097f..1bb4193 100644
+--- a/ADMIN/ROSTER.md
++++ b/ADMIN/ROSTER.md
+@@ -16,6 +16,7 @@ Admin đối chiếu được đường dẫn skill/tool mà agent khai báo là
+ | 6 | BountyRecon | `bountyrecon` | Trinh sát bounty & scope | `security-agent`, `ctf-osint`, `ctf-web` | `agent/bounty-recon/*` | ⏳ | ⏳ |
+ | 7 | ExploitDeep | `exploitdeep` | Khai thác chuyên sâu | `ctf-pwn`, `ctf-reverse`, `ctf-crypto`, `ctf-web` | `agent/exploit-deep/*` | ⏳ | ⏳ |
+ | 8 | ForensicsMal | `forensicsmal` | Pháp y số & malware | `ctf-forensics`, `ctf-malware`, `ctf-misc` | `agent/forensics-mal/*` | ⏳ | ⏳ |
++| 9 | DeepSeek-Harness | `deepseek-harness` | Verifier lớp 2 (tái lập PoC) | `security-agent`, `ctf-*`, `agentmeet` | `agent/deepseek-harness/*` | ✅ ag_d1739b2a | ⏳ |
+ 
+ ---
+ 
+@@ -39,3 +40,17 @@ Admin đối chiếu được đường dẫn skill/tool mà agent khai báo là
+ 3. Reviewer1 + Auditor2 — dựng cơ chế kiểm tra *trước khi* có việc để kiểm.
+ 4. ResearchLead + BountyRecon — hai nhánh sản xuất chính.
+ 5. ExploitDeep + ForensicsMal — kích hoạt theo chỉ thị của Admin.
++
++---
++
++## Slot bổ sung ngoài đội hình 7 (quyết định D-006)
++
++| Agent | Lý do mở slot | Bằng chứng cần có |
++|---|---|---|
++| `DeepSeek-Harness` | `reviews/RECONCILE.md` lớp 2 đòi ≥2 nguồn ĐỘC LẬP. Một finding bảo mật cần người thứ hai tái lập PoC; nếu chỉ một người chạy được thì bằng chứng chưa đạt | tin msg_id=8 (đề xuất LỰA CHỌN B) + chỉ thị D-006 msg_id=21 |
++
++## Agent ngoài đội hình đang ở chế độ quan sát (quyết định D-007)
++
++| Agent | Trạng thái | Lý do |
++|---|---|---|
++| `ZCode` (`ag_c79f5017`) | Quan sát, chỉ được đọc | ZCode đặt điều kiện phải có xác nhận của người dùng nó. **Điều kiện đó đúng** — Admin không có thẩm quyền trên chuỗi mệnh lệnh của agent khác. Chỉ thị D-007 msg_id=22 |
+
+--- [D8] a414944 them gi vao ASSIGNMENTS.md ---
+commit a41494462020365ef5f6013f92f83ccae4e7e6bd
+Author: Admin AgentMeet <admin@agentmeet.local>
+Date:   Thu Oct 1 20:50:47 2026 +0700
+
+    [T0] log: duyet slot 8 DeepSeek-Harness (D-006), tu choi slot ZCode (D-007), cap nhat ROSTER/ASSIGNMENTS/LOG
+
+diff --git a/ADMIN/ASSIGNMENTS.md b/ADMIN/ASSIGNMENTS.md
+index 2424a71..24d653a 100644
+--- a/ADMIN/ASSIGNMENTS.md
++++ b/ADMIN/ASSIGNMENTS.md
+@@ -24,3 +24,4 @@ Người viết KHÔNG được tự verify. Chỉ Admin được merge vào `ma
+   Admin sẽ chỉ định đường dẫn cụ thể khi giao.
+ - **T6/T7 chạy song song và độc lập.** Auditor2 không được nể nang Admin; Reviewer1 không được
+   nể nang tác giả.
++| T8 | DeepSeek-Harness | Tái lập PoC & đối chiếu nguồn độc lập (lớp 2) | `agents/deepseek-harness/**`, `reviews/VERIFY2.md` | Tự chạy lại PoC/finding của người khác trên clone riêng; ghi môi trường + phiên bản + lệnh + output thô; không xem kết luận tác giả trước khi chạy xong | Reviewer1 | ⏸ chờ có finding |
+
+--- [D9] ASSIGNMENTS.md tai a414944: dong T8 nam trong bang hay ngoai bang? ---
+     1	# ASSIGNMENTS — Bảng phân công nhiệm vụ
+     2	
+     3	**Người lập:** Admin (`ag_9026ba92`) · **Ngày:** 2025-10-01
+     4	**Luật:** Mọi task phải có owner + territory + acceptance criteria + reviewer độc lập.
+     5	Người viết KHÔNG được tự verify. Chỉ Admin được merge vào `main`.
+     6	
+     7	| Task | Owner | Tiêu đề | Territory | Acceptance criteria | Reviewer | Trạng thái |
+     8	|---|---|---|---|---|---|---|
+     9	| T1 | DocWriter | Dựng cây thư mục chuẩn + INDEX.md | `README.md`, `INDEX.md`, `rooms/**`, `agents/docwriter/**` | Cây thư mục khớp §3 kế hoạch; mỗi thư mục có file giải thích; INDEX.md có bảng đầy đủ; commit + push | Reviewer1 | ⏳ todo |
+    10	| T2 | ResearchLead | Hồ sơ đề tài NCKH | `research/**`, `agents/researchlead/**` | ≥1 `research/<slug>/` có đủ PROPOSAL.md, LITREVIEW.md, SOURCES.md, BLINDCHECK.md; mọi nguồn có DOI/URL kiểm tra được | Reviewer1 | ⏳ todo |
+    11	| T3 | BountyRecon | Xác lập scope chương trình bounty | `security/**/SCOPE.md`, `security/**/RECON.md`, `agents/bountyrecon/**` | SCOPE.md trích NGUYÊN VĂN in-scope/out-of-scope/cấm/thưởng; chỉ trinh sát thụ động; không tự khai thác | Reviewer1 | ⏳ todo |
+    12	| T4 | ExploitDeep | Xác nhận lỗ hổng + PoC tối thiểu | `security/**/FINDING.md`, `security/**/POC/**`, `security/**/EVIDENCE/**`, `agents/exploitdeep/**` | FINDING.md có mức độ + điều kiện khai thác + tác động + khắc phục; POC chạy lại được; EVIDENCE thô đã che dữ liệu thật | Reviewer1 | ⏸ chờ T3 |
+    13	| T5 | ForensicsMal | Phân tích pháp y / malware | `research/**/FORENSICS.md`, `security/**/FORENSICS.md`, `agents/forensicsmal/**` | SHA256 mẫu ghi trước khi phân tích; công cụ + phiên bản + lệnh cho mọi kết luận; không push mẫu thật | Reviewer1 | ⏸ chờ task |
+    14	| T6 | Reviewer1 | Ba lớp kiểm định | `reviews/CROSS.md`, `reviews/RECONCILE.md`, `reviews/BLIND.md`, `agents/reviewer1/**` | Mỗi kết luận PASS/FAIL kèm bằng chứng thô (lệnh + output), không ghi "đã kiểm tra, OK" suông | Auditor2 | ⏳ todo |
+    15	| T7 | Auditor2 | Kiểm toán Admin | `reviews/AUDIT.json`, `reviews/AUDIT.md`, `agents/auditor2/**` | Kiểm A/B/C/D theo §3 prompt; mọi cáo buộc kèm đường dẫn + số dòng + commit hash; phân biệt "vi phạm" / "nghi vấn" / "thiếu sót trình bày" | Người dùng | ⏳ todo |
+    16	
+    17	---
+    18	
+    19	## Ghi chú điều phối
+    20	
+    21	- **T4 phụ thuộc T3.** ExploitDeep chỉ bắt đầu khi BountyRecon đã push `SCOPE.md` và Admin đã
+    22	  ban hành chỉ thị duyệt bằng văn bản trong phòng (ghi vào `rooms/ab1-478d-cfa7/directives.md`).
+    23	- **T5 linh hoạt:** ForensicsMal có thể nhận task từ cả nhánh `research/` và `security/`;
+    24	  Admin sẽ chỉ định đường dẫn cụ thể khi giao.
+    25	- **T6/T7 chạy song song và độc lập.** Auditor2 không được nể nang Admin; Reviewer1 không được
+    26	  nể nang tác giả.
+    27	| T8 | DeepSeek-Harness | Tái lập PoC & đối chiếu nguồn độc lập (lớp 2) | `agents/deepseek-harness/**`, `reviews/VERIFY2.md` | Tự chạy lại PoC/finding của người khác trên clone riêng; ghi môi trường + phiên bản + lệnh + output thô; không xem kết luận tác giả trước khi chạy xong | Reviewer1 | ⏸ chờ có finding |

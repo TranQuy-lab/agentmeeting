@@ -1,0 +1,379 @@
+### T9 — REVIEWER1 TAI LAP DOC LAP BANG CONG CU CUA ExploitDeep
+### Artifact bi kiem: agents/exploitdeep/T4/READINESS.md + EVIDENCE/tool_inventory_raw.txt
+### Revision kiem: 2cbe90a20089d34f50b2df1cacd8624fdc0fd12f (nhanh agent/exploit-deep/T4)
+### Thoi diem Reviewer1 kiem: 2026-10-01T13:55:45Z (UTC)
+
+### MOI TRUONG
+$ uname -a
+Linux noble-tran-XiaoXin-14-AHP9 7.0.0-34-generic #34~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Sep  4 15:38:29 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+$ hostname
+noble-tran-XiaoXin-14-AHP9
+$ whoami
+noble-tran
+$ date -u
+2026-10-01T13:55:45Z
+$ python3 --version
+Python 3.12.3
+$ gcc --version | head -1
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+
+=== [V1] which gdb objdump readelf strings nm objdump curl jq file git ssh ===
+$ which gdb objdump readelf strings nm curl jq file git ssh
+/usr/bin/gdb
+/usr/bin/objdump
+/usr/bin/readelf
+/usr/bin/strings
+/usr/bin/nm
+/usr/bin/curl
+/usr/bin/jq
+/usr/bin/file
+/usr/bin/git
+/usr/bin/ssh
+exit=0
+
+=== [V2] nmap (tac gia khai THIEU) ===
+$ which nmap
+exit=1 (1/rỗng = THIEU)
+$ command -v nmap
+exit=1
+$ nmap --version
+bash: line 25: nmap: command not found
+exit=0
+
+=== [V3] checksec tren python3 HE THONG (tac gia khai THIEU) ===
+$ checksec --version
+bash: line 28: checksec: command not found
+exit=0
+$ which checksec
+exit=1
+
+=== [V4] python3 HE THONG — import tung goi (tac gia khai THIEU het) ===
+  import pwn            -> ModuleNotFoundError: No module named 'pwn'
+  import Crypto         -> ModuleNotFoundError: No module named 'Crypto'
+  import sympy          -> ModuleNotFoundError: No module named 'sympy'
+  import z3             -> ModuleNotFoundError: No module named 'z3'
+  import capstone       -> ModuleNotFoundError: No module named 'capstone'
+  import lief           -> ModuleNotFoundError: No module named 'lief'
+  import unicorn        -> ModuleNotFoundError: No module named 'unicorn'
+  import angr           -> ModuleNotFoundError: No module named 'angr'
+  import gmpy2          -> ModuleNotFoundError: No module named 'gmpy2'
+  import fpylll         -> ModuleNotFoundError: No module named 'fpylll'
+  import flask_unsign   -> ModuleNotFoundError: No module named 'flask_unsign'
+  import requests       -> CO
+  import venv           -> CO
+
+$ python3 -m pip --version
+/usr/bin/python3: No module named pip
+$ python3 -m ensurepip --version
+/usr/bin/python3: No module named ensurepip
+
+=== [V5] venv /home/noble-tran/.venvs/ed — co ton tai khong? ===
+$ ls -ld /home/noble-tran/.venvs/ed
+drwxrwxr-x 7 noble-tran noble-tran 4096 Oct  1 20:47 /home/noble-tran/.venvs/ed
+exit=0
+$ ls /home/noble-tran/.venvs/ed/bin/ | head -30
+activate
+activate.csh
+activate.fish
+Activate.ps1
+asm
+cffi-gen-src
+checksec
+constgrep
+cyclic
+debug
+disablenx
+disasm
+elfdiff
+elfpatch
+errno
+flask
+flask-unsign
+hex
+idna
+inv
+invoke
+isympy
+libcdb
+mako-render
+normalizer
+phd
+pip
+pip3
+pip3.12
+pwn
+
+=== [V6] pip list trong venv ed (loc cac goi lien quan) ===
+$ /home/noble-tran/.venvs/ed/bin/python -m pip list 2>/dev/null | grep -Ei 'pwntools|pycryptodome|sympy|z3|capstone|lief|ropgadget|ropper|flask|requests|pip |gmpy2|fpylll|angr|unicorn'
+capstone           6.0.0a11
+Flask              3.1.3
+flask-unsign       1.2.1
+lief               1.0.0
+pip                26.2.1
+pwntools           4.15.0
+pycryptodome       3.23.0
+requests           2.34.2
+ROPGadget          7.7
+ropper             1.13.13
+sympy              1.14.0
+unicorn            2.1.2
+z3-solver          5.1.0.0
+exit=0
+
+=== [V7] import THAT trong venv ed (khong tin bang, phai chay) ===
+  pwn            -> AttributeError: module 'pwn' has no attribute '__version__'
+  Crypto         -> 3.23.0
+  sympy          -> 1.14.0
+  z3             -> 5.1.0
+  capstone       -> 6.0.0
+  lief           -> 1.0.0-d05b3499b
+  flask_unsign   -> 1.2.1
+  requests       -> 2.34.2
+
+=== [V8] venv ed — python version + pip version ===
+Python 3.12.3
+pip 26.2.1 from /home/noble-tran/.venvs/ed/lib/python3.12/site-packages/pip (python 3.12)
+
+=== [V9] CAC GOI TAC GIA KHAI VAN THIEU: nmap, gmpy2, fpylll, angr, unicorn, sage ===
+-- nmap --
+  (khong co trong PATH)
+-- gmpy2 (python3 he thong) --
+ModuleNotFoundError: No module named 'gmpy2'
+-- gmpy2 (venv ed) --
+ModuleNotFoundError: No module named 'gmpy2'
+-- fpylll (python3 he thong) --
+ModuleNotFoundError: No module named 'fpylll'
+-- fpylll (venv ed) --
+ModuleNotFoundError: No module named 'fpylll'
+-- angr (python3 he thong) --
+ModuleNotFoundError: No module named 'angr'
+-- angr (venv ed) --
+ModuleNotFoundError: No module named 'angr'
+-- unicorn (python3 he thong) --
+ModuleNotFoundError: No module named 'unicorn'
+-- unicorn (venv ed) --
+2.1.2
+-- sage: which sage --
+  (khong co trong PATH)
+-- sage: command -v sage --
+  (khong co trong PATH)
+-- sage: ls /usr/bin/sage /usr/local/bin/sage --
+ls: cannot access '/usr/bin/sage': No such file or directory
+ls: cannot access '/usr/local/bin/sage': No such file or directory
+-- sage: find trong /home/noble-tran (maxdepth 5) --
+  (neu khong in gi => khong co)
+
+=== [V10] checksec trong venv ed chay THAT tren /bin/ls ===
+$ /home/noble-tran/.venvs/ed/bin/checksec --file=/bin/ls
+[*] '/bin/ls'
+    Arch:       amd64-64-little
+    RELRO:      Full RELRO
+    Stack:      Canary found
+    NX:         NX enabled
+    PIE:        PIE enabled
+    FORTIFY:    Enabled
+    SHSTK:      Enabled
+    IBT:        Enabled
+exit=0
+
+$ /home/noble-tran/.venvs/ed/bin/checksec --version
+usage: pwn [-h] {checksec} ...
+pwn: error: unrecognized arguments: --version
+exit=0
+
+=== [V11] Mang ra PyPI (tac gia khai HTTP 200) ===
+$ timeout 8 python3 -c "import urllib.request;print(urllib.request.urlopen('https://pypi.org/simple/',timeout=6).status)"
+200
+exit=0
+
+=== [V12] THOI DIEM KIEM vs THOI DIEM TAC GIA (canh bao D-009) ===
+  Tac gia chay kiem ke: 2026-10-01T13:46:38Z .. 13:48:19Z (ghi trong tool_inventory_raw.txt)
+  Reviewer1 kiem lai  : 2026-10-01T13:55:55Z
+  => Neu Admin da DUYET D-009 cho ExploitDeep cai them goi SAU moc tren, bang co the da doi.
+
+=== [V13] TRUY NGUON: unicorn duoc cai LUC NAO? (de phan biet loi grep cua tac gia vs D-009) ===
+$ ls -la --time-style=full-iso /home/noble-tran/.venvs/ed/lib/python3.12/site-packages/ | grep -i unicorn
+drwxrwxr-x  6 noble-tran noble-tran   4096 2026-10-01 20:47:42.038670392 +0700 unicorn
+drwxrwxr-x  2 noble-tran noble-tran   4096 2026-10-01 20:47:42.123116923 +0700 unicorn-2.1.2.dist-info
+
+$ ls -la --time-style=full-iso /home/noble-tran/.venvs/ed/lib/python3.12/site-packages/ | grep -iE 'pwntools|pycryptodome|z3|capstone|lief|ropper|ROPgadget|flask_unsign|unicorn|angr|fpylll|gmpy2'
+drwxrwxr-x  5 noble-tran noble-tran   4096 2026-10-01 20:47:50.335987596 +0700 capstone
+drwxrwxr-x  3 noble-tran noble-tran   4096 2026-10-01 20:47:50.460985624 +0700 capstone-6.0.0a11.dist-info
+drwxrwxr-x  3 noble-tran noble-tran   4096 2026-10-01 20:48:10.606756418 +0700 flask_unsign
+drwxrwxr-x  2 noble-tran noble-tran   4096 2026-10-01 20:48:10.630666561 +0700 flask_unsign-1.2.1.dist-info
+drwxrwxr-x  8 noble-tran noble-tran   4096 2026-10-01 20:48:10.073153579 +0700 lief
+drwxrwxr-x  2 noble-tran noble-tran   4096 2026-10-01 20:48:10.083675241 +0700 lief-1.0.0.dist-info
+drwxrwxr-x  3 noble-tran noble-tran   4096 2026-10-01 20:47:52.294956697 +0700 pwntools-4.15.0.dist-info
+drwxrwxr-x  2 noble-tran noble-tran   4096 2026-10-01 20:47:49.826995621 +0700 pycryptodome-3.23.0.dist-info
+drwxrwxr-x  5 noble-tran noble-tran   4096 2026-10-01 20:47:50.479900674 +0700 ropgadget
+drwxrwxr-x  3 noble-tran noble-tran   4096 2026-10-01 20:47:50.507984883 +0700 ropgadget-7.7.dist-info
+drwxrwxr-x  7 noble-tran noble-tran   4096 2026-10-01 20:48:09.780194928 +0700 ropper
+drwxrwxr-x  2 noble-tran noble-tran   4096 2026-10-01 20:48:09.957677240 +0700 ropper-1.13.13.dist-info
+drwxrwxr-x  6 noble-tran noble-tran   4096 2026-10-01 20:47:42.038670392 +0700 unicorn
+drwxrwxr-x  2 noble-tran noble-tran   4096 2026-10-01 20:47:42.123116923 +0700 unicorn-2.1.2.dist-info
+drwxrwxr-x  5 noble-tran noble-tran   4096 2026-10-01 20:47:40.022149950 +0700 z3
+drwxrwxr-x  2 noble-tran noble-tran   4096 2026-10-01 20:47:40.317145314 +0700 z3_solver-5.1.0.0.dist-info
+
+=== [V14] XAC NHAN pwntools 4.15.0 bang cach khac (probe cua toi bi loi) ===
+  File "<string>", line 1, in <module>
+AttributeError: 'str' object has no attribute 'string'. Did you mean: 'strip'?
+Name: pwntools
+Version: 4.15.0
+
+=== [V15] Nhanh T4 co commit MOI hon 2cbe90a khong? ===
+2cbe90a [T4] report: luu ban tin da gui phong (check-in msg#18, bao cao msg#19-20)
+be70eed [T4] report: ExploitDeep readiness - kiem ke tool that + quy trinh 4 buoc + checklist 12 muc truoc khi cham target
+abe0c3e [T0] log: khung kho AgentMeet + ho so dieu hanh Admin (commit dau tien)
+--- READINESS.md duoc sua o commit nao ---
+be70eed [T4] report: ExploitDeep readiness - kiem ke tool that + quy trinh 4 buoc + checklist 12 muc truoc khi cham target
+
+=== [V16] Dong nao trong READINESS.md noi 'unicorn' THIEU? ===
+60:| `unicorn` | `ModuleNotFoundError: No module named 'unicorn'` | không emulate code |
+71:> Các mục **vẫn thiếu thật**: `nmap`, `gmpy2`, `fpylll`, `angr`, `unicorn`, `sage`.
+121:`nmap`, `gmpy2`, `fpylll`, `angr`, `unicorn`, `sage` → **vẫn thiếu**.
+279:   **Còn thiếu thật:** `fpylll`/`gmpy2` (lattice), `angr` (symbolic), `unicorn` (emulation), `sage`.
+
+=== [V17] Pattern grep trong EVIDENCE cua tac gia co chua 'unicorn' khong? ===
+113:$ /home/noble-tran/.venvs/ed/bin/python -m pip list 2>/dev/null | grep -Ei 'pwntools|pycryptodome|sympy|z3|capstone|lief|ropgadget|ropper|flask|requests|pip '
+  -> pattern tac gia dung: grep -Ei 'pwntools|pycryptodome|sympy|z3|capstone|lief|ropgadget|ropper|flask|requests|pip '
+  -> 'unicorn' KHONG co trong pattern => khong the phat hien unicorn du co.
+
+=== [V18] Tac gia co bao gio chay 'import unicorn' TRONG VENV khong? ===
+39:unicorn      THIẾU (không có trong PATH)
+51:$ python3 -c "import unicorn; print('unicorn', unicorn.__version__)"
+137:### VẪN THIẾU: nmap, gmpy2, fpylll, angr, unicorn, sage.
+
+=== [V19] unicorn la DEPENDENCY cua pwntools? (giai thich vi sao no xuat hien ma tac gia khong thay) ===
+$ /home/noble-tran/.venvs/ed/bin/python -m pip show pwntools | grep -E '^Name|^Version|^Requires'
+Name: pwntools
+Version: 4.15.0
+Requires: capstone, colored_traceback, intervaltree, mako, packaging, paramiko, pip, psutil, pyelftools, pygments, pyserial, pysocks, python-dateutil, requests, ropgadget, rpyc, six, sortedcontainers, unicorn, unix-ar, zstandard
+
+$ /home/noble-tran/.venvs/ed/bin/python -m pip show unicorn | grep -E '^Name|^Version|^Required-by'
+Name: unicorn
+Version: 2.1.2
+Required-by: pwntools
+
+=== [V20] requests 2.31.0 tren python3 HE THONG (tac gia khai CO) ===
+requests 2.31.0
+
+=== [V21] requests 2.34.2 trong venv ed (tac gia khai CO) ===
+requests 2.34.2
+
+=== [V22] pip list DAY DU trong venv ed (khong loc) — de doi chieu khong bo sot ===
+Package            Version
+------------------ -----------
+bcrypt             5.0.0
+blinker            1.9.0
+capstone           6.0.0a11
+certifi            2026.7.22
+cffi               2.1.1
+charset-normalizer 3.5.2
+click              8.5.0
+colored-traceback  0.4.2
+cryptography       50.0.2
+filebytes          0.10.2
+Flask              3.1.3
+flask-unsign       1.2.1
+idna               3.20
+intervaltree       3.2.1
+invoke             3.0.3
+itsdangerous       2.2.0
+Jinja2             3.1.6
+lief               1.0.0
+Mako               1.4.3
+MarkupSafe         3.0.3
+mpmath             1.3.0
+packaging          26.3
+paramiko           5.0.0
+pip                26.2.1
+plumbum            2.0.2
+psutil             7.2.2
+pwntools           4.15.0
+pycparser          3.0
+pycryptodome       3.23.0
+pyelftools         0.33
+Pygments           2.21.0
+PyNaCl             1.6.2
+pyserial           3.5
+PySocks            1.7.1
+python-dateutil    2.9.0.post0
+requests           2.34.2
+ROPGadget          7.7
+ropper             1.13.13
+rpyc               6.0.2
+six                1.17.0
+sortedcontainers   2.4.0
+sympy              1.14.0
+typing_extensions  4.16.0
+unicorn            2.1.2
+unix-ar            0.2.1
+urllib3            2.8.0
+Werkzeug           3.1.9
+z3-solver          5.1.0.0
+zstandard          0.25.0
+
+=== [V23] main moi nhat + D-009 (Admin noi da duyet) ===
+$ git fetch origin; git log --oneline -5 origin/main
+0f010b7 [T0] log: dinh chinh lenh CLI (D-008), duyet cai tool cho ExploitDeep (D-009), giao Reviewer1 T9
+a414944 [T0] log: duyet slot 8 DeepSeek-Harness (D-006), tu choi slot ZCode (D-007), cap nhat ROSTER/ASSIGNMENTS/LOG
+879d69d [T0] log: ghi 7 quyet dinh dieu phoi moi (rejoin Admin, clone rieng, --rejoin, gioi han 4000 ky tu, tha 7 worker)
+abe0c3e [T0] log: khung kho AgentMeet + ho so dieu hanh Admin (commit dau tien)
+
+$ git rev-parse 0f010b7 (Admin noi T9 nam o commit nay)
+0f010b704848cb111a526de53aa3f9759826db5a
+
+$ git show 0f010b7 --stat
+commit 0f010b704848cb111a526de53aa3f9759826db5a
+Author: Admin AgentMeet <admin@agentmeet.local>
+Date:   Thu Oct 1 20:54:20 2026 +0700
+
+    [T0] log: dinh chinh lenh CLI (D-008), duyet cai tool cho ExploitDeep (D-009), giao Reviewer1 T9
+
+ ADMIN/ASSIGNMENTS.md | 1 +
+ ADMIN/LOG.md         | 4 ++++
+ 2 files changed, 5 insertions(+)
+
+$ git grep -n 'D-009' origin/main --
+origin/main:ADMIN/LOG.md:24:| 16 | 2025-10-01 | Duyệt cho ExploitDeep cài `fpylll`, `gmpy2`, `angr`, `unicorn`, `nmap` trong venv riêng (D-009, msg_id=31) | Thiếu các gói này chặn lattice/LLL, Coppersmith, symbolic execution, emulation. Cài trong `/home/noble-tran/.venvs/ed`, KHÔNG vào python hệ thống. Kèm điều kiện: CẤM chạy `nmap` lên host chưa được duyệt target bằng văn bản — có công cụ KHÔNG đồng nghĩa có phép | báo cáo ExploitDeep vòng T4 |
+
+=== [V24] Xac nhan security/ KHONG co SCOPE.md tai revision kiem (cong T4 van dong) ===
+$ git ls-tree -r --name-only 2cbe90a | grep '^security/'
+security/.gitkeep
+$ git ls-tree -r --name-only origin/main | grep '^security/'
+security/.gitkeep
+
+=== [V25] main 0f010b7 — cac khuyet diem DEF co con khong? ===
+$ git show 0f010b7:ADMIN/LOG.md | awk 'NR>=8 && /^$/ {print "DONG TRONG tai dong " NR}'
+  DONG TRONG tai dong 12
+$ git show 0f010b7:ADMIN/ASSIGNMENTS.md | awk 'NR>=16 {printf "%d: %.55s\n", NR, $0}'
+16: 
+17: ---
+18: 
+19: ## Ghi chú điều phối
+20: 
+21: - **T4 phụ thuộc T3.** ExploitDeep chỉ bắt đầu khi BountyRe
+22:   ban hành chỉ thị duyệt bằng văn bản trong phòng (ghi v�
+23: - **T5 linh hoạt:** ForensicsMal có thể nhận task từ cả nh�
+24:   Admin sẽ chỉ định đường dẫn cụ thể khi giao.
+25: - **T6/T7 chạy song song và độc lập.** Auditor2 không đượ
+26:   nể nang tác giả.
+27: | T8 | DeepSeek-Harness | Tái lập PoC & đối chiếu nguồn đ�
+28: | T9 | Reviewer1 | Kiểm chứng bảng công cụ của ExploitDeep 
+
+$ git grep -c '2025-10-01' 0f010b7 -- | awk -F: '{t+=$NF} END {print "  TONG vi tri 2025-10-01 tren 0f010b7:", t}'
+  TONG vi tri 2025-10-01 tren 0f010b7: 31
+
+$ git show 0f010b7:ADMIN/README.md 2>/dev/null | head -3 (khong ton tai)
+$ git show 0f010b7:README.md | sed -n '3p'
+**Chủ sở hữu:** Admin (`ag_9026ba92`) — điều hành theo uỷ quyền của người dùng.
+$ git show 0f010b7:ADMIN/ROSTER.md | sed -n '11p'
+| 1 | Admin | `admin` | Điều hành, merge, phán quyết | `admin-agentmeet`, `agentmeet` | `main` | ✅ ag_9026ba92 | — |
+$ git show 0f010b7:INDEX.md | sed -n '10p'
+| 2 | `INDEX.md` | DocWriter | Khung | ⏳ chờ dựng | — |
+
+=== [V26] Ket luan thoi diem: unicorn co TRUOC hay SAU D-009? ===
+  D-009 duyet luc (commit 0f010b7): 2026-10-01 20:54:20 +0700 = 13:54:20Z
+  unicorn cai luc (mtime site-packages): 2026-10-01 20:47:42 +0700 = 13:47:42Z
+  => unicorn co TRUOC D-009 6 phut 38 giay => D-009 KHONG giai thich duoc unicorn.
+  => Khang dinh 'unicorn van thieu' trong READINESS.md la SAI o thoi diem viet.

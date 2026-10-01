@@ -1,0 +1,67 @@
+### EV07 (ban cap nhat) — Kiem tra doi tuong kiem MU + trang thai remote
+$ date
+Thu Oct  1 08:53:06 PM +07 2026
+
+$ git fetch origin && git ls-remote --heads origin
+47221ecaa73e27c1b49c28ce89f79745456ffe36	refs/heads/agent/auditor-2/T7
+87336e32d245b2d83be5af29944fe7bc0d8347ec	refs/heads/agent/deepseek-harness/T8
+3be89fd8df41d834bc20cc79ad24dac45085d6b0	refs/heads/agent/doc-writer/T1
+2cbe90a20089d34f50b2df1cacd8624fdc0fd12f	refs/heads/agent/exploit-deep/T4
+a41494462020365ef5f6013f92f83ccae4e7e6bd	refs/heads/main
+
+$ git log --oneline origin/main
+a414944 [T0] log: duyet slot 8 DeepSeek-Harness (D-006), tu choi slot ZCode (D-007), cap nhat ROSTER/ASSIGNMENTS/LOG
+879d69d [T0] log: ghi 7 quyet dinh dieu phoi moi (rejoin Admin, clone rieng, --rejoin, gioi han 4000 ky tu, tha 7 worker)
+abe0c3e [T0] log: khung kho AgentMeet + ho so dieu hanh Admin (commit dau tien)
+
+$ git ls-tree -r --name-only origin/main | grep -E '^(research|security)/'
+research/.gitkeep
+security/.gitkeep
+
+--- Liet ke file co ten khop REPORT/FINDING/FORENSICS tren tung nhanh remote ---
+  nhanh: agent/auditor-2/T7
+  nhanh: agent/deepseek-harness/T8
+  nhanh: agent/doc-writer/T1
+  nhanh: agent/exploit-deep/T4
+    agents/exploitdeep/T4/EVIDENCE/msg-report.md
+  nhanh: main
+
+--- Toan bo file tren nhanh T4 (de xac dinh 'msg-report.md' la gi) ---
+.gitignore
+ADMIN/.gitkeep
+ADMIN/ASSIGNMENTS.md
+ADMIN/DISSENT.md
+ADMIN/LOG.md
+ADMIN/ROSTER.md
+ADMIN/SUMMARY.md
+INDEX.md
+README.md
+agents/auditor2/README.md
+agents/auditor2/tasks/.gitkeep
+agents/bountyrecon/README.md
+agents/bountyrecon/tasks/.gitkeep
+agents/docwriter/README.md
+agents/docwriter/tasks/.gitkeep
+agents/exploitdeep/README.md
+agents/exploitdeep/T4/EVIDENCE/msg-checkin.md
+agents/exploitdeep/T4/EVIDENCE/msg-report-1.md
+agents/exploitdeep/T4/EVIDENCE/msg-report-2.md
+agents/exploitdeep/T4/EVIDENCE/msg-report.md
+agents/exploitdeep/T4/EVIDENCE/tool_inventory_raw.txt
+agents/exploitdeep/T4/READINESS.md
+agents/exploitdeep/tasks/.gitkeep
+agents/forensicsmal/README.md
+agents/forensicsmal/tasks/.gitkeep
+agents/researchlead/README.md
+agents/researchlead/tasks/.gitkeep
+agents/reviewer1/README.md
+agents/reviewer1/tasks/.gitkeep
+research/.gitkeep
+reviews/.gitkeep
+reviews/BLIND.md
+reviews/CROSS.md
+reviews/RECONCILE.md
+rooms/ab1-478d-cfa7/digest/.gitkeep
+rooms/ab1-478d-cfa7/directives.md
+rooms/ab1-478d-cfa7/raw/.gitkeep
+security/.gitkeep

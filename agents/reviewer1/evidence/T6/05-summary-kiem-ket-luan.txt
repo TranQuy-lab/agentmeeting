@@ -1,0 +1,49 @@
+### EV05 — Kiem tra ADMIN/SUMMARY.md: co ket luan nao vuot qua bang chung?
+
+--- Toan van SUMMARY.md tai abe0c3e (commit dau) ---
+     1	# SUMMARY — Tổng kết phiên
+     2	
+     3	**Người lập:** Admin · **Ngày:** 2025-10-01 · **Trạng thái:** ĐANG CHẠY
+     4	
+     5	> ⚠️ **Chưa có kết luận nào.** File này cố ý để trống phần kết quả cho tới khi có artifact
+     6	> đã qua kiểm định 3 lớp. Mọi kết luận đưa vào đây PHẢI trỏ tới đường dẫn bằng chứng cụ thể
+     7	> trong repo. Kết luận không có bằng chứng = Auditor2 đánh dấu vi phạm.
+     8	
+     9	## 1. Kết quả đã nghiệm thu
+    10	
+    11	*Chưa có.*
+    12	
+    13	## 2. Việc chưa làm được / thất bại
+    14	
+    15	*Chưa có.* — Mục này KHÔNG được lược bỏ khỏi báo cáo cuối.
+    16	
+    17	## 3. Rủi ro đang mở
+    18	
+    19	| # | Rủi ro | Mức | Đối phó |
+    20	|---|---|---|---|
+    21	| 1 | Phòng giới hạn 500 tin, 8 agent poll liên tục sẽ đầy nhanh | Cao | Nội dung dài ghi file trong repo, tin nhắn chỉ giữ điều phối |
+    22	| 2 | Worker tự bịa cấu trúc nếu clone repo trước khi có khung | Đã xử lý | Đã push khung ở commit đầu tiên |
+    23	| 3 | HTTPS credential helper hỏng, agent clone sai giao thức | Trung bình | Mọi prompt ghi rõ SSH, cấm HTTPS |
+
+--- SUMMARY.md co duoc sua o 879d69d khong? ---
+abe0c3e [T0] log: khung kho AgentMeet + ho so dieu hanh Admin (commit dau tien)
+(chi co abe0c3e => khong cap nhat sau 7 quyet dinh moi)
+
+--- Kiem chung Rui ro #1: 'Phong gioi han 500 tin' ---
+  max_messages = 500 | message_count = 22
+  => claim 'gioi han 500 tin' KHOP
+
+--- Kiem chung Rui ro #2: 'Da push khung o commit dau tien' ---
+abe0c3e55f3404dc0c623d67734b79856c933fd9
+  => abe0c3e la root commit => claim KHOP
+
+--- Kiem chung Rui ro #3: 'HTTPS credential helper hong' ---
+  KHONG THE KIEM: luat phien CAM dung HTTPS de clone (D-001). Ghi 'chua xac minh'.
+
+--- Kiem tra chinh SUMMARY.md co tuan thu luat cua no khong? ---
+  SUMMARY.md dong 6-7 tu dat luat: 'Moi ket luan dua vao day PHAI tro toi duong dan bang chung cu the trong repo'
+  Nhung bang Rui ro (dong 19-23) KHONG co cot bang chung/duong dan nao.
+$ git show abe0c3e:ADMIN/SUMMARY.md | grep -nE 'bang chung|Bằng chứng|\.md|commit'
+6:> đã qua kiểm định 3 lớp. Mọi kết luận đưa vào đây PHẢI trỏ tới đường dẫn bằng chứng cụ thể
+7:> trong repo. Kết luận không có bằng chứng = Auditor2 đánh dấu vi phạm.
+22:| 2 | Worker tự bịa cấu trúc nếu clone repo trước khi có khung | Đã xử lý | Đã push khung ở commit đầu tiên |

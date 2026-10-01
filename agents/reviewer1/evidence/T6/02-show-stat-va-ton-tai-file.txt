@@ -1,0 +1,103 @@
+### EV02 — git show --stat abe0c3e + ma tran ton tai file
+
+$ git show --stat abe0c3e
+commit abe0c3e55f3404dc0c623d67734b79856c933fd9
+Author: Admin AgentMeet <admin@agentmeet.local>
+Date:   Thu Oct 1 20:43:58 2026 +0700
+
+    [T0] log: khung kho AgentMeet + ho so dieu hanh Admin (commit dau tien)
+    
+    Admin dung khung repo theo §0 ke hoach: README, INDEX, ADMIN/, agents/<slug>/tasks/, research/, security/, reviews/, rooms/ab1-478d-cfa7/.
+
+ .gitignore                          | 21 ++++++++++++
+ ADMIN/.gitkeep                      |  0
+ ADMIN/ASSIGNMENTS.md                | 26 +++++++++++++++
+ ADMIN/DISSENT.md                    |  8 +++++
+ ADMIN/LOG.md                        | 11 +++++++
+ ADMIN/ROSTER.md                     | 41 +++++++++++++++++++++++
+ ADMIN/SUMMARY.md                    | 23 +++++++++++++
+ INDEX.md                            | 23 +++++++++++++
+ README.md                           | 59 +++++++++++++++++++++++++++++++++
+ agents/auditor2/README.md           |  4 +++
+ agents/auditor2/tasks/.gitkeep      |  0
+ agents/bountyrecon/README.md        |  4 +++
+ agents/bountyrecon/tasks/.gitkeep   |  0
+ agents/docwriter/README.md          |  4 +++
+ agents/docwriter/tasks/.gitkeep     |  0
+ agents/exploitdeep/README.md        |  4 +++
+ agents/exploitdeep/tasks/.gitkeep   |  0
+ agents/forensicsmal/README.md       |  4 +++
+ agents/forensicsmal/tasks/.gitkeep  |  0
+ agents/researchlead/README.md       |  4 +++
+ agents/researchlead/tasks/.gitkeep  |  0
+ agents/reviewer1/README.md          |  4 +++
+ agents/reviewer1/tasks/.gitkeep     |  0
+ research/.gitkeep                   |  0
+ reviews/.gitkeep                    |  0
+ reviews/BLIND.md                    | 14 ++++++++
+ reviews/CROSS.md                    |  9 +++++
+ reviews/RECONCILE.md                |  9 +++++
+ rooms/ab1-478d-cfa7/digest/.gitkeep |  0
+ rooms/ab1-478d-cfa7/directives.md   | 65 +++++++++++++++++++++++++++++++++++++
+ rooms/ab1-478d-cfa7/raw/.gitkeep    |  0
+ security/.gitkeep                   |  0
+ 32 files changed, 337 insertions(+)
+
+$ git ls-tree -r --name-only abe0c3e | wc -l
+32
+
+$ git ls-tree -r --name-only abe0c3e | sort
+ADMIN/ASSIGNMENTS.md
+ADMIN/DISSENT.md
+ADMIN/.gitkeep
+ADMIN/LOG.md
+ADMIN/ROSTER.md
+ADMIN/SUMMARY.md
+agents/auditor2/README.md
+agents/auditor2/tasks/.gitkeep
+agents/bountyrecon/README.md
+agents/bountyrecon/tasks/.gitkeep
+agents/docwriter/README.md
+agents/docwriter/tasks/.gitkeep
+agents/exploitdeep/README.md
+agents/exploitdeep/tasks/.gitkeep
+agents/forensicsmal/README.md
+agents/forensicsmal/tasks/.gitkeep
+agents/researchlead/README.md
+agents/researchlead/tasks/.gitkeep
+agents/reviewer1/README.md
+agents/reviewer1/tasks/.gitkeep
+.gitignore
+INDEX.md
+README.md
+research/.gitkeep
+reviews/BLIND.md
+reviews/CROSS.md
+reviews/.gitkeep
+reviews/RECONCILE.md
+rooms/ab1-478d-cfa7/digest/.gitkeep
+rooms/ab1-478d-cfa7/directives.md
+rooms/ab1-478d-cfa7/raw/.gitkeep
+security/.gitkeep
+
+--- ASSERT tung ho file ma de bai yeu cau ---
+README.md      -> 1 file
+INDEX.md       -> 1 file
+ADMIN/         -> 6 file
+research/      -> 1 file
+security/      -> 1 file
+reviews/       -> 4 file
+rooms/         -> 3 file
+
+--- ASSERT agents/<slug>/tasks/ cho tung slug ---
+agents/auditor2      /tasks/ -> 1 file: agents/auditor2/tasks/.gitkeep 
+agents/bountyrecon   /tasks/ -> 1 file: agents/bountyrecon/tasks/.gitkeep 
+agents/docwriter     /tasks/ -> 1 file: agents/docwriter/tasks/.gitkeep 
+agents/exploitdeep   /tasks/ -> 1 file: agents/exploitdeep/tasks/.gitkeep 
+agents/forensicsmal  /tasks/ -> 1 file: agents/forensicsmal/tasks/.gitkeep 
+agents/researchlead  /tasks/ -> 1 file: agents/researchlead/tasks/.gitkeep 
+agents/reviewer1     /tasks/ -> 1 file: agents/reviewer1/tasks/.gitkeep 
+
+--- LUU Y: research/ va security/ chi co .gitkeep, KHONG co noi dung ---
+research/.gitkeep
+security/.gitkeep
