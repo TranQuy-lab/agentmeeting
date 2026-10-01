@@ -1,0 +1,85 @@
+### T32-A1 — Reviewer1 kiem archived_at cua TUNG BAN GHI RIENG
+### Thoi diem: 2026-10-01T15:17:35Z UTC
+TONG scope: 63
+  dang hieu luc: 44 | da nghi huu: 19
+
+=== [1] MOI BAN GHI co identifier chua 'gitlab.net' hoac 'gitlap.com' ===
+  *.gitlab.net             type=URL       sub=False bounty=False sev=none    archived_at=2022-07-21T15:51:33.499Z
+  *.gitlab.net             type=WILDCARD  sub=True  bounty=True  sev=medium  archived_at=None
+  *.gitlap.com             type=URL       sub=False bounty=False sev=none    archived_at=2022-07-21T15:51:16.877Z
+  *.gitlap.com             type=WILDCARD  sub=True  bounty=True  sev=medium  archived_at=None
+  *.runway.gitlab.net      type=WILDCARD  sub=False bounty=False sev=none    archived_at=None
+  gitlab.net               type=URL       sub=False bounty=False sev=none    archived_at=2020-10-05T18:32:21.936Z
+  gitlap.com               type=URL       sub=False bounty=False sev=none    archived_at=2020-10-05T18:32:08.263Z
+
+=== [2] TACH theo muc 'archived_at' ===
+  --- moc 2020-10-05 : 9 ban ghi ---
+      blog.gitter.im           type=URL       sub=False 2020-10-05T18:33:57.577Z
+      update.gitter.im         type=URL       sub=False 2020-10-05T18:33:50.259Z
+      files.gitter.im          type=URL       sub=False 2020-10-05T18:33:45.165Z
+      next.gitter.im           type=URL       sub=False 2020-10-05T18:33:39.863Z
+      beta.gitter.im           type=URL       sub=False 2020-10-05T18:33:33.863Z
+      ws*.gitter.im            type=WILDCARD  sub=False 2020-10-05T18:33:28.485Z
+      api.gitter.im            type=URL       sub=False 2020-10-05T18:33:21.413Z
+      gitlab.net               type=URL       sub=False 2020-10-05T18:32:21.936Z
+      gitlap.com               type=URL       sub=False 2020-10-05T18:32:08.263Z
+  --- moc 2021-05-25 : 1 ban ghi ---
+      *.gitter.im              type=WILDCARD  sub=False 2021-05-25T18:36:39.198Z
+  --- moc 2021-12-28 : 1 ban ghi ---
+      https://gitlab.com/gitlab-org/gitlab-workhorse type=SOURCE_CODE sub=True  2021-12-28T13:36:15.653Z
+  --- moc 2022-03-21 : 1 ban ghi ---
+      license.gitlab.com       type=URL       sub=True  2022-03-21T22:30:03.041Z
+  --- moc 2022-07-21 : 5 ban ghi ---
+      Static websites          type=OTHER     sub=True  2022-07-21T16:00:50.221Z
+      docs.gitlab.com          type=URL       sub=False 2022-07-21T15:53:13.475Z
+      about.gitlab.com         type=URL       sub=False 2022-07-21T15:53:03.572Z
+      *.gitlab.net             type=URL       sub=False 2022-07-21T15:51:33.499Z
+      *.gitlap.com             type=URL       sub=False 2022-07-21T15:51:16.877Z
+  --- moc 2023-06-04 : 1 ban ghi ---
+      https://gitlab.com/gitlab-org/opstrace/ type=SOURCE_CODE sub=True  2023-06-04T21:02:31.693Z
+  --- moc 2023-12-07 : 1 ban ghi ---
+      GitLab for Jira Cloud Plugin type=OTHER     sub=True  2023-12-07T13:38:09.687Z
+### T32-A1b — MO RONG: ban ghi da nghi huu nhung sub=True
+=== [1] Ban ghi DA NGHI HUU nhung eligible_for_submission=TRUE: 5 ===
+  https://gitlab.com/gitlab-org/gitlab-workhorse           type=SOURCE_CODE sev=critical archived_at=2021-12-28T13:36:15.653Z
+  license.gitlab.com                                       type=URL         sev=critical archived_at=2022-03-21T22:30:03.041Z
+  Static websites                                          type=OTHER       sev=medium  archived_at=2022-07-21T16:00:50.221Z
+  https://gitlab.com/gitlab-org/opstrace/                  type=SOURCE_CODE sev=critical archived_at=2023-06-04T21:02:31.693Z
+  GitLab for Jira Cloud Plugin                             type=OTHER       sev=critical archived_at=2023-12-07T13:38:09.687Z
+
+=== [2] Trong so do, cai nao CON mot ban ghi DANG HIEU LUC cung identifier? ===
+  https://gitlab.com/gitlab-org/gitlab-workhorse           ❌ KHONG con ban live nao
+  license.gitlab.com                                       ❌ KHONG con ban live nao
+  Static websites                                          ❌ KHONG con ban live nao
+  https://gitlab.com/gitlab-org/opstrace/                  ❌ KHONG con ban live nao
+  GitLab for Jira Cloud Plugin                             ❌ KHONG con ban live nao
+
+=== [3] SCOPE.md §1 (IN-SCOPE nguyen van) @ ecce293 co liet ke chung khong? ===
+     khong trong §1  https://gitlab.com/gitlab-org/gitlab-workhorse
+     khong trong §1  license.gitlab.com
+     khong trong §1  Static websites
+     khong trong §1  https://gitlab.com/gitlab-org/opstrace/
+     khong trong §1  GitLab for Jira Cloud Plugin
+
+  --- §1 co cot archived_at khong? ---
+    ❌ KHONG co cot archived_at
+
+=== [3b] KIEM LAI BANG GREP TRUC TIEP (regex cua toi co the sai) ===
+  gitlab-workhorse                 : 1 dong trong SCOPE.md @ ecce293
+  license.gitlab.com               : 1 dong trong SCOPE.md @ ecce293
+  Static websites                  : 1 dong trong SCOPE.md @ ecce293
+  opstrace/                        : 3 dong trong SCOPE.md @ ecce293
+  GitLab for Jira Cloud Plugin     : 1 dong trong SCOPE.md @ ecce293
+
+  --- vi tri §1 va cac dong chua chung ---
+42:## 1. TRÍCH NGUYÊN VĂN — IN SCOPE (`eligible_for_submission=true`, n=24)
+55:URL         license.gitlab.com                    max_severity=critical
+66:OTHER       Static websites                       max_severity=medium
+71:OTHER       GitLab for Jira Cloud Plugin          max_severity=critical
+78:SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-workhorse
+79:SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/
+118:SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace-ui
+119:SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace
+
+  --- §1 co cot archived_at khong? ---
+    so lan "archived_at" trong §1: 0

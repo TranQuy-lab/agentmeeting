@@ -1,0 +1,68 @@
+
+=== [B0] T33 da push chua? ===
+$ git ls-remote origin agent/bounty-recon/T33
+  (rong = chua push)
+$ git ls-remote --heads origin | grep bounty-recon
+43cc53769ea1cc354db60d204e57b942319dd8af	refs/heads/agent/bounty-recon/T26
+9f73655d9f3e34cf3d72dcb29b5cc36b2d279711	refs/heads/agent/bounty-recon/T28
+1b318ded14f3792b966ecfd490736f22a3d9893b	refs/heads/agent/bounty-recon/T29
+03d304b273b3e2e8a14a9ee039fdba19a8f79fe3	refs/heads/agent/bounty-recon/T3
+ecce293d292156b5868c1c72ebd7eae27e9bcdfd	refs/heads/agent/bounty-recon/T31
+
+=== [B1] CANDIDATES.md @ ecce293 — dong 18 va dong 2 (Admin yeu cau kiem) ===
+$ sed -n '2p;18p' CANDIDATES.md
+
+| 3 | Reviewer1 verify T3 độc lập | ⏸ **CHƯA** |
+
+  --- T29 da merge vao main chua? (anh huong dong 18) ---
+    ✅ 1b318de (T29) DA co tren main
+    ✅ 4642e3c (merge T3) DA co tren main
+
+=== [B3] TU QUET DOC LAP: moi dong khang dinh mot dieu la CHUA XONG ===
+  (tu khoa: CHƯA | CHUA | todo | ⏸ | chờ | CHỜ | pending | PHẢI HỎI | CẦN ADMIN)
+    dong 5: **Trạng thái:** ⏸ **CHỜ ADMIN** — theo D-005, T4 chỉ mở khi Admin ban hành chỉ thị **bằng văn bản**.
+    dong 17: | 2 | Admin ban hành chỉ thị T4 bằng văn bản | ⏸ **CHƯA** |
+    dong 18: | 3 | Reviewer1 verify T3 độc lập | ⏸ **CHƯA** |
+    dong 31: | C1 | `npmjs.com` DMARC `p=quarantine; pct=5` (chỉ áp 5% thư) | **THẤP** | ⚠️ Cân nhắc. GitHub **chưa** loại trừ tường minh SPF/DMARC, nhưng cũng **c
+    dong 43: | **G1** | **`registry.gitlab.com` (critical) KHÔNG qua Cloudflare** — A `35.227.35.254` GCP trực tiếp, khác hạ tầng `gitlab.com` | **THẤP** | ✅ **Đán
+    dong 44: | **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải** | **TRUNG BÌNH–THẤP** | ✅ **Đáng chuyển + cần Admin/GitLab làm rõ.** 
+    dong 67: > (CẦN ADMIN PHÁN QUYẾT)"*. **Việc phán quyết ĐÃ XONG.** Chi tiết: `security/gitlab/SCOPE.md` §2b.
+    dong 93: | GitLab chặn **500 request chưa xác thực / cửa sổ** | `ratelimit-limit: 500`, `ratelimit-name: throttle_unauthenticated_web` | `security/gitlab/RECON
+
+=== [B3b] T29 (1b318de) da sua nhung file nao? ===
+1b318de [T29] fix: sua 3 dong con sot trong security/gitlab/SCOPE.md (dong 9/284/289)
+ .../tasks/T29/EVIDENCE/scan_residual.txt           | 106 +++++++++++++
+ .../tasks/T29/EVIDENCE/scan_residual_clean.txt     |  41 +++++
+ .../tasks/T29/EVIDENCE/verify_3lines.txt           |  42 +++++
+ agents/bountyrecon/tasks/T29/FIX_3LINES.md         | 174 +++++++++++++++++++++
+ agents/bountyrecon/tasks/T29/SCAN_RESIDUAL.md      | 116 ++++++++++++++
+ security/gitlab/SCOPE.md                           |   6 +-
+ 6 files changed, 482 insertions(+), 3 deletions(-)
+
+=== [B3c] PHAT HIEN NGHI VAN 1: CANDIDATES.md:5 con vien dan D-005? ===
+**Trạng thái:** ⏸ **CHỜ ADMIN** — theo D-005, T4 chỉ mở khi Admin ban hành chỉ thị **bằng văn bản**.
+
+  --- D-013 co noi no THAY THE D-005 khong? (nguyen van) ---
+165:## [D-013] TRẠNG THÁI THỐNG NHẤT CỦA CỔNG G4 — 2026-10-01
+166-
+167-> Chỉ thị này thay thế mọi cách hiểu khác về cổng G4. Trước đó 4 tài liệu mâu thuẫn hai chiều
+168-> (`ADMIN/LOG.md` #4, `README.md` hàng G4, `ADMIN/ASSIGNMENTS.md` hàng T4, `directives.md` D-005)
+169-> — phát hiện F-03 của Auditor2.
+--
+172:[ADMIN DIRECTIVE D-013]
+173-Cổng G4 (ExploitDeep được chạm target) đòi ĐỦ HAI điều kiện:
+174-  (1) security/<program>/SCOPE.md tồn tại, trích NGUYÊN VĂN scope phủ target đó;
+175-  (2) Admin ban hành chỉ thị nêu rõ target + finding_id.
+176-
+
+  --- CANDIDATES.md co nhac D-013 khong? ---
+5:**Trạng thái:** ⏸ **CHỜ ADMIN** — theo D-005, T4 chỉ mở khi Admin ban hành chỉ thị **bằng văn bản**.
+21:**⇒ Điều kiện mở T4 nay là: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**
+85:(đã xong) mà là **chỉ thị nêu target cụ thể của Admin** (D-013).
+
+=== [B3d] PHAT HIEN NGHI VAN 2: dong 44 noi license.gitlab.com 'trong scope'? ===
+| **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải** | **TRUNG BÌNH–THẤP** | ✅ **Đáng chuyển + cần Admin/GitLab làm rõ.** ⚠️ **KHÔNG có CNAME treo ⇒ KHÔNG phải takeover.** **CẤM tự đoán.** |
+
+  --- su that: license.gitlab.com co archived_at khong? (do lai) ---
+    license.gitlab.com       type=URL      sub=True sev=critical archived_at=2022-03-21T22:30:03.041Z
+    co ban ghi DANG HIEU LUC cung identifier? ❌ KHONG

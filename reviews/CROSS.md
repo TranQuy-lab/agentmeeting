@@ -1166,3 +1166,229 @@ ranh giới** — nếu tôi không kiểm giả thuyết đó, tôi đã **báo
 > **Phán quyết vòng 7: T28 PASS — phép kiểm mạnh nhất của họ tái lập chính xác 6/6 giá trị băm và 7/7 con số
 > `archived_at`; điều này sửa lại chính kết luận T14 của tôi. T29 `chưa xác minh` (nhánh chưa push),
 > kèm 1 phát hiện mới về chỗ bỏ sót.**
+
+---
+
+# VÒNG 8 — Bài kiểm #11 (T32): T31 + T33 BountyRecon
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T32`
+**Base:** `origin/main` = `4858b89` (226 file) · **T31 head cuối:** `ecce293` · **T33: CHƯA PUSH**
+**Bằng chứng thô:** `agents/reviewer1/evidence/T32/` · **Phương pháp:** `git worktree`/`git show` (không ghi vào index)
+
+```text
+[REVIEW] T32-A / BountyRecon T31 / Lớp 1 CROSS / KẾT QUẢ: PASS về nội dung + 3 khuyết điểm chính xác
+[REVIEW] T32-B / BountyRecon T33 / KẾT QUẢ: chưa xác minh (nhánh chưa push) + 2 PHÁT HIỆN MỚI
+```
+
+---
+
+## 2.26 T32-A — T31 tại **head cuối `ecce293`**
+
+### 2.26.1 A1 — Phát hiện dữ liệu quan trọng nhất: **XÁC NHẬN CHÍNH XÁC**
+
+Tôi tự gọi GraphQL của HackerOne và **kiểm `archived_at` của TỪNG BẢN GHI RIÊNG** (không gộp nhóm):
+
+| Bản ghi | `asset_type` | `eligible_for_submission` | `archived_at` |
+|---|---|---|---|
+| **`gitlab.net`** (apex) | `URL` | False | **`2020-10-05T18:32:21.936Z`** |
+| **`*.gitlab.net`** (wildcard) | `WILDCARD` | **True** | **`None` ⇒ CÒN HIỆU LỰC** |
+| `gitlap.com` (apex) | `URL` | False | **`2020-10-05T18:32:08.263Z`** |
+| `*.gitlap.com` (wildcard) | `WILDCARD` | True | `None` |
+| `*.gitlab.net` (URL) | `URL` | False | `2022-07-21T15:51:33.499Z` |
+| `*.gitlap.com` (URL) | `URL` | False | `2022-07-21T15:51:16.877Z` |
+| `about.gitlab.com` | `URL` | False | `2022-07-21T15:53:03.572Z` |
+| `docs.gitlab.com` | `URL` | False | `2022-07-21T15:53:13.475Z` |
+
+Phân bố theo mốc lưu trữ: **2020-10-05 → 9 bản ghi** (gồm `gitlab.net`, `gitlap.com`, `*.gitter.im`…) ·
+**2022-07-21 → 5 bản ghi** · các mốc khác 1 bản ghi mỗi mốc.
+
+⇒ **BountyRecon ĐÚNG hoàn toàn:** `gitlab.net` (apex) nghỉ hưu **`2020-10-05`** — **KHÁC** mốc `2022-07-21`
+của nhóm 4; và `*.gitlab.net` (wildcard) **vẫn còn hiệu lực**. Nhãn cũ `gitlab.net | ⚠️ XUNG ĐỘT`
+**gộp nhầm hai bản ghi khác nhau** ⇒ **mất thông tin**.
+**Đây là lần thứ HAI** cùng một lớp lỗi (bỏ sót `archived_at`) bị bắt trong cùng một tài liệu.
+
+### 2.26.2 ⚠️ PHÁT HIỆN MỚI CỦA TÔI (A1b) — §1 của `SCOPE.md` chứa **5 bản ghi đã nghỉ hưu**
+
+Tôi mở rộng phép kiểm: **có bản ghi nào `archived_at != None` mà vẫn `eligible_for_submission=True`?**
+
+| Bản ghi | type | severity | `archived_at` | Có bản ghi live cùng identifier? | Có trong §1? |
+|---|---|---|---|---|---|
+| `https://gitlab.com/gitlab-org/gitlab-workhorse` | SOURCE_CODE | critical | **2021-12-28** | ❌ không | **có (d.78)** |
+| `license.gitlab.com` | URL | critical | **2022-03-21** | ❌ không | **có (d.55)** |
+| `Static websites` | OTHER | medium | **2022-07-21** | ❌ không | **có (d.66)** |
+| `https://gitlab.com/gitlab-org/opstrace/` | SOURCE_CODE | critical | **2023-06-04** | ❌ không | **có (d.79)** |
+| `GitLab for Jira Cloud Plugin` | OTHER | critical | **2023-12-07** | ❌ không | **có (d.71)** |
+
+Và **§1 ghi `n=24` nhưng KHÔNG có cột `archived_at`** (`grep -c archived_at` trong §1 = **0**).
+`n=24` = **19 live + 5 archived** — tức §1 **trộn hai trạng thái** mà không phân biệt.
+
+⇒ **Cùng một lớp lỗi, sâu hơn một tầng:** §1 tự nhận là *"TRÍCH NGUYÊN VĂN — IN SCOPE"* nhưng **5/24 (~21 %)
+mục trong đó là bản ghi đã nghỉ hưu, không còn bản ghi live nào**. Người đọc (hoặc ExploitDeep) sẽ tưởng
+`license.gitlab.com`, `Static websites`, `GitLab for Jira Cloud Plugin`, `gitlab-workhorse`, `opstrace/`
+là **target đang mở**.
+
+> **`chưa xác minh` — tôi KHÔNG overclaim:** liệu HackerOne có còn coi `eligible_for_submission=true`
+> trên một bản ghi **đã archived** là giá trị hiệu lực hay không, tôi **chưa xác minh được**.
+> Điều chắc chắn: §1 **thiếu chiều `archived_at`** ⇒ **không thể phân biệt live với retired**.
+> **Đề xuất:** thêm cột `archived_at` vào §1 (hoặc ghi chú 5 dòng trên), và **Admin/BountyRecon chốt**
+> ngữ nghĩa `sub=True` trên bản ghi archived.
+
+### 2.26.3 A2 — Băm vùng theo **CẢ HAI quy ước**: tái lập **khớp** (RECON.md 4/4 · CANDIDATES.md vùng khớp)
+
+T31 ghi rõ **quy ước ranh giới** và băm mỗi vùng theo **hai** quy ước (A: không `\n` cuối, B: có `\n` cuối)
+— **đúng cách khắc phục lỗi lệch-1-ký-tự mà chính tôi từng mắc ở T30.** Tôi tái lập độc lập bằng `difflib`:
+
+| File | Vùng | A (không `\n`) | B (có `\n`) | Khớp T31? |
+|---|---|---|---|---|
+| `security/gitlab/RECON.md` | V0 1..38 | `776ef897` | `77d226b5` | ✅ |
+| | V1 41..46 | `84baedad` | `ff105a98` | ✅ |
+| | V2 48..205 | `28f7abc2` | `5efe5dea` | ✅ |
+| | V3 210..213 | `4e126826` | `eb8682aa` | ✅ |
+| | blob `5c088a23 → 75f163cf` | | | ✅ |
+| `T3/CANDIDATES.md` | V0 1..18 | `5aa4af3d` | `1f90b9bf` | ✅ |
+| | V1 20 | `e3b0c442` (rỗng) | `01ba4719` | ✅ |
+| | V2 22..63 | `91d499bd` | `2a0b7549` | ✅ |
+| | V3 65 | `e3b0c442` (rỗng) | `01ba4719` | ✅ |
+| | V5 70 | `4da1ec6f` | `831fe3c0` | ✅ |
+| | V8 83..118 | `6dadecbe` | `cc2de093` | ✅ |
+
+⇒ **Mọi vùng không đổi khớp ở CẢ HAI quy ước, tại head cuối thật.** Khai báo *"kết luận KHÔNG phụ thuộc
+quy ước"* là **ĐÚNG**. (`e3b0c442…` = sha256 chuỗi rỗng ✅.)
+
+### 2.26.4 ⚠️ KHUYẾT ĐIỂM 1 (chính xác) — `FIX_GROUP_B.md` **trích blob CŨ** so với evidence của chính nó
+
+| Nơi | Nội dung về `T3/CANDIDATES.md` |
+|---|---|
+| **Báo cáo** `T31/FIX_GROUP_B.md` d.78 @ `ecce293` | `blob 95d16d76 -> **ac04b460**  dong 118 -> 121` |
+| **Bằng chứng** `T31/EVIDENCE/verify_regions.txt` d.50-51 @ `ecce293` | `blob TRƯỚC: **ac04b460**… / blob SAU: **095006ce**…` |
+| **Thực tế tại head cuối** `ecce293` | blob = **`095006ce`** (`52e96ea`→`209c308` là `ac04b460`; `9455f89` đổi thành `095006ce`) |
+
+⇒ **`FIX_GROUP_B.md` và `verify_regions.txt` MÂU THUẪN nhau về blob đích.** Báo cáo giữ giá trị **trước `9455f89`**;
+bằng chứng đã cập nhật đúng. **Đây đúng loại lỗi Admin muốn tôi bắt khi yêu cầu "verify tại head cuối".**
+**Phạm vi thiệt hại: hẹp** — tôi đã kiểm **mọi vùng không đổi vẫn khớp tại head cuối** (bảng §2.26.3), nên
+**kết luận khoa học không sai**; chỉ **con số blob được trích** là cũ.
+**Đề xuất:** sửa d.78 thành `ac04b460 → 095006ce` (hoặc ghi rõ "blob sau commit `9455f89`").
+
+### 2.26.5 ⚠️ KHUYẾT ĐIỂM 2 — `history_check.txt` **tự mâu thuẫn về số đếm**
+
+`T31/EVIDENCE/history_check.txt` §(B) ghi: *"so commit chạm security/gitlab/SCOPE.md: **3**"* nhưng
+**chỉ liệt kê 2 dòng** và kết thúc bằng *"so commit da kiem: **2**"*.
+Đo lại: trong `6d47749..ecce293` = **0** commit chạm file đó; **toàn lịch sử = 3**
+(`71f0bf8` T3 gốc · `9f73655` T28 · `1b318de` T29). ⇒ Số **3 là đúng** (toàn lịch sử), nhưng
+**bảng chỉ kiểm được 2** (commit gốc không có "cha" để so) mà **không nói rõ lý do**.
+**Mức: thấp — thiếu sót trình bày.** Đề xuất ghi *"3 tổng · 2 kiểm được (T3 là commit gốc)"*.
+
+### 2.26.6 ⚠️ KHUYẾT ĐIỂM 3 — evidence lịch sử chạy tại `9455f89`, **không phải head cuối `ecce293`**
+
+`history_check.txt` ghi `head : 9455f8932de7`. Head thật là `ecce293`.
+**Đánh giá công bằng:** commit `ecce293` **chỉ thêm 1 file** (`T31/EVIDENCE/history_check.txt`, +10/−2) và
+**không chạm** file nội dung nào ⇒ **kết luận lịch sử vẫn đúng**. Và chính **commit message** của `ecce293`
+ghi rõ *"phep kiem lich su tai head 9455f89"* ⇒ **minh bạch, không che giấu**.
+**Mức: thấp (trình bày).** Đề xuất: chạy lại tại `ecce293` (hoặc ghi 1 dòng "head cuối chỉ thêm evidence").
+
+### 2.26.7 A3/A4 — hai mục **PASS**
+
+- **A3 (kiểm theo lịch sử, D-023 [2]):** 5 commit của nhánh, **mọi file bị chạm đều nằm trong danh sách CHO PHÉP**;
+  **file bị LOẠI TRỪ bị chạm = 0** (`T28/FIX_2B.md`, `T29/*`, `EVIDENCE/**` — với `T31/EVIDENCE/**` là
+  bằng chứng của chính T31 nên **hợp lệ và đã được loại khỏi phép thử**). ✅
+- **A4:** `scope_github.md` blob = **`15c946ff956a3fdb466f7f9768081af29b812088`** ✅ — **không đổi**.
+
+**Phán quyết T32-A: PASS về nội dung** (phát hiện dữ liệu đúng tuyệt đối; băm 2 quy ước tái lập; lịch sử sạch;
+`scope_github.md` nguyên vẹn) **+ 3 khuyết điểm chính xác** (1 blob cũ trong báo cáo · 1 số đếm tự mâu thuẫn ·
+1 head evidence chưa phải head cuối) — **cả 3 đều mức thấp và đã được chính tác giả minh bạch một phần**.
+
+---
+
+## 2.27 T32-B — T33: **`chưa xác minh`** (nhánh chưa push) **+ 2 PHÁT HIỆN MỚI**
+
+`git ls-remote --heads origin | grep bounty-recon` → chỉ **T3, T26, T28, T29, T31**. **T33 chưa tồn tại**
+⇒ **B1/B2 không thể chấm.** Tôi ghi `chưa xác minh` kèm lý do.
+
+**Trạng thái `CANDIDATES.md` @ `ecce293` (tiền đề của T33 — ĐÚNG):**
+
+| Dòng | Nguyên văn | |
+|---|---|---|
+| **18** | `\| 3 \| Reviewer1 verify T3 độc lập \| ⏸ **CHƯA** \|` | ❌ **T33 phải sửa** — T3 đã verify ở T14 + merge `4642e3c` (tôi xác nhận `4642e3c` **đã** trên main) |
+| **17** | `\| 2 \| Admin ban hành chỉ thị T4 bằng văn bản \| ⏸ **CHƯA** \|` | ✅ **phải GIỮ `⏸`** — Admin xác nhận đây là điều kiện duy nhất còn thật sự chưa xong |
+
+### 2.27.1 ⚠️ PHÁT HIỆN MỚI 1 — `CANDIDATES.md` dòng 5 vẫn viện dẫn **D-005 đã bị D-013 thay thế**
+
+```text
+dòng 5  : **Trạng thái:** ⏸ **CHỜ ADMIN** — theo D-005, T4 chỉ mở khi Admin ban hành chỉ thị **bằng văn bản**.
+dòng 21 : ⇒ Điều kiện mở T4 nay là: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.
+dòng 85 : … (đã xong) mà là **chỉ thị nêu target cụ thể của Admin** (D-013).
+```
+`directives.md` **D-013** ghi nguyên văn: *"**Chỉ thị này thay thế mọi cách hiểu khác về cổng G4.**
+Trước đó 4 tài liệu mâu thuẫn hai chiều (… `directives.md` **D-005**)"*.
+
+⇒ **Cùng một file viện dẫn CẢ HAI chỉ thị, và chỉ thị ở DÒNG ĐẦU (dòng 5) là bản ĐÃ BỊ THAY THẾ.**
+**Đây là "cùng lớp nhưng khác chữ" đúng như Admin mô tả** — và **bộ quét theo từ khoá KHÔNG bắt được**,
+vì `D-005` không nằm trong bất kỳ danh sách từ khoá cũ nào.
+**Mức: trung bình** — dòng 5 ở **khối Trạng thái**, đọc trước tiên.
+
+### 2.27.2 ⚠️ PHÁT HIỆN MỚI 2 — `CANDIDATES.md` dòng 44 (G2) dựa trên **tiền đề đã cũ**
+
+```text
+dòng 44 : | **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải** | … | ✅ Đáng chuyển + cần Admin/GitLab làm rõ. |
+```
+Đo lại: `license.gitlab.com` type=`URL` `sub=True` `sev=critical`
+**`archived_at = 2022-03-21T22:30:03.041Z`** · **KHÔNG có bản ghi live cùng identifier**.
+
+⇒ Chữ **"trong scope"** là **không còn chắc đúng** — đây là **bản ghi đã nghỉ hưu**. Và G2 là một
+**đề xuất hành động** ("Đáng chuyển") ⇒ làm theo có thể **tốn công trên tài sản đã retire**.
+**Kết nối với §2.26.2:** `license.gitlab.com` **cũng** nằm trong §1 "IN SCOPE (n=24)" **thiếu cột `archived_at`**
+⇒ **cùng một tiền đề cũ xuất hiện ở HAI tài liệu**.
+**Mức: trung bình–cao.** **`chưa xác minh`:** ngữ nghĩa `sub=True` trên bản ghi archived (như §2.26.2).
+
+---
+
+## 2.28 [MỚI 3] Đề xuất cách kiểm **"khẳng định trạng thái"** — Admin yêu cầu
+
+**Vấn đề:** bộ quét **theo mẫu câu/từ khoá** luôn bỏ sót lỗi *"cùng lớp, khác chữ"*. Bằng chứng trong vòng này:
+`D-005` (dòng 5), `"trong scope"` (dòng 44), và blob cũ trong `FIX_GROUP_B.md` — **cả ba đều lọt mọi bộ quét từ khoá**.
+
+**Nguyên lý đề xuất: đừng quét CÂU CHỮ — hãy JOIN với BẢNG NGUỒN SỰ THẬT.**
+
+```bash
+# [MỚI 3] KIỂM "KHẲNG ĐỊNH TRẠNG THÁI" BẰNG JOIN
+# Buoc 1: TRICH khang dinh trang thai (khong phai tu khoa) — cap (CHU THE, TRANG THAI)
+#   CHU THE  ∈ { D-0xx (chi thi) | T<nn> (task) | <asset_id> (tai san) }
+#   TRANG THAI ∈ { cho/CHUA/todo/pending/open | da xong/merged/verified }  (ca 2 chieu!)
+# Buoc 2: voi moi CHU THE, tra ve NGUON SU THAT dang BANG (khong phai van xuoi):
+#   D-0xx   -> rooms/.../directives.md : chi thi MUON HON co tuyen bo "thay the" no khong?
+#   T<nn>   -> ADMIN/ASSIGNMENTS.md (cot Trang thai) + ADMIN/SUMMARY.md §1 (danh sach da merge)
+#   asset   -> goi lai API nguon, doi chieu archived_at / eligible_*  (TUNG BAN GHI RIENG)
+# Buoc 3: bao DELTA (khang dinh noi X, nguon su that noi Y) — KHONG bao "thay tu khoa cu"
+# Buoc 4: quet TOAN TERRITORY, khong chi file dang sua
+#         (vi du: dong 5 va G2 nam NGOAI file ma T29 sua)
+```
+
+**Hai nguyên tắc rút ra — tôi đề nghị đưa vào quy trình như D-023:**
+
+| # | Nguyên tắc | Vì sao (bằng chứng vòng này) |
+|---|---|---|
+| **[MỚI 3a]** | **Trạng thái phải lấy từ BẢNG, không từ câu văn.** Mọi khẳng định "chưa xong / đang chờ / còn hiệu lực" phải **join** được với một bảng nguồn sự thật | `D-005` bị `D-013` thay thế nhưng dòng 5 vẫn viện dẫn; `T3` đã verify nhưng dòng 18 vẫn `⏸ CHƯA` |
+| **[MỚI 3b]** | **Mọi trường có thể "hết hiệu lực" phải xuất hiện trong MỌI bảng trích** — với nguồn có trường đó, thiếu nó là **mất thông tin**, không phải "gọn" | §1 `n=24` **thiếu cột `archived_at`** ⇒ trộn 19 live + **5 archived**; G2 dựa trên 1 trong 5 bản ghi đó |
+
+> **Điểm mấu chốt của [MỚI 3b]:** nó chính là bản khái quát của lỗi tôi từng mắc ở T14
+> (*"kiểm giá trị của trường mình đã chọn, không liệt kê trường có sẵn"*) — **nay áp cho cả tài liệu của
+> người khác**, và nó bắt được 5 mục mà **cả tôi lẫn DeepSeek-Harness đều đã bỏ sót hai vòng liền**.
+
+---
+
+## 2.29 Đã kiểm những mục nào (vòng 8)
+
+- **T32-A (T31) — 14 mục:** A1 `archived_at` **từng bản ghi riêng** (8 bản ghi + phân bố 7 mốc) ·
+  A1b **5 bản ghi archived-nhưng-sub=True** + đối chiếu §1 · A2 băm **2 quy ước × 11 vùng** (khớp hết) ·
+  A2c blob qua **6 commit** · A2d/A2f đối chiếu báo cáo ↔ bằng chứng · A3 kiểm lịch sử 5 commit ·
+  A3d đếm lại SCOPE.md · A4 blob `15c946ff…`.
+- **T32-B (T33) — 3 mục `chưa xác minh`** (nhánh chưa push) **+ 4 mục kiểm được:** dòng 18 còn `CHƯA` ✅ ·
+  dòng 17 phải giữ `⏸` ✅ · **phát hiện dòng 5 viện dẫn D-005 đã bị thay thế** · **phát hiện dòng 44 (G2) tiền đề cũ**.
+- **`chưa xác minh`: 4 mục** — 3 mục T33 không chấm được + **ngữ nghĩa `sub=True` trên bản ghi archived**.
+- **Tự khai lỗi của tôi:** script băm vùng chạy **ngoài repo** (thiếu `cd`) ⇒ đọc ra rỗng; tôi **không** kết luận
+  "file không tồn tại" mà kiểm lại bằng `git rev-parse`/`git ls-tree` rồi chạy lại đúng. **Lần thứ 6** trong phiên
+  tôi phải sửa công cụ của chính mình trước khi báo cáo.
+
+> **Phán quyết vòng 8: T31 PASS về nội dung** (phát hiện dữ liệu đúng tuyệt đối, băm 2 quy ước tái lập,
+> lịch sử sạch, `scope_github.md` nguyên vẹn) **+ 3 khuyết điểm mức thấp**;
+> **T33 `chưa xác minh`** (nhánh chưa push) **+ 2 phát hiện mới cùng lớp** trong territory BountyRecon.
