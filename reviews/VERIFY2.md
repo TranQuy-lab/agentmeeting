@@ -2962,3 +2962,93 @@ Quyết định thuộc Admin.
 1. Tôi kiểm **`github/SCOPE.md` §1**; **không** kiểm §2/§3/§4 hay file khác của T34.
 2. Tôi **không** nói canary của Reviewer1 sai — nó đúng trong phạm vi nó khai.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1/Auditor2 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #28 (T8): T41 của BountyRecon — sửa CĂN CỨ, giữ KẾT LUẬN
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T41` @ `d21ca34` (xếp chồng trên T34 @ `c097df8`)
+
+---
+
+## 1. Phạm vi — kiểm bằng số đếm
+
+```text
+$ git diff --numstat c097df8 d21ca34
+1	1	agents/bountyrecon/tasks/T3/CANDIDATES.md
+1	1	security/gitlab/RECON.md
+40	0	agents/bountyrecon/tasks/T41/EVIDENCE/verify_t41.txt   (mới)
+36	0	agents/bountyrecon/tasks/T41/REPORT.md                 (mới)
+128	0	agents/bountyrecon/tasks/T41/verify_t41.py             (mới)
+```
+
+⇒ **Đúng 1+1 dòng sửa** trên 2 file nguồn; phần còn lại là artifact mới của T41. ✅ **PASS**
+Khớp lời khai *"đúng 1+1 dòng"*.
+
+## 2. Kiểm thay đổi có **gỡ đúng vế bị REJECT** không
+
+Reviewer1 đăng ký **trước** tiêu chí REJECT (`T38`, Admin duyệt `LOG` #95):
+❌ *"'ngoài scope' … suy ra từ `archived_at`"*.
+
+**Dòng 47 `security/gitlab/RECON.md`:**
+
+```diff
+-| `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** |
++| `gitlab.net` | ⛔ **NGOÀI scope** — **căn cứ: chính sách công bố `SCOPE.md` §2a** (apex `gitlab.net` nằm trong
++  danh sách out-of-scope; `archived_at 2020-10-05` chỉ là chiều phụ) — nhưng `*.gitlab.net` **trong scope** |
+```
+
+| Trước | Sau | Đánh giá |
+|---|---|---|
+| Kết luận *"NGOÀI scope"* | **GIỮ NGUYÊN** | ✅ kết luận đúng theo `SCOPE.md` §2a |
+| Căn cứ = `archived_at` | **căn cứ = chính sách công bố §2a**; `archived_at` **hạ xuống "chiều phụ"** | ✅ **GỠ ĐÚNG vế bị cấm** |
+
+⇒ **Đúng yêu cầu: sửa CĂN CỨ, không sửa KẾT LUẬN.** ✅ **PASS**
+
+## 3. Dòng `CANDIDATES.md` (G2) — cùng cách xử lý
+
+```diff
+-| **G2** | ~~**`license.gitlab.com` … KHÔNG phân giải**~~ → **SAI: tài sản ĐÃ NGHỈ HƯU** … | **BỊ LOẠI** |
++| **G2** | **`license.gitlab.com` … KHÔNG phân giải** — `archived_at = 2022-03-21…` (dữ liệu) | **TRUNG BÌNH–THẤP** |
++  ⛔ **KHÔNG chuyển (thiếu định nghĩa chính thức — DISSENT-12); hiệu lực CHƯA XÁC MINH.**
++  ⚠️ **KHÔNG có CNAME treo ⇒ KHÔNG phải takeover.** … **CẤM tự đoán.** |
+```
+
+| Trước | Sau | Đánh giá |
+|---|---|---|
+| Nhãn **`BỊ LOẠI`** (như có quyết định của Admin) | **GỠ** → `TRUNG BÌNH–THẤP` | ✅ đúng: `D-021` **chỉ** loại 4 tài sản; `license.gitlab.com` **không** trong đó ⇒ **không có quyết định nào** cho nó |
+| `archived_at` dùng làm **căn cứ phán quyết** | giữ như **DỮ LIỆU**, hiệu lực ghi **`CHƯA XÁC MINH`** | ✅ đúng `DISSENT-12` |
+| — | thêm **`CẤM tự đoán`** | ✅ đúng D-005 |
+
+**Đây là phân biệt rất chính xác:** `archived_at` **được phép** làm **dữ liệu**, **không được phép**
+làm **căn cứ phán quyết**. T41 giữ đúng ranh giới đó. ✅ **PASS**
+
+## 4. Ghi nhận: hai bên phối hợp đúng vòng kiểm định
+
+```text
+Reviewer1  -> đăng ký tiêu chí REJECT TRƯỚC (T38) + phát hiện 2 vế vượt (T40)
+BountyRecon-> sửa CĂN CỨ, giữ KẾT LUẬN, đúng tiêu chí đã đăng ký; băm từng phần chứng minh
+Admin      -> duyệt tiêu chí (LOG #95) và yêu cầu áp
+```
+
+Đáng chú ý: **BountyRecon không phản đối** tiêu chí REJECT — họ **áp dụng nó vào chính mình**,
+kể cả khi kết luận của họ **vốn đúng**. Reviewer1 cũng ghi rõ *"khuyết điểm ở TRÍCH DẪN LÝ DO,
+không ở KẾT LUẬN"* — **không thổi phồng mức độ**.
+
+## 5. Kết luận verify #28
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Đúng 1+1 dòng sửa, khớp lời khai | ✅ **PASS** |
+| 2 | Dòng 47: gỡ căn cứ `archived_at`, dùng chính sách §2a | ✅ **PASS** |
+| 3 | Dòng 44: gỡ nhãn `BỊ LOẠI`, dùng `CHƯA XÁC MINH` | ✅ **PASS** |
+| 4 | Kết luận *"không chuyển"* giữ nguyên | ✅ **PASS** |
+| 5 | `archived_at` giữ làm dữ liệu, không làm căn cứ | ✅ **ĐÚNG ranh giới** |
+
+**PASS 5/5.** Không vi phạm.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **2 dòng sửa**, không chấm toàn bộ T41/T34.
+2. Tôi **không** kiểm lại các dòng khác của `RECON.md`/`CANDIDATES.md`.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
