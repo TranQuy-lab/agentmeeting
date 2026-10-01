@@ -1,0 +1,88 @@
+### T10 — Reviewer1 kiem chung cheo T1 DocWriter (nhanh agent/doc-writer/T1)
+### Thoi diem: 2026-10-01T14:25:34Z (UTC)
+
+=== [T10-1] Revision kiem: 6977d36 (Admin giao) va 5bcea63 (DocWriter ghi trong INDEX) ===
+$ git rev-parse 6977d36 5bcea63
+6977d365ec4fd539389213f769827c5057300b44
+5bcea63abc3b4dbdccd6b0ae2c836f348a830cfa
+$ git log --oneline -3 6977d36
+6977d36 [T1] fix: dinh chinh pham vi loi 'say' (SKILL.md:43, khong phai directives.md) + cap nhat theo main a414944
+3be89fd [T1] fix: chuan hoa INDEX.md (39 file) + sua link tuong doi trong ho so T1
+5bcea63 [T1] digest: kiem tra khung, quy trinh+digest phong, manifest raw, bao cao chat luong
+$ git log --oneline --all | grep 5bcea63
+5bcea63 [T1] digest: kiem tra khung, quy trinh+digest phong, manifest raw, bao cao chat luong
+
+=== [T10-2] git ls-files tai 6977d36 — doi chieu bang INDEX '39 file' ===
+$ git ls-tree -r --name-only 6977d36 | wc -l
+39
+$ git ls-tree -r --name-only 5bcea63 | wc -l
+39
+
+=== [T10-3] Bang tong hop §3 cua INDEX: dem tung loai ===
+  tong              : 39 (INDEX khai 39)
+  *.md              : 24 (INDEX khai 24)
+  *.gitkeep         : 13 (INDEX khai 13)
+  *.jsonl           : 1 (INDEX khai 1)
+  .gitignore        : 1 (INDEX khai 1)
+  con lai (khac 4 loai): 0 (INDEX khai 0)
+
+=== [T10-4] '7 file moi' — so voi abe0c3e ===
+$ diff abe0c3e 6977d36  (chi lay dong moi)
+  + agents/docwriter/tasks/T1/BAO-CAO-CHAT-LUONG.md
+  + agents/docwriter/tasks/T1/KIEM-TRA-KHUNG.md
+  + rooms/ab1-478d-cfa7/digest/digest-msg-0001-0012.md
+  + rooms/ab1-478d-cfa7/digest/README.md
+  + rooms/ab1-478d-cfa7/raw/MANIFEST.md
+  + rooms/ab1-478d-cfa7/raw/raw-msg-0001-0012.jsonl
+  + rooms/ab1-478d-cfa7/README.md
+  => so file moi: 7  (INDEX khai 7)
+  => so file bi xoa: 0
+
+=== [T10-5] SHA256 digest: '66ac7183…8295' ===
+$ git show 6977d36:rooms/ab1-478d-cfa7/raw/raw-msg-0001-0012.jsonl | sha256sum
+66ac7183fadedd481ccc839e2c82ef05cbdef568065b11d4f8e546bc27e88295  -
+$ git show 6977d36:rooms/ab1-478d-cfa7/raw/raw-msg-0001-0012.jsonl | wc -lc
+     12   44186
+  => so dong JSONL (ban ghi): 12  (INDEX khai 12)
+
+=== [T10-6] MANIFEST.md khai SHA256 nao? co khop khong? ===
+27:| # | File | Số bản ghi | Khoảng `message_id` | SHA256 | Kích thước |
+29:| 1 | `raw-msg-0001-0012.jsonl` | 12 | 1 → 12 | `66ac7183fadedd481ccc839e2c82ef05cbdef568065b11d4f8e546bc27e88295` | 44.186 B |
+36:sha256sum rooms/ab1-478d-cfa7/raw/raw-msg-0001-0012.jsonl
+37:# phải ra đúng 66ac7183fadedd481ccc839e2c82ef05cbdef568065b11d4f8e546bc27e88295
+
+=== [T10-7] digest-msg-0001-0012.md khai SHA256 nao? ===
+21:| SHA256 của raw | `66ac7183fadedd481ccc839e2c82ef05cbdef568065b11d4f8e546bc27e88295` |
+27:Cách kiểm lại: `sha256sum rooms/ab1-478d-cfa7/raw/raw-msg-0001-0012.jsonl`
+74:| `ag_76306ba6` | `sha256sum` + `jq` có tại `/usr/bin/sha256sum`, `/usr/bin/jq`; `git 2.43.0`, `Python 3.12.3`, `node v22.23.3` | `chưa xác minh` |
+
+=== [T10-8] LUU Y REVISION: main hien tai nhieu hon ===
+  main (origin/main)  : 46 file
+  nhanh T1 (6977d36)  : 39 file
+
+=== [T10-9] INDEX co dung 39 HANG trong bang §2 khong? ===
+  so hang du lieu trong bang: 39
+  dai so thu tu: 1 -> 39 | lien tuc? True
+  thieu so: (khong)
+
+=== [T10-10] INDEX hang 33: directives.md 'D-001..D-005; KHONG chua say' ===
+$ git show 6977d36:rooms/ab1-478d-cfa7/directives.md | grep -c '^## \[D-'
+5
+$ git show 6977d36:rooms/ab1-478d-cfa7/directives.md | grep -n 'say'
+  (khong co 'say' => INDEX dung)
+$ git show 6977d36:rooms/ab1-478d-cfa7/directives.md | grep -c '^## \[D-'  (tren 6977d36)
+## [D-001] ## [D-002] ## [D-003] ## [D-004] ## [D-005] 
+
+=== [T10-11] '1 link chet, 21 file thieu' (INDEX hang 17, BAO-CAO-CHAT-LUONG) — kiem mau ===
+14:| Mọi file có tiêu đề + ngày + tên tác giả | ❌ **KHÔNG ĐẠT** — 10 file thiếu metadata; 9 còn nguyên, 1 đã sửa (mục 1) | `head -5` từng file |
+16:| Không link chết | ❌ **KHÔNG ĐẠT** — 1 mục INDEX trỏ file không tồn tại (mục 3) | `ls reviews/` |
+17:| Không mục lục lệch | ❌ **KHÔNG ĐẠT** — INDEX thiếu 21/32 file (mục 4) | `INDEX.md` vs `git ls-files` |
+19:## 1. File thiếu metadata (tiêu đề / ngày / tác giả)
+24:### 1.1 Thiếu CẢ ngày VÀ tác giả ở khối đầu file — 9 file
+26:| # | File | Có tiêu đề? | Thiếu | Ai sửa (territory) |
+41:  ("Nhật ký quyết định của Admin"). Cái thiếu là **khối metadata đầu file**, không phải toàn bộ.
+45:  tác giả suy ra từ tiêu đề. Thiếu khối metadata đầu file.
+53:| 2 | `INDEX.md` | trạng thái "⏳ chờ dựng", thiếu 21 file | đã tiếp quản, đủ 32+ file |
+68:## 3. Link chết — 1 vi phạm
+88:## 4. Mục lục lệch — 21 file không được liệt kê
+120:| `agents/{auditor2,bountyrecon,exploitdeep,forensicsmal,researchlead,reviewer1}/README.md` | thiếu ngày + tác giả | Territory từng agent |

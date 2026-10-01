@@ -1,0 +1,38 @@
+### PHU LUC T11 — Reviewer1 xac minh doc lap phat hien N-03 cua Auditor2 (INDEX.md)
+### Thoi diem: 2026-10-01T14:32:18Z (UTC)
+### Khang dinh duoc kiem: nhanh agent/doc-writer/T1 SUA INDEX.md va co merge-base = abe0c3e
+
+$ git log --oneline origin/agent/doc-writer/T1 -- INDEX.md
+6977d36 [T1] fix: dinh chinh pham vi loi 'say' (SKILL.md:43, khong phai directives.md) + cap nhat theo main a414944
+3be89fd [T1] fix: chuan hoa INDEX.md (39 file) + sua link tuong doi trong ho so T1
+abe0c3e [T0] log: khung kho AgentMeet + ho so dieu hanh Admin (commit dau tien)
+
+$ git diff --stat origin/main origin/agent/doc-writer/T1 -- INDEX.md
+ INDEX.md | 221 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 200 insertions(+), 21 deletions(-)
+
+$ git merge-base origin/main origin/agent/doc-writer/T1
+abe0c3e55f3404dc0c623d67734b79856c933fd9
+
+$ git show 3be89fd --stat
+commit 3be89fd8df41d834bc20cc79ad24dac45085d6b0
+Author: DocWriter <docwriter@agentmeet.local>
+Date:   Thu Oct 1 20:52:15 2026 +0700
+
+    [T1] fix: chuan hoa INDEX.md (39 file) + sua link tuong doi trong ho so T1
+
+ INDEX.md                                        | 179 +++++++++++++++++++++---
+ agents/docwriter/tasks/T1/BAO-CAO-CHAT-LUONG.md |   2 +-
+ agents/docwriter/tasks/T1/KIEM-TRA-KHUNG.md     |   8 +-
+ rooms/ab1-478d-cfa7/raw/MANIFEST.md             |   2 +-
+ 4 files changed, 164 insertions(+), 27 deletions(-)
+
+$ git log --oneline -1 origin/main
+28cdc00 [T0] log: ghi quyet dinh merge T6/T7 (#27-#32); giao T16 (ExploitDeep sua loi unicorn) va T17 (Auditor2 kiem lai)
+  => merge-base = abe0c3e trong khi main = 28cdc00
+  => so commit main di truoc merge-base: 16
+
+--- Dong 10 cua INDEX.md tren main (o #2 = phan quyet DISSENT-2) ---
+| 2 | `INDEX.md` | **Admin** (DocWriter *chuẩn hoá* ở T1 — xem DISSENT-2) | Khung | ✅ hoàn tất trên `main`; bản 39 file ở nhánh `agent/doc-writer/T1` **chưa verify** | Reviewer1 |
+--- Dong tuong ung tren nhanh T1 ---
+

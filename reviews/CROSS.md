@@ -269,112 +269,229 @@ phần finding, chưa có `FINDING.md`), T5 (ForensicsMal), T7 (Auditor2), T8 (D
 
 ---
 
-# VÒNG 3 — Bài kiểm #6 (T20): T15 ForensicsMal + T16 ExploitDeep
+# VÒNG 2 — Bài kiểm #3, #4, #5 (T11, T14, T10)
 
-**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T20`
-**Base:** `origin/main` = `a1e026f` · **Thời điểm kiểm:** `2026-10-01T14:33Z` → `14:35Z`
-**Bằng chứng thô:** `agents/reviewer1/evidence/T20/`
-
----
-
-## 2.11 Bài kiểm #6A — T15 ForensicsMal @ `78c0464`
-
-```text
-[REVIEW] T20-A / ForensicsMal (ag_82f7cb07) / Lớp 1 CROSS / KẾT QUẢ: PASS — 4/4 hạng mục tái lập chính xác
-```
-
-**Cách kiểm:** tôi `git archive 78c0464 agents/forensicsmal/T15 | tar -x -C /tmp/rv1-t15` —
-tức chạy trong **thư mục riêng của tôi**, không dùng clone/thư mục của tác giả — rồi chạy lại
-**cả 4 script** bằng toolchain `/home/noble-tran/forensicsmal-tooling/.venv/bin/python`.
-
-| # | Khẳng định của ForensicsMal | Tôi đo lại | Kết quả |
-|---|---|---|---|
-| T15-1 | PCAP: **0 lệch giá trị**, 3 lệch biểu diễn / 14 trường | `failures_value_mismatch: []` · `repr_only_differences` = 3 (`dns.id` 4660 vs `0x1234`; `dns.flags.response` 0 vs `False`; `dns.qry.class` 1 vs `0x0001`) · `So truong doi chieu: 14` | **✅ PASS** từng con số |
-| T15-2 | ELF: 92 instruction, **0 lệch địa chỉ**, 1 lệch mnemonic (`0x1066`, tiền tố `cs`), 41 lệch toán hạng | `entry=0x1040`, `.text`=0x1040/**334 byte** (`objcopy` = 334 byte ⇒ khớp `readelf`); capstone=**92**, objdump=**92**; địa chỉ=**0**; mnemonic thô=**1** (`#13 @0x1066: capstone='nop' objdump='cs'`); lệch cứng sau gập tiền tố=**0**; toán hạng=**41** | **✅ PASS** từng con số |
-| T15-3 | YARA: **TP=10, TN=46, FP=0, FN=0** (56 phép kiểm) | In đúng ma trận đầy đủ: `TONG: TP=10 TN=46 FP=0 FN=0`, `Tong so phep kiem: 56`. Hai bẫy FP (`t15_absent_string`, `t15_mz_header_pe`) đều không khớp; hai bẫy FN thật (`t15_boundary_marker` vắt mốc 4096, `t15_wide_marker` UTF-16LE) đều khớp | **✅ PASS** |
-| T15-4 | volatility3: 9 ca, **0 crash, 0 treo, 9/9 báo lỗi rõ** | In đủ bảng 9 ca: exit ∈ {1,2}, thời gian 0.18–0.29 s, `treo=khong` ×9, `traceback=khong` ×9, `co bao loi=CO` ×9 | **✅ PASS** |
-
-### 2.11.1 Kiểm hai chỗ ForensicsMal **tự nhận yếu** (Admin yêu cầu riêng)
-
-**(a) `capstone` metadata 5.0.9 vs `__version__` 5.0.7 — xác nhận CẢ HAI, không chọn bên nào:**
-
-```text
-$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python -c "import capstone, importlib.metadata as md; ..."
-  capstone: import=5.0.7   metadata=5.0.9
-```
-
-⇒ **Cả hai giá trị đều ĐÚNG.** `importlib.metadata.version("capstone")` = **5.0.9**;
-`capstone.__version__` = **5.0.7**. Đây là **không nhất quán của chính gói capstone** (wheel metadata
-khai một đằng, module khai một nẻo), **không phải** lỗi đọc của tác giả. ForensicsMal ghi cả hai và
-**từ chối phán quyết cái nào "đúng"** — đó là hành vi **đúng**; tôi xác nhận và **không** chọn thay.
-**Khuyến nghị:** mọi trích dẫn phải ghi rõ *nguồn của số phiên bản* (metadata hay `__version__`).
-
-**(b) 41 lệch toán hạng có cái nào **thực sự ngữ nghĩa** không? — tôi tự viết bộ chuẩn hoá riêng:**
-
-Lần 1 và 2 của tôi báo **sai** (16 rồi 11 dòng "khác ngữ nghĩa"). **Nguyên nhân là lỗi của TÔI**:
-`objdump` in đích nhảy/gọi ở dạng **hex trần** (`je 1098`) còn capstone in `0x1098`, nên bộ chuẩn hoá
-của tôi parse `1098` thành **thập phân** ⇒ báo oan. Tôi ghi lại cả 4 phiên bản trong
-`t20-operand-semantics.txt` để việc sửa sai của chính tôi kiểm chứng được.
-
-**Kết quả đúng (bản 4, đã sửa quy ước hex trần):**
-
-| Nhóm | Số dòng | Bản chất |
-|---|---|---|
-| Cách viết (hex↔thập phân, comment symbol `<main>`, `PTR` hoa/thường, `+0x0`/`*1` ẩn) | **40** | Cùng giá trị, cùng ngữ nghĩa |
-| Tiền tố `cs` bị `objdump` tách thành token riêng (`@0x1066`) | **1** | **Cùng một lệnh**: byte thô `66 2e 0f 1f 84 00 00 00 00 00` |
-| **Khác ngữ nghĩa thật sự** | **0** | — |
-
-⇒ **Khẳng định của ForensicsMal ĐÚNG**: **không có lệch giải mã thực sự**. Một tinh chỉnh nhỏ:
-trong 41 dòng, **1 dòng (`@0x1066`) không phải "cách viết" thuần** mà là ca **tách tiền tố** —
-nhưng tác giả **đã báo ca đó riêng** ở mục "lệch mnemonic" và giải thích đúng bằng byte thô.
-Nên **không có sai sót nào bị bỏ lọt**.
-
-### 2.11.2 Ghi nhận công bằng (những gì T15 làm tốt)
-
-- Tự tạo **bẫy âm tính giả thật** (marker vắt mốc chunk 4096 của YARA; marker UTF-16LE) thay vì chỉ
-  đếm dương tính — đây là mức kiểm **cao hơn** mức thông thường.
-- Chủ động **hạ mức** `volatility3` xuống "công cụ sẵn sàng, CHƯA thực chiến" và ghi rõ T15-4
-  **không** chứng minh phân tích được dump thật.
-- Ghi rõ **hệ quả của việc không có `sudo`** (không carving đĩa, không stego, không `zeek`/`binwalk`,
-  không `yara` CLI) — biến một thiếu sót thành thông tin dùng được.
-- Mục §6 "CHƯA XÁC MINH" có **7 mục** và **không rỗng** — đúng tinh thần D-004.
-
-**Phán quyết T20-A: PASS — 4/4 hạng mục tái lập chính xác, 0 lệch ngữ nghĩa, tác giả không bịa.**
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T11`
+**Base:** `origin/main` = `28cdc00` · **Thời điểm kiểm:** `2026-10-01T14:03Z` → `14:26Z`
 
 ---
 
-## 2.12 Bài kiểm #6B — T16 ExploitDeep @ `741aee6`
+## 2.7 Bài kiểm #3 — T11: hai nguồn đang chặn tính mới (cao nhất)
 
 ```text
-[REVIEW] T20-B / ExploitDeep (ag_367372ea) / Lớp 1 CROSS / KẾT QUẢ: PASS — 5/5 mục
+[REVIEW] T11 / ResearchLead (ag_d85dde8d) / Lớp 1+2 / KẾT QUẢ: S31 = CHẮC CHẮN (đọc toàn văn)
+                                              S29 = chưa xác minh toàn văn + PHÁT HIỆN DOI SAI
 ```
 
-| # | Mục Admin yêu cầu | Lệnh đã chạy lại | Output thô | Kết quả |
+**Artifact kiểm:** `research/RANKING.md`, `research/{pqc-tls-migration,ebpf-microsegmentation}/SOURCES.md`
+@ `a23c004` · **Bằng chứng thô:** `agents/reviewer1/evidence/T11/`
+
+### 2.7.1 Bảng đối chiếu S29 / S31
+
+| # | Khẳng định của ResearchLead | Lệnh đã chạy lại | Output thô | Kết quả |
 |---|---|---|---|---|
-| B1 | `unicorn` CÓ ở VENV_ED, THIẾU ở SYSTEM | `/usr/bin/python3 -c "import unicorn"` · `/home/noble-tran/.venvs/ed/bin/python -c "import unicorn"` | SYSTEM: `ModuleNotFoundError: No module named 'unicorn'` · VENV_ED: `VENV_ED: CO 2.1.2` | **✅ PASS** khớp từng môi trường |
-| B2 | Bảng có **2 cột môi trường**, nhãn từng dòng, không dòng nào trộn | đọc `T4/READINESS.md` §1.2 | Hai bảng đều có **tiêu đề 2 cột** `SYSTEM` / `VENV_ED`; 16 dòng tool + 7 dòng CLI, **mỗi dòng mang cả hai giá trị**, không dòng nào trộn. Dòng `gdb objdump readelf …` ghi `✅ CÓ (SYSTEM)` / `❌ không có trong bin của venv, nhưng dùng được — venv thừa hưởng PATH` — **phân biệt rõ ràng**, không lẫn | **✅ PASS** |
-| B3 | Quy trình mới **không còn `pip list \| grep` lọc tay**; `pip freeze` thô có `unicorn==2.1.2` | đọc `T16/inventory_per_interpreter.sh` + 2 file freeze | Dòng 79-80: `printf '$ %s -m pip list (KHONG LOC)'` rồi `"$py" -m pip list` — **không grep**. `pip-freeze-VENV_ED.txt:**45**: unicorn==2.1.2` ✅. `pip-freeze-SYSTEM.txt` ghi nguyên văn `/usr/bin/python3: No module named pip` + `exit=1` (trung thực). `grep` **còn** ở dòng 113-115 nhưng chỉ cho **probe đích danh** `pip show unicorn`/`ls … unicorn` — **không phải** lọc kiểm kê ⇒ đúng | **✅ PASS** |
-| B4 | File raw cũ `T4/EVIDENCE/tool_inventory_raw.txt` **không bị viết lại** | `git rev-parse` blob ở cả hai commit + `git log --all -- <file>` | `2cbe90a:…` = **`3c37ab8bda5da35228d8041734b09982d8d21bb2`**; `741aee6:…` = **`3c37ab8bda5da35228d8041734b09982d8d21bb2`** — **GIỐNG HỆT**. `git log --all -- <file>` chỉ có **`be70eed`** | **✅ PASS — KHÔNG vi phạm** |
-| B5 | `nmap`, `gmpy2`, `fpylll`, `angr`, `sage` **vẫn thiếu ở CẢ HAI** | `import` trong **từng** interpreter + `command -v` | `gmpy2`/`fpylll`/`angr` → `ModuleNotFoundError` ở **cả hai**; `nmap` → `command not found` ở **cả hai**; `sage` → không có trong PATH ở **cả hai** | **✅ PASS** |
+| S31-1 | Title/author/ngày S31 | `curl -sL 'http://export.arxiv.org/api/query?id_list=2603.11006'` | HTTP 200; `Layered Performance Analysis of TLS 1.3 Handshakes…`; Gómez-Cambronero, Munteanu, González-Tablas; entry `updated=2026-07-07T10:08:49Z` | **PASS** (khớp cả 3) |
+| S31-2 | "hơn 30 thí nghiệm" | trích abstract | *"Across more than thirty experiments"* | **PASS** |
+| S31-3 | "backend đổi kích thước phản hồi" | trích abstract | *"Each set of tests also varied the backend response size"* | **PASS** |
+| S31-4 | **Đọc được TOÀN VĂN** | `curl -sL 'https://arxiv.org/html/2603.11006v2'` | HTTP 200 · 368.458 B HTML → bóc thẻ = **64.256 ký tự**; PDF 618.743 B | **PASS — ĐÃ ĐỌC TOÀN VĂN** |
+| S31-5 | **(K1) S31 KHÔNG bao phủ biên/middlebox/MTU/chứng thư ML-DSA** | đếm từ khoá trong toàn văn | `MTU`=**0** · `middlebox`=**0** · `fragment`=**0** · `packet size`=**0** · `network layer`=**0** · `tunnel`=**0** · `VPN`=**0** · `certificate chain`=**0** · `edge`=**1** (ở 99,7% độ dài = footer arXiv, KHÔNG phải kỹ thuật) | **K1 ĐƯỢC XÁC NHẬN** |
+| S31-6 | ML-DSA có được S31 đo? | trích toàn văn | *"Additional tests varying the digital signature algorithm (e.g., ECDSA vs. ML-DSA vs. SLH-DSA) to isolate signature overhead are **planned as future work**"*; future-work list ghi *"evaluating post-quantum digital signature algorithms (Falcon, SPHINCS+, ML-DSA) and their impact on **certificate verification latency**"* | **KHÔNG đo — là FUTURE WORK** |
+| S31-7 | S31 tự nêu khoảng hở nào? | trích toàn văn | *"extending the analysis to **real network environments with commercial load balancers and MiTM (Man-in-The-Middle) inspection devices**…"* | **S31 TỰ LIỆT KÊ ĐÚNG KHOẢNG HỞ CỦA T1 VÀO FUTURE WORK** |
+| S31-8 | Venue/trọng số S31 | arXiv API `arxiv:comment` | *"Accepted in **SPIQE 2026** (Workshop on Secure Protocol Implementations in the Quantum Era), associated to **Euro S&P 2026**. v2 incorporates peer-review feedback…"* | **ĐÃ QUA BÌNH DUYỆT** — trọng số cao hơn "preprint" |
+| S29-1 | DOI `10.1109/ICICT63348.2025.10989392` | `curl -sIL 'https://doi.org/10.1109/ICICT63348.2025.10989392'` | **HTTP 404** (doi.org) · Crossref **404** · OpenAlex **404** | **❌ DOI SAI** |
+| S29-2 | DOI đúng là gì? | `curl -sL '…/works/10.1109/iccit63348.2025.10989392'` | **HTTP 200** — chữ thường `iccit` | **DOI ĐÚNG: `10.1109/iccit63348.2025.10989392`** |
+| S29-3 | Metadata S29 (DOI đúng) | Crossref + OpenAlex | Title đầy đủ `…, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC)`; venue `2025 4th International Conference on Computing and Information Technology (ICCIT)`; tr. 181-189; 2025-04-13; Bello, Diyan, Asghar | **PASS** (khớp nhãn "ICCIT" mà ResearchLead ghi ở cột venue) |
+| S29-4 | **Đọc được TOÀN VĂN S29?** | doi.org → IEEE Xplore (**202**); `xplorestaging…pdf` → trả **HTML captcha** không phải PDF; Teesside portal → **không có PDF** (`…/files/…pdf` **403**, `…/ws/portalfiles/…` **400**) | OpenAlex: `oa_status = **closed**`, `is_oa=False`, `any_repository_has_fulltext=False` | **`chưa xác minh` — KHÔNG lấy được toàn văn** |
+| S29-5 | S29 có đo "cửa sổ hội tụ" không? | đọc **trừu tượng chính thức đầy đủ 1.215 ký tự** (OpenAlex) | Toàn văn trừu tượng **không** chứa `convergence`/`latency`/`measure`; mô tả: *"encompasses a comprehensive literature review, prototype design, and critical evaluation… The technical artefact, a prototype…"* | **chưa xác minh** (trừu tượng KHÔNG ủng hộ, nhưng trừu tượng ≠ toàn văn) |
 
-**Kiểm chứng bản đính chính §1.7 — đây là điểm tôi đánh giá cao nhất:**
+### 2.7.2 PHÁT HIỆN MỚI — DOI S29 bị ghi SAI ở cả 4 tài liệu, nhưng metadata CÓ được xác minh thật
 
-`READINESS.md` §1.7 ghi rõ **hai nguyên nhân gốc** — (1) chuỗi `pip list | grep -Ei '…'` **không chứa
-`unicorn`**; (2) **chưa từng chạy `import unicorn` trong venv** — **trùng khớp từng ý** với phát hiện
-độc lập của tôi ở T9. Quan trọng hơn, §1.7 **chủ động bác bỏ chính cái cớ dễ dãi nhất**:
-> *"**KHÔNG phải nguyên nhân** | **Không** liên quan D-009. mtime `unicorn-2.1.2.dist-info` =
-> `2026-10-01 20:47:42 +07` = `13:47:42Z`; D-009 ký lúc `13:54:20Z` ⇒ `unicorn` có **TRƯỚC D-009
-> 6 phút 38 giây**. Đổ cho D-009 là **sai**."*
+Đây là phát hiện quan trọng nhất của T11, và nó **không phải bịa đặt**:
 
-⇒ Tác giả **không** lấy việc Admin vừa duyệt cài tool (D-009) để rửa lỗi. Đây là hành vi đúng mực.
-Bản sửa **sửa cả kết luận lẫn quy trình**, và **không đụng** bằng chứng thô cũ (B4) — đúng D-004.
+- **Trong 4 tài liệu giao nộp**, DOI ghi HOA: `10.1109/**ICICT**63348.2025.10989392` →
+  `BLINDCHECK.md:53`, `LITREVIEW.md:264`, `ebpf-microsegmentation/SOURCES.md:81`, `pqc-tls-migration/SOURCES.md:109`.
+  Dạng HOA này **KHÔNG resolve được** (404 ở cả doi.org / Crossref / OpenAlex).
+- **Trong chính file bằng chứng của ResearchLead**, DOI ghi THƯỜNG và **resolve được**:
+  `openalex_doi_lookup.txt:15`, `openalex_title_filters.txt:50`, `crossref_lookups.txt:18`
+  đều là `10.1109/**iccit**63348.2025.10989392`.
+- ⇒ **Metadata S29 đã được xác minh thật** (họ tra đúng DOI). Lỗi là **sao chép sai hoa/thường
+  vào 4 tài liệu giao nộp**. Đây là **lỗi chép chính tả**, KHÔNG phải bịa nguồn.
+- **Tự mâu thuẫn nội bộ:** cùng một hàng bảng `SOURCES.md:81` ghi cột venue `IEEE **ICCIT**` nhưng
+  cột DOI ghi `**ICICT**63348` — hai nửa của cùng một dòng không khớp nhau.
 
-**Phán quyết T20-B: PASS — 5/5 mục. Lỗi ở T9 đã được sửa đúng gốc, không "sửa cho có".**
+**Đề xuất (Reviewer1 KHÔNG tự sửa — ngoài territory):** sửa hoa/thường DOI tại 4 vị trí trên thành
+`10.1109/iccit63348.2025.10989392`, và ghi kèm URL resolve được để người sau không mất thời gian.
 
-### 2.12.1 Kiểm chứng chéo với verifier khác (Lớp 2)
+### 2.7.3 Chấm lại tính mới (Lớp 2 — đối chiếu, chi tiết ở `reviews/RECONCILE.md` §6)
 
-DeepSeek-Harness (T8, msg #76/#77) cũng đã **tự chạy lại** `import unicorn` và xác nhận `2.1.2` +
-mốc `6m38s`. ⇒ **hai kiểm định viên độc lập, hai môi trường, cùng kết quả.**
-**Giới hạn phải nói rõ:** cả hai đều chạy trên **cùng một máy** (`noble-tran`) ⇒ đây là **tái lập
-cùng môi trường**, **chưa** phải tái lập khác máy. Muốn mạnh hơn cần một máy thứ hai (ví dụ VM của
-`javis` tại `/home/hatch`). Tôi ghi vào mục `chưa xác minh` chứ không tuyên bố "đã kiểm độc lập đa máy".
+| Đề tài | ResearchLead chấm | Bằng chứng tôi đọc được | Kết luận của Reviewer1 |
+|---|---|---|---|
+| `RL-T1-PQC-TLS` | **N=2** (F×N×G = 24) | S31 **KHÔNG** bao phủ biên/middlebox/MTU/chứng thư ML-DSA (0 lần xuất hiện); S31 **tự ghi** hướng đó vào future work; ML-DSA signature/cert **"planned as future work"** | **N=2 KHÔNG được bằng chứng ủng hộ.** Bằng chứng ủng hộ **N=3 hoặc 4**. Tôi nghiêng **N=4** vì S31 tự liệt kê đúng khoảng hở đó vào future work ⇒ T1 = 3×4×4 = **48** (K1 xảy ra) |
+| `RL-T2-EBPF-SEG` | **N=3** (F×N×G = 48) | Không lấy được toàn văn S29. Trừu tượng đầy đủ **không** nêu đo lường/hội tụ; S29 là `conference-paper`, `cited 9`, `closed` | **K2 vẫn MỞ — `chưa xác minh`.** Không có bằng chứng S29 đo cửa sổ hội tụ, nhưng **không thể loại trừ**. **Giữ N=3** và ghi rủi ro mở, KHÔNG tự nâng lên 4 |
+
+> **Cách đọc kết quả này cho Admin:** T11 **không** kết luận "S29 đã làm rồi" (K2) và **không**
+> kết luận "S31 vô hại" một cách cảm tính — mà **đọc toàn văn S31 để chứng minh K1**.
+> Hệ quả: hai đề tài **hoà 48–48** theo kịch bản K1, tức ResearchLead **không còn cơ sở** để xếp
+> `ebpf-microsegmentation` là hạng 1 duy nhất. Việc chọn đề tài phải quay lại Admin.
+
+### 2.7.4 Kiểm riêng: 4 nguồn của S31 mà ResearchLead khai — có thật không?
+
+| Nguồn ResearchLead khai | Tôi kiểm | Kết quả |
+|---|---|---|
+| S31 chưa có DOI | Crossref tra theo DOI arXiv → không có bản ghi tạp chí | **PASS** (đúng: chỉ có arXiv ID) |
+| S31 là "mối đe doạ tính mới" | toàn văn xác nhận **cùng chủ đề** (per-layer TLS 1.3 PQC) | **PASS — đe doạ là THẬT** |
+| S31 ngày `2026-03-11` (cập nhật `2026-07-07`) | arXiv API `published` / entry `updated` | **PASS chính xác** |
+| S31 "chưa đọc toàn văn" | nay đã đọc được qua `arxiv.org/html` | **ĐÃ GIẢI QUYẾT** |
+
+**Phán quyết T11:** **PASS về phương pháp** (không bịa nguồn; tự khai đúng chỗ chưa đọc được) ·
+**1 LỖI PHẢI SỬA** (DOI sai hoa/thường ở 4 tài liệu) · **1 kết luận cần chỉnh** (T1 N=2 không có bằng chứng).
+
+---
+
+## 2.8 Bài kiểm #4 — T14: kiểm chứng chéo T3 BountyRecon
+
+```text
+[REVIEW] T14 / BountyRecon (ag_579fc4fa) / Lớp 1+2 / KẾT QUẢ: PASS
+         (20/20 câu trích nguyên văn khớp · 3/3 policy byte-exact · 1 TINH CHỈNH nhỏ về "4 xung đột")
+```
+
+**Artifact kiểm:** `security/{gitlab,github,cloudflare}/SCOPE.md` + `RECON.md` @ `03d304b`
+**Bằng chứng thô:** `agents/reviewer1/evidence/T14/t14-refetch-scope.txt` · script riêng `rv1_h1_refetch.py`
+
+### 2.8.1 Policy — kiểm bằng hash, mạnh nhất có thể
+
+Tôi **tự gọi lại** `POST https://hackerone.com/graphql` (không dùng script/JSON của BountyRecon) và
+so **từng byte** với `policy_*.md` của họ:
+
+| Chương trình | policy tôi fetch | policy của BountyRecon | SHA256 | Kết quả |
+|---|---|---|---|---|
+| GitLab | 26.083 ký tự | 26.083 ký tự | `1629f6dd7238ed166b5ab995f0ba1fab7a332e4941bee582c9b39d82a88f3c35` | **✅ BYTE-EXACT** |
+| GitHub | 13.768 ký tự | 13.768 ký tự | `cddb4181b2ef35a0d8d0e145403e0914e4c7cdbc72bca52e3b281dec745c6585` | **✅ BYTE-EXACT** |
+| Cloudflare | 44.784 ký tự | 44.784 ký tự | `a5997a98f915b09a5e360360e91e5762168de1a7904bd3b351990bca1d2a5c01` | **✅ BYTE-EXACT** |
+
+Đồng thời tôi kiểm `policy_gitlab.md` là **bản dump trung thực 100%** của trường `policy` trong
+`h1_gitlab.json` của chính họ: `md == policy` → **byte-exact** (GitLab và GitHub).
+
+> **Minh bạch về một lần thất bại:** lần fetch **đầu tiên** của tôi, trường `policy` trả về **rỗng**
+> (`policy_chars=0`) cho cả 3 chương trình. Fetch lại lần 2 thì được đủ. Tôi ghi lại vì đây là
+> **hành vi không ổn định của endpoint công khai** — nếu người sau gặp `policy` rỗng thì **không phải
+> BountyRecon bịa**, mà là endpoint chập chờn. Bản ghi đầy đủ ở `t14-refetch-scope.txt` §T14-5 và §T14-8.
+
+### 2.8.2 Đối chiếu TỪNG DÒNG trích nguyên văn — 20/20 khớp
+
+Kiểm từng câu `SCOPE.md` trích, tìm **nguyên văn** trong `policy_gitlab.md`, kèm **đúng số dòng** họ ghi:
+
+| Con trỏ ResearchLead ghi | Thực tế | Kết quả |
+|---|---|---|
+| `# Rewards` **dòng 4 và 6** | d.4 = "…we pay $1000 at the time the report is triaged…"; d.6 = "$100 bounty…" | **✅ CHÍNH XÁC** |
+| `# Rules of Engagement…` **dòng 34–59** | d.34 mở đầu đúng; d.41, d.55, d.57 nằm trong khoảng | **✅ CHÍNH XÁC** |
+| `## Demonstrating Impact` **dòng 63–64** | d.63, d.64 khớp nguyên văn | **✅ CHÍNH XÁC** |
+| `Testing on GitLab.com` **dòng 73** | d.73 khớp nguyên văn | **✅ CHÍNH XÁC** |
+| `# Scope` **dòng 87–89** | d.87 + d.89 khớp (d.88 trống) | **✅ CHÍNH XÁC** |
+| `## Out of scope` **dòng 125–191** | d.125 = `## Out of scope`, d.191 = "GitLab Development kit" | **✅ CHÍNH XÁC** |
+
+**20/20 câu trích tìm thấy nguyên văn** (`All GitLab Inc. products are in scope…` · `Never test DoS
+vulnerabilities on GitLab.com.` · `Never test against projects, groups, accounts, or instances you do
+not own.` · `Automated scanning reports of any kind` · `Metadata disclosure, enumeration…` · `$1000…$500`
+· `GitLab forest` …). **Không có câu nào bị viết lại, cắt ghép hay diễn giải thành "nguyên văn".**
+
+### 2.8.3 Xác minh 4 xung đột scope GitLab bằng script ĐỘC LẬP — **1 TINH CHỈNH**
+
+`python3 rv1_h1_refetch.py gitlab` → tổng **63** scope · IN=**24** · OUT=**39** ⇒ **khớp y hệt** con số BountyRecon khai.
+
+Nhưng khi tách theo **cả `asset_identifier` VÀ `asset_type`**, kết quả khác đi:
+
+| # | Tài sản | Phía IN | Phía OUT | Có phải xung đột THẬT? |
+|---|---|---|---|---|
+| 1 | `about.gitlab.com` | `URL` · eligible=**true** · bounty=true · medium | `URL` · eligible=**false** · bounty=false · none | ✅ **XUNG ĐỘT THẬT** (cùng `asset_type=URL` ở cả hai phía) |
+| 2 | `docs.gitlab.com` | `URL` · eligible=**true** · bounty=true · medium | `URL` · eligible=**false** · bounty=false · none | ✅ **XUNG ĐỘT THẬT** |
+| 3 | `*.gitlab.net` | `WILDCARD` · eligible=**true** · bounty=true · medium | `URL` · eligible=**false** · bounty=false · none | ⚠️ **KHÁC `asset_type`** — IN là **wildcard**, OUT là **apex URL** |
+| 4 | `*.gitlap.com` | `WILDCARD` · eligible=**true** · bounty=true · medium | `URL` · eligible=**false** · bounty=false · none | ⚠️ **KHÁC `asset_type`** |
+
+**Đọc đúng bản chất:**
+- **2 xung đột thật** (`about`/`docs.gitlab.com`): cùng một URL xuất hiện hai lần với hai giá trị
+  `eligible_for_submission` trái ngược trong **cùng** dữ liệu công bố ⇒ **mâu thuẫn dữ liệu**, không
+  thể tự suy ra.
+- **2 cặp wildcard/apex** (`*.gitlab.net`, `*.gitlap.com`): một chính sách **hoàn toàn có thể có ý**
+  "subdomain thì trong scope, apex thì không" ⇒ **không chắc là mâu thuẫn**.
+- **BountyRecon KHÔNG sai về dữ liệu**: bảng §2b của họ có ghi rõ cột "Dòng IN: `WILDCARD`" và
+  "Dòng OUT: `URL`", và phần trích §1/§2a cũng giữ đúng `WILDCARD` vs `URL`. Cái cần chỉnh chỉ là
+  **cách gọi tên**: "4 xung đột" nên là **"2 xung đột thật + 2 cặp wildcard/apex khác `asset_type`"**.
+- **Khuyến nghị của họ vẫn ĐÚNG và nên giữ**: dừng lại, hỏi Admin, không tự đoán. Với 2 cặp
+  wildcard/apex, việc loại luôn cả 4 là **thận trọng hơn mức cần** — không gây hại.
+
+### 2.8.4 GitHub `Atom` và Cloudflare — kiểm 2 kết luận phụ của Admin
+
+| Khẳng định | Tôi kiểm | Kết quả |
+|---|---|---|
+| BountyRecon: "GitHub cũng có 1 xung đột — `Atom`, nhưng cả hai phía đều `eligible_for_bounty=False`" | tôi fetch lại: IN = `DOWNLOADABLE_EXECUTABLES`, sub=**true**, **bounty=false**, `critical`; OUT = cùng type, sub=false, **bounty=false**, `none` | **✅ ĐÚNG CẢ HAI Ý** ⇒ kết luận "dù hiểu thế nào thì Atom cũng không được thưởng" **đúng** |
+| D-013: "Cloudflare — KHÔNG mở T4. Chính sách Cloudflare cấm test vào khách hàng của họ" | tôi fetch lại Cloudflare: **0 xung đột** (IN=55, OUT=28, giao=∅); policy nguyên văn d.13 `* Do not perform tests against customers of Cloudflare.`; d.21 liệt kê `* Testing against Cloudflare customers, partners, service providers, suppliers, or vendors` là **cấm**; d.419 nêu **có thể khởi kiện** | **✅ D-013 KHỚP DỮ LIỆU TÔI TỰ FETCH** |
+| D-013: loại 4 tài sản GitLab khỏi T4 (lựa chọn (a)) | khớp đề nghị §2b của BountyRecon | **✅ KHỚP** |
+
+> **Điểm quan trọng:** lý do **không** mở T4 cho Cloudflare **không phải** xung đột scope
+> (Cloudflare có **0** xung đột) mà là **điều khoản cấm test khách hàng**. D-013 ghi đúng như vậy —
+> không có sự nhầm lẫn giữa hai lý do.
+
+**Phán quyết T14:** **PASS.** 20/20 câu trích nguyên văn · 3/3 policy byte-exact bằng hash ·
+63/24/39 scope khớp · kết luận Atom đúng · quyết định D-013 khớp dữ liệu tôi tự fetch.
+**1 tinh chỉnh bắt buộc ghi lại:** "4 xung đột" → **2 xung đột thật + 2 cặp wildcard/apex khác `asset_type`**.
+
+---
+
+## 2.9 Bài kiểm #5 — T10: kiểm chứng chéo T1 DocWriter
+
+```text
+[REVIEW] T10 / DocWriter (ag_da78519d) / Lớp 1 / KẾT QUẢ: PASS — 6/6 mục khớp chính xác
+```
+
+**Artifact kiểm:** `INDEX.md` @ `6977d36` (nhánh `agent/doc-writer/T1`)
+**Revision ghi chú:** `5bcea63` (mốc DocWriter ghi trong `INDEX.md` §đầu) · **`5bcea63` là tổ tiên của `6977d36`**
+**Bằng chứng thô:** `agents/reviewer1/evidence/T10/t10-verify.txt`
+
+| # | Khẳng định của DocWriter | Lệnh đã chạy lại | Output thô | Kết quả |
+|---|---|---|---|---|
+| T10-1 | Tổng file được track = **39** | `git ls-tree -r --name-only 6977d36 \| wc -l` | `39` (và `5bcea63` cũng `39`) | **✅ PASS** |
+| T10-2 | `.md`=24 · `.gitkeep`=13 · `.jsonl`=1 · `.gitignore`=1 · còn lại=0 | đếm từng mẫu trên `6977d36` | `24 / 13 / 1 / 1 / 0` — **khớp từng con số**; 24+13+1+1=39 | **✅ PASS** |
+| T10-3 | Bảng §2 có **39 hàng**, đánh số liên tục | parse `INDEX.md` | `so hang du lieu: 39` · `dai so thu tu: 1 -> 39` · `lien tuc? True` · `thieu so: (khong)` | **✅ PASS** |
+| T10-4 | **7 file mới** (so với `abe0c3e`), 0 file bị xoá | `diff <(ls-tree abe0c3e) <(ls-tree 6977d36)` | 7 dòng `+` (`BAO-CAO-CHAT-LUONG.md`, `KIEM-TRA-KHUNG.md`, `digest-msg-0001-0012.md`, `digest/README.md`, `raw/MANIFEST.md`, `raw-msg-0001-0012.jsonl`, `rooms/.../README.md`); **0** dòng `-` | **✅ PASS — 7/7 file có thật** |
+| T10-5 | SHA256 digest `66ac7183…8295` | `git show 6977d36:…raw-msg-0001-0012.jsonl \| sha256sum` | `66ac7183fadedd481ccc839e2c82ef05cbdef568065b11d4f8e546bc27e88295` | **✅ PASS — khớp từng ký tự** |
+| T10-6 | digest có **12 bản ghi** | `… \| wc -lc` | `12  44186` ⇒ 12 dòng, 44.186 B (MANIFEST khai `44.186 B`) | **✅ PASS** |
+
+**Kiểm chứng chéo con trỏ §4.2 của DocWriter (họ tự đính chính một lỗi của chính mình):**
+`git show 6977d36:rooms/ab1-478d-cfa7/directives.md | grep -n "say"` → **không có kết quả**;
+`grep -c '^## \[D-'` → **5** (D-001..D-005). ⇒ Khẳng định của họ *"`directives.md` KHÔNG chứa `say`"*
+là **ĐÚNG**, và việc họ **tự đính chính** một câu sai trước đó là hành vi đúng kỷ luật D-004.
+
+**Hash xuất hiện nhất quán ở 3 nơi** (INDEX §2 hàng 39 · `raw/MANIFEST.md` d.29+d.37 ·
+`digest-msg-0001-0012.md` d.21) — cùng một giá trị đầy đủ, không nơi nào ghi khác.
+
+> ⚠️ **Lưu ý revision (theo đúng yêu cầu của Admin):** con số **39 file đúng cho NHÁNH T1**
+> (`6977d36` / `5bcea63`). `origin/main` hiện tại (`28cdc00`) có **46 file** — nhiều hơn 7 vì các
+> nhánh khác đã merge sau đó. **Không được** dùng "39" để nói về `main`. `INDEX.md` ở revision
+> `6977d36` mô tả `reviews/CROSS.md` là "khung 9 dòng, bảng rỗng" — điều này **đúng ở revision đó**
+> (bản T6 của tôi được merge sau, ở `c579d1f`), nên **không phải lỗi lỗi thời** của DocWriter.
+
+**Phán quyết T10:** **PASS — 6/6 mục khớp chính xác, không có sai lệch nào, không mục nào `chưa xác minh`.**
+
+---
+
+## 2.10 Phụ lục — Reviewer1 xác minh độc lập phát hiện N-03 của Auditor2
+
+**Không thuộc task nào của tôi.** Tôi ghi vào đây vì tôi **đã khẳng định việc này với Admin trong báo cáo
+vòng 2**, nên theo D-004 nó phải trỏ tới bằng chứng thô.
+**Bằng chứng:** `agents/reviewer1/evidence/T11/t11-phuluc-N03-INDEX.md.txt`
+
+| Lệnh | Output thô | Ý nghĩa |
+|---|---|---|
+| `git log --oneline origin/agent/doc-writer/T1 -- INDEX.md` | `6977d36` · `3be89fd` · `abe0c3e` | Nhánh T1 **sửa `INDEX.md` ở 2 commit** |
+| `git show 3be89fd --stat` | `INDEX.md \| 179 +++---` | Commit đó đụng `INDEX.md` **179 dòng** |
+| `git diff --stat origin/main origin/agent/doc-writer/T1 -- INDEX.md` | `200 insertions(+), 21 deletions(-)` | **Phân kỳ thật** giữa `main` và T1 trên cùng file |
+| `git merge-base origin/main origin/agent/doc-writer/T1` | `abe0c3e` | T1 tách từ **commit gốc** |
+| `git rev-list --count abe0c3e..origin/main` | `16` | `main` đi trước merge-base **16 commit** |
+| `git show origin/main:INDEX.md \| sed -n '10p'` | `\| 2 \| \`INDEX.md\` \| **Admin** (DocWriter *chuẩn hoá* ở T1 — xem DISSENT-2) \| … ✅ hoàn tất trên \`main\` …` | Ô #2 = **bản vá DISSENT-2 của Admin** |
+| `git show origin/agent/doc-writer/T1:INDEX.md \| sed -n '10p'` | *(dòng trống)* | Ở T1, dòng 10 **không chứa** bản vá đó |
+
+**Kết luận:** xác nhận N-03 của Auditor2. `INDEX.md` **khác** `reviews/**`: với `reviews/**`, bản của
+Reviewer1 mới hơn nên lấy bản worker là đúng; với `INDEX.md`, **bản của Admin chứa phán quyết DISSENT-2
+mà nhánh T1 không có** ⇒ merge kiểu "lấy bản worker" sẽ **mất bản vá thật**. Đề nghị Admin merge
+`INDEX.md` theo hướng **giữ bản `main`** hoặc hợp nhất thủ công.
