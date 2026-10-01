@@ -1,0 +1,9 @@
+=== VERIFY #12: T22 cua DocWriter — doi chieu INDEX.md voi git ls-tree @ 0f41ebb ===
+dong du lieu trong bang : 157
+file tracked @ 0f41ebb  : 157
+trong bang nhung KHONG co that : 0
+co that nhung KHONG trong bang : 0
+
+tac gia khop : 157/157   lech: 0
+
+KET LUAN: bang 157 dong khop 157/157 duong dan va 157/157 tac gia.

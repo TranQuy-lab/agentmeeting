@@ -1,0 +1,14 @@
+=== VERIFY2 EVIDENCE #1: so khop INDEX.md <-> git ls-files ===
+nguon: origin/agent/doc-writer/T1 = 3be89fd8df41d834bc20cc79ad24dac45085d6b0
+paths_in_INDEX=44  tracked=39
+
+LIET_KE_NHUNG_KHONG_TON_TAI:
+  AUDIT.md
+  SOURCES.md
+  digest-msg-0001-0012.md
+  directives.md
+  reviews/AUDIT.json
+  reviews/AUDIT.md
+
+TON_TAI_NHUNG_KHONG_LIET_KE:
+  .gitignore
