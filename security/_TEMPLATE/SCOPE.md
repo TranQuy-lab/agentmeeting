@@ -35,11 +35,14 @@ Chỉ kết luận "xung đột" sau khi đã loại trừ cả bốn chiều. G
 |---|---|---|---|---|---|---|
 | 1 | `example.com` | URL | true | true | `null` | Đang hiệu lực |
 | 2 | `*.example.com` | WILDCARD | true | true | `null` | Đang hiệu lực |
-| 3 | `legacy.example.com` | URL | true | false | `2023-05-08T10:11:33.083Z` | **ĐÃ NGHỈ HƯU** — không được coi là target đang mở |
-| 4 | `old.example.net` | URL | true | true | `2022-03-01T17:47:43.944Z` | **ĐÃ NGHỈ HƯU** |
+| 3 | `legacy.example.com` | URL | true | false | `2023-05-08T10:11:33.083Z` | Có `archived_at` ⇒ **đã nghỉ hưu**. Hiệu lực: **CHƯA XÁC MINH** (`DISSENT-12`). **KHÔNG suy ra "ngoài scope"** |
+| 4 | `old.example.net` | URL | true | true | `2022-03-01T17:47:43.944Z` | Có `archived_at` ⇒ **đã nghỉ hưu**. Hiệu lực: **CHƯA XÁC MINH** |
 
 **Luật đọc bảng — BẮT BUỘC:**
 ```text
+0. (ĐÍNH CHÍNH — Reviewer1 T42) Cột "Ghi chú" của bảng MẪU NÀY trước đây ghi "ĐÃ NGHỈ HƯU —
+   không được coi là target đang mở", MÂU THUẪN với luật 3 ngay dưới. Bảng mẫu đang DẠY đúng
+   cái suy luận mà D-026 CẤM ⇒ sẽ TÁI SINH lỗi ở phiên sau. Đã sửa. Bảng mẫu cũng phải tuân luật.
 1. Cột `archived_at` PHẢI có trong MỌI bảng tài sản. Thiếu cột = bảng KHÔNG ĐẠT.
 2. archived_at = null      -> bản ghi ĐANG HIỆU LỰC.
    archived_at != null     -> bản ghi ĐÃ NGHỈ HƯU (dùng để LỌC, không để suy đoán phạm vi).
