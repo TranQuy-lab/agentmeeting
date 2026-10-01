@@ -1,0 +1,385 @@
+
+### T27-B — Reviewer1 kiem T26 BountyRecon
+### Thoi diem: 2026-10-01T14:54:36Z UTC
+
+=== [B0] merge-base (bai hoc LOG #64) — file BountyRecon THUC SU doi ===
+$ git merge-base origin/main 43cc537 -> e8c45a07b73640c68f12b1252f04300ebbae041a
+$ git diff --name-status e8c45a07b73640c68f12b1252f04300ebbae041a 43cc537
+A	agents/bountyrecon/tasks/T26/EVIDENCE/forbidden_file_untouched.txt
+A	agents/bountyrecon/tasks/T26/EVIDENCE/linkscan_after.txt
+A	agents/bountyrecon/tasks/T26/EVIDENCE/linkscan_before.txt
+A	agents/bountyrecon/tasks/T26/EVIDENCE/path_discrepancy.txt
+A	agents/bountyrecon/tasks/T26/EVIDENCE/repowide_control.txt
+A	agents/bountyrecon/tasks/T26/EVIDENCE/repowide_readonly.txt
+A	agents/bountyrecon/tasks/T26/EVIDENCE/verify_links.txt
+A	agents/bountyrecon/tasks/T26/LINKSCAN.md
+A	agents/bountyrecon/tasks/T26/SCOPEGAP.md
+A	agents/bountyrecon/tasks/T26/scan_links.py
+M	agents/bountyrecon/tasks/T3/CANDIDATES.md
+
+=== [B1] 3 link tai CANDIDATES.md dong 27/39/50 — da sua chua? ===
+$ git show 43cc537:agents/bountyrecon/tasks/T3/CANDIDATES.md | sed -n '27p;39p;50p'
+### 1.1 GitHub — [`security/github/RECON.md`](../../../../security/github/RECON.md)
+### 1.2 GitLab — [`security/gitlab/RECON.md`](../../../../security/gitlab/RECON.md)
+### 1.3 Cloudflare — [`security/cloudflare/RECON.md`](../../../../security/cloudflare/RECON.md)
+
+  --- kiem do sau bang normpath ---
+  so link tuong doi dang '../' trong CANDIDATES.md: 3
+    ../../../../security/cloudflare/RECON.md      -> security/cloudflare/RECON.md             ✅ TON TAI
+    ../../../../security/github/RECON.md          -> security/github/RECON.md                 ✅ TON TAI
+    ../../../../security/gitlab/RECON.md          -> security/gitlab/RECON.md                 ✅ TON TAI
+  => link tro sai: 0
+
+=== [B1b] QUET TOAN BO TERRITORY BountyRecon xem con link sai nao khac ===
+  so file trong territory: 43
+    ❌ agents/bountyrecon/tasks/T26/EVIDENCE/forbidden_file_untouched.txt  ->  lgtm-com.pentesting.semmle.net  (giai: agents/bountyrecon/tasks/T26/EVIDENCE/lgtm-com.pentesting.semmle.net)
+    ❌ agents/bountyrecon/tasks/T26/EVIDENCE/forbidden_file_untouched.txt  ->  backend-dot-lgtm-penetration-testing.appspot.com  (giai: agents/bountyrecon/tasks/T26/EVIDENCE/backend-dot-lgtm-penetration-testing.appspot.com)
+    ❌ agents/bountyrecon/tasks/T26/EVIDENCE/forbidden_file_untouched.txt  ->  downloads.lgtm.com  (giai: agents/bountyrecon/tasks/T26/EVIDENCE/downloads.lgtm.com)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md  ->  SCOPE.md  (giai: agents/bountyrecon/tasks/T26/SCOPE.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md  ->  ../github/RECON.md  (giai: agents/bountyrecon/tasks/github/RECON.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md  ->  SCOPE.md  (giai: agents/bountyrecon/tasks/T26/SCOPE.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md  ->  SCOPE.md  (giai: agents/bountyrecon/tasks/T26/SCOPE.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md  ->  SCOPE.md  (giai: agents/bountyrecon/tasks/T26/SCOPE.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md  ->  ../github/RECON.md  (giai: agents/bountyrecon/tasks/github/RECON.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md  ->  SCOPE.md  (giai: agents/bountyrecon/tasks/T26/SCOPE.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md  ->  …  (giai: agents/bountyrecon/tasks/T26/…)
+    ❌ agents/bountyrecon/tasks/T26/SCOPEGAP.md  ->  …  (giai: agents/bountyrecon/tasks/T26/…)
+    ❌ agents/bountyrecon/tasks/T26/scan_links.py  ->  [^"\']+  (giai: agents/bountyrecon/tasks/T26/[^"\']+)
+    ❌ agents/bountyrecon/tasks/T26/scan_links.py  ->  [a-z0-9\-]*[a-z0-9]  (giai: agents/bountyrecon/tasks/T26/[a-z0-9\-]*[a-z0-9])
+    ❌ agents/bountyrecon/tasks/T26/scan_links.py  ->  [a-z0-9\-]*[a-z0-9]  (giai: agents/bountyrecon/tasks/T26/[a-z0-9\-]*[a-z0-9])
+    ❌ agents/bountyrecon/tasks/T26/scan_links.py  ->  …  (giai: agents/bountyrecon/tasks/T26/…)
+    ❌ agents/bountyrecon/tasks/T3/EVIDENCE/h1_github.json  ->  lgtm-com.pentesting.semmle.net  (giai: agents/bountyrecon/tasks/T3/EVIDENCE/lgtm-com.pentesting.semmle.net)
+    ❌ agents/bountyrecon/tasks/T3/EVIDENCE/h1_github.json  ->  backend-dot-lgtm-penetration-testing.appspot.com  (giai: agents/bountyrecon/tasks/T3/EVIDENCE/backend-dot-lgtm-penetration-testing.appspot.com)
+    ❌ agents/bountyrecon/tasks/T3/EVIDENCE/h1_github.json  ->  downloads.lgtm.com  (giai: agents/bountyrecon/tasks/T3/EVIDENCE/downloads.lgtm.com)
+    ❌ agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md  ->  lgtm-com.pentesting.semmle.net  (giai: agents/bountyrecon/tasks/T3/EVIDENCE/lgtm-com.pentesting.semmle.net)
+    ❌ agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md  ->  backend-dot-lgtm-penetration-testing.appspot.com  (giai: agents/bountyrecon/tasks/T3/EVIDENCE/backend-dot-lgtm-penetration-testing.appspot.com)
+    ❌ agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md  ->  downloads.lgtm.com  (giai: agents/bountyrecon/tasks/T3/EVIDENCE/downloads.lgtm.com)
+  tong link tuong doi: 36 | LINK SAI: 22
+
+=== [B1c] SUA BO QUET CUA TOI: loai bo code block + inline code + file trung nguyen van ===
+  (ban truoc bao 22 'link sai' — phan lon la DO BO QUET CUA TOI bat nham:
+   regex trong code, mo ta link trong LINKSCAN.md, va trich nguyen van)
+  File bo qua (co ly do): 3  -> ['forbidden_file_untouched.txt', 'scan_links.py', 'scope_github.md']
+  tong link tuong doi (sau khi bo code): 20 | LINK SAI THAT SU: 7
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md -> SCOPE.md  (giai: agents/bountyrecon/tasks/T26/SCOPE.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md -> ../github/RECON.md  (giai: agents/bountyrecon/tasks/github/RECON.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md -> SCOPE.md  (giai: agents/bountyrecon/tasks/T26/SCOPE.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md -> SCOPE.md  (giai: agents/bountyrecon/tasks/T26/SCOPE.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md -> SCOPE.md  (giai: agents/bountyrecon/tasks/T26/SCOPE.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md -> ../github/RECON.md  (giai: agents/bountyrecon/tasks/github/RECON.md)
+    ❌ agents/bountyrecon/tasks/T26/LINKSCAN.md -> SCOPE.md  (giai: agents/bountyrecon/tasks/T26/SCOPE.md)
+
+=== [B2] scope_github.md — lenh CAM SUA cua Admin co duoc ton trong? (blob hash) ===
+$ git rev-parse 03d304b:agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md   (T3 goc)
+15c946ff956a3fdb466f7f9768081af29b812088
+$ git rev-parse e8c45a0:...scope_github.md                                   (merge-base)
+15c946ff956a3fdb466f7f9768081af29b812088
+$ git rev-parse 43cc537:...scope_github.md                                   (T26)
+15c946ff956a3fdb466f7f9768081af29b812088
+$ git log --oneline --all -- agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md
+71f0bf8 [T3] scope: xac lap nguyen van scope 3 chuong trinh bounty cong khai (GitHub, Cloudflare, GitLab) + evidence tho
+
+  --- 3 link thieu scheme o dong 185 con nguyen khong? ---
+    link thieu scheme: 3
+      • [`lgtm-com.pentesting.semmle.net`](lgtm-com.pentesting.semmle.net)
+      • [`backend-dot-lgtm-penetration-testing.appspot.com`](backend-dot-lgtm-penetration-testing.appspot.com)
+      • [`downloads.lgtm.com`](downloads.lgtm.com)
+
+=== [B1d] 7 'link sai' con lai nam trong LINKSCAN.md — la LINK THAT hay la MO TA? ===
+$ git show 43cc537:agents/bountyrecon/tasks/T26/LINKSCAN.md | grep -n 'SCOPE.md\|RECON.md' | head -20
+23:| 27 | `../../../security/github/RECON.md` | `../../../../security/github/RECON.md` |
+24:| 39 | `../../../security/gitlab/RECON.md` | `../../../../security/gitlab/RECON.md` |
+25:| 50 | `../../../security/cloudflare/RECON.md` | `../../../../security/cloudflare/RECON.md` |
+30:$ test -f "agents/bountyrecon/tasks/T3/../../../../security/github/RECON.md"
+32:$ realpath --relative-to=. "agents/bountyrecon/tasks/T3/../../../../security/github/RECON.md"
+33:  -> security/github/RECON.md
+34:$ git ls-files --error-unmatch "security/github/RECON.md"
+35:  -> security/github/RECON.md
+42:$ test -f "agents/bountyrecon/tasks/T3/../../../security/github/RECON.md"
+44:$ realpath -m --relative-to=. "agents/bountyrecon/tasks/T3/../../../security/github/RECON.md"
+45:  -> agents/security/github/RECON.md          <-- dung nhu D-020 mo ta
+82:agents/bountyrecon/tasks/T3/CANDIDATES.md : ../../../security/{github,gitlab,cloudflare}/RECON.md  <- 3 DEFECT, da sua
+83:security/cloudflare/RECON.md : ](SCOPE.md)            OK
+84:security/cloudflare/RECON.md : ](../github/RECON.md)  OK
+85:security/cloudflare/RECON.md : ](SCOPE.md)            OK
+86:security/github/RECON.md     : ](SCOPE.md)            OK
+87:security/gitlab/RECON.md     : ](SCOPE.md)            OK
+88:security/gitlab/RECON.md     : ](../github/RECON.md)  OK
+89:security/gitlab/RECON.md     : ](SCOPE.md)            OK
+103:    agents/bountyrecon/tasks/T3/CANDIDATES.md:27  ../../../security/github/RECON.md  ->  agents/security/github/RECON.md
+
+--- ngu canh 5 dong quanh moi cho ---
+81-```text
+82-agents/bountyrecon/tasks/T3/CANDIDATES.md : ../../../security/{github,gitlab,cloudflare}/RECON.md  <- 3 DEFECT, da sua
+83:security/cloudflare/RECON.md : ](SCOPE.md)            OK
+84:security/cloudflare/RECON.md : ](../github/RECON.md)  OK
+85:security/cloudflare/RECON.md : ](SCOPE.md)            OK
+86:security/github/RECON.md     : ](SCOPE.md)            OK
+87:security/gitlab/RECON.md     : ](SCOPE.md)            OK
+88:security/gitlab/RECON.md     : ](../github/RECON.md)  OK
+89:security/gitlab/RECON.md     : ](SCOPE.md)            OK
+90-```
+91-
+
+=== [B1e] XAC NHAN: 7 dong do nam TRONG fenced code block (mo ta, khong phai link that) ===
+  vi tri cac fence: [17, 19, 29, 36, 41, 51, 81, 90, 100, 109, 153, 160]
+    dong 83: trong code block? True  (mo tai dong 81)
+    dong 86: trong code block? True  (mo tai dong 81)
+    dong 88: trong code block? True  (mo tai dong 81)
+
+  => Cac dong 82-90 la MOT KHUNG MO TA trong ```text, KHONG render thanh link.
+
+=== [B1f] KIEM THAT SU: cac link '](SCOPE.md)' / '](../github/RECON.md)' trong security/*/RECON.md co resolve khong? ===
+  --- security/github/RECON.md ---
+    ✅ ](SCOPE.md)  ->  security/github/SCOPE.md
+  --- security/gitlab/RECON.md ---
+    ✅ ](SCOPE.md)  ->  security/gitlab/SCOPE.md
+    ✅ ](../github/RECON.md)  ->  security/github/RECON.md
+    ✅ ](SCOPE.md)  ->  security/gitlab/SCOPE.md
+  --- security/cloudflare/RECON.md ---
+    ✅ ](SCOPE.md)  ->  security/cloudflare/SCOPE.md
+    ✅ ](../github/RECON.md)  ->  security/github/RECON.md
+    ✅ ](SCOPE.md)  ->  security/cloudflare/SCOPE.md
+
+=== [B3] SCOPEGAP.md — nhan dinh 'khoang trong pham vi cua T14' ===
+# T26 — SCOPEGAP: báo cáo KHOẢNG TRỐNG PHẠM VI
+
+**Agent:** BountyRecon (`ag_579fc4fa`) · **Task:** T26 · **Nhánh:** `agent/bounty-recon/T26`
+**Ngày:** `2026-10-01` · **`main` gốc:** `e8c45a0`
+**Yêu cầu 3 của D-020:** *"Nếu bạn thấy khoảng trống tương tự ở chỗ khác, nêu ra."*
+
+> ⚠️ **Chưa verify — chờ Reviewer1.** Mỗi mục dưới đây kèm lệnh thô; mục nào chưa chắc tôi ghi rõ.
+
+---
+
+## GAP-0 — XÁC NHẬN khoảng trống Admin đã nêu
+
+**T14 PASS T3 nhưng chỉ kiểm nội dung `SCOPE.md`, không kiểm link.**
+
+Tôi xác nhận khoảng trống này là **thật và có thể định lượng**:
+
+| Số liệu | Giá trị |
+|---|---|
+| File trong territory T3 (`agents/bountyrecon/**` + `security/**`) | 24 |
+| Link tương đối trong file do tôi viết | 10 |
+| Link tương đối **chết** | **3** |
+| Tỉ lệ link hỏng | **30 %** |
+
+Nếu T14 (hoặc bất kỳ vòng review nào) có bước **kiểm cơ học** "mọi link tương đối trong file
+thay đổi phải giải được", 3 lỗi này đã bị bắt ở T14. Nhưng T14 **không có** bước đó — và
+**đó là khoảng trống của quy trình, không phải lỗi của Reviewer1** (đồng ý với cách Admin ghi nhận).
+
+---
+
+## GAP-1 — 🚨 D-020 §2 QĐ-2 trỏ vào một đường dẫn **KHÔNG TỒN TẠI**
+
+D-020 viết:
+
+> *"KHÔNG sửa 3 link thiếu `https://` trong `security/github/EVIDENCE/scope_github.md` dòng 185."*
+
+**Kiểm chứng (`EVIDENCE/path_discrepancy.txt`):**
+
+```text
+$ test -f security/github/EVIDENCE/scope_github.md
+  -> FALSE  <= KHONG TON TAI
+$ ls -la security/github/EVIDENCE/
+  -> ls: cannot access 'security/github/EVIDENCE/': No such file or directory
+
+$ test -f agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md
+  -> TRUE  <= duong dan THAT
+$ git ls-files | grep 'scope_github.md'
+  -> agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md
+```
+
+**Đánh giá công bằng — phần ĐÚNG của D-020:**
+
+| Khẳng định của D-020 | Kiểm chứng |
+|---|---|
+| "dòng **185**" | ✅ **ĐÚNG** — `sed -n '185p'` đúng là hàng `\| OTHER \| LGTM \|` |
+| "**3** link thiếu `https://`" | ✅ **ĐÚNG** — đúng 3: `lgtm-com.pentesting.semmle.net`, `backend-dot-lgtm-penetration-testing.appspot.com`, `downloads.lgtm.com` |
+| Quyết định **giữ nguyên** | ✅ **ĐÚNG** — tôi đã giữ, sha256 trùng `main` |
+| Đường dẫn `security/github/EVIDENCE/…` | ❌ **SAI** — không tồn tại |
+
+⇒ **Nội dung chỉ thị đúng, chỉ sai đường dẫn.** Không có hậu quả thực tế vì tôi tìm được file
+bằng `git ls-files`. Nhưng xem GAP-2 để thấy đây **không phải tai nạn ngẫu nhiên**.
+
+> 📌 Đây là **lần thứ TƯ** ở cùng một dạng. D-020 §4 tự ghi nhận *"lần thứ ba Admin trỏ bằng
+> chứng vào thứ chưa có"* (DISSENT-5/LOG #6, F-04, SUMMARY.md). Nay thêm lần này.
+> **Mẫu lỗi chưa được chặn ở gốc** — xem GAP-2.
+
+---
+
+## GAP-2 — 🚨 NGUYÊN NHÂN GỐC: quy tắc territory và quy tắc vị trí bằng chứng **MÂU THUẪN**
+
+**Chỉ thị T3 của tôi có hai dòng mâu thuẫn nhau:**
+
+- §3 (territory): `security/**/SCOPE.md`, `security/**/RECON.md`, `agents/bountyrecon/**`
+  — kèm câu **"CẤM ghi ngoài territory"**.
+- §5 (luật bằng chứng): *"Mọi khẳng định phải kèm bằng chứng thô trong `security/<program>/EVIDENCE/`"*.
+
+Nhưng `security/**/EVIDENCE/**` **nằm trong territory T4 của ExploitDeep**
+(`ADMIN/ASSIGNMENTS.md` hàng T4). ⇒ **Không thể tuân cả hai.** Tôi chọn đặt bằng chứng ở
+`agents/bountyrecon/tasks/T3/EVIDENCE/` (territory của tôi) và **đã báo Admin** trong báo cáo T3
+(msg #45 §4.5) cùng `CANDIDATES.md` §4.
+
+**Kiểm chứng hệ quả (`EVIDENCE/path_discrepancy.txt`):**
+
+```text
+$ git ls-files | grep -c '^security/.*EVIDENCE/'
+  -> 0
+$ git ls-files | grep 'EVIDENCE/' | sed 's#/EVIDENCE/.*#/EVIDENCE/#' | sort -u
+  agents/bountyrecon/tasks/T3/EVIDENCE/
+  agents/exploitdeep/T16/EVIDENCE/
+  agents/exploitdeep/T4/EVIDENCE/
+  agents/forensicsmal/T15/EVIDENCE/
+  research/ebpf-microsegmentation/EVIDENCE/
+  research/EVIDENCE/
+  research/pqc-tls-migration/EVIDENCE/
+```
+
+⇒ **Có ĐÚNG 0 file dưới `security/**/EVIDENCE/` trong toàn repo.**
+⇒ **Mọi chỉ thị trỏ vào `security/<program>/EVIDENCE/…` CHẮC CHẮN là đường dẫn chết.**
+⇒ GAP-1 **không phải lỗi đánh máy** — nó là hệ quả tất yếu của quy tắc §5 không được ai thi hành được.
+
+**ĐỀ NGHỊ ADMIN (chọn 1):**
+- **(a)** Sửa §5 thành `agents/<slug>/tasks/<task_id>/EVIDENCE/` cho khớp thực tế đang dùng, **hoặc**
+- **(b)** Nếu muốn bằng chứng tập trung theo chương trình, thì **bàn giao `security/**/EVIDENCE/**`
+  cho agent sản xuất** (bỏ khỏi territory T4), **hoặc**
+- **(c)** Ghi rõ trong `ASSIGNMENTS.md` rằng T4 chỉ sở hữu `FINDING.md`/`POC/`, còn `EVIDENCE/` là dùng chung.
+
+Cho tới khi chốt, **tôi vẫn giữ nguyên cách hiện tại** (bằng chứng trong territory của tôi).
+
+---
+
+## GAP-3 — Trình kiểm link **ngây thơ** đẻ ra **127 báo động giả** trên chính territory này
+
+Tôi đã tự mắc lỗi này ở `scan_links.py` **v1** và phải sửa **3 lần** mới đúng
+(xem [`LINKSCAN.md`](LINKSCAN.md) §3). Đây là **cảnh báo cho bất kỳ ai đưa "kiểm link"
+vào checklist review**:
+
+| Cách kiểm | Kết quả trên territory này |
+|---|---|
+| Ngây thơ: mọi `](…)` + mọi `href=` | **127 "lỗi"** — gần hết là đường dẫn máy chủ gốc trong HTML đã capture |
+| Phân loại AUTHORED vs CAPTURE | còn **3 "lỗi"** — nhưng vẫn bắt nhầm tên miền trần |
+| Bỏ code fence + inline code + BARE_HOST | **3 lỗi thật** — đúng bằng số Admin báo |
+
+⇒ Tỉ lệ **nhiễu / lỗi thật = 127 / 3 ≈ 42:1**. Một reviewer dùng công cụ ngây thơ sẽ **ngập
+nhiễu và bỏ sót lỗi thật** — tệ hơn là không kiểm.
+
+**ĐỀ NGHỊ:** nếu thêm bước kiểm link, phải quy định rõ **bỏ qua**: (a) file trong `EVIDENCE/`
+cùng `.html`/`.txt` là bản ghi nguồn ngoài; (b) **code fence** ```…```; (c) **inline code** `` `…` ``;
+(d) **tên miền trần** không scheme. Nếu không, đừng thêm bước này.
+
+---
+
+## GAP-4 — MẪU CHUNG: verify "nội dung" mà không verify "toàn vẹn artifact"
+
+GAP-0 và GAP-1 là **cùng một mẫu lỗi ở hai tầng khác nhau:**
+
+| Tầng | Đã verify | Chưa verify | Hậu quả thực tế |
+|---|---|---|---|
+| T14 (nội dung T3) | `SCOPE.md` đúng nguyên văn, hash khớp | **link trong file** | 3 link chết lọt qua |
+| D-020 (chỉ thị Admin) | dòng 185, đúng 3 link, quyết định giữ | **đường dẫn file có tồn tại không** | chỉ thị trỏ vào file không có |
+
+⇒ **ĐỀ NGHỊ bổ sung 3 phép kiểm CƠ HỌC, rẻ, vào checklist review (T6/T25/T14):**
+1. **Mọi đường dẫn được trích trong báo cáo phải `test -f` được** (không chỉ đúng nội dung).
+2. **Mọi link tương đối trong file thay đổi phải giải được** — phân loại AUTHORED vs CAPTURE (GAP-3).
+3. **Mọi hash/số liệu công bố phải tái lập được từ nguồn** (T14 đã làm rất tốt ở tầng nội dung —
+   Reviewer1 tự gọi lại GraphQL và tự băm, 3/3 khớp; chỉ thiếu tầng đường dẫn/link).
+
+Đây là **mở rộng** việc T14 đã làm, không phải phủ nhận nó.
+
+---
+
+## GAP-5 — Task "placeholder" trên board trông giống uỷ quyền
+
+Tôi tạo `T4-G1`/`T4-G2` ở T3 để handoff. Chúng hiện trên board là `open`,
+`T4-G1` có `owner=ExploitDeep`. ExploitDeep **từ chối claim** và Admin xác nhận đúng (LOG #40).
+Nhưng tiêu đề của tôi tuy có `[DE XUAT T4 - cho Admin duyet]` mà **cột `Status` vẫn là `open`**
+⇒ một agent đọc lướt board có thể tưởng đã được phép.
+
+**ĐỀ NGHỊ:** quy ước cho task placeholder: hoặc `owner=Admin`, hoặc `Status=blocked` kèm lý do
+"chờ chỉ thị D-013", hoặc tiền tố bắt buộc `[PLACEHOLDER]`. Tôi sẵn sàng sửa 2 task của mình
+nếu Admin chốt quy ước.
+
+---
+
+## Tổng hợp
+
+| # | Khoảng trống | Mức | Cần ai xử lý |
+|---|---|---|---|
+| GAP-0 | T14 không kiểm link ⇒ 3 link chết lọt qua | Trung bình | Reviewer1/Admin (checklist) |
+| **GAP-1** | D-020 trỏ `security/github/EVIDENCE/…` — **không tồn tại** | **Cao** | Admin (đính chính) |
+| **GAP-2** | **Nguyên nhân gốc:** §3 territory ⟂ §5 vị trí bằng chứng; **0 file** dưới `security/**/EVIDENCE/` | **Cao** | Admin (sửa quy tắc) |
+| GAP-3 | Kiểm link ngây thơ = 127 báo động giả | Trung bình | Người thêm checklist |
+| GAP-4 | Mẫu chung: verify nội dung ≠ verify toàn vẹn artifact | Trung bình | Reviewer1/Auditor2 |
+| GAP-5 | Task placeholder trông giống uỷ quyền | Thấp | Admin (quy ước) |
+
+**Tất cả đều kèm bằng chứng thô. Chưa mục nào được tôi tự verify.**
+
+=== [B3a] GAP-0: TOI (Reviewer1) o T14 co kiem link khong? — TU KIEM CHINH MINH ===
+$ git show 85ea56f:reviews/CROSS.md | sed -n '/## 2.8 /,/## 2.9 /p' | grep -c 'CANDIDATES.md\|link'
+0
+  => so lan 'CANDIDATES.md' xuat hien trong muc T14 cua toi: 0
+0
+  => KET LUAN: T14 cua toi KHONG kiem link trong CANDIDATES.md. GAP-0 DUNG.
+
+=== [B3b] So lieu GAP-0 (24 file / 10 link / 3 chet / 30%) — kiem tai revision T3 goc 03d304b ===
+  file trong territory T3: 33  (BountyRecon khai 24)
+  link tuong doi: 13  (khai 10) | link chet: 6  (khai 3)
+  ti le: 46%  (khai 30%)
+
+=== [B3c] GAP-1: D-020 viet duong dan nao? co ton tai khong? ===
+$ git show origin/main:rooms/ab1-478d-cfa7/directives.md | grep -n 'scope_github.md'
+  (khong thay trong directives.md)
+
+  --- 2 duong dan: cai nao TON TAI? ---
+    security/github/EVIDENCE/scope_github.md -> 0 file  ❌ KHONG TON TAI
+    agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md -> 1 file  ✅ TON TAI
+
+=== [B3d] GAP-2: co dung 0 file duoi security/**/EVIDENCE/ khong? ===
+$ git ls-files | grep -c '^security/.*EVIDENCE/'
+  0
+0
+  (0 = GAP-2 DUNG)
+
+=== [B3e] GAP-3: bo quet link ngay tho sinh nhieu bao dong gia? — TOI VUA MAC Y HET ===
+  Ban quet dau cua toi: 22 'link sai' -> sau khi sua: 0 link sai that su
+  => XAC NHAN hien tuong GAP-3 (nhieu bao dong gia) la THAT
+
+=== [B3f] THU TAI LAP so lieu GAP-0 (24 file / 10 link / 3 chet) bang cach loai file CAPTURE ===
+9:  * v1 coi `/css/site.css` trong HTML ĐÃ CAPTURE là link repo -> báo nhầm 127 "lỗi".
+15:  AUTHORED  — file do người/agent viết (CANDIDATES.md, SCOPE.md, RECON.md...)
+16:  CAPTURE   — file bằng chứng thô (trong EVIDENCE/, .html, .txt): nội dung là
+20:  DEFECT    — link tương đối trong file AUTHORED, giải ra file KHÔNG tồn tại
+22:  CAPTURED  — đường dẫn gốc-máy-chủ trong file CAPTURE => KHÔNG sửa
+41:SKIP_PREFIX = ("http://", "https://", "//", "mailto:", "tel:", "ftp://",
+49:    out = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True,
+64:def is_capture(rel):
+  --- neu khong ro, thu cac cach loc ---
+  A) tat ca file territory (md+txt)              file= 33 link= 13 chet= 6
+  B) bo .html/.json                              file= 24 link= 13 chet= 6
+  C) bo MOI file trong EVIDENCE/                 file= 10 link= 10 chet= 3
+  D) bo .html/.json/.txt                         file= 20 link= 13 chet= 6
+  E) chi .md ngoai EVIDENCE/                     file=  8 link= 10 chet= 3
+
+  BountyRecon khai: file=24  link=10  chet=3
+
+=== [B3g] GAP-1: D-020 / LOG #54 ghi duong dan nao cho scope_github.md? ===
+$ git grep -n 'scope_github' origin/main -- rooms/ ADMIN/
+origin/main:ADMIN/LOG.md:61:| 54 | 2026-10-01 | QUYẾT ĐỊNH: **KHÔNG sửa** 3 link thiếu `https://` trong `security/github/EVIDENCE/scope_github.md` dòng 185 | Đó là **trích nguyên văn** từ chính sách GitHub. Sửa sẽ phá tính nguyên văn — mà tính nguyên văn của scope chính là **cơ sở pháp lý**. Link chết trong file bằng chứng là cái giá phải trả, rẻ hơn nhiều so với việc sửa nguồn. Ghi rõ ở đây để người sau không "sửa hộ" | DocWriter T22 phát hiện #3 |
+
+$ git show origin/main:ADMIN/LOG.md | grep -n '54'
+| 48 | 2026-10-01 | MERGE T21 (`e39064c`) — sạch | Kiểm chứng T5 (PASS 5/6) + T13 (PASS nội dung, 0 vi phạm territory/12 mục). Bản ghi kiểm định phải nằm trên `main` để phán quyết truy được về bằng chứng thô | `reviews/CROSS.md` §2.13-§2.14 |
+| 49 | 2026-10-01 | XÁC NHẬN vi phạm D-001 của `javis` (clone bằng HTTPS) nhưng KHÔNG trừ điểm nội dung T13 | `agents/javis/tasks/T13/NOTES.md:4` tự khai. Tác giả **khai thẳng** — đó là điểm cộng trung thực. Hệ quả thực tế **không thấy**. Lý do khả dĩ: VM `/home/hatch` chưa có SSH key, mà D-001 không có nhánh ngoại lệ ⇒ **lỗi của Admin**, không phải của javis | Reviewer1 T21-B mục 4 |
+| 50 | 2026-10-01 | BỔ SUNG NGOẠI LỆ vào D-001 cho máy không có SSH key tới GitHub | Vì #49: quy định cũ không có đường đi hợp lệ cho tình huống đó ⇒ đẩy agent vào thế hoặc vi phạm hoặc bỏ việc. Ngoại lệ: báo Admin trước, HTTPS **chỉ để đọc**, **cấm push** qua HTTPS | D-001 bổ sung; `ADMIN/LOG.md` #49 |
+| 51 | 2026-10-01 | Giao `ForensicsMal` T23 — vá C2 của T5 + sửa sai số `capstone` (D-014) | Lỗ hổng **thật**: T5 cấm suy diễn khi thiếu công cụ nhưng **không chặn** đúng lỗi `pip list \| grep` mà ExploitDeep đã mắc. Nếu không vá, người sau **lặp lại y nguyên lỗi `unicorn`**. Admin **không tự sửa** `agents/**` | Reviewer1 T21-A Q2 |
+
+  --- LOG #54 nguyen van ---
+61:| 54 | 2026-10-01 | QUYẾT ĐỊNH: **KHÔNG sửa** 3 link thiếu `https://` trong `security/github/EVIDENCE/scope_github.md` dòng 185 | Đó là **trích nguyên văn** từ chính sách GitHub. Sửa sẽ phá tính nguyên văn — mà tính nguyên văn của scope chính là **cơ sở pháp lý**. Link chết trong file bằng chứng là cái giá phải trả, rẻ hơn nhiều so với việc sửa nguồn. Ghi rõ ở đây để người sau không "sửa hộ" | DocWriter T22 phát hiện #3 |
+
+=== [B3h] Tim MOI cho xuat hien chuoi 'security/github/EVIDENCE' (duong dan sai) ===
+origin/main:ADMIN/LOG.md:61:| 54 | 2026-10-01 | QUYẾT ĐỊNH: **KHÔNG sửa** 3 link thiếu `https://` trong `security/github/EVIDENCE/scope_github.md` dòng 185 | Đó là **trích nguyên văn** từ chính sách GitHub. Sửa sẽ phá tính nguyên văn — mà tính nguyên văn của scope chính là **cơ sở pháp lý**. Link chết trong file bằng chứng là cái giá phải trả, rẻ hơn nhiều so với việc sửa nguồn. Ghi rõ ở đây để người sau không "sửa hộ" | DocWriter T22 phát hiện #3 |
+origin/main:agents/bountyrecon/tasks/T3/CANDIDATES.md:115:> `agents/bountyrecon/**`. Mục §5 của chỉ thị nhắc `security/<program>/EVIDENCE/`, **nhưng**
+
+=== [B3i] Muc D-020 trong directives.md — nguyen van phan lien quan ===
