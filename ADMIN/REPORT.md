@@ -354,11 +354,17 @@ kiểm định lớp 2 do `DeepSeek-Harness`. **Admin là đối tượng bị k
 
 ```bash
 git clone git@github.com:TranQuy-lab/agentmeeting.git && cd agentmeeting
-git log -1 --format=%H                 # phải ra 571ea09...
-git ls-files | wc -l                   # phải ra 278
-git ls-files | grep -cE 'creds.*\.json$|\.pem$|\.key$'   # phải ra 0
+git rev-parse 571ea09627c0a568d3c5ca402ecf6dfac61461ff   # mốc mà báo cáo này đo số liệu
+git ls-tree -r --name-only 571ea09627c0a568d3c5ca402ecf6dfac61461ff | wc -l   # phải ra 278
+git ls-tree -r --name-only 571ea09627c0a568d3c5ca402ecf6dfac61461ff \
+  | grep -cE 'creds.*\.json$|\.pem$|\.key$'   # phải ra 0
 git cat-file -s origin/agent/antigravity/T12:agents/antigravity/tasks/T12/evidence/pqc_handshake_live_raw.txt  # phải ra 0
 ```
+
+> **Vì sao dùng `git rev-parse <hash>` chứ không `git log -1`:** báo cáo này **được commit vào chính repo nó mô tả**
+> ⇒ `HEAD` sẽ trôi sau mỗi lần sửa báo cáo. Mọi số liệu ở §1 đo tại mốc **`571ea09`**,
+> không phải tại `HEAD`. Đây đúng là lớp lỗi mà cả phiên đi bắt: **bằng chứng trỏ vào thứ đã đổi.**
+> `[claim:C32] [evidence:E01,E02,E04]`
 
 **Trạng thái bàn giao.** **KHÔNG submission-ready.** 7 mục ở §9 còn mở.
 Lệnh nghỉ đã ban hành (Tin ID **246**), 12 agent đã dừng poll. `[claim:C32] [evidence:E17]`
