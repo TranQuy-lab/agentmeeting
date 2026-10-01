@@ -409,22 +409,40 @@ grep -n 'say\|send' ~/.agents/skills/agentmeet/SKILL.md | head -1   # -> send --
 
 ## 6. Lệnh kiểm chứng bảng này
 
+> ⚠️ **ĐỌC TRƯỚC:** bảng mô tả **mốc `main@0f41ebb`**. Nếu bạn đang ở **nhánh `agent/doc-writer/T22`**,
+> `git ls-files` sẽ ra **158** chứ không phải 157, vì T22 **thêm 1 file**
+> (`agents/docwriter/tasks/T22/README.md`). Vì vậy **các lệnh dưới đây trỏ vào mốc `0f41ebb`** —
+> chạy ở nhánh nào cũng ra cùng kết quả.
+
 ```bash
 cd /home/noble-tran/agentmeeting-docwriter
-git ls-files | wc -l                      # phải ra 157 (mốc 0f41ebb)
-git ls-files '*.md' | wc -l               # phải ra 71
-git ls-files '*.txt' | wc -l              # phải ra 45
-git ls-files '*.gitkeep' | wc -l          # phải ra 13
-git ls-files '*.py' | wc -l               # phải ra 10
-git ls-files '*.json' | wc -l             # phải ra 7
-git ls-files '*.sh' | wc -l               # phải ra 2
-git ls-files | grep '/' | sed 's|/[^/]*$||' | sort -u | wc -l   # phải ra 52
-git log --oneline -1                      # phải ra 0f41ebb
-# tác giả từng file (lấy commit thêm file lần đầu):
-for f in $(git ls-files); do git log --diff-filter=A --format='%an' -- "$f" | tail -1; done | sort | uniq -c
+M=0f41ebb                                  # mốc của bảng
+git ls-tree -r --name-only $M | wc -l                              # phải ra 157
+git ls-tree -r --name-only $M | grep -c '\.md$'                    # phải ra 71
+git ls-tree -r --name-only $M | grep -c '\.txt$'                   # phải ra 45
+git ls-tree -r --name-only $M | grep -c '\.gitkeep$'               # phải ra 13
+git ls-tree -r --name-only $M | grep -c '\.py$'                    # phải ra 10
+git ls-tree -r --name-only $M | grep -c '\.json$'                  # phải ra 7
+git ls-tree -r --name-only $M | grep -c '\.sh$'                    # phải ra 2
+git ls-tree -r --name-only $M | grep '/' | sed 's|/[^/]*$||' | sort -u | wc -l   # phải ra 52
+git log --oneline -1 $M                                            # phải ra 0f41ebb
+# tác giả từng file (commit THÊM file lần đầu; git log mới->cũ nên lấy dòng CUỐI):
+for f in $(git ls-tree -r --name-only $M); do git log --diff-filter=A --format='%an' -- "$f" | tail -1; done | sort | uniq -c
 # phải khớp bảng §3.1
-# đếm lại bảng §2 (không được thiếu/thừa dòng, không dòng trống giữa bảng):
-grep -c '^| [0-9]' INDEX.md               # phải ra 157
+```
+
+Đếm lại **bảng §2** rồi **đối chiếu từng đường dẫn** với mốc (không thiếu, không thừa, bảng liên tục):
+
+```bash
+# chỉ đếm trong §2 — grep cả file sẽ đếm lẫn các bảng khác:
+awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md | grep -c '^| [0-9]'   # phải ra 157
+awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md \
+  | sed -n 's/^| [0-9]* | `\([^`]*\)`.*/\1/p' | sort > /tmp/idx.txt
+git ls-tree -r --name-only $M | sort > /tmp/git.txt
+diff /tmp/idx.txt /tmp/git.txt && echo "KHOP 157/157"          # phải in ra KHOP 157/157
+# bảng §2 phải LIÊN TỤC, không dòng trống cắt giữa:
+awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md \
+  | awk '/^\|/{n++;next} n>0 && !/^\|/ && !/^$/{print "BANG BI CAT"; exit}'   # không in gì = đạt
 ```
 
 Nếu bất kỳ lệnh nào cho kết quả khác bảng ⇒ **bảng sai, phải sửa bảng**.

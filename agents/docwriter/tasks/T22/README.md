@@ -20,17 +20,21 @@
 
 ## 2. Cách lập bảng (để Reviewer1 tái lập được)
 
+> ⚠️ **Nhánh `agent/doc-writer/T22` có 158 file, không phải 157** — vì T22 **thêm 1 file**
+> (`agents/docwriter/tasks/T22/README.md`). Bảng mô tả **mốc `main@0f41ebb` = 157 file**, nên mọi
+> lệnh dưới đây **trỏ vào mốc `$M`**, không trỏ vào nhánh. Lần đầu DocWriter viết `git ls-files | wc -l`
+> và tự phát hiện lệnh đó **sẽ ra 158** khi Reviewer1 chạy trên nhánh — đã sửa trước khi báo.
+
 ```bash
 cd /home/noble-tran/agentmeeting-docwriter
-git ls-files | wc -l                     # 157
+M=0f41ebb                                # mốc của bảng
+git ls-tree -r --name-only $M | wc -l    # 157
 # danh sách file:
-git ls-files
+git ls-tree -r --name-only $M
 # tác giả (commit THÊM file lần đầu — git log mới->cũ nên lấy dòng CUỐI):
 git log --diff-filter=A --format='%h|%an' -- <file> | tail -1
 # sửa cuối (để suy task):
 git log -1 --format='%h|%s' -- <file>
-# đếm lại bảng trong INDEX.md:
-grep -c '^| [0-9]' INDEX.md              # LƯU Ý: đếm cả bảng khác -> dùng lệnh ở §5
 ```
 
 **Suy trạng thái:** `✅ đã nghiệm thu (lớp 1)` nếu task của commit **sửa cuối** nằm trong danh sách
@@ -57,14 +61,21 @@ nghiệm thu của `ADMIN/SUMMARY.md` §1: `T1 T3 T6 T7 T11 T15 T16 T17 T19 T20`
 4. Bảng khoá ở mốc `0f41ebb`; `main` đang tiến nên bảng sẽ lạc hậu.
 5. **Chưa được Reviewer1 kiểm định** — theo D-004, DocWriter **không** tự verify.
 
-## 5. Lệnh kiểm chứng bảng §2 (không đếm lẫn bảng khác)
+## 5. Lệnh kiểm chứng bảng §2 (không đếm lẫn bảng khác, không lẫn file mới của T22)
 
 ```bash
+cd /home/noble-tran/agentmeeting-docwriter
+M=0f41ebb
 # chỉ đếm trong §2, từ tiêu đề "## 2." tới "### 2.1"
 awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md | grep -c '^| [0-9]'   # phải ra 157
-# đối chiếu từng đường dẫn trong bảng với git ls-files (không thiếu, không thừa):
+# đối chiếu từng đường dẫn trong bảng với MỐC 0f41ebb (không thiếu, không thừa):
 awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md \
   | sed -n 's/^| [0-9]* | `\([^`]*\)`.*/\1/p' | sort > /tmp/idx.txt
-git ls-files | sort > /tmp/git.txt
+git ls-tree -r --name-only $M | sort > /tmp/git.txt
 diff /tmp/idx.txt /tmp/git.txt && echo "KHOP 157/157"
+# bảng §2 phải liên tục:
+awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md \
+  | awk '/^\|/{n++;next} n>0 && !/^\|/ && !/^$/{print "BANG BI CAT"; exit}'   # không in gì = đạt
 ```
+
+**Kết quả DocWriter đã chạy trước khi push:** `157` · `KHOP 157/157` · không in gì (bảng liên tục).
