@@ -1,0 +1,65 @@
+
+==========================================================
+### T21-B2 — XAC MINH TRICH NGUYEN VAN (khong tin ban ghi cua javis)
+==========================================================
+
+=== [Q1] ebpf.io — 2 cau trich (nguon: /tmp/t13_8.bin, 340.219 B) ===
+  ✅ eBPF is a revolutionary technology with origins in the Linux kernel that can run sandboxed programs 
+  ✅ It is used to safely and efficiently extend the capabilities of the kernel without requiring to chan
+  ✅ Historically, the operating system has always been an ideal place to implement observability, securi
+
+=== [Q2] IACR CiC (S7) — abstract (nguon: /tmp/t13_6.bin, 168.296 B, final /p/1/2/6) ===
+  ✅ Transport Layer Security (TLS) is the backbone security protocol of the Internet
+  ✅ these proposals differ in many aspects, including the security properties they seek to protect
+  ✅ we identify the most reasonable candidates for post-quantum TLS
+  ✅ Overall, our work provides a well-founded reference point for researching post-quantum TLS and prepa
+  --- tieu de bai ---
+  title: A Comprehensive Survey on Post-Quantum TLS
+
+=== [Q3] RFC 9954 — abstract (nguon: /tmp/t13_7.bin, final /doc/rfc9954/) ===
+  ✅ Hybrid key exchange refers to using multiple key exchange algorithms simultaneously and combining th
+  ✅ It is motivated by the transition to post-quantum cryptography
+  ✅ This document provides a construction for hybrid key exchange in the Transport Layer Security (TLS) 
+  kw 'RFC 9954': 3
+  kw 'Informational': 3
+  kw 'Hybrid Key Exchange in TLS 1.3': 4
+
+=== [Q4] S17 DergiPark — abstract + ket qua (nguon: /tmp/t13_5.bin, PDF 1.108.312 B) ===
+  pdftotext OK -> 796 dong
+  ✅ In the post-quantum era, it is predicted that secure encryption algorithms like RSA and ECC will be broke
+  ✅ NIST has made the transition to post-quantum cryptography necessary by completing the ML-KEM standard (FI
+  ✅ five different network scenarios (loopback, LAN (10 ms RTT), WAN (50 ms RTT), and packet loss rates of 1%
+  ✅ Experiments were performed using OpenSSL 3.x integrated with liboqs, with 100 iterations for each configu
+  ✅ base-state 1-RTT handshake times range from 11.3 to 13.3 ms
+  ✅ ML-KEM reached 180 ms with 5% loss, while X25519 reached 281 ms
+  ✅ ML-KEM 512 provided a 4.16-fold speedup at the base level
+  ✅ network RTT becomes the dominant bottleneck, and the choice of KEM algorithm becomes practically irreleva
+  --- metadata ---
+  so trang PDF: 13
+  tac gia 'Cemile İNCE': ✅ thay
+
+=== [Q5] S15 / S16 MDPI — abstract doi chieu CROSSREF (kenh doc lap voi javis) ===
+  File "<stdin>", line 24
+    print(f"    authors: {[f'{a.get(chr(39)+chr(39)) or a.get(\"given\",\"\")} {a.get(\"family\",\"\")}'.strip() for a in m.get('author',[])][:9]}")
+                                                               ^
+SyntaxError: unexpected character after line continuation character
+
+=== [Q5-lai] S15 / S16 MDPI — doi chieu CROSSREF (kenh doc lap) ===
+  --- S16 MDPI Sci (10.3390/sci7030091) ---
+    title  : Module-Lattice-Based Key-Encapsulation Mechanism Performance Measurements
+    venue  : Sci
+    authors: ['Naya Nagy', 'Sarah Alnemer', 'Lama Mohammed Alshuhail', 'Haifa Alobiad', 'Tala Almulla', 'Fatima Ahmed Alrumaihi', 'Najd Ghadra', 'Marius Nagy']
+    abstract Crossref: 1905 ky tu
+      OK   Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM) is a post-quantum cryptographic ke
+      OK   We implement the ML-KEM in Python for clarity and in C++ for performance
+      OK   our Python benchmark confirmed that the ML-KEM consistently outperformed RSA in execution sp
+      OK   these trials were unsuccessful due to memory constraints
+  --- S15 MDPI Entropy (10.3390/e27121242) ---
+    title  : On the Security and Efficiency of TLS 1.3 Handshake with Hybrid Key Exchange from CPA-Secure KEMs
+    venue  : Entropy
+    authors: ['Jinrong Chen', 'Wei Peng', 'Yi Wang', 'Yutong Bian']
+    abstract Crossref: 2075 ky tu
+      OK   TLS 1.3 is a crucial protocol for securing modern internet communications
+      OK   This work challenges the necessity of CCA security by proving that CPA-secure KEMs are suffi
+      OK   up to 44.8% performance improvement at the key exchange layer
+      OK   up to approximately 9% acceleration for the full TLS 1.3 handshake
