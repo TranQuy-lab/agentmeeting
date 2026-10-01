@@ -1,0 +1,101 @@
+#### QUERY: T1
+
+=== Q: post-quantum TLS handshake performance measurement | total: 722 ===
+- 2020 | https://doi.org/10.1145/3372297.3423350 | 180 c | None | conference-paper
+  T: Post-Quantum TLS Without Handshake Signatures
+  ABS: We present KEMTLS, an alternative to the TLS 1.3 handshake that uses key-encapsulation mechanisms (KEMs) instead of signatures for server authentication. Among existing post-quantum candidates, signature schemes generally have larger public key/signature sizes compared to the public key/ciphertext sizes of KEMs: by using an IND-CCA-secure KEM for server authentication in post-quantum TLS, we obtai
+  OA: https://dl.acm.org/doi/pdf/10.1145/3372297.3423350
+- 2015 | https://doi.org/10.1109/sp.2015.40 | 330 c | None | conference-paper
+  T: Post-Quantum Key Exchange for the TLS Protocol from the Ring Learning with Errors Problem
+  ABS: Lattice-based cryptographic primitives are believed to offer resilience against attacks by quantum computers. We demonstrate the practicality of post-quantum key exchange by constructing cipher suites for the Transport Layer Security (TLS) protocol that provide key exchange based on the ring learning with errors (R-LWE) problem, we accompany these cipher suites with a rigorous proof of security. O
+  OA: https://ieeexplore.ieee.org/ielx7/7160813/7163005/07163047.pdf
+- 2020 | https://doi.org/10.14722/ndss.2020.24203 | 147 c | None | conference-paper
+  T: Post-Quantum Authentication in TLS 1.3: A Performance Study
+  ABS: The potential development of large-scale quantum computers is raising concerns among IT and security research professionals due to their ability to solve (elliptic curve) discrete logarithm and integer factorization problems in polynomial time.All currently used public key algorithms would be deemed insecure in a post-quantum (PQ) setting.In response, the National Institute of Standards and Techno
+  OA: https://doi.org/10.14722/ndss.2020.24203
+- 2023 | https://doi.org/10.1145/3624354.3630585 | 45 c | None | conference-paper
+  T: The Performance of Post-Quantum TLS 1.3
+  ABS: Quantum Computers (QCs) differ radically from traditional computers and can efficiently solve mathematical problems fundamental to our current cryptographic algorithms. Although existing QCs need to accommodate more qubits to break cryptographic algorithms, the concern of ''Store-Now-Decrypt-Later'' (i.e., adversaries store encrypted data today and decrypt them once powerful QCs become available) 
+- 2019 | https://doi.org/10.1109/jiot.2019.2958788 | 317 c | IEEE Internet of Things Journal | article
+  T: From Pre-Quantum to Post-Quantum IoT Security: A Survey on Quantum-Resistant Cryptosystems for the Internet of Things
+  ABS: Although quantum computing is still in its nascent age, its evolution threatens the most popular public-key encryption systems. Such systems are essential for today's Internet security due to their ability for solving the key distribution problem and for providing high security in insecure communications channels that allow for accessing websites or for exchanging e-mails, financial transactions, 
+  OA: https://arxiv.org/pdf/2402.00790
+- 2021 | https://doi.org/10.1002/spe.3039 | 479 c | Software Practice and Experience | review
+  T: Quantum computing: A taxonomy, systematic review and future directions
+  ABS: Abstract Quantum computing (QC) is an emerging paradigm with the potential to offer significant computational advantage over conventional classical computing by exploiting quantum‐mechanical principles such as entanglement and superposition. It is anticipated that this computational advantage of QC will help to solve many complex and computationally intractable problems in several application doma
+  OA: https://arxiv.org/pdf/2010.15559
+- 2024 | https://doi.org/10.3390/cryptography8020021 | 54 c | Cryptography | article
+  T: Constrained Device Performance Benchmarking with the Implementation of Post-Quantum Cryptography
+  ABS: Advances in quantum computers may pose a significant threat to existing public-key encryption methods, which are crucial to the current infrastructure of cyber security. Both RSA and ECDSA, the two most widely used security algorithms today, may be (in principle) solved by the Shor algorithm in polynomial time due to its ability to efficiently solve the discrete logarithm problem, potentially maki
+  OA: https://www.mdpi.com/2410-387X/8/2/21/pdf?version=1716462542
+- 2024 | https://doi.org/10.62056/ahee0iuc | 28 c | IACR Communications in Cryptology | article
+  T: A Comprehensive Survey on Post-Quantum TLS
+  ABS: Transport Layer Security (TLS) is the backbone security protocol of the Internet. As this fundamental protocol is at risk from future quantum attackers, many proposals have been made to protect TLS against this threat by implementing post-quantum cryptography (PQC). The widespread interest in post-quantum TLS has given rise to a large number of solutions over the last decade. These proposals diffe
+  OA: https://doi.org/10.62056/ahee0iuc
+
+=== Q: hybrid key exchange ML-KEM deployment measurement | total: 534 ===
+- 2025 | https://doi.org/10.3390/e27121242 | 6 c | Entropy | article
+  T: On the Security and Efficiency of TLS 1.3 Handshake with Hybrid Key Exchange from CPA-Secure KEMs
+  ABS: TLS 1.3 is a crucial protocol for securing modern internet communications. To facilitate a smooth transition to post-quantum security, hybrid key exchange, which combines classical key exchange algorithms with post-quantum key encapsulation mechanisms (KEMs), is proposed to enhance the security of the current TLS 1.3 handshake. However, existing drafts and implementations of hybrid key exchange fo
+  OA: https://www.mdpi.com/1099-4300/27/12/1242/pdf?version=1765206682
+- 2025 | https://doi.org/10.3390/sci7030091 | 14 c | Sci | article
+  T: Module-Lattice-Based Key-Encapsulation Mechanism Performance Measurements
+  ABS: Key exchange mechanisms are foundational to secure communication, yet traditional methods face challenges from quantum computing. The Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM) is a post-quantum cryptographic key exchange protocol with unknown successful quantum vulnerabilities. This study evaluates the ML-KEM using experimental benchmarks. We implement the ML-KEM in Python for clar
+  OA: https://www.mdpi.com/2413-4155/7/3/91/pdf?version=1751357201
+- 2025 | https://doi.org/10.1140/epjqt/s40507-025-00350-5 | 31 c | EPJ Quantum Technology | article
+  T: A critical analysis of deployed use cases for quantum key distribution and comparison with post-quantum cryptography
+  ABS: Quantum Key Distribution (QKD) is currently being discussed as a technology to safeguard communication in a future where quantum computers compromise traditional public-key cryptosystems. In this paper, we conduct a comprehensive security evaluation of QKD-based solutions, focusing on real-world use cases sourced from academic literature and industry reports. We analyze these use cases, assess the
+  OA: https://epjquantumtechnology.springeropen.com/counter/pdf/10.1140/epjqt/s40507-025-00350-5
+- 2024 | https://doi.org/10.1007/978-981-96-0935-2_1 | 8 c | Lecture notes in computer science | conference-paper
+  T: C’est Très CHIC: A Compact Password-Authenticated Key Exchange from Lattice-Based KEM
+  OA: https://orbilu.uni.lu/bitstream/10993/63175/1/2024-308.pdf
+- 2026 | https://doi.org/10.53070/bbd.1898820 | 4 c | Computer Science | article
+  T: Hybrid ML-KEM in TLS 1.3: Performance Analysis on ARM64 Under Network Stress
+  ABS: In the post-quantum era, it is predicted that secure encryption algorithms like RSA and ECC will be broken within microseconds. In response, NIST has made the transition to post-quantum cryptography necessary by completing the ML-KEM standard (FIPS 203) in August 2024. However, integrating these new algorithms into the existing TLS 1.3 infrastructure raises some concerns, particularly in resource-
+  OA: https://dergipark.org.tr/en/download/article-file/5763310
+- 2026 | https://doi.org/10.3389/fphy.2025.1723966 | 7 c | Frontiers in Physics | article
+  T: Design and implementation of an authenticated post-quantum session protocol using ML-KEM (Kyber), ML-DSA (Dilithium), and AES-256-GCM
+  ABS: Introduction Session establishment, the process by which two parties authenticate each other and derive a shared secret key, forms the foundation for secure digital communication. Quantum computers threaten this foundation by breaking classical public-key primitives such as RSA and elliptic-curve Diffie–Hellman (ECDH), thereby enabling harvest-now–decrypt-later (HNDL) attacks that endanger long-te
+  OA: https://public-pages-files-2025.frontiersin.org/journals/physics/articles/10.3389/fphy.2025.1723966/pdf
+- 2021 | https://doi.org/10.3389/fchem.2021.705475 | 118 c | Frontiers in Chemistry | article
+  T: Portland Versus Alkaline Cement: Continuity or Clean Break: “A Key Decision for Global Sustainability”
+  ABS: This review undertakes rigorous analysis of much of the copious literature available to the scientific community on the use of alkali-activated binders (AABs) in construction. The authors' main intention is to categorically refute arguments of that part of the scientific community underestimating or even dismissing the actual potential of AABs as alternatives to Portland cement (PC). The main prem
+  OA: https://www.frontiersin.org/articles/10.3389/fchem.2021.705475/pdf
+- 2025 | https://doi.org/10.1016/j.comnet.2025.111355 | 12 c | Computer Networks | article
+  T: Hybrid Quantum-Safe integration of TLS in SDN networks
+  ABS: Shor’s algorithm efficiently solves factoring and discrete logarithm problems using quantum computers, compromising all public key schemes used today. Algorithms such as RSA, DHKE, and ECC will not work in a world with quantum computers, since they can easily invert the functions that provide their computational strength in the classical world. These schemes rely on assumptions on their computatio
+  OA: https://doi.org/10.1016/j.comnet.2025.111355
+
+=== Q: post-quantum cryptography migration challenges organisation survey | total: 503 ===
+- 2024 | https://doi.org/10.1109/access.2024.3450306 | 37 c | IEEE Access | review
+  T: Migrating Software Systems Toward Post-Quantum Cryptography-A Systematic Literature Review
+  ABS: Networks such as the Internet are essential for our connected world. Quantum computing threatens its fundamental security mechanisms. Therefore, a migration to post-quantum-cryptography (PQC) is necessary for networks and their components. Currently, there is little knowledge on how such migrations should be structured and implemented in practice. Our systematic literature review addresses migrati
+  OA: https://doi.org/10.1109/access.2024.3450306
+- 2022 | https://doi.org/10.1016/j.procs.2022.12.086 | 37 c | Procedia Computer Science | conference-paper
+  T: A Review of the Present Cryptographic Arsenal to Deal with Post-Quantum Threats
+  ABS: The looming threat of quantum attacks on the digital infrastructure protected by conventional cryptographic protocol has generated urgency in identifying and deploying countermeasures that can mitigate the threat. There is a need for stronger cryptographic schemes that combine the strengths of both classic and quantum technologies. Post-Quantum Cryptography (PQC) has emerged as a potential solutio
+  OA: https://www.sciencedirect.com/science/article/pii/S1877050922021573/pdf
+- 2022 | https://doi.org/10.1049/qtc2.12044 | 84 c | IET Quantum Communication | article
+  T: Towards the industrialisation of quantum key distribution in communication networks: A short survey
+  ABS: Abstract Quantum information and communication technology will lead us to the new era of ultra‐fast and absolute‐secure networks. With the emergence of quantum supremacy on the horizon, the security of various classical encryption systems soon may be deemed obsolete. As a remedy, quantum key distribution (QKD) is proposed as a novel quantum‐based secret keys exchange, which is developed to solve t
+  OA: https://onlinelibrary.wiley.com/doi/pdfdirect/10.1049/qtc2.12044
+- 2022 | https://doi.org/10.48550/arxiv.2202.02826 | 18 c | arXiv (Cornell University) | preprint
+  T: Post Quantum Cryptography: Techniques, Challenges, Standardization, and Directions for Future Research
+  ABS: The development of large quantum computers will have dire consequences for cryptography. Most of the symmetric and asymmetric cryptographic algorithms are vulnerable to quantum algorithms. Grover's search algorithm gives a square root time boost for the searching of the key in symmetric schemes like AES and 3DES. The security of asymmetric algorithms like RSA, Diffie Hellman, and ECC is based on t
+  OA: https://arxiv.org/pdf/2202.02826
+- 2023 | https://doi.org/10.3390/s23156666 | 340 c | Sensors | article
+  T: Digital Transformation and Cybersecurity Challenges for Businesses Resilience: Issues and Recommendations
+  ABS: This systematic literature review explores the digital transformation (DT) and cybersecurity implications for achieving business resilience. DT involves transitioning organizational processes to IT solutions, which can result in significant changes across various aspects of an organization. However, emerging technologies such as artificial intelligence, big data and analytics, blockchain, and clou
+  OA: https://www.mdpi.com/1424-8220/23/15/6666/pdf?version=1690287801
+- 2019 | https://doi.org/10.1109/comst.2019.2899354 | 335 c | IEEE Communications Surveys & Tutorials | article
+  T: Smart Grid Metering Networks: A Survey on Security, Privacy and Open Research Issues
+  ABS: Smart grid (SG) networks are newly upgraded networks of connected objects that greatly improve reliability, efficiency, and sustainability of the traditional energy infrastructure. In this respect, the smart metering infrastructure (SMI) plays an important role in controlling, monitoring, and managing multiple domains in the SG. Despite the salient features of SMI, security, and privacy issues hav
+  OA: http://hdl.handle.net/10072/395272
+- 2021 | https://doi.org/10.3390/app11178117 | 110 c | Applied Sciences | article
+  T: From 5G to 6G Technology: Meets Energy, Internet-of-Things and Machine Learning: A Survey
+  ABS: Due to the rapid development of the fifth-generation (5G) applications, and increased demand for even faster communication networks, we expected to witness the birth of a new 6G technology within the next ten years. Many references suggested that the 6G wireless network standard may arrive around 2030. Therefore, this paper presents a critical analysis of 5G wireless networks’, significant technol
+  OA: https://www.mdpi.com/2076-3417/11/17/8117/pdf?version=1630543619
+- 2025 | https://doi.org/10.1038/s41467-025-58492-0 | 91 c | Nature Communications | article
+  T: Engineering biology applications for environmental solutions: potential and challenges
+  ABS: Engineering biology applies synthetic biology to address global environmental challenges like bioremediation, biosequestration, pollutant monitoring, and resource recovery. This perspective outlines innovations in engineering biology, its integration with other technologies (e.g., nanotechnology, IoT, AI), and commercial ventures leveraging these advancements. We also discuss commercialisation and
+  OA: https://www.nature.com/articles/s41467-025-58492-0.pdf

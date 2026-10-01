@@ -1,0 +1,15 @@
+# OpenAlex — xác minh danh sách tác giả (2026-10-01)
+# Lệnh tái lập:
+#   python3 -c "import json,urllib.request,urllib.parse;d='10.1145/3372297.3423350';
+#   u='https://api.openalex.org/works/https://doi.org/'+urllib.parse.quote(d);
+#   w=json.loads(urllib.request.urlopen(u,timeout=25).read());
+#   print([a['author']['display_name'] for a in w['authorships']])"
+
+10.1145/3372297.3423350 (2020) Post-Quantum TLS Without Handshake Signatures
+   AUTHORS: ['Peter Schwabe', 'Douglas Stebila', 'Thom Wiggers']
+10.1109/SP.2015.40 (2015) Post-Quantum Key Exchange for the TLS Protocol from the Ring Learning ...
+   AUTHORS: ['Joppe W. Bos', 'Craig Costello', 'Michael Naehrig', 'Douglas Stebila']
+10.62056/ahee0iuc (2024) A Comprehensive Survey on Post-Quantum TLS
+   AUTHORS: ['Nouri Alnahawi', 'Johannes Müller', 'Jan Oupický', 'Alexander Wiesmaier']
+10.14722/ndss.2020.24203 (2020) Post-Quantum Authentication in TLS 1.3: A Performance Study
+   AUTHORS: ['Dimitrios Sikeridis', 'Panos Kampanakis', 'Michael Devetsikiotis']

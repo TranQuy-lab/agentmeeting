@@ -1,0 +1,129 @@
+
+=== SEARCH: eBPF extended Berkeley Packet Filter security monitoring | total: 613 ===
+- 2019 | https://doi.org/10.1109/sp.2019.00002 | 1795 c | None | conference-paper
+  T: Spectre Attacks: Exploiting Speculative Execution
+  ABS: Modern processors use branch prediction and speculative execution to maximize performance. For example, if the destination of a branch depends on a memory value that is in the process of being read, CPUs will try to guess the destination and attempt to execute ahead. When the memory value finally ar
+- 2021 | https://doi.org/10.1109/access.2021.3101188 | 140 c | IEEE Access | article
+  T: An End-to-End Framework for Machine Learning-Based Network Intrusion Detection System
+  ABS: The increase of connected devices and the constantly evolving methods and techniques by attackers pose a challenge for network intrusion detection systems from conception to operation. As a result, we see a constant adoption of machine learning algorithms for network intrusion detection systems. How
+- 2020 | https://doi.org/10.1016/j.fsidi.2019.200892 | 126 c | Forensic Science International Digital Investigation | article
+  T: Packet analysis for network forensics: A comprehensive survey
+  ABS: Packet analysis is a primary traceback technique in network forensics, which, providing that the packet details captured are sufficiently detailed, can play back even the entire network traffic for a particular point in time. This can be used to find traces of nefarious online behavior, data breache
+- 2022 | https://doi.org/10.1109/access.2022.3193102 | 124 c | IEEE Access | article
+  T: A Survey on Observability of Distributed Edge & Container-Based Microservices
+  ABS: Edge computing is proposed as a technical enabler for meeting emerging network technologies (such as 5G and Industrial Internet of Things), stringent application requirements and key performance indicators (KPIs). It aims to alleviate the problems associated with centralized cloud computing systems 
+- 2022 | https://doi.org/10.1145/3556973 | 123 c | ACM Computing Surveys | article
+  T: Advancing SDN from OpenFlow to P4: A Survey
+  ABS: Software-defined Networking (SDN) marked the beginning of a new era in the field of networking by decoupling the control and forwarding processes through the OpenFlow protocol. The Next Generation SDN is defined by Open Interfaces and full programmability of the data plane. P4 is a domain-specific l
+- 2019 | https://doi.org/10.1145/3314221.3314590 | 99 c | None | conference-paper
+  T: Simple and precise static analysis of untrusted Linux kernel extensions
+  ABS: Extended Berkeley Packet Filter (eBPF) is a Linux subsystem that allows safely executing untrusted user-defined extensions inside the kernel. It relies on static analysis to protect the kernel against buggy and malicious extensions. As the eBPF ecosystem evolves to support more complex and diverse e
+- 2019 | https://doi.org/10.14722/ndss.2019.23176 | 92 c | None | conference-paper
+  T: PeriScope: An Effective Probing and Fuzzing Framework for the Hardware-OS Boundary
+  ABS: The OS kernel is an attractive target for remote attackers.If compromised, the kernel gives adversaries full system access, including the ability to install rootkits, extract sensitive information, and perform other malicious actions, all while evading detection.Most of the kernel's attack surface i
+- 2019 | https://doi.org/10.1145/3341301.3359641 | 83 c | None | conference-paper
+  T: Scaling symbolic evaluation for automated verification of systems code with Serval
+  ABS: This paper presents Serval, a framework for developing automated verifiers for systems software. Serval provides an extensible infrastructure for creating verifiers by lifting interpreters under symbolic evaluation, and a systematic approach to identifying and repairing verification performance bott
+
+=== SEARCH: eBPF performance overhead kernel observability | total: 558 ===
+- 2019 | https://doi.org/10.1109/sp.2019.00002 | 1795 c | None | conference-paper
+  T: Spectre Attacks: Exploiting Speculative Execution
+  ABS: Modern processors use branch prediction and speculative execution to maximize performance. For example, if the destination of a branch depends on a memory value that is in the process of being read, CPUs will try to guess the destination and attempt to execute ahead. When the memory value finally ar
+- 2021 | https://doi.org/10.1109/access.2021.3101188 | 140 c | IEEE Access | article
+  T: An End-to-End Framework for Machine Learning-Based Network Intrusion Detection System
+  ABS: The increase of connected devices and the constantly evolving methods and techniques by attackers pose a challenge for network intrusion detection systems from conception to operation. As a result, we see a constant adoption of machine learning algorithms for network intrusion detection systems. How
+- 2022 | https://doi.org/10.1109/access.2022.3193102 | 124 c | IEEE Access | article
+  T: A Survey on Observability of Distributed Edge & Container-Based Microservices
+  ABS: Edge computing is proposed as a technical enabler for meeting emerging network technologies (such as 5G and Industrial Internet of Things), stringent application requirements and key performance indicators (KPIs). It aims to alleviate the problems associated with centralized cloud computing systems 
+- 2022 | https://doi.org/10.3390/app12115507 | 92 c | Applied Sciences | review
+  T: Challenges and Solution Directions of Microservice Architectures: A Systematic Literature Review
+  ABS: Microservice architecture (MSA) is an architectural style for distributed software systems, which promotes the use of fine-grained services with their own lifecycles. Several benefits of MSA have been reported in the literature, including increased modularity, flexible configuration, easier developm
+- 2023 | https://doi.org/10.1109/access.2023.3281480 | 70 c | IEEE Access | article
+  T: eBPF: A New Approach to Cloud-Native Observability, Networking and Security for Current (5G) and Future Mobile Networks (6G and Beyond)
+  ABS: Modern mobile communication networks and new service applications are deployed on cloud-native platforms. Kubernetes (K8s) is the de facto distributed operating system for container orchestration, and the extended version of the Berkeley Packet Filter (eBPF)– in the Linux (and MS Windows) kernel– is
+- 2021 | https://doi.org/10.1145/3445814.3446708 | 69 c | None | conference-paper
+  T: Speculative interference attacks: breaking invisible speculation schemes
+  ABS: Recent security vulnerabilities that target speculative execution (e.g., Spectre) present a significant challenge for processor design. These highly publicized vulnerabilities use speculative execution to learn victim secrets by changing the cache state. As a result, recent computer architecture res
+- 2021 | https://doi.org/10.1145/3472883.3486999 | 67 c | None | conference-paper
+  T: SHOWAR
+  ABS: Microservices architecture have been widely adopted in designing distributed cloud applications where the application is decoupled into multiple small components (i.e. "microservices"). One of the challenges in deploying microservices is finding the optimal amount of resources (i.e. size) and the nu
+- 2024 | https://doi.org/10.1109/access.2024.3437203 | 64 c | IEEE Access | article
+  T: A Comprehensive Survey on SmartNICs: Architectures, Development Models, Applications, and Research Directions
+  ABS: The end of Moore’s Law and Dennard Scaling has slowed processor improvements in the past decade. While multi-core processors have improved performance, they are limited by the application’s level of parallelism, as prescribed by Amdahl’s Law. This has led to the emergence of domain-specific processo
+
+=== SEARCH: Cilium eBPF Kubernetes network security enforcement | total: 147 ===
+- 2018 | https://doi.org/10.1145/3281411.3281443 | 327 c | None | conference-paper
+  T: The eXpress data path
+  ABS: Programmable packet processing is increasingly implemented using kernel bypass techniques, where a userspace application takes complete control of the networking hardware to avoid expensive context switches between kernel and userspace. However, as the operating system is bypassed, so are its applic
+- 2023 | https://doi.org/10.1109/access.2023.3281480 | 70 c | IEEE Access | article
+  T: eBPF: A New Approach to Cloud-Native Observability, Networking and Security for Current (5G) and Future Mobile Networks (6G and Beyond)
+  ABS: Modern mobile communication networks and new service applications are deployed on cloud-native platforms. Kubernetes (K8s) is the de facto distributed operating system for container orchestration, and the extended version of the Berkeley Packet Filter (eBPF)– in the Linux (and MS Windows) kernel– is
+- 2023 | https://doi.org/10.1145/3570361.3592493 | 47 c | None | conference-paper
+  T: Taking 5G RAN Analytics and Control to a New Level
+  ABS: Open RAN, a modular and disaggregated design paradigm for 5G radio access networks (RAN), promises programmability through the RAN Intelligent Controller (RIC). However, due to latency and safety challenges, the telemetry and control provided by the RIC is mainly limited to higher layers and higher 
+- 2021 | https://doi.org/10.1109/eucnc/6gsummit51104.2021.9482526 | 44 c | None | conference-paper
+  T: Network Policies in Kubernetes: Performance Evaluation and Security Analysis
+  ABS: 5G applications with ultra-high reliability and low latency requirements necessitate the adoption of edge computing solutions in mobile networks. Container orchestration frameworks like Kubernetes (K8s) have further emerged as the preferred standard to dynamically deploy edge applications on demand 
+- 2023 | https://doi.org/10.1145/3620678.3624652 | 42 c | None | conference-paper
+  T: Dissecting Overheads of Service Mesh Sidecars
+  ABS: Service meshes play a central role in the modern application ecosystem by providing an easy and flexible way to connect microservices of a distributed application. However, because of how they interpose on application traffic, they can substantially increase application latency and its resource cons
+- 2021 | https://doi.org/10.1145/3452296.3472929 | 30 c | None | conference-paper
+  T: Synthesizing safe and efficient kernel extensions for packet processing
+  ABS: Extended Berkeley Packet Filter (BPF) has emerged as a powerful method to extend packet-processing functionality in the Linux operating system. BPF allows users to write code in high-level languages (like C or Rust) and execute them at specific hooks in the kernel, such as the network device driver.
+- 2022 | https://doi.org/10.1145/3538969.3543810 | 27 c | Proceedings of the 17th International Conference on Availability, Reliability and Security | conference-paper
+  T: Learning State Machines to Monitor and Detect Anomalies on a Kubernetes Cluster
+  ABS: These days more companies are shifting towards using cloud environments to provide their services to their client. While it is easy to set up a cloud environment, it is equally important to monitor the system’s runtime behaviour and identify anomalous behaviours that occur during its operation. In r
+- 2022 | https://doi.org/10.1007/s10922-022-09687-z | 23 c | Journal of Network and Systems Management | article
+  T: XDP-Based SmartNIC Hardware Performance Acceleration for Next-Generation Networks
+  ABS: Abstract Next-generation networks are expected to combine advanced physical and digital technologies in super-high-speed connected system infrastructures, gaining critical operation competitiveness of improved efficiency, productivity and quality of services. Towards a fully digital and connected wo
+
+=== SEARCH: zero trust architecture implementation evaluation enterprise | total: 51661 ===
+- 2010 | https://doi.org/10.1145/1721654.1721672 | 9132 c | Communications of the ACM | article
+  T: A view of cloud computing
+  ABS: Clearing the clouds away from the true potential and obstacles posed by this computing capability.
+- 2015 | https://doi.org/10.1109/comst.2015.2444095 | 8647 c | IEEE Communications Surveys & Tutorials | article
+  T: Internet of Things: A Survey on Enabling Technologies, Protocols, and Applications
+  ABS: This paper provides an overview of the Internet of Things (IoT) with emphasis on enabling technologies, protocols, and application issues. The IoT is enabled by the latest developments in RFID, smart sensors, communication technologies, and Internet protocols. The basic premise is to have smart sens
+- 2014 | https://doi.org/10.1109/jsac.2014.2328098 | 8321 c | IEEE Journal on Selected Areas in Communications | article
+  T: What Will 5G Be?
+  ABS: What will 5G be? What it will not be is an incremental advance on 4G. The previous four generations of cellular technology have each been a major paradigm shift that has broken backward compatibility. Indeed, 5G will need to be a paradigm shift that includes very high carrier frequencies with massiv
+- 2020 | https://doi.org/10.1561/2200000083 | 6320 c | Foundations and Trends® in Machine Learning | article
+  T: Advances and Open Problems in Federated Learning
+  ABS: Federated learning (FL) is a machine learning setting where many clients (e.g., mobile devices or whole organizations) collaboratively train a model under the orchestration of a central server (e.g., service provider), while keeping the training data decentralized. FL embodies the principles of focu
+- 2024 | https://doi.org/10.1016/s0140-6736(24)00757-8 | 5037 c | The Lancet | article
+  T: Global incidence, prevalence, years lived with disability (YLDs), disability-adjusted life-years (DALYs), and healthy life expectancy (HALE) for 371 diseases and inj
+  ABS: BACKGROUND: Detailed, comprehensive, and timely reporting on population health by underlying causes of disability and premature death is crucial to understanding and responding to complex patterns of disease and injury burden over time and across age groups, sexes, and locations. The availability of
+- 1995 | https://doi.org/10.1109/90.392383 | 3725 c | IEEE/ACM Transactions on Networking | article
+  T: Wide area traffic: the failure of Poisson modeling
+  ABS: Network arrivals are often modeled as Poisson processes for analytic simplicity, even though a number of traffic studies have shown that packet interarrivals are not exponentially distributed. We evaluate 24 wide area traces, investigating a number of wide area TCP arrival processes (session and con
+- 2018 | https://doi.org/10.1145/3190508.3190538 | 3589 c | None | conference-paper
+  T: Hyperledger fabric
+  ABS: Fabric is a modular and extensible open-source system for deploying and operating permissioned blockchains and one of the Hyperledger projects hosted by the Linux Foundation (www.hyperledger.org).
+- 2010 | https://doi.org/10.1613/jair.2934 | 2916 c | Journal of Artificial Intelligence Research | article
+  T: From Frequency to Meaning: Vector Space Models of Semantics
+  ABS: Computers understand very little of the meaning of human language. This profoundly limits our ability to give instructions to computers, the ability of computers to explain their actions to us, and the ability of computers to analyse and process text. Vector space models (VSMs) of semantics are begi
+
+=== SEARCH: service mesh sidecar proxy latency overhead evaluation | total: 389 ===
+- 2022 | https://doi.org/10.1109/comst.2022.3212586 | 179 c | IEEE Communications Surveys & Tutorials | article
+  T: Zero Touch Management: A Survey of Network Automation Solutions for 5G and 6G Networks
+  ABS: Mobile networks are facing an unprecedented demand for high-speed connectivity originating from novel mobile applications and services and, in general, from the adoption curve of mobile devices. However, coping with the service requirements imposed by current and future applications and services is 
+- 2021 | https://doi.org/10.1007/s10664-021-10063-9 | 115 c | Empirical Software Engineering | article
+  T: Enjoy your observability: an industrial survey of microservice tracing and analysis
+- 2018 | https://doi.org/10.3390/app8081368 | 100 c | Applied Sciences | article
+  T: A Brief History of Cloud Application Architectures
+  ABS: This paper presents a review of cloud application architectures and its evolution. It reports observations being made during a research project that tackled the problem to transfer cloud applications between different cloud infrastructures. As a side effect, we learned a lot about commonalities and 
+- 2023 | https://doi.org/10.1016/j.compind.2023.103918 | 92 c | Computers in Industry | article
+  T: Requirements and design patterns for adaptive, autonomous, and context-aware digital twins in industry 4.0 digital factories
+  ABS: Digital factories are poised to achieve unseen levels of resiliency and flexibility, facing increasingly demanding requirements by customers and market conditions. Digital twins are one of the building blocks fueling this vision. They provide a software counterpart for industrial assets enabling con
+- 2023 | https://doi.org/10.1109/access.2023.3281480 | 70 c | IEEE Access | article
+  T: eBPF: A New Approach to Cloud-Native Observability, Networking and Security for Current (5G) and Future Mobile Networks (6G and Beyond)
+  ABS: Modern mobile communication networks and new service applications are deployed on cloud-native platforms. Kubernetes (K8s) is the de facto distributed operating system for container orchestration, and the extended version of the Berkeley Packet Filter (eBPF)– in the Linux (and MS Windows) kernel– is
+- 2022 | https://doi.org/10.1109/jiot.2022.3222103 | 64 c | IEEE Internet of Things Journal | article
+  T: Toward Supporting XR Services: Architecture and Enablers
+  ABS: Emerging cross-reality (XR) applications, including holography, augmented, virtual, and mixed reality, are characterized by unprecedented requirements for Quality of Experience (QoE), largely exceeding those currently attainable. To cope with these requirements, noticeable efforts and a number of in
+- 2018 | https://doi.org/10.1109/dasc/picom/datacom/cyberscitec.2018.00134 | 47 c | None | conference-paper
+  T: Multilevel Observability in Cloud Orchestration
+  ABS: Cloud infrastructures can provide resource sharing between many applications and usually can meet the requirements of most of them. However, in order to enable an efficient usage of these resources, automatic orchestration is required. Commonly, automatic orchestration tools are based on the observa
+- 2020 | https://doi.org/10.1007/s10723-020-09532-0 | 43 c | Journal of Grid Computing | article
+  T: Autonomic Management Framework for Cloud-Native Applications
+  ABS: Abstract In order to meet the rapidly changing requirements of the Cloud-native dynamic execution environment, without human support and without the need to continually improve one’s skills, autonomic features need to be added. Embracing automation at every layer of performance management enables us
