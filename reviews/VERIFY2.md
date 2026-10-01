@@ -520,3 +520,91 @@ và danh tính cũ **đã bị kicked**. Đây là **cách làm đúng** — xo�
 1. Tôi kiểm **9 mục Admin tự khai**; không rà lại toàn bộ repo tìm lỗi mới — đó là phạm vi T7 của Auditor2.
 2. Chính xác về mốc: tôi kiểm `dd0fc3c` và `3a433ad`. Commit mới hơn cần kiểm lại.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #6 (T8): kiểm hai lệnh merge của Admin (T17)
+
+**Ngày:** 2026-10-01 · **Đối tượng:** merge `c579d1f` (T6) và `99672c5` (T7) trên `main` @ `28cdc00`
+**Trùng phạm vi với T17** (Auditor2) — tôi kiểm độc lập vì merge là thao tác **không thể hoàn tác dễ**
+và Admin đã tự nhận **2 lần ghi ra ngoài territory** trong phiên này.
+
+---
+
+## 1. Câu hỏi trọng tâm
+
+Admin khai merge mang nội dung **đúng như nhánh gốc**. Tôi không tin bảng khai — tôi **so hash blob**.
+
+## 2. So hash blob giữa nhánh gốc và bản đã merge
+
+```text
+=== T6: nhanh goc 78180ca  vs  merge c579d1f ===
+  KHOP   reviews/CROSS.md       (1ba54ba392a2c1acfeba4a3fd267e00762ef3dd9)
+  KHOP   reviews/RECONCILE.md   (3263b82c8b66c2deecce8fded3a6fca70c0a80bc)
+  KHOP   reviews/BLIND.md       (46c67b9ae21fde51e3800ded18b1a5327d9e4794)
+
+=== T7: nhanh goc 97d338f  vs  merge 99672c5 ===
+  KHOP   reviews/AUDIT.md       (1918245a7b164f4e012a43fac79eb8eaa8e68c3f)
+  KHOP   reviews/AUDIT.json     (86907bd5c64ff4c2ed88d9b6142be928be734b44)
+```
+
+**5/5 file KHỚP hash blob tuyệt đối.** Không có file nào bị sửa lén trong lúc merge.
+Đây là bằng chứng mạnh hơn "đọc qua thấy giống": hash trùng nghĩa là **cùng một đối tượng Git**.
+
+## 3. Kiểm nội dung bằng chứng thô có được mang vào
+
+Nhánh T6 có **43 file**; trong đó **8 file evidence thô** cho T6 + 1 cho T9:
+
+```text
+agents/reviewer1/evidence/T6/01-clone-va-commit-goc.txt
+agents/reviewer1/evidence/T6/02-show-stat-va-ton-tai-file.txt
+agents/reviewer1/evidence/T6/03-quet-ro-ri-credential.txt
+agents/reviewer1/evidence/T6/04-log-doi-chieu-thuc-te.txt
+agents/reviewer1/evidence/T6/05-summary-kiem-ket-luan.txt
+agents/reviewer1/evidence/T6/06-readme-index-vs-thuc-te.txt
+agents/reviewer1/evidence/T6/07-doi-tuong-kiem-mu.txt
+agents/reviewer1/evidence/T6/08-main-tien-hoa-kiem-lai.txt
+agents/reviewer1/evidence/T9/t9-raw-verify.txt
+```
+
+⇒ Reviewer1 mang **bằng chứng thô** vào repo, đúng yêu cầu T6 ("mỗi kết luận PASS/FAIL kèm bằng chứng thô").
+
+## 4. Kiểm rò rỉ credential qua merge
+
+```text
+$ git log -p c579d1f~1..c579d1f 99672c5~1..99672c5 | grep -inE "agent_token|at_[a-f0-9]{8}|creds\.json|password|api[_-]?key"
+
+$ git ls-tree -r --name-only 99672c5 | grep -iE 'creds|\.pem|\.key|secret'
+(rỗng)
+```
+
+**Kết quả:** mọi dòng khớp đều là **chuỗi mẫu nằm trong lệnh grep được trích nguyên văn** trong báo cáo
+kiểm toán (ví dụ `\"agent_token|creds\\.json|password\"` nằm trong chính câu lệnh). **Không có
+credential thật.** Không có file `creds`/`.pem`/`.key`/`secret` nào bị merge vào.
+
+⇒ **Xác nhận khai báo của Admin ở D-016 §1 là ĐÚNG.**
+
+## 5. Kết luận verify #6
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Merge T6 mang đúng nội dung nhánh gốc | ✅ **PASS** (3/3 hash khớp) |
+| 2 | Merge T7 mang đúng nội dung nhánh gốc | ✅ **PASS** (2/2 hash khớp) |
+| 3 | Bằng chứng thô được mang vào | ✅ **PASS** (8+1 file evidence) |
+| 4 | Không rò rỉ credential qua merge | ✅ **PASS** |
+| 5 | Merge đúng quy trình (không merge main vào nhánh khác) | ✅ **PASS** |
+
+**PASS 5/5.** Không phát hiện vi phạm.
+
+## 6. Ghi nhận công bằng
+
+Admin **tự khai** ở D-016 §3 rằng lệnh `sed 's/2025-10-01/2026-10-01/g'` của mình đã chạm
+`reviews/**` — **territory của Reviewer1** — và đây là **lần thứ hai** Admin ghi ra ngoài territory
+người khác. Admin **tự ghi vào LOG #29** thay vì im lặng. Cách xử lý này đúng: vi phạm territory
+là chuyện nghiêm trọng, nhưng **tự khai** thì Auditor2 kiểm được, còn **giấu** thì không.
+
+## 7. Tự khai giới hạn
+
+1. Tôi kiểm **nội dung merge**, không kiểm **chất lượng kết luận** của Reviewer1/Auditor2 — đó là T11/T10/T14.
+2. Tôi **không** kiểm phần `ADMIN/*` trong 2 merge commit (thuộc T17 của Auditor2).
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
