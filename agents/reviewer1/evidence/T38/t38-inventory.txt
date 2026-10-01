@@ -1,0 +1,114 @@
+### T38 — verify T34+T36+T37 tai HEAD CUOI
+### Thoi diem: 2026-10-01T15:27:29Z UTC
+### main = f29c4df (247 file)
+### T34, T36, T37: CA BA deu CHUA PUSH => chua xac minh
+
+=== [0] Co file CAPTURE _v2 nao chua? (D-026 phuong an (a)) ===
+  (khong co file _v2 nao)
+
+=== [1] INVENTORY DAY DU: MOI bang tai san AUTHORED trong security/** ===
+  file AUTHORED trong security/**: 7
+  security/_TEMPLATE/SCOPE.md                (khong co bang tai san >=3 dong)              
+  security/cloudflare/RECON.md               (khong co bang tai san >=3 dong)              
+  security/cloudflare/SCOPE.md               ### 1a. Tên miền / tài sản web (từ `structur     12 dong  archived_at: ❌ THIEU
+  security/github/RECON.md                   (khong co bang tai san >=3 dong)              
+  security/github/SCOPE.md                   (khong co bang tai san >=3 dong)              
+  security/gitlab/RECON.md                   (khong co bang tai san >=3 dong)              
+  security/gitlab/SCOPE.md                   ## 1. TRÍCH NGUYÊN VĂN — IN SCOPE (`eligible     24 dong  archived_at: ❌ THIEU
+  security/gitlab/SCOPE.md                   ### 2a. Danh sách out-of-scope (n=39)            10 dong  archived_at: ❌ THIEU
+
+=== [1b] security/github/SCOPE.md §1 — la BANG hay la VAN XUOI TRICH NGUYEN VAN? ===
+## 1. TRÍCH NGUYÊN VĂN — IN SCOPE
+
+Nguồn: `policy` của chương trình GitHub trên HackerOne, mục `## Scope`.
+Bản đầy đủ: `agents/bountyrecon/tasks/T3/EVIDENCE/policy_github.md` (dòng 98–157).
+
+```text
+## Scope
+
+GitHub runs a number of services but only submissions under the following domains are eligible for rewards. Any GitHub-owned domains not listed below are *not* in scope, *not* eligible for rewards, and *not* covered by [our legal safe harbor](https://bounty.github.com#legal_safe_harbor).
+
+### github.com
+
+  --- co dong dang bang '|' khong? ---
+  so dong bat dau bang | : 0
+  --- co nhan 'TRÍCH NGUYÊN VĂN' khong? ---
+## 1. TRÍCH NGUYÊN VĂN — IN SCOPE
+
+=== [1c] security/github/RECON.md — co bang tai san khong? ===
+14:| Loại | Cụ thể | Số lượng request |
+15:|---|---|---|
+16:| Bản ghi DNS công khai | `dig` NS/A/AAAA/MX/TXT/CAA + `_dmarc` | 56 truy vấn cho 8 tên miền |
+17:| Tài liệu công khai | `robots.txt` | 1 |
+18:| Header HTTP công khai | `curl -I` (1 request/host) | 1 |
+19:| Tài liệu công khai | `/.well-known/security.txt` | 2 |
+20:| TLS công khai | 1 handshake đọc chứng chỉ | 1 |
+21:| **TỔNG** | | **61 request, 8 tên miền, ~1 phút** |
+40:| Tên miền | NS | A / AAAA | MX | Ghi chú |
+41:|---|---|---|---|---|
+grep: write error: Broken pipe
+  tong so dong bat dau bang '|': 39
+  --- 20 dong dau ---
+# RECON — GitHub Security Bug Bounty (trinh sát THỤ ĐỘNG)
+
+**Chương trình:** GitHub — xem [`SCOPE.md`](SCOPE.md) (scope đã trích nguyên văn)
+**Người thực hiện:** BountyRecon (`ag_579fc4fa`) · **Task:** T3 · **Nhánh:** `agent/bounty-recon/T3`
+**Ngày chạy:** `2026-10-01`, giờ máy UTC `2026-10-01T13:49:44Z` → `13:50:57Z`
+**Trạng thái:** ⚠️ **Chưa verify — chờ Reviewer1.** Đây là *quan sát bề mặt*, KHÔNG phải kết luận lỗ hổng.
+
+---
+
+## 0. Phạm vi phương pháp & tuyên bố đạo đức
+
+**CHỈ thụ động / không xâm nhập.** Đúng danh sách được phép trong lệnh T3:
+
+| Loại | Cụ thể | Số lượng request |
+|---|---|---|
+| Bản ghi DNS công khai | `dig` NS/A/AAAA/MX/TXT/CAA + `_dmarc` | 56 truy vấn cho 8 tên miền |
+| Tài liệu công khai | `robots.txt` | 1 |
+| Header HTTP công khai | `curl -I` (1 request/host) | 1 |
+| Tài liệu công khai | `/.well-known/security.txt` | 2 |
+| TLS công khai | 1 handshake đọc chứng chỉ | 1 |
+
+=== [1d] security/cloudflare/RECON.md — co bang tai san khong? ===
+  tong so dong bat dau bang '|': 21
+35:| Tên miền | NS | A / AAAA | MX |
+36:|---|---|---|---|
+37:| `cloudflare.com` | `ns3`–`ns7.cloudflare.com` (tự vận hành) | A `104.16.132.229`, `104.16.133.229` · AAAA `2606:4700::6810:85e5`, `…84e5` | `5 mxb-canary…`, `10 mxb…`, `5 mxa-canary…` (`*.global.inbound.cf-emailsecurity.net`) |
+38:| `api.cloudflare.com` | `merlin.ns.cloudflare.com`, `linda.ns.cloudflare.com` | A nhiều bản ghi `104.19.192.175/176/177/29`, `104.19.193.29` · AAAA `2606:4700:300a::6813:c0ae` … | rỗng |
+39:| `dash.cloudflare.com` | `merlin`/`linda.ns.cloudflare.com` | A `104.17.110.184`, `104.17.111.184` · AAAA `2606:4700::6811:6fb8`, `…6eb8` | rỗng |
+40:| `cloudflareworkers.com` | `sofia`/`clyde.ns.cloudflare.com` | A `104.17.54.117`, `104.17.55.117` · AAAA `2606:4700::6811:3675`, `…3775` | rỗng |
+41:| `www.cloudflare.com` | `vin`/`jule.ns.cloudflare.com` | A `104.16.123.96`, `104.16.124.96` · AAAA `2606:4700::6810:7b60`, `…7c60` | rỗng |
+156:| # | Ứng viên | Bằng chứng | Độ tin cậy | Cảnh báo |
+157:|---|---|---|---|---|
+158:| C1 | HSTS apex ngắn hơn + không `preload` | §2.1 vs §2.2 | **RẤT THẤP** | Gần như chắc chắn bị loại là "missing security headers". **Không nên theo.** |
+
+=== [1e] TAI LAP GraphQL: doi chieu archived_at cho cac tai san trong cloudflare/SCOPE.md §1a ===
+  tai san liet ke trong §1a: 12
+    dash.cloudflare.com              archived_at=None                             <- CON HIEU LUC
+    cloudflareworkers.com            archived_at=None                             <- CON HIEU LUC
+    *.teams.cloudflare.com           archived_at=None                             <- CON HIEU LUC
+    api.cloudflare.com               archived_at=None                             <- CON HIEU LUC
+    *.cloudflare.com                 archived_at=None                             <- CON HIEU LUC
+    http://github.com/cloudflare     archived_at=None                             <- CON HIEU LUC
+    one.dash.cloudflare.com          archived_at=None                             <- CON HIEU LUC
+    dash.teams.cloudflare.com        archived_at=2023-05-08T10:11:33.083Z      
+    http://cloudflare.com/apps/      archived_at=2023-03-01T17:47:43.944Z      
+    *.cloudflarepartners.com         archived_at=None                             <- CON HIEU LUC
+    https://github.com/cloudflare/workerd archived_at=None                             <- CON HIEU LUC
+    https://github.com/cloudflare/vinext archived_at=None                             <- CON HIEU LUC
+
+=== [3+4] TRANG THAI @ origin/main: 6 dong 'Chua verify', ghi chu supersede, dong 5/17/18/44 ===
+  origin/main:security/cloudflare/RECON.md:1
+  origin/main:security/cloudflare/SCOPE.md:1
+  origin/main:security/github/RECON.md:1
+  origin/main:security/github/SCOPE.md:1
+  origin/main:security/gitlab/RECON.md:1
+  origin/main:security/gitlab/SCOPE.md:1
+  --- ghi chu supersede con khong? ---
+152:> **Thay đổi này supersede chứng thực T14 ở RIÊNG §2b; phần trích nguyên văn (§1, §2a, §3, §4)
+  --- dong 5/17/18/44 CANDIDATES.md ---
+**Trạng thái:** ⏸ **CHỜ ADMIN** — theo D-005, T4 chỉ mở khi Admin ban hành chỉ thị **bằng văn bản**.
+| 2 | Admin ban hành chỉ thị T4 bằng văn bản | ⏸ **CHƯA** |
+| 3 | Reviewer1 verify T3 độc lập | ✅ **XONG** — **T14 PASS** + đã merge (`4642e3c`) |
+| **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải** | **TRUNG BÌNH–THẤP** | ✅ **Đáng chuyển + cần Admin/GitLab làm rõ.** ⚠️ **KHÔNG có CNAME treo ⇒ KHÔNG phải takeover.** **CẤM tự đoán.** |
