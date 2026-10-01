@@ -1,0 +1,215 @@
+=== [1] BLOB ca file ===
+  main    : daf7a2c3cc751559f5fcf38ea66f3816f3fd2d65
+  T34 head: 357a19bacc275891a381f9a8bea9360f10fb3d38
+  giong nhau? ❌ KHAC (co sua file)
+
+=== [1b] KHOI FENCE §1 — so sanh BYTE ===
+  quy uoc raw        : main=2db48874857f8033  T34=2db48874857f8033  ✅ GIONG
+  quy uoc nolead     : main=f27a0c17d9b66f8e  T34=f27a0c17d9b66f8e  ✅ GIONG
+  quy uoc strip_last : main=40c578341b031e50  T34=40c578341b031e50  ✅ GIONG
+  do dai (raw/no-lead/strip-last): main=2109/2108/2107  T34=2109/2108/2107
+  so dong trong fence: main=59  T34=59
+  canary CU cua toi (2db48874..) = quy uoc 'raw' cua main? True
+
+=== [2] 3 DONG NOTE 📝 — khoi phuc nguyen van chua? ===
+  --- main: 1 dong chua 📝 ---
+      > 📝 **Quan sát của tôi (KHÔNG phải nguyên văn):** trường `asset_identifier` của 25 dòng
+  --- T34 : 1 dong chua 📝 ---
+      > 📝 **Quan sát của tôi (KHÔNG phải nguyên văn):** trường `asset_identifier` của 25 dòng
+  so dong 📝: main=1 T34=1
+  GIONG NGUYEN VAN? ✅ DUNG — tung dong khop
+
+=== [2b] KHOI NOTE 📝 — la 1 DONG hay 3 DONG? (note bat dau bang '>' ) ===
+  main    : 1 khoi note
+    dong 120..122 (3 dong):
+      > 📝 **Quan sát của tôi (KHÔNG phải nguyên văn):** trường `asset_identifier` của 25 dòng
+      > `OTHER` trong scope GitHub bị lặp chuỗi `All Other Scope` — đây là cách HackerOne biểu diễn
+      > mục gộp, không phải 25 tài sản riêng biệt. Chi tiết đầy đủ ở `scope_github.md`.
+  T34     : 1 khoi note
+    dong 321..323 (3 dong):
+      > 📝 **Quan sát của tôi (KHÔNG phải nguyên văn):** trường `asset_identifier` của 25 dòng
+      > `OTHER` trong scope GitHub bị lặp chuỗi `All Other Scope` — đây là cách HackerOne biểu diễn
+      > mục gộp, không phải 25 tài sản riêng biệt. Chi tiết đầy đủ ở `scope_github.md`.
+
+  SO KHOI: main=1 T34=1
+  SO DONG moi khoi: main=[3] T34=[3]
+  GIONG NGUYEN VAN tung dong? ✅ DUNG
+
+=== [3] ### 1b — nam NGOAI fence? co cot archived_at? ===
+32:```text
+40:```
+44:## 1. TRÍCH NGUYÊN VĂN — IN SCOPE
+49:```text
+108:```
+110:### 1b. Bảng tài sản GitHub kèm `archived_at` (AUTHORED — KHÔNG phải nguyên văn)
+313:```text
+318:```
+327:## 2. TRÍCH NGUYÊN VĂN — OUT OF SCOPE
+334:```text
+349:```
+361:```text
+375:```
+379:```text
+384:```
+388:```text
+391:```
+399:```text
+417:```
+421:```text
+
+  --- noi dung ### 1b (20 dong dau) ---
+### 1b. Bảng tài sản GitHub kèm `archived_at` (AUTHORED — KHÔNG phải nguyên văn)
+
+> 🧭 **Mục này do BountyRecon TẠO Ở T37 (D-027).** `§1` phía trên là **KHỐI TRÍCH NGUYÊN VĂN**
+> và **KHÔNG bị sửa một ký tự nào** — đúng nguyên tắc *trích nguyên văn > yêu cầu định dạng*.
+> Bảng dưới đây là **bảng tổng hợp do tôi lập** từ `structured_scopes` (đã TÁCH khỏi nguyên văn).
+> Tự truy vấn lại `2026-10-01T15:28Z` (`archived:false` / `archived:true`).
+>
+> **Thống kê tự đo:** `archived:false` **39** · `archived:true` **158** · TỔNG **197** · `sub=True` **183** (live **27** + archived **156**).
+>
+> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho bản ghi
+> `archived_at != None`. Chỉ được khẳng định: bảng **THIẾU chiều `archived_at`** ⇒
+> **KHÔNG PHÂN BIỆT ĐƯỢC** còn hiệu lực hay đã nghỉ hưu.
+> ❗ **`DISSENT-12` vẫn MỞ:** ngữ nghĩa `eligible_for_submission=True` trên bản ghi archived
+> **CHƯA có định nghĩa chính thức** ⇒ hiệu lực **CHƯA XÁC MINH**. Cần trả lời chính thức từ chương trình.
+
+| asset_type | asset_identifier | sub | bounty | max_severity | **archived_at** |
+|---|---|---|---|---|---|
+| URL | *.github.net | True | True | critical | `None` |
+| URL | *.githubapp.com | True | True | critical | `None` |
+| URL | *.githubusercontent.com | True | True | critical | `None` |
+sed: couldn't write 81 items to stdout: Broken pipe
+
+  --- ### 1b co bao nhieu dong tai san va co archived_at khong? ---
+    khoi ### 1b: dong 110..326 | so dong tai san = 182 (Admin noi 183)
+    co 'archived_at' trong 1b? ✅ CO
+    nam NGOAI fence? ❌ CO FENCE TRONG 1b
+
+=== [5] 3 file RECON.md PHAI KHONG co archived_at ===
+  security/github/RECON.md           archived_at=0  blob=946c7ad24937
+  security/cloudflare/RECON.md       archived_at=0  blob=1a0595078348
+  security/gitlab/RECON.md           archived_at=1  blob=03a98b29bc52
+
+=== [6] 4 ban _v2: co archived_at + NGAY CHUP khong? ban goc KHONG doi? ===
+  scope_github_v2.md                                   archived_at=5
+      ngay chup: **Ngày chụp:** `2026-10-01T15:28:34Z` (UTC) · **Nguồn:** `POST https://hackerone.com/graphql` (công khai, không 
+  scope_cloudflare_v2.md                               archived_at=5
+      ngay chup: **Ngày chụp:** `2026-10-01T15:28:34Z` (UTC) · **Nguồn:** `POST https://hackerone.com/graphql` (công khai, không 
+  scope_gitlab_v2.md                                   archived_at=5
+      ngay chup: **Ngày chụp:** `2026-10-01T15:28:34Z` (UTC) · **Nguồn:** `POST https://hackerone.com/graphql` (công khai, không 
+  scope_security_v2.md                                 archived_at=5
+      ngay chup: **Ngày chụp:** `2026-10-01T15:28:34Z` (UTC) · **Nguồn:** `POST https://hackerone.com/graphql` (công khai, không 
+
+  --- BAN GOC (4 file CAPTURE) blob @ c097df8 vs main d0b96ce ---
+  scope_github.md            main=15c946ff956a head=15c946ff956a ✅ KHONG DOI
+  scope_cloudflare.md        main=62cb927e95ce head=62cb927e95ce ✅ KHONG DOI
+  scope_security.md          main=aec4f6dcd178 head=aec4f6dcd178 ✅ KHONG DOI
+  scope_gitlab.md            main=22e3dc7d0310 head=22e3dc7d0310 ✅ KHONG DOI
+
+=== [3b] DEM LAI dong tai san trong ### 1b (toi dem 182, Admin noi 183) ===
+  tong dong bat dau bang '|' trong 1b: 185
+  dong header: 1
+  => dong DU LIEU tai san = 183  (Admin noi 183)
+  phan bo asset_type: {'URL': 16, 'OTHER': 161, 'DOWNLOADABLE_EXECUTABLES': 5, 'HARDWARE': 1}
+  dong THIEU cot archived_at (hoac sai so cot): 0
+
+=== [5b] gitlab/RECON.md co 1 lan 'archived_at' — o dau? ===
+206-2. **4 tài sản đã được Admin loại khỏi T4** (`*.gitlab.net`, `*.gitlap.com`, `about.gitlab.com`,
+207-   `docs.gitlab.com`) — **0 xung đột hiệu lực**: vế OUT là bản ghi **đã nghỉ hưu**
+208:   (`archived_at` 2022-07-21). Tôi đã trinh sát `about.gitlab.com`, `docs.gitlab.com` và `gitlab.net`
+209-   ở mức **thụ động thuần** (chỉ đọc DNS công khai) **trước khi** biết điều đó.
+210-   ⛔ **Phán quyết đã xong (D-021): CẤM chạm 4 tài sản này trong T4.** Xem [`SCOPE.md`](SCOPE.md) §2b.
+
+  --- co bang tai san (dong '| URL/OTHER/...') trong gitlab/RECON.md khong? ---
+  so dong bang tai san: 0
+
+=== [4] 3 BANG AUTHORED co cot archived_at chua? ===
+  security/gitlab/SCOPE.md ## 1.      dong tai san=24   archived_at=✅ CO
+  security/gitlab/SCOPE.md ### 2a.    dong tai san=10   archived_at=✅ CO
+  security/cloudflare/SCOPE.md ### 1a.    dong tai san=12   archived_at=✅ CO
+
+=== [4b] TAI LAP GraphQL: cloudflare §1a phai ra DUNG 2/12 nghi huu ===
+  tai san trong §1a: 12 | nghi huu: 2 -> ['dash.teams.cloudflare.com', 'http://cloudflare.com/apps/']
+  => ✅ DUNG 2/12
+
+=== [7] 6 dong 'Chua verify' + dong 5 + dong 18 + dong 17 + G2 dong 44 @ c097df8 ===
+
+**Trạng thái:** ⏸ **CHỜ ADMIN** — theo **D-013**, T4 chỉ mở khi Admin ban hành chỉ thị **nêu target cụ thể** (D-013 *"thay thế mọi cách hiểu khác về cổng G4"*; D-005 chỉ còn là luật cấm).
+| 2 | Admin ban hành chỉ thị T4 bằng văn bản | ⏸ **CHƯA** |
+| 3 | Reviewer1 verify T3 độc lập | ✅ **XONG** — **T14 PASS** + đã merge (`4642e3c`) |
+| **G2** | ~~**`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải**~~ → **SAI: tài sản ĐÃ NGHỈ HƯU** — `archived_at = 2022-03-21T22:30:03.041Z`, **KHÔNG có bản live** (tự truy vấn lại ở T34; xem `security/gitlab/SCOPE.md` §1) | **BỊ LOẠI** | ⛔ **KHÔNG chuyển** — đây là **bản ghi đã retired**, không phải target đang mở. Việc không phân giải là **hệ quả tự nhiên**, không phải bất thường. |
+
+=== [CANARY D-028] CONG BO LAI theo quy uoc moi ===
+  main d0b96ce:
+    (A) raw (gom \n ngay sau rao mo) : 2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72  len=2109
+    (B) bo \n dau                     : f27a0c17d9b66f8e9dc2d9dcd8de2a70574d8655e0f237766f2fc0b2b84c77b5  len=2108
+    (C) strip ca 2 dau                : 40c578341b031e50734d99139652d18d299a8b545257b9df56930884c4f40fbf  len=2107
+  T34 c097df8:
+    (A) raw (gom \n ngay sau rao mo) : 2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72  len=2109
+    (B) bo \n dau                     : f27a0c17d9b66f8e9dc2d9dcd8de2a70574d8655e0f237766f2fc0b2b84c77b5  len=2108
+    (C) strip ca 2 dau                : 40c578341b031e50734d99139652d18d299a8b545257b9df56930884c4f40fbf  len=2107
+
+=== [8] KIEM THEO LICH SU (D-023 [2]) — moi commit, file bi cham, file bi loai tru ===
+  merge-base = b9c9037
+$ git log --oneline b9c9037f3c7e47d66f1af3c038c35cb7496fdbc8..c097df8
+c097df8 [T34+T37] fix: khoi phuc note bi xoa nham + canary check
+65e137f [T34+T36+T37] fix: D-027 dinh chinh - chi 3 bang AUTHORED them archived_at; go khoi 3 vi tri SAI; github §1b AUTHORED moi; _v2 captures; 6 dong T14 PASS; 3 khuyet diem T31
+e73b948 [T34+T37 wip] chen khoi [3b] + sinh 4 ban chup _v2 (se dinh chinh theo D-027)
+54433ca [T34+T36] fix: §1 gitlab them archived_at (5 retired) + dong 5 D-005->D-013 + G2 retired + 6 dong 'Chua verify' -> T14 PASS + sua 3 khuyet diem T31
+
+  so commit: 4 | so file bi cham (gop): 26
+  VI PHAM D-026 (sua ban goc CAPTURE): 0
+    ✅ KHONG commit nao cham ban goc CAPTURE
+
+  --- co commit nao cham vao ADMIN/**, rooms/**, reviews/** khong? ---
+    ✅ KHONG
+
+=== [8b] BAM TUNG PHAN: vung KHONG DOI cua 3 file SCOPE (2 quy uoc) ===
+  security/github/SCOPE.md: 314->515 dong | vung khong doi >=3 dong: 2
+     dong 1..11 (n=11)  A=ece017a77149e4eb  B=e03852c164bd5b9b
+     dong 13..314 (n=302)  A=238b2590c2fbd6be  B=3a467b9d899b604c
+  security/gitlab/SCOPE.md: 299->343 dong | vung khong doi >=3 dong: 8
+     dong 1..10 (n=10)  A=111856305019312b  B=e6a4c31e002da836
+     dong 12..41 (n=30)  A=f5c00a0a1237db90  B=114bb92176861172
+     dong 67..69 (n=3)  A=d32e8b076a98b132  B=4f4af81dce3aefa7
+     dong 80..96 (n=17)  A=2e20d2c0b7f89ca6  B=ed9dffa2e09466a6
+  security/cloudflare/SCOPE.md: 212->228 dong | vung khong doi >=3 dong: 4
+     dong 1..11 (n=11)  A=14761c3feb2923fc  B=57cf1b91399841e6
+     dong 13..32 (n=20)  A=7227be64e2905491  B=3a022e52daef7f48
+     dong 34..37 (n=4)  A=fda17251a724bdcd  B=f7ddd0043bee0f1c
+     dong 53..212 (n=160)  A=046573cf29407d3b  B=6d35730dfeb6ac70
+
+=== [8c] SUA LAI: so SANH vung khong doi TRUOC vs SAU, ca 2 quy uoc ===
+  (ban [8b] cua toi chi bam MOT phia — loi cua toi; day la ban dung)
+  security/github/SCOPE.md: 314->515 dong
+    so opcode 'equal': 3 | tong noi dung vung khong doi GIONG? ✅ DUNG
+    A(no-\n)=8c95c3e9464f9615  B(+\n)=58795ad873f21ed7  | truoc==sau: True
+  security/gitlab/SCOPE.md: 299->343 dong
+    so opcode 'equal': 18 | tong noi dung vung khong doi GIONG? ✅ DUNG
+    A(no-\n)=aa9eea1498901e31  B(+\n)=c88843cc1e58105a  | truoc==sau: True
+  security/cloudflare/SCOPE.md: 212->228 dong
+    so opcode 'equal': 7 | tong noi dung vung khong doi GIONG? ✅ DUNG
+    A(no-\n)=f20f0a70c7e4a846  B(+\n)=ba8b6da68da1aad1  | truoc==sau: True
+
+=== [9] AP TIEU CHI REJECT DA DANG KY (D-026) ===
+  --- quet cac cum tu nguy hiem trong artifact T34/T37 va security/** @ c097df8 ---
+c097df8:agents/bountyrecon/tasks/T3/CANDIDATES.md:44:| **G2** | ~~**`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải**~~ → **SAI: tài sản ĐÃ NGHỈ HƯU** — `archived_at = 2022-03-21T22:30:03.041Z`, **KHÔNG có bản live** (tự truy vấn lại ở T34; xem `security/gitlab/SCOPE.md` §1) | **BỊ LOẠI** | ⛔ **KHÔNG chuyển** — đây là **bản ghi đã retired**, không phải target đang mở. Việc không phân giải là **hệ quả tự nhiên**, không phải bất thường. |
+c097df8:agents/bountyrecon/tasks/T3/CANDIDATES.md:46:| G4 | `customers.gitlab.com` SPF `~all` | **BỊ LOẠI** | ⛔ GitLab loại trừ tường minh **"SPF and DKIM issues"**. |
+c097df8:agents/bountyrecon/tasks/T3/CANDIDATES.md:47:| G5 | `gitlab.org`/`gitlab.net` DMARC `p=none` | **BỊ LOẠI** | ⛔ Cùng lý do G4. |
+c097df8:agents/bountyrecon/tasks/T3/CANDIDATES.md:48:| G6 | Lộ `gitlab-sv: web-gke-us-east1-d`, `gitlab-lb: haproxy-…` | **BỊ LOẠI** | ⛔ GitLab: *"Metadata disclosure, enumeration, and information gathering issues are out of scope"*. |
+c097df8:agents/bountyrecon/tasks/T3/CANDIDATES.md:54:| F1 | HSTS apex `max-age=15780000` không `preload` | **RẤT THẤP** | ❌ Gần như chắc chắn bị loại ("missing security headers"). |
+c097df8:agents/bountyrecon/tasks/T3/CANDIDATES.md:98:| GitHub: **"Assets that are not owned by GitHub"** = ineligible; subdomain `github.com` do bên thứ ba vận hành **ngoài scope** | trích nguyên văn | `security/github/SCOPE.md` §4b, §5 |
+c097df8:agents/bountyrecon/tasks/T34/REPORT.md:133:- ❌ **KHÔNG** nói 153/156 (GitHub), 4 (Cloudflare), 5 (GitLab) bản ghi là *"ngoài scope"*.
+c097df8:agents/bountyrecon/tasks/T34/REPORT.md:135:- ❌ **KHÔNG** nói bản ghi *"không còn hiệu lực / đã bị loại"*.
+c097df8:agents/bountyrecon/tasks/T34/apply_t37_correct.py:117:           "> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *\"ngoài scope\"* cho bản ghi",
+c097df8:agents/bountyrecon/tasks/T34/gen_v2_captures.py:59:                    "**đã nghỉ hưu hay chưa**. **KHÔNG** được suy ra 'ngoài scope'. "
+c097df8:agents/bountyrecon/tasks/T34/insert_archived_blocks.py:57:    out.append("> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *\"ngoài scope\"* cho các bản ghi này.")
+c097df8:security/_TEMPLATE/SCOPE.md:46:3. CẤM kết luận "ngoài scope" từ archived_at. Chỉ được nói:
+c097df8:security/cloudflare/RECON.md:158:| C1 | HSTS apex ngắn hơn + không `preload` | §2.1 vs §2.2 | **RẤT THẤP** | Gần như chắc chắn bị loại là "missing security headers". **Không nên theo.** |
+c097df8:security/cloudflare/SCOPE.md:65:> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho các bản ghi này.
+c097df8:security/github/SCOPE.md:119:> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho bản ghi
+c097df8:security/github/SCOPE.md:511:⇒ **Bất kỳ subdomain nào của `github.com` trỏ ra dịch vụ bên thứ ba đều NGOÀI SCOPE**, kể cả
+c097df8:security/gitlab/RECON.md:47:| `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
+c097df8:security/gitlab/RECON.md:179:| C4 | `customers.gitlab.com` SPF `~all` | §1 | **BỊ LOẠI** | ⛔ GitLab liệt kê tường minh **"SPF and DKIM issues"** là out-of-scope. **Đừng theo.** |
+c097df8:security/gitlab/RECON.md:180:| C5 | `gitlab.org`/`gitlab.net` DMARC `p=none` | §1.1 | **BỊ LOẠI** | ⛔ Cùng lý do C4. **Đừng theo.** |
+c097df8:security/gitlab/RECON.md:181:| C6 | `gitlab-sv: web-gke-us-east1-d`, `gitlab-lb: haproxy-main-51-lb-gprd` lộ hạ tầng | §2.1 | **BỊ LOẠI** | ⛔ GitLab: *"Metadata disclosure, enumeration, and information gathering issues are out of scope unless the researcher demonstrates a privacy breach"*. **Đừng theo.** |
