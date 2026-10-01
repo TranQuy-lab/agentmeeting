@@ -1,0 +1,976 @@
+================================================================
+PASSIVE RECON — program: gitlab
+UTC timestamp: 2026-10-01T13:51:50Z
+Local timestamp: 2026-10-01 20:51:50 +07
+Host under check: gitlab.com
+Method: public DNS + robots.txt + public HTTP response headers +
+        public /.well-known/security.txt. NO active scanning.
+================================================================
+
+########## DNS: gitlab.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.com NS
+--- output ---
+gitlab.com.		86400	IN	NS	jermaine.ns.cloudflare.com.
+gitlab.com.		86400	IN	NS	diva.ns.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.com A
+--- output ---
+gitlab.com.		111	IN	A	172.65.251.78
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.com AAAA
+--- output ---
+gitlab.com.		172	IN	AAAA	2606:4700:90:0:f22e:fbec:5bed:a9b9
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.com MX
+--- output ---
+gitlab.com.		300	IN	MX	1 aspmx.l.google.com.
+gitlab.com.		300	IN	MX	5 alt1.aspmx.l.google.com.
+gitlab.com.		300	IN	MX	10 alt4.aspmx.l.google.com.
+gitlab.com.		300	IN	MX	10 alt3.aspmx.l.google.com.
+gitlab.com.		300	IN	MX	5 alt2.aspmx.l.google.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.com TXT
+--- output ---
+;; communications error to 127.0.0.53#53: timed out
+;; no servers could be reached
+--- end (rc=9) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.com CAA
+--- output ---
+gitlab.com.		300	IN	CAA	0 issue "amazontrust.com"
+gitlab.com.		300	IN	CAA	0 issue "globalsign.com"
+gitlab.com.		300	IN	CAA	0 issue "amazon.com"
+gitlab.com.		300	IN	CAA	0 issue "pki.goog; cansignhttpexchanges=yes"
+gitlab.com.		300	IN	CAA	0 issuewild "comodoca.com"
+gitlab.com.		300	IN	CAA	0 issue "digicert.com; cansignhttpexchanges=yes"
+gitlab.com.		300	IN	CAA	0 issue "sectigo.com"
+gitlab.com.		300	IN	CAA	0 issue "ssl.com"
+gitlab.com.		300	IN	CAA	0 issuewild "ssl.com"
+gitlab.com.		300	IN	CAA	0 issuewild "pki.goog; cansignhttpexchanges=yes"
+gitlab.com.		300	IN	CAA	0 issue "amazonaws.com"
+gitlab.com.		300	IN	CAA	0 issue "letsencrypt.org"
+gitlab.com.		300	IN	CAA	0 issuewild "letsencrypt.org"
+gitlab.com.		300	IN	CAA	0 issuewild "digicert.com; cansignhttpexchanges=yes"
+gitlab.com.		300	IN	CAA	0 issue "comodoca.com"
+gitlab.com.		300	IN	CAA	0 iodef "mailto:security@gitlab.com"
+gitlab.com.		300	IN	CAA	0 issue "awstrust.com"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.gitlab.com TXT
+--- output ---
+_dmarc.gitlab.com.	300	IN	TXT	"v=DMARC1; p=reject; pct=100; rua=mailto:dmarc_agg@vali.email;"
+--- end (rc=0) ---
+
+########## DNS: about.gitlab.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 about.gitlab.com NS
+--- output ---
+about.gitlab.com.	86400	IN	NS	shaz.ns.cloudflare.com.
+about.gitlab.com.	86400	IN	NS	julio.ns.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 about.gitlab.com A
+--- output ---
+about.gitlab.com.	221	IN	A	104.18.28.129
+about.gitlab.com.	221	IN	A	104.18.29.129
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 about.gitlab.com AAAA
+--- output ---
+about.gitlab.com.	19	IN	AAAA	2606:4700::6812:1c81
+about.gitlab.com.	19	IN	AAAA	2606:4700::6812:1d81
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 about.gitlab.com MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 about.gitlab.com TXT
+--- output ---
+about.gitlab.com.	300	IN	TXT	"_globalsign-domain-verification=Y1GgPaSyG81-EN2NrP8hILKe2GTUWM54hjscmv6jBk"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 about.gitlab.com CAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.about.gitlab.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: docs.gitlab.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 docs.gitlab.com NS
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 docs.gitlab.com A
+--- output ---
+docs.gitlab.com.	300	IN	A	104.18.39.11
+docs.gitlab.com.	300	IN	A	172.64.148.245
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 docs.gitlab.com AAAA
+--- output ---
+docs.gitlab.com.	300	IN	AAAA	2606:4700:4406::6812:270b
+docs.gitlab.com.	300	IN	AAAA	2a06:98c1:3105::ac40:94f5
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 docs.gitlab.com MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 docs.gitlab.com TXT
+--- output ---
+docs.gitlab.com.	300	IN	TXT	"google-site-verification=YgHoFZLvJOGzjmqfSOAqWD8fU4GnVYXjWojp8Tgxvb4"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 docs.gitlab.com CAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.docs.gitlab.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: customers.gitlab.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 customers.gitlab.com NS
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 customers.gitlab.com A
+--- output ---
+customers.gitlab.com.	300	IN	A	172.64.148.245
+customers.gitlab.com.	300	IN	A	104.18.39.11
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 customers.gitlab.com AAAA
+--- output ---
+customers.gitlab.com.	300	IN	AAAA	2a06:98c1:3105::ac40:94f5
+customers.gitlab.com.	300	IN	AAAA	2606:4700:4406::6812:270b
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 customers.gitlab.com MX
+--- output ---
+customers.gitlab.com.	300	IN	MX	10 mxb.mailgun.org.
+customers.gitlab.com.	300	IN	MX	10 mxa.mailgun.org.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 customers.gitlab.com TXT
+--- output ---
+customers.gitlab.com.	300	IN	TXT	"v=spf1 include:mailgun.org ~all"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 customers.gitlab.com CAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.customers.gitlab.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: registry.gitlab.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 registry.gitlab.com NS
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 registry.gitlab.com A
+--- output ---
+registry.gitlab.com.	132	IN	A	35.227.35.254
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 registry.gitlab.com AAAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 registry.gitlab.com MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 registry.gitlab.com TXT
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 registry.gitlab.com CAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.registry.gitlab.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: design.gitlab.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 design.gitlab.com NS
+--- output ---
+design.gitlab.com.	300	IN	CNAME	gitlab-org.gitlab.io.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 design.gitlab.com A
+--- output ---
+design.gitlab.com.	299	IN	CNAME	gitlab-org.gitlab.io.
+gitlab-org.gitlab.io.	300	IN	A	35.185.44.232
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 design.gitlab.com AAAA
+--- output ---
+design.gitlab.com.	299	IN	CNAME	gitlab-org.gitlab.io.
+gitlab-org.gitlab.io.	300	IN	AAAA	2600:1901:0:7b8a::
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 design.gitlab.com MX
+--- output ---
+design.gitlab.com.	299	IN	CNAME	gitlab-org.gitlab.io.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 design.gitlab.com TXT
+--- output ---
+design.gitlab.com.	299	IN	CNAME	gitlab-org.gitlab.io.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 design.gitlab.com CAA
+--- output ---
+design.gitlab.com.	299	IN	CNAME	gitlab-org.gitlab.io.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.design.gitlab.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: advisories.gitlab.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 advisories.gitlab.com NS
+--- output ---
+advisories.gitlab.com.	300	IN	CNAME	pages.gitlab.io.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 advisories.gitlab.com A
+--- output ---
+advisories.gitlab.com.	299	IN	CNAME	pages.gitlab.io.
+pages.gitlab.io.	300	IN	A	35.185.44.232
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 advisories.gitlab.com AAAA
+--- output ---
+advisories.gitlab.com.	299	IN	CNAME	pages.gitlab.io.
+pages.gitlab.io.	300	IN	AAAA	2600:1901:0:7b8a::
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 advisories.gitlab.com MX
+--- output ---
+advisories.gitlab.com.	299	IN	CNAME	pages.gitlab.io.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 advisories.gitlab.com TXT
+--- output ---
+advisories.gitlab.com.	299	IN	CNAME	pages.gitlab.io.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 advisories.gitlab.com CAA
+--- output ---
+advisories.gitlab.com.	299	IN	CNAME	pages.gitlab.io.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.advisories.gitlab.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: license.gitlab.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 license.gitlab.com NS
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 license.gitlab.com A
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 license.gitlab.com AAAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 license.gitlab.com MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 license.gitlab.com TXT
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 license.gitlab.com CAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.license.gitlab.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: gitlab.org ##########
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.org NS
+--- output ---
+gitlab.org.		86400	IN	NS	hal.ns.cloudflare.com.
+gitlab.org.		86400	IN	NS	arya.ns.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.org A
+--- output ---
+gitlab.org.		300	IN	A	104.21.92.3
+gitlab.org.		300	IN	A	172.67.183.112
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.org AAAA
+--- output ---
+gitlab.org.		300	IN	AAAA	2606:4700:3034::6815:5c03
+gitlab.org.		300	IN	AAAA	2606:4700:3036::ac43:b770
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.org MX
+--- output ---
+gitlab.org.		300	IN	MX	20 mx2.emailsrvr.com.
+gitlab.org.		300	IN	MX	10 mx1.emailsrvr.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.org TXT
+--- output ---
+gitlab.org.		300	IN	TXT	"_globalsign-domain-verification=4azHJ7gL04Dr8r2VR0txu7OrWg7uZpU6v7LOHVP1b3"
+gitlab.org.		300	IN	TXT	"v=spf1 include:emailsrvr.com ~all"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.org CAA
+--- output ---
+gitlab.org.		300	IN	CAA	0 issue "letsencrypt.org"
+gitlab.org.		300	IN	CAA	0 issue "globalsign.com"
+gitlab.org.		300	IN	CAA	0 issuewild "digicert.com; cansignhttpexchanges=yes"
+gitlab.org.		300	IN	CAA	0 issuewild "pki.goog; cansignhttpexchanges=yes"
+gitlab.org.		300	IN	CAA	0 issue "comodoca.com"
+gitlab.org.		300	IN	CAA	0 issue "sectigo.com"
+gitlab.org.		300	IN	CAA	0 iodef "mailto:security@gitlab.com"
+gitlab.org.		300	IN	CAA	0 issue "ssl.com"
+gitlab.org.		300	IN	CAA	0 issue "pki.goog; cansignhttpexchanges=yes"
+gitlab.org.		300	IN	CAA	0 issuewild "ssl.com"
+gitlab.org.		300	IN	CAA	0 issuewild "letsencrypt.org"
+gitlab.org.		300	IN	CAA	0 issue "digicert.com; cansignhttpexchanges=yes"
+gitlab.org.		300	IN	CAA	0 issuewild "comodoca.com"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.gitlab.org TXT
+--- output ---
+_dmarc.gitlab.org.	300	IN	TXT	"v=DMARC1; p=none; pct=100; rua=mailto:dmarc_agg@vali.email;"
+--- end (rc=0) ---
+
+########## DNS: gitlab.net ##########
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.net NS
+--- output ---
+gitlab.net.		86400	IN	NS	hal.ns.cloudflare.com.
+gitlab.net.		86400	IN	NS	arya.ns.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.net A
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.net AAAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.net MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.net TXT
+--- output ---
+gitlab.net.		300	IN	TXT	"google-site-verification=jmaLfyjmFT9FbuvWTbke-OgRqaSDsTvWnuergJti55E"
+gitlab.net.		300	IN	TXT	"google-site-verification=BTzz4afOVe0RzWohFdK25YiW62DhuEzz7JRyF-Kcg0A"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 gitlab.net CAA
+--- output ---
+gitlab.net.		300	IN	CAA	0 issue "digicert.com; cansignhttpexchanges=yes"
+gitlab.net.		300	IN	CAA	0 issuewild "letsencrypt.org"
+gitlab.net.		300	IN	CAA	0 issue "comodoca.com"
+gitlab.net.		300	IN	CAA	0 issue "pki.goog; cansignhttpexchanges=yes"
+gitlab.net.		300	IN	CAA	0 issuewild "pki.goog; cansignhttpexchanges=yes"
+gitlab.net.		300	IN	CAA	0 issuewild "ssl.com"
+gitlab.net.		300	IN	CAA	0 iodef "mailto:security@gitlab.com"
+gitlab.net.		300	IN	CAA	0 issuewild "comodoca.com"
+gitlab.net.		300	IN	CAA	0 issuewild "digicert.com; cansignhttpexchanges=yes"
+gitlab.net.		300	IN	CAA	0 issue "sectigo.com"
+gitlab.net.		300	IN	CAA	0 issue "ssl.com"
+gitlab.net.		300	IN	CAA	0 issue "amazon.com"
+gitlab.net.		300	IN	CAA	0 issue "letsencrypt.org"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.gitlab.net TXT
+--- output ---
+_dmarc.gitlab.net.	300	IN	TXT	"v=DMARC1; p=none; pct=100; rua=mailto:dmarc_agg@vali.email;"
+--- end (rc=0) ---
+
+########## PUBLIC WEB SURFACE: gitlab.com ##########
+
+$ curl -sS -I --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://gitlab.com/
+--- output ---
+HTTP/2 301 
+date: Thu, 01 Oct 2026 13:52:16 GMT
+content-type: text/html; charset=utf-8
+content-length: 0
+location: https://about.gitlab.com/
+cf-ray: a43bf264fa610959-HKG
+cf-cache-status: BYPASS
+cache-control: no-store
+server: cloudflare
+strict-transport-security: max-age=31536000
+content-security-policy: base-uri 'self'; child-src https://www.google.com/recaptcha/ https://www.recaptcha.net/ https://www.googletagmanager.com/ns.html https://*.zuora.com/apps/PublicHostedPageLite.do https://gitlab.com/admin/ https://gitlab.com/assets/ https://gitlab.com/-/speedscope/index.html https://gitlab.com/-/sandbox/ 'self' https://gitlab.com/assets/ blob: data:; connect-src 'self' https://gitlab.com wss://gitlab.com https://sentry.gitlab.net https://new-sentry.gitlab.net https://customers.gitlab.com https://snowplow.trx.gitlab.net https://sourcegraph.com https://collector.prd-278964.gl-product-analytics.com https://analytics.gitlab.com snowplowprd.trx.gitlab.net; default-src 'self'; font-src 'self'; form-action 'self' https: http:; frame-ancestors 'self'; frame-src https://www.google.com/recaptcha/ https://www.recaptcha.net/ https://www.googletagmanager.com/ns.html https://*.zuora.com/apps/PublicHostedPageLite.do https://gitlab.com/admin/ https://gitlab.com/assets/ https://gitlab.com/-/speedscope/index.html https://gitlab.com/-/sandbox/; img-src 'self' data: blob: http: https:; manifest-src 'self'; media-src 'self' data: blob: http: https:; object-src 'none'; report-uri https://new-sentry.gitlab.net/api/4/security/?sentry_key=f5573e26de8f4293b285e556c35dfd6e&sentry_environment=gprd; script-src 'strict-dynamic' 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.recaptcha.net/ https://apis.google.com https://*.zuora.com/apps/PublicHostedPageLite.do 'nonce-oN5aCXzp/LF/FCv8I+Scig=='; style-src 'self' 'unsafe-inline'; worker-src 'self' https://gitlab.com/assets/ blob: data:
+gitlab-lb: haproxy-main-51-lb-gprd
+gitlab-sv: web-gke-us-east1-d
+nel: {"max_age": 0}
+permissions-policy: interest-cohort=()
+ratelimit-limit: 500
+ratelimit-name: throttle_unauthenticated_web
+ratelimit-observed: 1
+ratelimit-remaining: 499
+ratelimit-reset: 1790862780
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-gitlab-meta: {"correlation_id":"a43bf264fa610959-HKG","version":"1"}
+x-permitted-cross-domain-policies: none
+x-request-id: a43bf264fa610959-HKG
+x-runtime: 0.041644
+x-ua-compatible: IE=edge
+x-xss-protection: 1; mode=block
+
+--- end (rc=0) ---
+
+$ curl -sS --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://gitlab.com/robots.txt
+--- output ---
+# See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+#
+# To ban all spiders from the entire site uncomment the next two lines:
+# User-Agent: *
+# Disallow: /
+
+# Add a 1 second delay between successive requests to the same server, limits resources used by crawler
+# Only some crawlers respect this setting, e.g. Googlebot does not
+# Crawl-delay: 1
+
+# Based on details in https://gitlab.com/gitlab-org/gitlab/blob/master/config/routes.rb,
+# https://gitlab.com/gitlab-org/gitlab/blob/master/spec/routing, and using application
+
+# Global routes
+User-Agent: *
+Disallow: /autocomplete/users
+Disallow: /autocomplete/projects
+Disallow: /search
+Disallow: /admin
+Disallow: /profile
+Disallow: /dashboard
+Disallow: /users
+Disallow: /api/v*
+Disallow: /help
+Disallow: /s/
+Disallow: /-/profile
+Disallow: /-/profile/
+Disallow: /-/user_settings/
+Disallow: /-/ide/
+Disallow: /-/experiment
+# Restrict allowed routes to avoid very ugly search results
+Allow: /users/sign_in
+Allow: /users/sign_up
+Allow: /users/*/snippets
+
+# Generic resource routes like new, edit, raw
+# This will block routes like:
+# - /projects/new
+# - /gitlab-org/gitlab-foss/issues/123/-/edit
+User-Agent: *
+Disallow: /*/new
+Disallow: /*/edit
+Disallow: /*/raw
+Disallow: /*/realtime_changes
+
+# Group details
+User-Agent: *
+Disallow: /groups/*/-/analytics
+Disallow: /groups/*/-/analytics/
+Disallow: /groups/*/-/insights/
+Disallow: /groups/*/-/issues_analytics
+Disallow: /groups/*/-/contribution_analytics
+Disallow: /groups/*/-/group_members
+Disallow: /groups/*/-/saml/
+Disallow: /groups/*/-/saml_group_links
+Disallow: /groups/*/-/settings/
+Disallow: /groups/*/-/billings
+Disallow: /groups/*/-/hooks
+Disallow: /groups/*/-/projects
+
+# Project details
+User-Agent: *
+Disallow: /*/*.git$
+Disallow: /*/*.git/*
+Disallow: /*/archive/
+Disallow: /*/repository/archive*
+Disallow: /*/activity
+Disallow: /*/-/project_members
+Disallow: /*/-/blame/
+Disallow: /*/-/branches
+Disallow: /*/-/commits/
+Disallow: /*/-/commit
+Disallow: /*/commit/*.patch
+Disallow: /*/commit/*.diff
+Disallow: /*/-/compare/
+Disallow: /*/-/network/
+Disallow: /*/path_locks
+Disallow: /*/merge_requests/*.patch
+Disallow: /*/merge_requests/*.diff
+Disallow: /*/merge_requests/*/diffs
+Disallow: /*/services
+Disallow: /*/uploads/
+Disallow: /*/-/import
+Disallow: /*/-/requirements_management/
+Disallow: /*/-/pipelines
+Disallow: /*/-/pipeline_schedules
+Disallow: /*/-/jobs
+Disallow: /*/-/ci/
+Disallow: /*/-/quality/
+Disallow: /*/-/licenses
+Disallow: /*/-/security/
+Disallow: /*/-/dependencies
+Disallow: /*/-/audit_events
+Disallow: /*/-/on_demand_scans
+Disallow: /*/-/feature_flags
+Disallow: /*/-/ml/
+Disallow: /*/-/environments
+Disallow: /*/-/clusters
+Disallow: /*/-/terraform
+Disallow: /*/-/terraform_module_registry
+Disallow: /*/-/*/configuration
+Disallow: /*/-/error_tracking
+Disallow: /*/-/metrics
+Disallow: /*/-/alert_management
+Disallow: /*/-/incidents
+Disallow: /*/-/oncall_schedules
+Disallow: /*/-/escalation_policies
+Disallow: /*/-/*/service_desk
+Disallow: /*/-/analytics
+Disallow: /*/-/analytics/
+Disallow: /*/-/value_stream_analytics
+Disallow: /*/-/graphs/
+Disallow: /*/insights/
+Disallow: /*/-/pipelines/
+Disallow: /*/-/settings/
+Disallow: /*/-/hooks
+Disallow: /*/-/usage_quotas
+--- end (rc=0) ---
+
+$ curl -sS --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://gitlab.com/.well-known/security.txt
+--- output ---
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+# Preferred disclosure is via HackerOne
+Contact: https://hackerone.com/gitlab/
+
+# Additional disclosure processes are available in our handbook:
+Contact: https://about.gitlab.com/security/disclosure/
+
+Policy: https://hackerone.com/gitlab/
+
+Acknowledgments: https://hackerone.com/gitlab/thanks
+Acknowledgments: https://about.gitlab.com/security/vulnerability-acknowledgements/
+
+Canonical: https://gitlab.com/.well-known/security.txt
+
+Preferred-Languages: en
+Hiring: https://about.gitlab.com/jobs/
+
+Expires: 2027-01-31T05:00:00.000Z
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEue/iHmNA/8NLVRbjmPpFW57Mzw4FAmmu0RMACgkQmPpFW57M
+zw5n7xAAokrhBaZ0Icna4W6MNbWqajhg85eckqkUnkFJQ2T8QXZnmgARYi/9sEuC
+1NyTmS0ntMm5aZpyKJd93Jt+S3l6tR4o/HgxE7tiUrfBXs8mEMNdxxLOyNuLcof4
+BTE0Z5EclYxgtPH7jWPVywZkwg6jcQW4QBb68MYuJ75E7L9SMZAiVs/QFUIEcuFQ
+9qADFhm9sa02hU0hTTljzf2WDuXvh3DoD3shiL4EZnyK/o7nyBH4ZTpV/PV/WTds
+ooFT/rgvrGsojECdM/evKrb6wTLprAlvEyxWihA6lqrDDvZ7oTBlMHHfCXfpgjQ3
+qEpkhAMvzctFPfoz5ckuWp0los+yV8ZUSC0K6IJXONDt2qJhfusTbjBh1uFvzf7X
+OvG1Do+gPVfQoC52lbQrAwCvx5ArUODHAiKKuouLbOW4xwNqUSMkDCZpGaUPySfz
+LTGaGvaVEx8dpi27K8JNdUioP9lePtXrJlS932F94lwlht7OvQWWsxfWJOIKpYfy
+1Pc+uGQU3c00ldKSVDB3YJLMX4XhGo8K+CcJJACjj6UFwMPUzpb/zeicYsdf2pJ2
+XEJL2IilzZ/9pDDTvmKZiefkduVORoj56Nn9T4a6+LX4XLSVBxoL/BSRUAjh0U+S
+zlVyqmyACa+5qCEGXgmoIQw3CfUijZ+DeBJsQ3A72xPKUnVDyIE=
+=R+F7
+-----END PGP SIGNATURE-----
+--- end (rc=0) ---
+
+$ curl -sS --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://gitlab.com/security.txt
+--- output ---
+<!DOCTYPE html>
+<html class="gl-system ui-neutral with-top-bar with-header page-with-panels with-gl-container-queries  user-logged-out" lang="en">
+<head prefix="og: http://ogp.me/ns#">
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<title>EdOverflow · GitLab</title>
+<link crossorigin="" href="https://snowplowprd.trx.gitlab.net" rel="preconnect">
+<link as="font" crossorigin="" href="/assets/gitlab-sans/GitLabSans-9892dc17af892e03de41625c0ee325117a3b8ee4ba6005f3a3eac68510030aed.woff2" rel="preload">
+<link as="font" crossorigin="" href="/assets/gitlab-sans/GitLabSans-Italic-f96f17332d67b21ada2dfba5f0c0e1d5801eab99330472057bf18edd93d4ccf7.woff2" rel="preload">
+<link as="font" crossorigin="" href="/assets/gitlab-mono/GitLabMono-29c2152dac8739499dd0fe5cd37a486ebcc7d4798c9b6d3aeab65b3172375b05.woff2" rel="preload">
+<link as="font" crossorigin="" href="/assets/gitlab-mono/GitLabMono-Italic-af36701a2188df32a9dcea12e0424c380019698d4f76da9ad8ea2fd59432cf83.woff2" rel="preload">
+
+<script nonce="laiTyA5RMMEfIy59ow1XEQ==">
+//<![CDATA[
+window.gon={};
+//]]>
+</script>
+
+<script nonce="laiTyA5RMMEfIy59ow1XEQ==">
+//<![CDATA[
+const root = document.documentElement;
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  root.classList.add('gl-dark');
+}
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  if (e.matches) {
+    root.classList.add('gl-dark');
+  } else {
+    root.classList.remove('gl-dark');
+  }
+});
+
+//]]>
+</script>
+
+
+
+
+<meta content="light dark" name="color-scheme">
+<link rel="stylesheet" href="/assets/application-bf602a8d83a193c1dde753771b614ee372ad3d9258af04585d5f711c9e2e2b61.css" media="(prefers-color-scheme: light)" />
+<link rel="stylesheet" href="/assets/application_dark-d8efede6bf06d6a05f2566c5c07192332af092f74b1f79c98168fe82a1de04c0.css" media="(prefers-color-scheme: dark)" />
+<link rel="stylesheet" href="/assets/page_bundles/profile-2f83c9570e139a7158661c1f8fbc8ef008180018a7c59c49804ecdd5824b45e2.css" /><link rel="stylesheet" href="/assets/page_bundles/projects-ae0fda29f5345a932d94d7b5f6d4fdd270c3e275d80081f644bf6f9ca37bbb98.css" /><link rel="stylesheet" href="/assets/page_bundles/commit_description-9e7efe20f0cef17d0606edabfad0418e9eb224aaeaa2dae32c817060fa60abcc.css" /><link rel="stylesheet" href="/assets/page_bundles/design_management-4765252040ab8edacfb27d7015bf41527629b0dc4fdacd1f1bc9d3f65cecae1b.css" /><link rel="stylesheet" href="/assets/page_bundles/issuable_list-7a33f8b5a79c609e4bac7e1fa1c5553962adf726cd700fbead1f9e974c41e7c9.css" /><link rel="stylesheet" href="/assets/page_bundles/issues_list-1d9cdbbaf9469f9073c410dc7a7f2543b02071773aa332daf63803eaaec87e62.css" /><link rel="stylesheet" href="/assets/page_bundles/issues_show-ec954ae4932e0bfe7383adee3c75f53c5985c6edea62c7ae4370cb1f6e85a91a.css" /><link rel="stylesheet" href="/assets/page_bundles/notes_shared-009bfb6fa90b583372e5d3f444ccd9b89aa6278564b128d1f21b404747a3981b.css" /><link rel="stylesheet" href="/assets/page_bundles/work_items-cf96ec866af761ac90ea44063245a03c038e1f4ed193f5e2a6432597f048e62f.css" />
+<link rel="stylesheet" href="/assets/tailwind-b6158d77dcda1a08914e5797673ae160111032ac3a269208fac14e807a078ff3.css" />
+
+
+<link rel="stylesheet" href="/assets/fonts-deb7ad1d55ca77c0172d8538d53442af63604ff490c74acc2859db295c125bdb.css" />
+<link rel="stylesheet" href="/assets/highlight/themes/white-2a02e7cdb193dcec5b8068ad0a57aee70b1cd0888c8d1dbe8ab5996651334922.css" media="(prefers-color-scheme: light)" />
+<link rel="stylesheet" href="/assets/highlight/themes/dark-7fbedc840cde3d684b77966ee3740cd6cf4ba7c26a807b7c8701223af70f772f.css" media="(prefers-color-scheme: dark)" />
+
+<script src="/assets/webpack/runtime.08001bac.bundle.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/main.950a3ba2.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/tracker.1eb446cb.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script nonce="laiTyA5RMMEfIy59ow1XEQ==">
+//<![CDATA[
+window.snowplowOptions = {"namespace":"gl","hostname":"snowplowprd.trx.gitlab.net","cookieDomain":".gitlab.com","appId":"gitlab","formTracking":true,"linkClickTracking":true};
+gl = window.gl || {};
+gl.snowplowStandardContext = {"schema":"iglu:com.gitlab/gitlab_standard/jsonschema/1-1-8","data":{"environment":"production","source":"gitlab-rails","correlation_id":"a43bf296197b8b57-HKG","extra":{},"user_id":null,"global_user_id":null,"user_type":null,"is_gitlab_team_member":null,"namespace_id":null,"ultimate_parent_namespace_id":null,"project_id":null,"feature_enabled_by_namespace_ids":null,"realm":"saas","deployment_type":".com","context_generated_at":"2026-10-01T13:52:24.316Z","organization_id":1}};
+gl.snowplowPseudonymizedPageUrl = "https://gitlab.com/username";
+gl.maskedDefaultReferrerUrl = null;
+gl.ga4MeasurementId = 'G-ENFH3X7M5Y';
+gl.duoEvents = ["ai_question_category","block_slack_duo_mention","perform_completion_worker","receive_slack_duo_mention","process_gitlab_duo_question","agent_platform_session_created","agent_platform_session_dropped","agent_platform_session_finished","agent_platform_session_resumed","agent_platform_session_started","agent_platform_session_stopped","ai_response_time","approve_tool_duo_chat","cleanup_stuck_agent_platform_session","click_ai_catalog_button_duo_rail","click_analyze_with_duo_on_analytics_dashboard","click_dap_trial_or_paid_empty_state_agent","click_dap_trial_or_paid_empty_state_explore_agents_link","click_dap_trial_or_paid_empty_state_prompt","click_delete_ai_catalog_item_button","click_disable_ai_catalog_item_button","click_duo_agentic_not_available_empty_state_buy_credits","click_duo_agentic_not_available_empty_state_learn_more","click_duo_agentic_not_available_empty_state_learn_more_credits","click_duo_agentic_not_available_empty_state_start_trial","click_duo_agentic_subscription_expired_learn_more","click_duo_agentic_subscription_expired_upgrade","click_duo_agentic_trial_expired_learn_more","click_duo_agentic_trial_expired_upgrade","click_duo_quick_action","click_duplicate_ai_catalog_item_button","click_enable_ai_catalog_item_button","click_purchase_seats_button_group_duo_pro_home_page","click_through_flow_widget","click_through_session_pill","close_vulnerability_resolution_merge_request","code_suggestion_accepted_in_ide","code_suggestion_rejected_in_ide","code_suggestion_shown_in_ide","code_suggestions_connection_details_rate_limit_exceeded","code_suggestions_direct_access_rate_limit_exceeded","code_suggestions_rate_limit_exceeded","create_ai_catalog_item","create_ai_catalog_item_consumer","create_ai_self_hosted_model","create_vulnerability_resolution_merge_request","default_answer","delete_ai_catalog_item","delete_ai_catalog_item_consumer","delete_ai_self_hosted_model","deny_tool_duo_chat","detected_high_comment_temperature","detected_repeated_high_comment_temperature","dismiss_sast_vulnerability_false_positive_analysis","dismiss_secret_detection_vulnerability_false_positive_analysis","duo_workflow_workload_completed","enable_duo_code_review_by_default_marked_pending","encounter_duo_code_review_error_during_review","error_answer","excluded_files_from_duo_code_review","execute_llm_method","explain_code","explain_vulnerability","filter_ai_fp","find_no_issues_duo_code_review_after_review","find_nothing_to_review_duo_code_review_on_mr","finish_duo_workflow_execution","finish_mcp_tool_call","finish_vulnerability_bulk_duo_workflow","fix_code","fix_pipeline_suggestion_applied","fix_pipeline_suggestion_posted","forced_high_temperature_commenting","generate_merge_commit_message","generate_resolve_dependency_bump_pipeline","i_quickactions_q","include_repository_xray_data_into_code_generation_prompt","ingest_ai_audit_events_batch","maximize_duo_chat_panel","mention_gitlabduo_in_mr_comment","merge_vulnerability_resolution_merge_request","minimize_duo_chat_panel","navigate_retry_alternative_duo_agentic_chat","post_comment_duo_code_review_on_diff","process_gitlab_duo_slash_command","publish_duo_code_review_comments","react_thumbs_down_on_duo_code_review_comment","react_thumbs_up_on_duo_code_review_comment","recommend_tool_duo_chat","refactor_code","reported_sast_vulnerability_false_positive_analysis","reported_secret_detection_vulnerability_false_positive_analysis","request_ask_help","request_duo_chat_response","request_duo_vulnerability_resolution","request_review_duo_code_review_on_mr_by_author","request_review_duo_code_review_on_mr_by_non_author","requested_comment_temperature","resize_duo_chat_panel","resolve_feature_discovery_search","restore_ai_catalog_item","retry_duo_workflow_execution","retry_failed_duo_agentic_chat","retry_message_duo_agentic_chat","retry_succeeded_duo_agentic_chat","select_duo_agentic_chat_predefined_prompt","start_duo_workflow_execution","start_mcp_tool_call","start_vulnerability_bulk_duo_workflow","submit_dap_trial_or_paid_empty_state_message","submit_gitlab_duo_question","summarize_new_merge_request","summarize_review","tokens_per_embedding","tokens_per_user_request_prompt","tokens_per_user_request_response","tool_failed_duo_chat","tool_succeeded_duo_chat","trigger_ai_catalog_item","trigger_resolve_dependency_bump_workflow","trigger_sast_vulnerability_fp_detection_workflow","trigger_sast_vulnerability_resolution_workflow","trigger_secret_detection_vulnerability_fp_detection_workflow","trigger_slack_duo","troubleshoot_job","update_ai_catalog_item","update_ai_catalog_item_consumer","update_ai_self_hosted_model","update_model_selection_feature","update_self_hosted_ai_feature_to_vendored_model","view_ai_catalog_item","view_ai_catalog_item_index","view_ai_catalog_project_catalog","view_ai_catalog_project_managed","view_dap_trial_or_paid_empty_state","view_duo_agentic_identity_verification_empty_state","view_duo_agentic_not_available_empty_state","view_duo_agentic_subscription_expired_empty_state","view_duo_agentic_trial_expired_empty_state","write_tests"];
+gl.onlySendDuoEvents = false;
+
+
+//]]>
+</script>
+
+
+<script src="/assets/webpack/sentry.ad11193d.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+
+<script src="/assets/webpack/commons-duo_panel-pages.admin.abuse_reports-pages.admin.abuse_reports.show-pages.admin.application_s-7a5ffe70.e58a91a9.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-graphql_explorer-pages.admin.application_settings.general-pages.admin.application_settings.s-6b8c0dbe.bf5e7e83.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.admin.abuse_reports.show-pages.dashboard.issues-pages.dashboard.issues.vue3-pages.dash-036d0c8e.6fa1afdf.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.admin.application_settings.service_accounts-pages.explore.ai_catalog-pages.explore.ana-dd0b1cb0.abc48cc4.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.admin.abuse_reports.show-pages.dashboard.issues-pages.dashboard.issues.vue3-pages.dash-307140fb.4a368d09.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.admin.abuse_reports.show-pages.dashboard.issues-pages.dashboard.issues.vue3-pages.dash-3803559e.e165a0ec.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.dashboard.home-pages.registrations.new-pages.root-pages.root.vue3-pages.sessions.new-p-25643d47.8f1e2a9b.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.admin.deploy_keys.index-pages.admin.deploy_keys.index.vue3-pages.admin.groups.index-pa-11307819.b20952f3.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.dashboard.home-pages.projects.snippets.show-pages.root-pages.root.vue3-pages.snippets.-73de5222.2d152cdb.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/0dcf7166.fee24f6c.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.search.show-pages.search.show.vue3-super_sidebar.1acc0a73.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.search.show-super_sidebar.78361ec2.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/super_sidebar.4bf0e67f.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.organizations.organizations.activity-pages.users-pages.users.identity_verification.sho-a7523741.215d6218.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/commons-pages.users-pages.users.identity_verification.show-pages.users.registrations_identity_verifi-9aed8905.54a991a9.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+<script src="/assets/webpack/pages.users.show.9b9e72d9.chunk.js" defer="defer" nonce="laiTyA5RMMEfIy59ow1XEQ=="></script>
+
+<meta content="object" property="og:type">
+<meta content="GitLab" property="og:site_name">
+<meta content="EdOverflow · GitLab" property="og:title">
+<meta content="Contact: https://hackerone.com/ed # Content injecion. Bounty plz. 100k" property="og:description">
+<meta content="https://gitlab.com/uploads/-/system/user/avatar/3277654/avatar.png?v=1659009880" property="og:image">
+<meta content="64" property="og:image:width">
+<meta content="64" property="og:image:height">
+<meta content="https://gitlab.com/security.txt" property="og:url">
+<meta content="summary" property="twitter:card">
+<meta content="EdOverflow · GitLab" property="twitter:title">
+<meta content="Contact: https://hackerone.com/ed # Content injecion. Bounty plz. 100k" property="twitter:description">
+<meta content="https://gitlab.com/uploads/-/system/user/avatar/3277654/avatar.png?v=1659009880" property="twitter:image">
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="JY8U9kRomrY1KGGB57Sm5Fu3MChkIwLsEV-eyLioOTb0gJgZuvPqI86sefsfB9gqZkmLu437Z8EPbmabWStq1g" />
+<meta name="csp-nonce" content="laiTyA5RMMEfIy59ow1XEQ==" />
+<meta name="action-cable-url" content="/-/cable" />
+<link crossorigin="use-credentials" href="/-/manifest.json" rel="manifest">
+<link rel="icon" type="image/png" href="/assets/favicon-72a2cad5025aa931d6ea56c3201d1f18e68a8cd39788c7c80d5b2b82aa5143ef.png" id="favicon" data-original-href="/assets/favicon-72a2cad5025aa931d6ea56c3201d1f18e68a8cd39788c7c80d5b2b82aa5143ef.png" />
+<link rel="apple-touch-icon" type="image/x-icon" href="/assets/apple-touch-icon-b049d4bc0dd9626f31db825d61880737befc7835982586d015bded10b4435460.png" />
+<link crossorigin="use-credentials" href="/search/opensearch.xml" rel="search" title="Search GitLab" type="application/opensearchdescription+xml">
+<link rel="alternate" type="application/atom+xml" title="EdOverflow activity" href="https://gitlab.com/security.txt.atom" />
+
+
+
+
+<meta content="Contact: https://hackerone.com/ed # Content injecion. Bounty plz. 100k" name="description">
+<meta content="#F1F0F6" media="(prefers-color-scheme: light)" name="theme-color">
+<meta content="#232128" media="(prefers-color-scheme: dark)" name="theme-color">
+</head>
+
+<body class="tab-width-8 gl-browser-chrome gl-platform-linux" data-page="users:show">
+<div id="js-tooltips-container"></div>
+
+<script nonce="laiTyA5RMMEfIy59ow1XEQ==">
+//<![CDATA[
+gl = window.gl || {};
+gl.client = {"isChrome":true,"isLinux":true};
+
+
+//]]>
+</script>
+
+
+<header class="super-topbar js-super-topbar"></header>
+<div class="layout-page js-page-layout page-with-super-sidebar">
+<script nonce="laiTyA5RMMEfIy59ow1XEQ==">
+//<![CDATA[
+const outer = document.createElement('div');
+outer.style.visibility = 'hidden';
+outer.style.overflow = 'scroll';
+document.body.appendChild(outer);
+const inner = document.createElement('div');
+outer.appendChild(inner);
+const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+outer.parentNode.removeChild(outer);
+document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+
+//]]>
+</script><aside class="js-super-sidebar super-sidebar super-sidebar-loading" data-command-palette="{}" data-is-saas="true" data-sidebar="{&quot;whats_new_most_recent_release_items_count&quot;:7,&quot;whats_new_version_digest&quot;:&quot;5e9e2821a0cddc6e5959ae21eb4f8da802dec7f0644882e1c4e55c9037f23230&quot;,&quot;whats_new_read_articles&quot;:[],&quot;is_logged_in&quot;:false,&quot;compare_plans_url&quot;:&quot;https://about.gitlab.com/pricing&quot;,&quot;current_menu_items&quot;:[{&quot;id&quot;:&quot;projects_menu&quot;,&quot;title&quot;:&quot;Projects&quot;,&quot;icon&quot;:&quot;project&quot;,&quot;avatar_shape&quot;:&quot;rect&quot;,&quot;link&quot;:&quot;/explore/projects&quot;,&quot;is_active&quot;:false,&quot;items&quot;:[],&quot;separated&quot;:false},{&quot;id&quot;:&quot;groups_menu&quot;,&quot;title&quot;:&quot;Groups&quot;,&quot;icon&quot;:&quot;group&quot;,&quot;avatar_shape&quot;:&quot;rect&quot;,&quot;link&quot;:&quot;/explore/groups&quot;,&quot;is_active&quot;:false,&quot;items&quot;:[],&quot;separated&quot;:false},{&quot;id&quot;:&quot;catalog_menu&quot;,&quot;title&quot;:&quot;CI/CD Catalog&quot;,&quot;icon&quot;:&quot;catalog-checkmark&quot;,&quot;avatar_shape&quot;:&quot;rect&quot;,&quot;link&quot;:&quot;/explore/catalog&quot;,&quot;is_active&quot;:false,&quot;items&quot;:[],&quot;separated&quot;:false},{&quot;id&quot;:&quot;ai_catalog_menu&quot;,&quot;title&quot;:&quot;AI Catalog&quot;,&quot;icon&quot;:&quot;tanuki-ai&quot;,&quot;avatar_shape&quot;:&quot;rect&quot;,&quot;link&quot;:&quot;/explore/ai-catalog&quot;,&quot;is_active&quot;:false,&quot;items&quot;:[],&quot;separated&quot;:false},{&quot;id&quot;:&quot;topics_menu&quot;,&quot;title&quot;:&quot;Topics&quot;,&quot;icon&quot;:&quot;labels&quot;,&quot;avatar_shape&quot;:&quot;rect&quot;,&quot;link&quot;:&quot;/explore/projects/topics&quot;,&quot;is_active&quot;:false,&quot;items&quot;:[],&quot;separated&quot;:false},{&quot;id&quot;:&quot;snippets_menu&quot;,&quot;title&quot;:&quot;Snippets&quot;,&quot;icon&quot;:&quot;snippet&quot;,&quot;avatar_shape&quot;:&quot;rect&quot;,&quot;link&quot;:&quot;/explore/snippets&quot;,&quot;is_active&quot;:false,&quot;items&quot;:[],&quot;separated&quot;:false}],&quot;current_context_header&quot;:&quot;Explore&quot;,&quot;support_path&quot;:&quot;https://support.gitlab.com&quot;,&quot;display_whats_new&quot;:true,&quot;show_version_check&quot;:null,&quot;search&quot;:{&quot;search_context&quot;:{&quot;for_snippets&quot;:null}},&quot;panel_type&quot;:&quot;user_profile&quot;,&quot;shortcut_links&quot;:[{&quot;title&quot;:&quot;Snippets&quot;,&quot;href&quot;:&quot;/explore/snippets&quot;,&quot;css_class&quot;:&quot;dashboard-shortcuts-snippets&quot;},{&quot;title&quot;:&quot;Groups&quot;,&quot;href&quot;:&quot;/explore/groups&quot;,&quot;css_class&quot;:&quot;dashboard-shortcuts-groups&quot;},{&quot;title&quot;:&quot;Projects&quot;,&quot;href&quot;:&quot;/explore/projects&quot;,&quot;css_class&quot;:&quot;dashboard-shortcuts-projects&quot;}],&quot;has_terms&quot;:true,&quot;allow_signup&quot;:&quot;true&quot;,&quot;pinned_items&quot;:[],&quot;trial_registration_path&quot;:&quot;/-/trial_registrations/new&quot;}"></aside>
+
+<div class="broadcast-wrapper gl-rounded-lg gl-overflow-hidden">
+
+
+
+</div>
+<div class="panels-container gl-flex gl-gap-3">
+<div class="content-panels gl-flex-1 gl-w-full gl-flex gl-gap-0 gl-relative js-content-panels gl-@container/content-panels">
+<div class="paneled-view static-panel js-static-panel js-paneled-view content-wrapper">
+<div class="panel-header">
+<div class="panel-header-inner js-panel-header-inner">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"EdOverflow","item":"https://gitlab.com/security.txt"}]}
+
+
+</script>
+<div data-testid="breadcrumb-links" id="js-vue-page-breadcrumbs-wrapper">
+<div data-breadcrumbs-json="[{&quot;text&quot;:&quot;EdOverflow&quot;,&quot;href&quot;:&quot;/security.txt&quot;,&quot;avatarPath&quot;:null}]" id="js-vue-page-breadcrumbs"></div>
+<div id="js-injected-page-breadcrumbs"></div>
+</div>
+<div id="js-page-breadcrumbs-extra"></div>
+
+
+
+<div class="panel-header-inner-actions">
+
+
+<div class="panel-header-inner-actions-portal-target js-panel-actions-portal-target"></div>
+</div>
+</div>
+</div>
+<div class="panel-content">
+<div class="panel-content-inner js-static-panel-inner">
+<div class="alert-wrapper alert-wrapper-top-space gl-flex gl-flex-col gl-gap-3 container-fluid container-limited">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class=" ">
+<main class="content gl-@container/panel" id="content-body" itemscope itemtype="http://schema.org/Person">
+<div id="js-drawer-container"></div>
+<div class="flash-container flash-container-page sticky" data-testid="flash-container">
+<div id="js-global-alerts"></div>
+</div>
+
+
+
+<div class="container-fluid container-limited">
+<div class="user-profile-header gl-flex gl-justify-between gl-flex-col gl-my-5 @md/panel:gl-flex-row-reverse" data-testid="user-profile-header">
+<div>
+<div class="cover-controls gl-flex gl-gap-3 gl-mb-4 @md/panel:gl-justify-end @md/panel:gl-flex-row-reverse">
+<div class="js-user-profile-actions" data-user-id="3277654"></div>
+
+
+
+</div>
+</div>
+<div class="gl-flex gl-flex-row gl-items-center gl-gap-x-5 gl-mt-2 @sm/panel:gl-mt-0">
+<div class="user-image gl-relative gl-md-py-3">
+<a target="_blank" rel="noopener noreferrer" title="View large avatar" href="/uploads/-/system/user/avatar/3277654/avatar.png?v=1659009880&amp;width=800"><img srcset="/uploads/-/system/user/avatar/3277654/avatar.png?v=1659009880&amp;width=192 1x, /uploads/-/system/user/avatar/3277654/avatar.png?v=1659009880&amp;width=192 2x" class="gl-avatar gl-avatar-s96  gl-avatar-circle" height="96" width="96" loading="lazy" itemprop="image" alt="User profile picture" src="/uploads/-/system/user/avatar/3277654/avatar.png?v=1659009880&amp;width=192" />
+
+</a></div>
+<div>
+<h1 class="gl-heading-1 gl-leading-1 gl-mr-2 !gl-my-0" itemprop="name">
+EdOverflow
+</h1>
+<div class="gl-text-size-h2 gl-text-subtle gl-font-normal gl-my-0">
+@security.txt
+</div>
+<div class="gl-my-2 cover-status gl-text-sm gl-pt-2 gl-flex gl-flex-col">
+<div class="gl-inline-flex gl-gap-3 gl-items-baseline">
+<gl-emoji title="speech balloon" data-name="speech_balloon" data-unicode-version="6.0">💬</gl-emoji>
+haxx3d
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="user-profile user-profile-with-sidebar">
+<div class="user-profile-content">
+<section class="gl-flex gl-empty-state gl-text-center gl-flex-col">
+<div class="gl-max-w-full">
+<img alt="" class="gl-dark-invert-keep-hue" src="/assets/illustrations/empty-state/empty-private-md-0626c6b1369c6699496f076a93ffdf53a741bb31632951a7d16996565c218c43.svg" />
+</div>
+<div class="gl-empty-state-content gl-mx-auto gl-my-0 gl-m-auto gl-p-5">
+<h1 class="gl-text-size-h-display gl-leading-36 gl-mt-0 gl-mb-0 h4">
+This user has a private profile
+</h1>
+</div>
+</section>
+
+</div>
+<div class="user-profile-sidebar">
+<div class="profile-header gl-pb-5 gl-pt-3 gl-overflow-y-auto @sm/panel:gl-pr-4">
+<div class="gl-align-top gl-text-left gl-max-w-80 gl-wrap-anywhere">
+<div class="user-info">
+<div class="gl-flex gl-gap-4 gl-flex-col">
+<div>
+<h2 class="gl-text-base gl-mb-2 gl-mt-4">About</h2>
+<div class="gl-flex gl-gap-2 gl-flex-col">
+<p class="profile-user-bio gl-mb-0">
+Contact: https://hackerone.com/ed &#x000A; Content injecion. Bounty plz. 100k
+</p>
+</div>
+</div>
+<div>
+</div>
+<div class="gl-text-default">
+<h2 class="gl-text-base gl-mb-2 gl-mt-4">Contact</h2>
+<div class="gl-flex gl-gap-2 gl-mb-2">
+<svg class="s16 gl-fill-icon-subtle gl-mt-1 !gl-shrink-0" data-testid="earth-icon"><use href="/assets/icons-557611e974a59dbbc29ee0980dc4bc97610b136af3a30b5c715d47d566317bc5.svg#earth"></use></svg>
+<a class="gl-text-default" target="_blank" rel="me noopener noreferrer nofollow" itemprop="url" href="https://google.com">google.com</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+</main>
+</div>
+
+
+</div>
+
+
+</div>
+</div>
+<div class="paneled-view-portal" id="contextual-panel-portal"></div>
+</div>
+</div>
+
+
+</div>
+
+
+<script nonce="laiTyA5RMMEfIy59ow1XEQ==">
+//<![CDATA[
+if ('loading' in HTMLImageElement.prototype) {
+  document.querySelectorAll('img.lazy').forEach(img => {
+    img.loading = 'lazy';
+    let imgUrl = img.dataset.src;
+    // Only adding width + height for avatars for now
+    // Keep this logic in sync with appendWidthToAvatarUrl in
+    // app/assets/javascripts/vue_shared/components/user_avatar/utils.js
+    if (imgUrl.indexOf('/avatar/') > -1 && !imgUrl.includes('width=')) {
+      const targetWidth = img.getAttribute('width') || img.width;
+      imgUrl += imgUrl.includes('?') ? `&width=${targetWidth}` : `?width=${targetWidth}`;
+    }
+    img.src = imgUrl;
+    img.removeAttribute('data-src');
+    img.classList.remove('lazy');
+    img.classList.add('js-lazy-loaded');
+    img.dataset.testid = 'js-lazy-loaded-content';
+  });
+}
+
+//]]>
+</script>
+<script nonce="laiTyA5RMMEfIy59ow1XEQ==">
+//<![CDATA[
+gl = window.gl || {};
+gl.experiments = {};
+
+
+//]]>
+</script>
+
+</body>
+</html>
+--- end (rc=0) ---
+
+$ bash -c echo | timeout 20 openssl s_client -connect gitlab.com:443 -servername gitlab.com 2>/dev/null | openssl x509 -noout -subject -issuer -dates -ext subjectAltName
+--- output ---
+subject=CN = gitlab.com
+issuer=C = GB, O = Sectigo Limited, CN = Sectigo Public Server Authentication CA DV R36
+notBefore=Apr 26 00:00:00 2026 GMT
+notAfter=Nov 10 23:59:59 2026 GMT
+X509v3 Subject Alternative Name: 
+    DNS:gitlab.com, DNS:auth.gitlab.com, DNS:customers.gitlab.com, DNS:email.customers.gitlab.com, DNS:gprd.gitlab.com, DNS:www.gitlab.com
+--- end (rc=0) ---
+
+================================================================
+END PASSIVE RECON — gitlab
+================================================================

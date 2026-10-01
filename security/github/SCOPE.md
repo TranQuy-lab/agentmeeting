@@ -237,6 +237,60 @@ HackerOne công bố, **chưa xác minh độc lập**.)
 
 ---
 
+## 4b. TRÍCH NGUYÊN VĂN — DANH SÁCH **KHÔNG ĐỦ ĐIỀU KIỆN** (ineligible)
+
+Nguồn: <https://bounty.github.com/ineligible.html> (HTTP 200, 113.590 B, fetch `2026-10-01`).
+Bản đầy đủ: `agents/bountyrecon/tasks/T3/EVIDENCE/gh_ineligible.txt` (517 dòng).
+Đây là phần **bắt buộc** của xác lập scope: tính năng "hoạt động đúng thiết kế" thì không có thưởng.
+
+Nhóm **All Targets** (áp dụng cho mọi tài sản):
+
+```text
+* OAuth client ID and secrets are publicly available in desktop and mobile apps
+* Use of known-vulnerable software
+* Vulnerability in upstream dependencies
+* Clickjacking a static site
+* Local Access
+* Network Denial of Service
+* Cache purging and cache eviction
+* Content that stays cached after you delete it or make it private
+* Git hooks, filters, and local repository configuration
+* Attacks that require following an attacker's instructions
+* Typosquatting
+* Vulnerabilities identified in Open Source Repositories
+* Assets that are not owned by GitHub
+* Abuse of a service is not automatically a vulnerability
+* Attacks that require intercepting or modifying traffic
+```
+
+Trích nguyên văn phần giải thích `Network Denial of Service`:
+
+```text
+Network-level and volumetric denial of service attacks (e.g., DDoS, traffic flooding) are not allowed and are ineligible for reward. We have mitigation plans in place for these types of attacks. Application-layer denial of service vulnerabilities (e.g., ReDoS, logic bombs) are eligible. Please see our rules for guidelines on how to research these responsibly.
+```
+
+Trích nguyên văn phần `Assets that are not owned by GitHub` (nhóm All Targets) và
+`Local Access`:
+
+```text
+Local Access
+Vulnerabilities that require local system access are out of scope and ineligible for bounty across all services.
+```
+
+Các nhóm theo sản phẩm (nguyên văn tiêu đề mục):
+`Dependabot`, `GitHub Gist`, `GitHub Actions`, `GitHub API`, `GitHub CLI`, `GitHub Codespaces`,
+`GitHub Copilot`, `GitHub Credentials`, `GitHub Desktop`, `GitHub Education`,
+`GitHub Enterprise Cloud`, `GitHub Enterprise Server`, `... npm Registry`.
+
+> 📌 **Hệ quả cho T4 — rất quan trọng:**
+> * **DoS/DDoS mạng = KHÔNG BAO GIỜ** (ineligible + cấm). Chỉ DoS tầng ứng dụng (ReDoS,
+>   logic bomb) mới được thưởng.
+> * **Prompt Injection vào Copilot = ineligible** ("Prompt Injections", nhóm GitHub Copilot).
+> * **Lỗi trong thư viện upstream = out of scope** — phải báo cho upstream.
+> * **Tài sản không thuộc GitHub = ineligible** — khớp với cảnh báo ở §5.
+
+---
+
 ## 5. KẾT LUẬN SCOPE (tổng hợp của tôi — KHÔNG phải nguyên văn)
 
 | Hạng mục | Kết luận |
@@ -244,6 +298,7 @@ HackerOne công bố, **chưa xác minh độc lập**.)
 | Trích được nguyên văn in-scope? | ✅ **CÓ** (8 nhóm tên miền + 13 tài sản `OTHER`) |
 | Trích được nguyên văn out-of-scope? | ✅ **CÓ** (18 tên miền loại trừ + 14 mục tường minh) |
 | Trích được quy định cấm? | ✅ **CÓ** (DDoS, scanner diện rộng, PII, công bố) |
+| Trích được danh sách ineligible? | ✅ **CÓ** (517 dòng, xem §4b) |
 | Mức thưởng công bố? | ✅ **CÓ** (bảng $250 – $30.000+) |
 | Tài sản dễ kiểm chứng? | ✅ **CÓ** — `github.com`, `api.github.com`, `npmjs.com`, `gist.github.com` |
 | Đủ điều kiện chuyển ExploitDeep (T4)? | ✅ **CÓ** — nhưng **cổng G4 vẫn cần chỉ thị bằng văn bản của Admin** |

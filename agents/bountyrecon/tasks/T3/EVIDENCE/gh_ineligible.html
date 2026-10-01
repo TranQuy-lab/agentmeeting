@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/normalize.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/css/site.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/css/github-octicons.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/js/modernizr.custom.67567.js"></script>
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Ineligible submissions | GitHub Bug Bounty</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Ineligible submissions" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://bounty.github.com/ineligible.html" />
+<meta property="og:url" content="https://bounty.github.com/ineligible.html" />
+<meta property="og:site_name" content="GitHub Bug Bounty" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Ineligible submissions" />
+<meta name="twitter:site" content="@githubsecurity" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Ineligible submissions","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://bounty.github.com/images/noircat@2x.png"}},"url":"https://bounty.github.com/ineligible.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body id="ineligible">
+    <header class="site-header">
+      <div class="container clearfix">
+        <a href="/" class="site-header-logo">GitHub Security</a>
+        <button class="hamburger" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="top-nav">
+          <li><a href="/scope" class="top-nav-scope">Scope</a></li>
+          <li><a href="/targets" class="top-nav-targets">Targets</a></li>
+          <li><a href="/rules" class="top-nav-rules">Rules</a></li>
+          <li><a href="/rewards" class="top-nav-rewards">Rewards</a></li>
+          <li class="dropdown">
+            <button class="dropbtn">More</button>
+            <div class="dropdown-content">
+              <a href="/ineligible">Ineligible Submissions</a>
+              <a href="/report-quality">Report Quality</a>
+              <a href="/about">About</a>
+              <a href="https://github.blog/tag/bug-bounty/" target="_blank" rel="noopener noreferrer">Blog</a>
+              <a href="/faq">FAQs</a>
+            </div>
+          </li>
+          <li class="nav-button"><a href="https://hackerone.com/github" target="_blank" rel="noopener noreferrer">Submit a vulnerability</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <section class="site-section">
+  <div class="container">
+    <h2>Ineligible submissions</h2>
+    <p>There are a handful of reports that we consider ineligible, either because the feature is working as intended or we accept the low risk as a security/usability tradeoff:</p>
+
+    <a>All Targets</a>
+    <ul>
+      
+        <li><a href="#oauth_client_id_and_secrets_are_publicly_available_in_desktop_and_mobile_apps">OAuth client ID and secrets are publicly available in desktop and mobile apps</a></li>
+      
+        <li><a href="#use_of_knownvulnerable_software">Use of known-vulnerable software</a></li>
+      
+        <li><a href="#vulnerability_in_upstream_dependencies">Vulnerability in upstream dependencies</a></li>
+      
+        <li><a href="#clickjacking_a_static_site">Clickjacking a static site</a></li>
+      
+        <li><a href="#local_access">Local Access</a></li>
+      
+        <li><a href="#network_denial_of_service">Network Denial of Service</a></li>
+      
+        <li><a href="#cache_purging_and_cache_eviction">Cache purging and cache eviction</a></li>
+      
+        <li><a href="#content_that_stays_cached_after_you_delete_it_or_make_it_private">Content that stays cached after you delete it or make it private</a></li>
+      
+        <li><a href="#git_hooks_filters_and_local_repository_configuration">Git hooks, filters, and local repository configuration</a></li>
+      
+        <li><a href="#attacks_that_require_following_an_attackers_instructions">Attacks that require following an attacker's instructions</a></li>
+      
+        <li><a href="#typosquatting">Typosquatting</a></li>
+      
+        <li><a href="#vulnerabilities_identified_in_open_source_repositories">Vulnerabilities identified in Open Source Repositories</a></li>
+      
+        <li><a href="#assets_that_are_not_owned_by_github">Assets that are not owned by GitHub</a></li>
+      
+        <li><a href="#abuse_of_a_service_is_not_automatically_a_vulnerability">Abuse of a service is not automatically a vulnerability</a></li>
+      
+        <li><a href="#attacks_that_require_intercepting_or_modifying_traffic">Attacks that require intercepting or modifying traffic</a></li>
+      
+    </ul>
+
+
+    
+    
+      
+    
+      
+        <a>Dependabot</a>
+        <ul>
+          
+            <li><a href="#arbitrary_code_execution_in_dependency_update_jobs">Arbitrary code execution in dependency update jobs</a></li>
+          
+            <li><a href="#showing_code_execution_without_showing_the_escape">Showing code execution without showing the escape</a></li>
+          
+            <li><a href="#what_dependabot_does_with_the_repository_it_runs_against">What Dependabot does with the repository it runs against</a></li>
+          
+            <li><a href="#vulnerabilities_in_the_packages_themselves">Vulnerabilities in the packages themselves</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub Gist</a>
+        <ul>
+          
+            <li><a href="#secret_gists_are_accessible_via_url_without_authentication">Secret gists are accessible via URL without authentication</a></li>
+          
+            <li><a href="#gist_content_rendered_on_githubusercontentcom">Gist content rendered on githubusercontent.com</a></li>
+          
+            <li><a href="#links_and_redirects_in_gist_content">Links and redirects in gist content</a></li>
+          
+            <li><a href="#forks_revisions_and_deletion">Forks, revisions, and deletion</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub Actions</a>
+        <ul>
+          
+            <li><a href="#steps_within_a_job_are_not_security_boundaries">Steps within a job are not security boundaries</a></li>
+          
+            <li><a href="#artifact_upload_and_download_paths">Artifact upload and download paths</a></li>
+          
+            <li><a href="#code_execution_in_actions">Code Execution in Actions</a></li>
+          
+            <li><a href="#bypassing_build_log_secret_redaction">Bypassing build log secret redaction</a></li>
+          
+            <li><a href="#general_abuse_or_exhaustion_of_resources">General abuse or exhaustion of resources</a></li>
+          
+            <li><a href="#availability_of_resources_inside_a_workflow_run">Availability of resources inside a workflow run</a></li>
+          
+            <li><a href="#access_to_build_artifacts_without_user_session">Access to build artifacts without user session</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub API</a>
+        <ul>
+          
+            <li><a href="#write_access_to_a_repository_includes_configuring_its_secrets">Write access to a repository includes configuring its secrets</a></li>
+          
+            <li><a href="#data_from_public_repositories_returned_by_the_api">Data from public repositories returned by the API</a></li>
+          
+            <li><a href="#repository_and_organization_metadata">Repository and organization metadata</a></li>
+          
+            <li><a href="#functionality_disabled_in_the_ui_but_reachable_through_the_api">Functionality disabled in the UI but reachable through the API</a></li>
+          
+            <li><a href="#email_addresses_returned_by_the_api">Email addresses returned by the API</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub CLI</a>
+        <ul>
+          
+            <li><a href="#anything_that_needs_local_access_first">Anything that needs local access first</a></li>
+          
+            <li><a href="#extensions_aliases_and_anything_you_install">Extensions, aliases, and anything you install</a></li>
+          
+            <li><a href="#tokens_sent_to_the_host_you_configured">Tokens sent to the host you configured</a></li>
+          
+            <li><a href="#cloning_or_checking_out_an_untrusted_repository">Cloning or checking out an untrusted repository</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub Codespaces</a>
+        <ul>
+          
+            <li><a href="#devcontainer_configuration_and_the_codespace_token">Devcontainer configuration and the codespace token</a></li>
+          
+            <li><a href="#api_scopes_are_not_a_second_set_of_permissions">API scopes are not a second set of permissions</a></li>
+          
+            <li><a href="#resource_consumption_within_a_users_own_codespace">Resource consumption within a user's own codespace</a></li>
+          
+            <li><a href="#access_to_metadata_services_from_within_a_codespace">Access to metadata services from within a codespace</a></li>
+          
+            <li><a href="#vulnerabilities_in_thirdparty_software_within_a_codespace">Vulnerabilities in third-party software within a codespace</a></li>
+          
+            <li><a href="#privileged_access_within_a_users_own_codespace">Privileged access within a user's own codespace</a></li>
+          
+        </ul>
+      
+    
+      
+    
+      
+        <a>GitHub Copilot</a>
+        <ul>
+          
+            <li><a href="#vulnerabilities_in_github_copilot_chat_extension_and_inline_suggestions_in_visual_studio_code">Vulnerabilities in GitHub Copilot Chat extension and Inline Suggestions in Visual Studio Code</a></li>
+          
+            <li><a href="#prompt_injections">Prompt Injections</a></li>
+          
+            <li><a href="#the_security_of_code_suggested_by_copilot">The security of code suggested by Copilot</a></li>
+          
+            <li><a href="#tokens_suggested_by_copilot">Tokens suggested by Copilot</a></li>
+          
+            <li><a href="#prototype_features">Prototype features</a></li>
+          
+            <li><a href="#copilot_quota_billing_and_usage_limits">Copilot quota, billing, and usage limits</a></li>
+          
+            <li><a href="#changes_you_review_and_accept">Changes you review and accept</a></li>
+          
+            <li><a href="#github_mcp_server">GitHub MCP Server</a></li>
+          
+            <li><a href="#off_topic_conversation">Off topic conversation</a></li>
+          
+            <li><a href="#copilot_coding_agent_acting_on_a_repository_it_was_assigned_to">Copilot coding agent acting on a repository it was assigned to</a></li>
+          
+            <li><a href="#who_can_assign_the_coding_agent">Who can assign the coding agent</a></li>
+          
+            <li><a href="#agent_output_requires_review">Agent output requires review</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub Credentials</a>
+        <ul>
+          
+            <li><a href="#credentials_which_have_been_detected_by_github_secret_scanning">Credentials which have been detected by GitHub Secret Scanning</a></li>
+          
+            <li><a href="#credentials_on_github">Credentials on GitHub</a></li>
+          
+            <li><a href="#credentials_you_have_not_confirmed_still_work">Credentials you have not confirmed still work</a></li>
+          
+            <li><a href="#values_that_are_not_secrets">Values that are not secrets</a></li>
+          
+            <li><a href="#secrets_inside_github_actions">Secrets inside GitHub Actions</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub Desktop</a>
+        <ul>
+          
+            <li><a href="#cloning_a_repository_you_do_not_trust">Cloning a repository you do not trust</a></li>
+          
+            <li><a href="#code_execution_that_needs_the_user_to_be_talked_into_it">Code execution that needs the user to be talked into it</a></li>
+          
+            <li><a href="#anything_that_needs_local_access_first">Anything that needs local access first</a></li>
+          
+            <li><a href="#the_oauth_client_identifier">The OAuth client identifier</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub Education</a>
+        <ul>
+          
+            <li><a href="#assignment_invitation_links">Assignment invitation links</a></li>
+          
+            <li><a href="#classroom_organization_permissions">Classroom organization permissions</a></li>
+          
+            <li><a href="#data_students_and_teachers_choose_to_publish">Data students and teachers choose to publish</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub Enterprise Cloud</a>
+        <ul>
+          
+            <li><a href="#access_that_a_role_is_supposed_to_grant">Access that a role is supposed to grant</a></li>
+          
+            <li><a href="#actions_workflows_behaving_as_configured">Actions workflows behaving as configured</a></li>
+          
+            <li><a href="#ip_allow_lists_and_network_controls">IP allow lists and network controls</a></li>
+          
+            <li><a href="#invitations_seats_and_billing">Invitations, seats, and billing</a></li>
+          
+            <li><a href="#sso_redirects_revealing_that_a_resource_exists">SSO redirects revealing that a resource exists</a></li>
+          
+            <li><a href="#repository_visibility_policies_forks_and_transfers">Repository visibility policies, forks and transfers</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub Enterprise Server</a>
+        <ul>
+          
+            <li><a href="#vulnerabilities_caused_by_lack_of_subdomain_isolation">Vulnerabilities caused by lack of subdomain isolation</a></li>
+          
+            <li><a href="#escalation_to_the_root_user_via_sudo">Escalation to the root user via sudo</a></li>
+          
+            <li><a href="#access_to_sensitive_configuration_information_with_local_access">Access to sensitive configuration information with local access</a></li>
+          
+            <li><a href="#bypassing_source_code_deobfuscation">Bypassing source code de-obfuscation</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub Mobile</a>
+        <ul>
+          
+            <li><a href="#onscreen_data_is_not_hidden_when_backgrounding_the_app">On-screen data is not hidden when backgrounding the app</a></li>
+          
+            <li><a href="#no_jailbreak_detection">No jailbreak detection</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>*.github.net</a>
+        <ul>
+          
+            <li><a href="#internal_ip_addresses_and_hostnames_in_public_dns">Internal IP addresses and hostnames in public DNS</a></li>
+          
+            <li><a href="#vulnerabilities_in_outofscope_subdomains">Vulnerabilities in out-of-scope subdomains</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub Pages</a>
+        <ul>
+          
+            <li><a href="#vulnerabilities_in_github_pages_hosted_content">Vulnerabilities in GitHub Pages hosted content</a></li>
+          
+            <li><a href="#subdomain_takeover">Subdomain Takeover</a></li>
+          
+            <li><a href="#code_execution_during_your_own_build">Code execution during your own build</a></li>
+          
+            <li><a href="#domain_verification_and_custom_domains">Domain verification and custom domains</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>GitHub.com</a>
+        <ul>
+          
+            <li><a href="#including_html_in_markdown_content">Including HTML in Markdown content</a></li>
+          
+            <li><a href="#leaking_email_addresses_via_patch_links">Leaking email addresses via .patch links</a></li>
+          
+            <li><a href="#phishing_using_unicode_homoglyphs_rtlo_or_nonprintable_characters">Phishing using Unicode homoglyphs, RTLO, or non-printable characters</a></li>
+          
+            <li><a href="#email_verification_policy">Email verification policy</a></li>
+          
+            <li><a href="#email_invitations">Email Invitations</a></li>
+          
+            <li><a href="#impersonating_a_user_through_git_email_address">Impersonating a user through git email address</a></li>
+          
+            <li><a href="#dmarc_spf_and_dkim_email_policy">DMARC, SPF and DKIM email policy</a></li>
+          
+            <li><a href="#bypassing_country_restrictions_for_sms_twofactor_authentication">Bypassing country restrictions for SMS two-factor authentication</a></li>
+          
+            <li><a href="#vulnerabilities_in_repositories_hosted_on_github">Vulnerabilities in repositories hosted on GitHub</a></li>
+          
+            <li><a href="#host_header_injection">Host header injection</a></li>
+          
+            <li><a href="#timing_attacks_which_reveal_a_private_repository_or_user">Timing attacks which reveal a private repository or user</a></li>
+          
+            <li><a href="#2fa_does_not_invalidate_existing_sessions">2FA does not invalidate existing sessions</a></li>
+          
+            <li><a href="#enabling_2fa_without_a_verified_email">Enabling 2FA without a verified email</a></li>
+          
+            <li><a href="#vulnerabilities_caused_by_outdated_browsers">Vulnerabilities caused by out-dated browsers</a></li>
+          
+            <li><a href="#camo_image_proxy">Camo image proxy</a></li>
+          
+            <li><a href="#lack_of_sudo_mode">Lack of Sudo mode</a></li>
+          
+            <li><a href="#community_and_safety_bypasses_that_do_not_affect_privacy">Community and safety bypasses that do not affect privacy</a></li>
+          
+            <li><a href="#activity_in_archived_repos">Activity in archived repos</a></li>
+          
+            <li><a href="#accessing_certain_disabled_functionality">Accessing certain disabled functionality</a></li>
+          
+            <li><a href="#lack_of_rate_limiting">Lack of rate limiting</a></li>
+          
+            <li><a href="#email_and_username_enumeration">Email and Username Enumeration</a></li>
+          
+            <li><a href="#oauth_app_redirect">OAuth App Redirect</a></li>
+          
+            <li><a href="#lack_of_secret_scanning_alert">Lack of Secret Scanning Alert</a></li>
+          
+            <li><a href="#product_bugs_and_input_validation_without_a_security_impact">Product bugs and input validation without a security impact</a></li>
+          
+            <li><a href="#issue_and_pull_request_templates_and_prefilled_query_parameters">Issue and pull request templates and prefilled query parameters</a></li>
+          
+            <li><a href="#deploy_keys_and_repository_rulesets">Deploy keys and repository rulesets</a></li>
+          
+            <li><a href="#impersonation_through_profile_names_and_naming_patterns">Impersonation through profile names and naming patterns</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>*.githubapp.com</a>
+        <ul>
+          
+            <li><a href="#vulnerabilities_in_outofscope_subdomains">Vulnerabilities in out-of-scope subdomains</a></li>
+          
+            <li><a href="#subdomain_takeovers_that_cannot_actually_be_taken_over">Subdomain takeovers that cannot actually be taken over</a></li>
+          
+            <li><a href="#third_party_services_hosted_on_the_domain">Third party services hosted on the domain</a></li>
+          
+            <li><a href="#content_that_is_meant_to_be_public">Content that is meant to be public</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>*.githubusercontent.com</a>
+        <ul>
+          
+            <li><a href="#usercontent_behavior_without_a_csp_bypass">User-content behavior without a CSP bypass</a></li>
+          
+            <li><a href="#tokens_in_raw_file_urls">Tokens in raw file URLs</a></li>
+          
+            <li><a href="#attachments_on_private_issues_and_pull_requests">Attachments on private issues and pull requests</a></li>
+          
+            <li><a href="#credentials_found_in_user_content">Credentials found in user content</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>npm CLI</a>
+        <ul>
+          
+            <li><a href="#project_configuration_in_a_repository_you_chose_to_run_npm_in">Project configuration in a repository you chose to run npm in</a></li>
+          
+            <li><a href="#social_engineering">Social engineering</a></li>
+          
+            <li><a href="#local_access">Local access</a></li>
+          
+            <li><a href="#arbitrary_code_execution_in_commands_that_modify_the_package_tree">Arbitrary code execution in commands that modify the package tree</a></li>
+          
+            <li><a href="#upstream_dependencies">Upstream dependencies</a></li>
+          
+        </ul>
+      
+    
+      
+        <a>npm Registry</a>
+        <ul>
+          
+            <li><a href="#vulnerabilities_in_packages_that_are_hosted_on_the_registry">Vulnerabilities in packages that are hosted on the registry</a></li>
+          
+            <li><a href="#malicious_packages">Malicious packages</a></li>
+          
+            <li><a href="#infrastructure_vulnerabilities">Infrastructure vulnerabilities</a></li>
+          
+            <li><a href="#timing_attacks_that_reveal_a_private_package">Timing attacks that reveal a private package</a></li>
+          
+            <li><a href="#account_takeover_that_depends_on_the_victim_acting">Account takeover that depends on the victim acting</a></li>
+          
+            <li><a href="#publicly_available_package_and_user_data">Publicly available package and user data</a></li>
+          
+            <li><a href="#organization_invitations_and_membership_changes">Organization invitations and membership changes</a></li>
+          
+            <li><a href="#account_ownership_disputes">Account ownership disputes</a></li>
+          
+            <li><a href="#revoking_a_token_you_already_know_the_identifier_for">Revoking a token you already know the identifier for</a></li>
+          
+        </ul>
+      
+    
+  </div>
+</section>
+
+<section class="site-section">
+  <div class="container">
+    <dl class="ineligible-submissions">
+    <h2><a>All Targets</a></h2>
+    
+      <a class="ineligible-link" id="oauth_client_id_and_secrets_are_publicly_available_in_desktop_and_mobile_apps">&nbsp;</a>
+      <dt>OAuth client ID and secrets are publicly available in desktop and mobile apps</dt>
+      <dd><p>It is expected that GitHub-owned clients, such as <a href="/targets/github-for-mobile">GitHub Mobile</a> and <a href="/targets/github-cli">GitHub CLI</a>, include both the OAuth client ID and OAuth secret. These are public clients, and a public client cannot hold a secret. Recovering one by unpacking an app, reading a binary, or watching traffic is not by itself a vulnerability, and a report that stops there is not eligible.</p>
+
+<p>A working chain that turns the secret into access to an account someone else owns is eligible, and we have rewarded reports of that kind. If you can intercept the OAuth callback from another application on the device and obtain a token for an account you do not control, we want to see it. Tell us the platform and the exact redirect target you intercepted, because a custom URL scheme and a verified Universal Link or App Link do not give the same guarantees.</p>
+</dd>
+    
+      <a class="ineligible-link" id="use_of_knownvulnerable_software">&nbsp;</a>
+      <dt>Use of known-vulnerable software</dt>
+      <dd><p>GitHub has a dedicated team responsible for tracking and remediating the use of known-vulnerable software. Submissions related to GitHub services using known-vulnerable software are only eligible 30 days after public disclosure of a vulnerability. In addition, any submissions related to using known-vulnerable software must show evidence of exploitability. Simply demonstrating that GitHub is running a known vulnerable version is not sufficient, the submission must demonstrate an actual impact of exploitation like disclosing private data.</p>
+</dd>
+    
+      <a class="ineligible-link" id="vulnerability_in_upstream_dependencies">&nbsp;</a>
+      <dt>Vulnerability in upstream dependencies</dt>
+      <dd><p>Vulnerabilities that are due to a vulnerability in an upstream dependency are out of scope and should instead be disclosed to the upstream maintainers. We may make exceptions for vulnerabilities that have a substantial impact to our production environment and customer data, however, issues should still be directed to the maintainers of the dependency upstream first.</p>
+</dd>
+    
+      <a class="ineligible-link" id="clickjacking_a_static_site">&nbsp;</a>
+      <dt>Clickjacking a static site</dt>
+      <dd><p>Several GitHub owned sites are created using a static site generator and hosted on <a href="https://pages.github.com/">GitHub Pages</a>. These applications do not contain any sensitive user information or authenticated sessions. As a result, this does not present a security risk.</p>
+</dd>
+    
+      <a class="ineligible-link" id="local_access">&nbsp;</a>
+      <dt>Local Access</dt>
+      <dd><p>Vulnerabilities that require local system access are out of scope and ineligible for bounty across all services.</p>
+</dd>
+    
+      <a class="ineligible-link" id="network_denial_of_service">&nbsp;</a>
+      <dt>Network Denial of Service</dt>
+      <dd><p>Network-level and volumetric denial of service attacks (e.g., DDoS, traffic flooding) are not allowed and are ineligible for reward. We have mitigation plans in place for these types of attacks. Application-layer denial of service vulnerabilities (e.g., ReDoS, logic bombs) are eligible. Please see our <a href="/rules">rules</a> for guidelines on how to research these responsibly.</p>
+</dd>
+    
+      <a class="ineligible-link" id="cache_purging_and_cache_eviction">&nbsp;</a>
+      <dt>Cache purging and cache eviction</dt>
+      <dd><p>Reports that you can cause a cached object to be evicted from one of our CDN edges are ineligible. Eviction does not change what we serve. The next request fetches the same content from origin and caches it again, so the result is a cache miss and some additional origin traffic, which our infrastructure is built to absorb. This includes reports where the impact is framed as denial of service.</p>
+
+<p>Cache poisoning is a different finding and is eligible. If you can make a cache serve content <strong>you</strong> control to another user, or return one user’s private content to another, that crosses a security boundary and we want the report. The distinction is whether you are removing a cached copy or replacing it.</p>
+</dd>
+    
+      <a class="ineligible-link" id="content_that_stays_cached_after_you_delete_it_or_make_it_private">&nbsp;</a>
+      <dt>Content that stays cached after you delete it or make it private</dt>
+      <dd><p>When you delete a file, delete a repository, change a repository from public to private, remove a member from an organisation, or replace an avatar, the original content can remain reachable from our caches and CDNs for a short period afterwards. We have received this report many times, against raw file content, Git LFS objects, rendered notebooks, avatars, link previews, release downloads and gists.</p>
+
+<p>Caches expire rather than being erased everywhere at the moment you make a change, so a copy that was public a moment ago can still be served for a short window. Treat anything that has been public as public. Once content has been served we cannot guarantee that every cached copy of it disappears the instant you change your mind.</p>
+
+<p>Reports that a recently deleted or newly private object is briefly still served are ineligible, including reports that rely on cache status shown in response headers.</p>
+
+<p>Content that was public stays public. Replacing or deleting an avatar, a release asset, a gist or a file that anyone could already fetch does not make the old copy private, so a cached copy of it still being reachable is not an exposure.</p>
+
+<p>It is eligible, and we want the report, if you can reach content that was never public. Where content has been made private, it is eligible if it remains reachable substantially beyond normal cache expiry. If you can retrieve private repository content without a valid, unexpired signed URL, that is a finding regardless of how it got into the cache.</p>
+</dd>
+    
+      <a class="ineligible-link" id="git_hooks_filters_and_local_repository_configuration">&nbsp;</a>
+      <dt>Git hooks, filters, and local repository configuration</dt>
+      <dd><p>Git is designed to run code that lives in a repository. Hooks, clean and smudge filters, and <code class="language-plaintext highlighter-rouge">core.hooksPath</code> all execute by design, and a repository’s local configuration deliberately takes precedence over the global and system files. Demonstrating that in a repository you created yourself is not a finding, and neither is a chain where the victim has to run a <code class="language-plaintext highlighter-rouge">git config</code> command that the attacker wrote into a README.</p>
+
+<p>Two details are worth checking before you write one of these up. <code class="language-plaintext highlighter-rouge">.git/hooks</code> and <code class="language-plaintext highlighter-rouge">.git/config</code> are not copied by <code class="language-plaintext highlighter-rouge">git clone</code>, so an attacker cannot plant either of them in somebody else’s working copy that way. And hooks in the default <code class="language-plaintext highlighter-rouge">.git/hooks</code> directory run whether or not <code class="language-plaintext highlighter-rouge">core.hooksPath</code> is set, so if your proof of concept puts them there, the configuration change is not what made the code run.</p>
+
+<p>What may be eligible is one of our clients doing something unsafe with repository content on its own. We have rewarded a repository name being interpolated into a shell command, a recursive clone reaching a submodule the user never asked for, an artifact extraction that overwrote <code class="language-plaintext highlighter-rouge">.git/config</code>, and a configuration file that was read before the trust prompt meant to gate it. Cloning a repository, opening it in a client, or checking out a branch does not by itself make a chain eligible. The report must show the client crossing a security boundary beyond the behavior the user authorized and the product is designed to perform. Following setup instructions the attacker put in a README is not eligible.</p>
+</dd>
+    
+      <a class="ineligible-link" id="attacks_that_require_following_an_attackers_instructions">&nbsp;</a>
+      <dt>Attacks that require following an attacker's instructions</dt>
+      <dd><p>Viewing an issue or pull request, cloning or opening a repository, checking out a branch, and reviewing a contribution neither automatically qualifies nor disqualifies a report. Eligibility depends on the specific product, its security model, the warnings or prompts shown, what the action inherently authorizes, and whether GitHub or a GitHub client crosses a security boundary beyond that authorization.</p>
+
+<p>Following instructions supplied by the attacker is different. Reports are ineligible when the chain requires the victim to copy and paste a command into a terminal or developer console, run a script or executable from the attacker, change a security setting, install an extension, grant additional permissions, or approve a warning that explains the risk. In those cases the user is executing or authorizing the attack rather than the product crossing a security boundary.</p>
+
+<p>Describe every required user action exactly. Replacing “the victim pastes and runs my command” with “the victim interacts with a malicious repository” does not make the interaction a vulnerability.</p>
+</dd>
+    
+      <a class="ineligible-link" id="typosquatting">&nbsp;</a>
+      <dt>Typosquatting</dt>
+      <dd><p>Typosquatting on domains similar to GitHub official domains are out of scope and ineligible for bounty. If you would like to report a domain, please report to our <a href="https://support.github.com/request">support team</a>.</p>
+</dd>
+    
+      <a class="ineligible-link" id="vulnerabilities_identified_in_open_source_repositories">&nbsp;</a>
+      <dt>Vulnerabilities identified in Open Source Repositories</dt>
+      <dd><p>Most open source repositories are outside the scope of our bug bounty program. The repository’s <a href="https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository">SECURITY.md</a> describes the best avenue for reporting vulnerabilities in open source projects. Please ensure to submit your report to the place outlined in the file.</p>
+</dd>
+    
+      <a class="ineligible-link" id="assets_that_are_not_owned_by_github">&nbsp;</a>
+      <dt>Assets that are not owned by GitHub</dt>
+      <dd><p>This is one of the most common reasons we close a report. Only the applications and domains listed in our <a href="/scope">scope</a> are eligible, and an asset is not ours simply because it is named after us, linked from a repository, or referenced by our documentation.</p>
+
+<p>Please confirm ownership before you submit. Reports about storage buckets whose name contains “github”, preview deployments and third-party hosting linked from a repository, Microsoft or Azure services, and vendor tooling running on a subdomain are all regularly closed for this reason. The same applies to credentials: a key committed by one of our users is not a GitHub credential. See <a href="/targets/github-credentials.html">GitHub Credentials</a> for what we do consider in scope.</p>
+</dd>
+    
+      <a class="ineligible-link" id="abuse_of_a_service_is_not_automatically_a_vulnerability">&nbsp;</a>
+      <dt>Abuse of a service is not automatically a vulnerability</dt>
+      <dd><p>Some findings describe getting more of something than you are entitled to, rather than crossing a security boundary. Bypassing a usage limit or quota, resetting a trial, avoiding a charge, consuming another account’s allowance, or provoking our moderation and enforcement systems into acting against someone are handled as abuse rather than through the bounty program.</p>
+
+<p>These are ineligible unless you can show a security impact alongside the abuse, such as access to another user’s data, an authorization bypass, or a material financial loss to GitHub. Please report abuse through <a href="https://support.github.com/request">support</a>.</p>
+</dd>
+    
+      <a class="ineligible-link" id="attacks_that_require_intercepting_or_modifying_traffic">&nbsp;</a>
+      <dt>Attacks that require intercepting or modifying traffic</dt>
+      <dd><p>Reports whose impact depends on an attacker controlling what GitHub sends to another user over the network are ineligible. If the attack requires a machine-in-the-middle position, a modified API response delivered to the victim, or a certificate added to the victim’s trust store, then you are demonstrating what happens when transport security is already defeated rather than a flaw in our products.</p>
+
+<p>Using an intercepting proxy or browser developer tools locally to simulate a plausible content-injection point while testing a separate security control, such as GitHub.com’s Content Security Policy, is permitted and does not make the report ineligible by itself. The report must still demonstrate that the intended control can be bypassed in a location where content injection could realistically occur.</p>
+</dd>
+    
+
+    
+    
+      
+    
+      
+        <h2><a>Dependabot</a></h2>
+        
+          <a class="ineligible-link" id="arbitrary_code_execution_in_dependency_update_jobs">&nbsp;</a>
+          <dt>Arbitrary code execution in dependency update jobs</dt>
+          <dd><p>The dependency update jobs are designed to execute arbitrary code. Update jobs run in a sandbox designed to execute untrusted code and prevent access to private networked resources or other users’ data. Escaping the sandbox to access private networked resources or other user’s data is a vulnerability and eligible for reward.</p>
+</dd>
+        
+          <a class="ineligible-link" id="showing_code_execution_without_showing_the_escape">&nbsp;</a>
+          <dt>Showing code execution without showing the escape</dt>
+          <dd><p>This is the most common ineligible Dependabot report we receive. A manifest, lockfile, or build script that runs your code during an update job is doing exactly what the job is for. The finding starts at the sandbox boundary. Your report needs to show something concrete on the other side of it, such as reaching an internal host, reading another customer’s data, or obtaining credentials that outlive the job. Proof that your code ran, that you can see the container filesystem, or that you have network access to the public internet is not a sandbox escape.</p>
+</dd>
+        
+          <a class="ineligible-link" id="what_dependabot_does_with_the_repository_it_runs_against">&nbsp;</a>
+          <dt>What Dependabot does with the repository it runs against</dt>
+          <dd><p>Dependabot acts on the repository that enabled it, using permissions that repository granted. Opening pull requests, reading the dependency graph, and writing to a branch it created are intended. Reports that someone who can already push to the repository can influence a Dependabot run are ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="vulnerabilities_in_the_packages_themselves">&nbsp;</a>
+          <dt>Vulnerabilities in the packages themselves</dt>
+          <dd><p>Findings in third party packages, or in advisories published about them, belong to those maintainers. Report them to the package owner or through the <a href="https://github.com/advisories">GitHub Advisory Database</a>. Reports that Dependabot did not alert on a given package, alerted late, or scored an advisory differently to another source are ineligible.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub Gist</a></h2>
+        
+          <a class="ineligible-link" id="secret_gists_are_accessible_via_url_without_authentication">&nbsp;</a>
+          <dt>Secret gists are accessible via URL without authentication</dt>
+          <dd><p>If you share the URL of a secret gist, anyone with access to the URL will be able to see it without authentication. This is an <a href="https://help.github.com/articles/about-gists/#secret-gists">intentional feature</a>. Secret gists aren’t private. If you send the URL of a secret gist to a friend, they’ll be able to see it. However, if someone you don’t know discovers the URL, they’ll also be able to see your gist. If you need to keep your code away from prying eyes, you may want to create a private repository instead.</p>
+</dd>
+        
+          <a class="ineligible-link" id="gist_content_rendered_on_githubusercontentcom">&nbsp;</a>
+          <dt>Gist content rendered on githubusercontent.com</dt>
+          <dd><p>Raw gist files and user uploaded images are served from <code class="language-plaintext highlighter-rouge">githubusercontent.com</code> rather than <code class="language-plaintext highlighter-rouge">github.com</code> precisely so that active content cannot reach your GitHub session. Scripting that executes on that domain, including in an SVG, has no access to <code class="language-plaintext highlighter-rouge">github.com</code> cookies. See <a href="/targets/githubusercontent-com.html">the <code class="language-plaintext highlighter-rouge">githubusercontent.com</code> page</a> for what is and is not eligible there.</p>
+</dd>
+        
+          <a class="ineligible-link" id="links_and_redirects_in_gist_content">&nbsp;</a>
+          <dt>Links and redirects in gist content</dt>
+          <dd><p>A gist can contain any text, including links to sites the author controls. Reports that a link in a gist leads somewhere hostile, or that a URL shortener obscures its destination, are ineligible. The same applies to the interstitial we show when leaving GitHub: it is a warning, not a security boundary.</p>
+</dd>
+        
+          <a class="ineligible-link" id="forks_revisions_and_deletion">&nbsp;</a>
+          <dt>Forks, revisions, and deletion</dt>
+          <dd><p>Gist history is kept in Git, so a revision that was once public may remain reachable through the Git interface or through a fork after the gist is edited or deleted. Treat anything published in a gist as published. If you committed a secret to a gist, rotate it.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub Actions</a></h2>
+        
+          <a class="ineligible-link" id="steps_within_a_job_are_not_security_boundaries">&nbsp;</a>
+          <dt>Steps within a job are not security boundaries</dt>
+          <dd><p>A workflow job is a single trust domain. Any step that can run code in a job can already read the job’s token, the secrets passed to that job, the workspace, the environment, and the runner’s filesystem, and can influence every later step in the same job. Writing to <code class="language-plaintext highlighter-rouge">GITHUB_ENV</code> or <code class="language-plaintext highlighter-rouge">GITHUB_PATH</code>, setting a library preload variable, or altering a cache that a later step restores are all ways of doing something the step could already do directly.</p>
+
+<p>Reports that move between steps of the same job are therefore ineligible. To be eligible, show the boundary around the job failing: reaching another repository, another job’s secrets, another customer’s runner, or job-scoped credentials that remain valid beyond their documented lifetime.</p>
+</dd>
+        
+          <a class="ineligible-link" id="artifact_upload_and_download_paths">&nbsp;</a>
+          <dt>Artifact upload and download paths</dt>
+          <dd><p>The upload and download artifact actions package and unpack whatever paths the workflow points them at. The workflow author chooses those paths, and anyone who can change the workflow or run code in the job can already read the files being packaged. Filtering of hidden files is a convenience so that people do not ship <code class="language-plaintext highlighter-rouge">.git</code> by accident, not a control over what a workflow is permitted to include.</p>
+
+<p>Reports that a workflow can be made to include a hidden file, follow a symlink in its own workspace, or write outside the extraction directory when the artifact is created and consumed within the same job are ineligible. To be eligible, show the artifact crossing a job or repository boundary, such as an artifact from an untrusted job overwriting files used by a more privileged job, one repository reaching another repository’s artifacts, or an artifact becoming readable by someone who could not already read the repository.</p>
+</dd>
+        
+          <a class="ineligible-link" id="code_execution_in_actions">&nbsp;</a>
+          <dt>Code Execution in Actions</dt>
+          <dd><p>It is an intentional design decision to allow root access to the machines running actions to give users greater flexibility and ability to install software for their CI. The VMs that run Actions are not persisted / re-used, and are continually recycled. Additionally, each machine is on its own VNet and should not have network visibility into other user’s running Actions.</p>
+
+<p>Additionally, it’s expected and known behavior that the metadata service is accessible and it should not present a security risk.</p>
+
+<p>If you are able to demonstrate that you can access information from other VMs in the network, that would be eligible for reward.</p>
+</dd>
+        
+          <a class="ineligible-link" id="bypassing_build_log_secret_redaction">&nbsp;</a>
+          <dt>Bypassing build log secret redaction</dt>
+          <dd><p>To prevent accidental disclosure of secrets, GitHub Actions includes a mechanism to sanitize any <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets">encrypted secrets</a> that appear in build logs. Our mechanism attempts to match any secrets in common encodings, such as plaintext, base64, etc. It is <em>not</em> designed to prevent users intentionally disclosing secrets in non-standard encodings and is therefore ineligible for reward.</p>
+</dd>
+        
+          <a class="ineligible-link" id="general_abuse_or_exhaustion_of_resources">&nbsp;</a>
+          <dt>General abuse or exhaustion of resources</dt>
+          <dd><p>Intentionally misusing CPU, memory or network limits of GitHub Actions is a known issue. We take abuse and spam seriously and have a dedicated team that tracks spammy users. Therefore, this is ineligible for reward.</p>
+</dd>
+        
+          <a class="ineligible-link" id="availability_of_resources_inside_a_workflow_run">&nbsp;</a>
+          <dt>Availability of resources inside a workflow run</dt>
+          <dd><p>A GitHub Actions build will intentionally have access to many resources including, but not limited to:</p>
+<ul>
+  <li>a metadata service available at <code class="language-plaintext highlighter-rouge">http://169.254.169.254</code></li>
+  <li>a job token used to report status back to GitHub.com</li>
+  <li>privileged access to the host VM</li>
+</ul>
+
+<p>Access to these resources is expected and not eligible for a reward. However, if these primitives can be abused to access resources of other repositories or users then this would be eligible for reward.</p>
+</dd>
+        
+          <a class="ineligible-link" id="access_to_build_artifacts_without_user_session">&nbsp;</a>
+          <dt>Access to build artifacts without user session</dt>
+          <dd><p>Downloading build artifacts requires <code class="language-plaintext highlighter-rouge">read</code> access to a repository. When a user with <code class="language-plaintext highlighter-rouge">read</code> access clicks the download button, they will be given a link containing a signed token that is no longer tied to the user session. This is expected behavior and ineligible for reward.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub API</a></h2>
+        
+          <a class="ineligible-link" id="write_access_to_a_repository_includes_configuring_its_secrets">&nbsp;</a>
+          <dt>Write access to a repository includes configuring its secrets</dt>
+          <dd><p>It is intentional that write access to a repository allows users to list Actions secret metadata, retrieve the public key used to encrypt secrets, and create, update, or delete secret values, as <a href="https://docs.github.com/en/rest/actions/secrets">documented in the REST API reference</a>. Users with write access are expected to be able to create and edit workflows, which requires being able to configure the secrets those workflows use.</p>
+
+<p>Existing plaintext secret values cannot be read back. A report showing that a write-access user can retrieve one is not covered by this exclusion.</p>
+</dd>
+        
+          <a class="ineligible-link" id="data_from_public_repositories_returned_by_the_api">&nbsp;</a>
+          <dt>Data from public repositories returned by the API</dt>
+          <dd><p>Content in a public repository is public, including through the API. Reports that an API endpoint returns source code, file contents, commit history, or other data belonging to a public repository are not vulnerabilities. This applies even where the same data is harder to reach through the web UI. To be eligible, a report must show the API returning data from a <strong>private</strong> resource to a user who is not authorised to see it.</p>
+</dd>
+        
+          <a class="ineligible-link" id="repository_and_organization_metadata">&nbsp;</a>
+          <dt>Repository and organization metadata</dt>
+          <dd><p>Metadata such as repository names, timestamps, counts, language statistics, topic tags, and similar attributes is not treated as sensitive. Reports that the API discloses metadata, without showing access to private content or a privilege escalation, are ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="functionality_disabled_in_the_ui_but_reachable_through_the_api">&nbsp;</a>
+          <dt>Functionality disabled in the UI but reachable through the API</dt>
+          <dd><p>Features may be turned off in the web UI, for example wikis or projects, without that being a hard security boundary. Reaching the equivalent functionality through the API is generally ineligible. See <a href="/ineligible#accessing_certain_disabled_functionality">accessing certain disabled functionality</a> for the full explanation.</p>
+</dd>
+        
+          <a class="ineligible-link" id="email_addresses_returned_by_the_api">&nbsp;</a>
+          <dt>Email addresses returned by the API</dt>
+          <dd><p>There are several ways to determine that an email address is in use on GitHub, and we have accepted that risk in exchange for usability. Commit author email addresses in particular are set by the developer and are used for attribution, which is explained under <a href="/ineligible#impersonating_a_user_through_git_email_address">impersonating a user through git email address</a>. Reports about email addresses being visible or enumerable through the API are ineligible unless you can show a private email address being disclosed to a user who should not have it.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub CLI</a></h2>
+        
+          <a class="ineligible-link" id="anything_that_needs_local_access_first">&nbsp;</a>
+          <dt>Anything that needs local access first</dt>
+          <dd><p>An attacker who can already run commands as you, read your files, or set your environment variables has everything the CLI has. Reading the token out of the config file or the keyring, setting <code class="language-plaintext highlighter-rouge">GH_TOKEN</code> or <code class="language-plaintext highlighter-rouge">GH_HOST</code>, or editing the config to change where requests go are all consequences of that access rather than separate vulnerabilities. To be eligible, a report needs to show an attacker <strong>without</strong> local access obtaining credentials or execution.</p>
+</dd>
+        
+          <a class="ineligible-link" id="extensions_aliases_and_anything_you_install">&nbsp;</a>
+          <dt>Extensions, aliases, and anything you install</dt>
+          <dd><p><code class="language-plaintext highlighter-rouge">gh extension install</code> and <code class="language-plaintext highlighter-rouge">gh alias set</code> run code you have chosen to install, and extensions are ordinary repositories written by other people. That the code then runs is the intended behaviour, not a sandbox escape. Reports that an installed extension or a configured alias can act with your credentials are ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="tokens_sent_to_the_host_you_configured">&nbsp;</a>
+          <dt>Tokens sent to the host you configured</dt>
+          <dd><p>The CLI sends your credentials to the host it is configured to talk to, including GitHub Enterprise Server hosts you have authenticated against. Reports that a token is sent to a configured host, or that a token works against the API it was issued for, are working as designed. A report is eligible if you can show credentials for one host being sent to a different host.</p>
+</dd>
+        
+          <a class="ineligible-link" id="cloning_or_checking_out_an_untrusted_repository">&nbsp;</a>
+          <dt>Cloning or checking out an untrusted repository</dt>
+          <dd><p>Cloning a repository means running its content through Git, and Git is designed to let repositories configure their own behaviour. See <a href="/ineligible">our position on repositories you do not trust</a> before reporting. A report is eligible if the CLI does something Git itself would not, or if execution happens without the user taking any action on the repository.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub Codespaces</a></h2>
+        
+          <a class="ineligible-link" id="devcontainer_configuration_and_the_codespace_token">&nbsp;</a>
+          <dt>Devcontainer configuration and the codespace token</dt>
+          <dd><p>Opening a repository in a codespace runs that repository’s devcontainer configuration, including its lifecycle commands. If you do not trust the repository, do not open it in a codespace. Code running there acts as you and can use the token available to that environment.</p>
+
+<p>That token is scoped to the repository the codespace was created for. Reports showing a devcontainer running commands, reading the workspace, or using the codespace token against its own repository are ineligible. A report is eligible if you can show the token or the environment reaching a different repository, another user’s codespace, or data outside that scope.</p>
+</dd>
+        
+          <a class="ineligible-link" id="api_scopes_are_not_a_second_set_of_permissions">&nbsp;</a>
+          <dt>API scopes are not a second set of permissions</dt>
+          <dd><p>A token scope controls which endpoints a token may call. It does not shrink the access the account already has. A token carrying the <code class="language-plaintext highlighter-rouge">codespaces</code> scope can therefore act on private repositories its owner can already reach, including creating a codespace for them, and that is the intended design rather than an escalation. Reports that a scope grants access the user already had are ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="resource_consumption_within_a_users_own_codespace">&nbsp;</a>
+          <dt>Resource consumption within a user's own codespace</dt>
+          <dd><p>Reports about excessive CPU, memory, disk, or storage consumption within a user’s own codespace are billing or quota concerns, not security vulnerabilities. This includes bypassing disk partition limitations within the codespace VM.</p>
+</dd>
+        
+          <a class="ineligible-link" id="access_to_metadata_services_from_within_a_codespace">&nbsp;</a>
+          <dt>Access to metadata services from within a codespace</dt>
+          <dd><p>Codespace VMs may have access to cloud metadata services (for example, 169.254.169.254). Network access to and retrieval of metadata from these services within the same codespace VM is expected behavior and not eligible for a reward.</p>
+
+<p>Reports are eligible only if metadata service access can be used to cross tenant boundaries, access another user’s codespace, access GitHub internal infrastructure, or otherwise violate Codespaces isolation guarantees.</p>
+</dd>
+        
+          <a class="ineligible-link" id="vulnerabilities_in_thirdparty_software_within_a_codespace">&nbsp;</a>
+          <dt>Vulnerabilities in third-party software within a codespace</dt>
+          <dd><p>Codespaces run user-defined environments configured via <a href="https://docs.github.com/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">dev containers</a>. Vulnerabilities in third-party packages, Docker images, VS Code extensions, or other software, whether pre-installed or added by the user or their dev container configuration, are the responsibility of the upstream maintainer and not eligible for a reward. This includes known CVEs in pre-installed dependencies.</p>
+</dd>
+        
+          <a class="ineligible-link" id="privileged_access_within_a_users_own_codespace">&nbsp;</a>
+          <dt>Privileged access within a user's own codespace</dt>
+          <dd><p>A codespace will intentionally provide its user with elevated access including, but not limited to:</p>
+<ul>
+  <li>root access within the container</li>
+  <li>access to the Docker socket (<code class="language-plaintext highlighter-rouge">docker.sock</code>)</li>
+  <li>ability to mount host directories via Docker Compose</li>
+  <li>read access to VM-level resources such as <code class="language-plaintext highlighter-rouge">/proc</code></li>
+</ul>
+
+<p>This level of access within a user’s own codespace is expected by design and not eligible for a reward. However, if these capabilities can be used to access another user’s codespace, reach GitHub internal infrastructure, or otherwise cross the codespace’s VM isolation boundary, that would be in scope.</p>
+</dd>
+        
+      
+    
+      
+    
+      
+        <h2><a>GitHub Copilot</a></h2>
+        
+          <a class="ineligible-link" id="vulnerabilities_in_github_copilot_chat_extension_and_inline_suggestions_in_visual_studio_code">&nbsp;</a>
+          <dt>Vulnerabilities in GitHub Copilot Chat extension and Inline Suggestions in Visual Studio Code</dt>
+          <dd><p>The <a href="https://code.visualstudio.com/docs/copilot/chat/getting-started-chat">GitHub Copilot Chat extension</a> and <a href="https://code.visualstudio.com/docs/copilot/ai-powered-suggestions">Inline Suggestions from GitHub Copilot</a> in Visual Studio Code are features owned and maintained by Microsoft. Vulnerabilities affecting these features should be reported directly to Microsoft through their <a href="https://www.microsoft.com/en-us/msrc/bounty">Bug Bounty Program</a>.</p>
+</dd>
+        
+          <a class="ineligible-link" id="prompt_injections">&nbsp;</a>
+          <dt>Prompt Injections</dt>
+          <dd><p>We are aware of prompt injection techniques (including indirect or “invisible” prompt injection via untrusted content such as issue/PR descriptions, comments, or repository files) that may attempt to influence Copilot output.
+Reports that <strong>only</strong> demonstrate that Copilot’s output can be influenced or redirected by untrusted content are <strong>not eligible</strong> for a reward.</p>
+<ul>
+  <li>Prompt injection reports <strong>may be eligible</strong> only when they demonstrate a concrete security impact such as:
+    <ul>
+      <li><strong>Privilege escalation</strong> or <strong>authorization/policy bypass</strong></li>
+      <li><strong>Cross-tenant / cross-repository data exposure</strong></li>
+      <li><strong>Unauthorized actions</strong> occurring without required user confirmation or that bypass enforced authorization, policy, or safety controls.</li>
+    </ul>
+  </li>
+</ul>
+</dd>
+        
+          <a class="ineligible-link" id="the_security_of_code_suggested_by_copilot">&nbsp;</a>
+          <dt>The security of code suggested by Copilot</dt>
+          <dd><p>GitHub Copilot is designed to generate the best code possible given the context it has access to, but it doesn’t test the code it suggests, so the code may not always work or even make sense. GitHub Copilot can only hold a very limited context, so it may not make use of helpful functions defined elsewhere in your project or even in the same file. It may also suggest old or deprecated uses of libraries and languages.</p>
+
+<p>For suggested code, certain languages like Python, JavaScript, TypeScript, and Go might perform better than other programming languages. In addition, when converting comments written in non-English to code, there may be performance disparities when compared to English.</p>
+
+<p>Although Copilot suggestions are not part of the Bug Bounty program, you are welcome to report any vulnerable patterns you identify in code suggestions to copilot-safety@github.com. <a href="https://github.blog/2023-02-14-github-copilot-now-has-a-better-ai-model-and-new-capabilities/">Our blog has more information about our approach to securing code suggestions</a>.</p>
+</dd>
+        
+          <a class="ineligible-link" id="tokens_suggested_by_copilot">&nbsp;</a>
+          <dt>Tokens suggested by Copilot</dt>
+          <dd><p>Any strings suggested by Copilot that resemble tokens are not eligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="prototype_features">&nbsp;</a>
+          <dt>Prototype features</dt>
+          <dd><p>Any Copilot features that are not yet publicly accessible are considered out of scope.</p>
+</dd>
+        
+          <a class="ineligible-link" id="copilot_quota_billing_and_usage_limits">&nbsp;</a>
+          <dt>Copilot quota, billing, and usage limits</dt>
+          <dd><p>Premium request counts, quota resets, plan upgrades and downgrades, trial eligibility, and payment state are billing matters rather than security boundaries. Reports that you can obtain more Copilot usage than you paid for, reset a limit, or enrol yourself in a plan you are already able to enrol in are ineligible, and are handled as abuse through <a href="https://support.github.com/request">support</a>.</p>
+
+<p>A report is eligible if the billing behaviour also crosses a security boundary, for example consuming another organization’s entitlement, or reading another customer’s usage or payment data.</p>
+
+<p>Related reports we also close: enrolling an account you already control into a free tier, code in your own codespace or workspace using the token available to it to do the same, changing your own telemetry preference, and reading model names, versions, or policy metadata. None of these reach another customer’s data.</p>
+</dd>
+        
+          <a class="ineligible-link" id="changes_you_review_and_accept">&nbsp;</a>
+          <dt>Changes you review and accept</dt>
+          <dd><p>Copilot proposes; you decide. When Copilot describes a change to your project, including to build files, configuration, or scripts, and you accept it or run the result, the outcome follows from your decision. Reports that untrusted content influenced a suggestion that you then approved are prompt injection, covered above.</p>
+
+<p>To be eligible, show the change being applied or executed without the confirmation that step normally requires.</p>
+</dd>
+        
+          <a class="ineligible-link" id="github_mcp_server">&nbsp;</a>
+          <dt>GitHub MCP Server</dt>
+          <dd><p>The MCP server exposes GitHub data and actions to an AI client using your own credentials, so it can reach whatever you can reach. Tool annotations and descriptions are advisory metadata for the client, not an authorization control we enforce.</p>
+
+<p>Reports that repository content, issues, or search results influence what a model does, or that a client chose to call a tool marked read-only, are prompt injection and are covered above. To be eligible, show the server itself returning data your token should not reach, or performing an action your token should not be able to perform.</p>
+</dd>
+        
+          <a class="ineligible-link" id="off_topic_conversation">&nbsp;</a>
+          <dt>Off topic conversation</dt>
+          <dd><p>Any Copilot chat conversations that are off topic and not programming-related are not eligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="copilot_coding_agent_acting_on_a_repository_it_was_assigned_to">&nbsp;</a>
+          <dt>Copilot coding agent acting on a repository it was assigned to</dt>
+          <dd><p>When the coding agent is assigned an issue, it reads that repository and works in an environment scoped to it. Reports that the agent read the repository’s code, issues, or workflow files, or that it ran the repository’s own setup steps, describe the feature working. An eligible report shows the agent reaching a repository, secret, or network resource outside the one it was assigned to.</p>
+</dd>
+        
+          <a class="ineligible-link" id="who_can_assign_the_coding_agent">&nbsp;</a>
+          <dt>Who can assign the coding agent</dt>
+          <dd><p>Anyone with the permission to assign issues in a repository can assign the agent, and the agent then works with that repository’s access. That is the intended model. Reports that a collaborator can direct the agent, or that an issue title or body influences what the agent does within its own repository, are ineligible. Content the agent reads is untrusted input, and steering it is prompt injection, covered above.</p>
+</dd>
+        
+          <a class="ineligible-link" id="agent_output_requires_review">&nbsp;</a>
+          <dt>Agent output requires review</dt>
+          <dd><p>The agent opens pull requests for a human to review, and its branches are subject to the same branch protection and required review settings as any other contributor. Reports that the agent proposed insecure or incorrect code are ineligible for the same reasons as suggested code above. An eligible report shows the agent’s changes reaching a protected branch without the review that branch requires.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub Credentials</a></h2>
+        
+          <a class="ineligible-link" id="credentials_which_have_been_detected_by_github_secret_scanning">&nbsp;</a>
+          <dt>Credentials which have been detected by GitHub Secret Scanning</dt>
+          <dd><p><a href="https://docs.github.com/en/code-security/concepts/secret-security/secret-scanning">GitHub Secret Scanning</a> automatically detects credentials accidentally committed to repositories for a number of service providers. Credentials for GitHub, Inc. resources that have already been found through this feature are ineligible for reward.</p>
+</dd>
+        
+          <a class="ineligible-link" id="credentials_on_github">&nbsp;</a>
+          <dt>Credentials on GitHub</dt>
+          <dd><p>Credentials exposed by our users are not in scope for our bounty program. We automatically scan public repositories for leaked credentials, and we strongly encourage developers to enable <a href="https://docs.github.com/en/code-security/secret-scanning/about-secret-scanning?learn=secret_scanning&amp;learnProduct=code-security">GitHub Advanced Security Scanning protections</a> on their private repositories to do the same.</p>
+
+<p>Additionally, you can use <a href="https://docs.github.com/en/rest/credentials/revoke?apiVersion=2022-11-28#revoke-a-list-of-credentials">this REST API</a> to revoke any credentials you discovered without authentication.</p>
+</dd>
+        
+          <a class="ineligible-link" id="credentials_you_have_not_confirmed_still_work">&nbsp;</a>
+          <dt>Credentials you have not confirmed still work</dt>
+          <dd><p>We need to know that a credential is live and what it reaches. Do not test beyond the minimum needed to confirm validity, but do tell us what you did confirm: which service it belongs to, what a successful call returned, and roughly what access it implies. A string that looks like a key, or a hit from a scanner with no validation behind it, is ineligible. Never use a credential to read data, change state, or move further into our systems.</p>
+</dd>
+        
+          <a class="ineligible-link" id="values_that_are_not_secrets">&nbsp;</a>
+          <dt>Values that are not secrets</dt>
+          <dd><p>Public API keys, client identifiers for public OAuth apps, analytics and telemetry tokens, keys scoped to a single public dataset, and credentials for services with no GitHub data behind them are ineligible even when they are clearly ours. The same applies to keys that appear in a commit but were rotated before you found them.</p>
+</dd>
+        
+          <a class="ineligible-link" id="secrets_inside_github_actions">&nbsp;</a>
+          <dt>Secrets inside GitHub Actions</dt>
+          <dd><p>Actions secrets are available to the workflows in the repository that owns them, and are redacted from logs on a best effort basis. Reports that a workflow you can modify can read the secrets available to it, or that an unusual encoding defeats log redaction, are ineligible. Redaction is a convenience, not a boundary: treat any secret a workflow can read as readable by anyone who can change that workflow.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub Desktop</a></h2>
+        
+          <a class="ineligible-link" id="cloning_a_repository_you_do_not_trust">&nbsp;</a>
+          <dt>Cloning a repository you do not trust</dt>
+          <dd><p>Adding or cloning a repository means letting Git process repository content that its author controls. It does not copy the attacker’s <code class="language-plaintext highlighter-rouge">.git/hooks</code> or <code class="language-plaintext highlighter-rouge">.git/config</code> into the new working copy. Desktop is a Git client, so reports where the whole chain is “the user cloned my repository and then Git processed the repository content as designed” are ineligible. A report may be eligible if Desktop mishandles that content, runs something Git would not have, or crosses a security boundary before the user has taken any action on the repository.</p>
+</dd>
+        
+          <a class="ineligible-link" id="code_execution_that_needs_the_user_to_be_talked_into_it">&nbsp;</a>
+          <dt>Code execution that needs the user to be talked into it</dt>
+          <dd><p>Chains that require the user to open a specific file, change a setting, approve a prompt they had a reason to refuse, or follow instructions from the attacker are social engineering. If your report includes a step like this, describe it plainly and explain why the user would realistically take it.</p>
+</dd>
+        
+          <a class="ineligible-link" id="anything_that_needs_local_access_first">&nbsp;</a>
+          <dt>Anything that needs local access first</dt>
+          <dd><p>An attacker who can already write to your disk or run as your user can read Desktop’s stored credentials, edit its configuration, and replace its files. Reports that describe reading a token from local storage, or modifying local state to change behaviour, are ineligible without showing how a remote attacker reaches that state.</p>
+</dd>
+        
+          <a class="ineligible-link" id="the_oauth_client_identifier">&nbsp;</a>
+          <dt>The OAuth client identifier</dt>
+          <dd><p>Desktop is a public client, so its client ID is embedded in the application and is not a secret. Reports that it can be extracted are ineligible.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub Education</a></h2>
+        
+          <a class="ineligible-link" id="assignment_invitation_links">&nbsp;</a>
+          <dt>Assignment invitation links</dt>
+          <dd><p>A GitHub Classroom assignment invitation link can be accepted by anyone who has the link, and accepting it associates that account with the assignment. This is intentional, because teachers share these links through their own channels and we cannot know which accounts are meant to receive them. Treat an invitation link as something to share carefully. Reports that an unintended account can accept a shared link are ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="classroom_organization_permissions">&nbsp;</a>
+          <dt>Classroom organization permissions</dt>
+          <dd><p>GitHub Classroom acts on an organization the teacher owns, so it can create repositories, manage teams, and add or remove members within it. Reports that a teacher or organization owner can perform these actions, or that removing a student from a classroom does not immediately revoke every prior access, are working as designed.</p>
+</dd>
+        
+          <a class="ineligible-link" id="data_students_and_teachers_choose_to_publish">&nbsp;</a>
+          <dt>Data students and teachers choose to publish</dt>
+          <dd><p>Repositories created by Classroom follow the visibility the teacher selected. Assignment content, submitted code, and roster identifiers in a public repository are public. Reports that this content is readable are ineligible unless you can show a private repository being exposed.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub Enterprise Cloud</a></h2>
+        
+          <a class="ineligible-link" id="access_that_a_role_is_supposed_to_grant">&nbsp;</a>
+          <dt>Access that a role is supposed to grant</dt>
+          <dd><p>Enterprise owners, organization owners, and repository administrators have broad access by design, including to private repositories, member data, audit logs, and billing. Custom repository roles grant whatever permissions the organization assigned to them. Reports that an account with one of these roles can see or do something within its own scope are working as designed. Before reporting, check the <a href="https://docs.github.com/en/enterprise-cloud@latest/organizations/managing-user-access-to-your-organizations-repositories">permission tables in our documentation</a> and say which specific permission the account should not have had.</p>
+</dd>
+        
+          <a class="ineligible-link" id="actions_workflows_behaving_as_configured">&nbsp;</a>
+          <dt>Actions workflows behaving as configured</dt>
+          <dd><p>A user who can push to a branch can change the workflows that run from it, and workflows run with whatever permissions the repository and organization settings allow. Reports that a workflow can read secrets available to it, or that a maintainer can add a workflow step, are ineligible. Show a workflow reaching secrets or resources belonging to a repository or organization it should not.</p>
+</dd>
+        
+          <a class="ineligible-link" id="ip_allow_lists_and_network_controls">&nbsp;</a>
+          <dt>IP allow lists and network controls</dt>
+          <dd><p>IP allow lists restrict where requests may originate. They are not intended to hide the existence of an organization, block unauthenticated public content, or protect against a member who is inside the allowed range. Reports that public data is still public, or that an allowed address still works, are ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="invitations_seats_and_billing">&nbsp;</a>
+          <dt>Invitations, seats, and billing</dt>
+          <dd><p>Sending an invitation to an email address, a member consuming a seat, and usage counting against a billing plan are all intended behaviour. Reports about billing quantities without a demonstrated financial impact to GitHub or another customer are ineligible. See our position on <a href="/ineligible">Copilot and consumption billing</a>.</p>
+</dd>
+        
+          <a class="ineligible-link" id="sso_redirects_revealing_that_a_resource_exists">&nbsp;</a>
+          <dt>SSO redirects revealing that a resource exists</dt>
+          <dd><p>Enterprise owners can choose whether an unauthenticated request for an enterprise resource returns a 404 or redirects to single sign on. Where an administrator has enabled the redirect, it will reveal that the resource exists. That is a consequence of the setting they chose, so reports that the redirect distinguishes a real resource from a missing one are ineligible unless you can reach the private content itself.</p>
+</dd>
+        
+          <a class="ineligible-link" id="repository_visibility_policies_forks_and_transfers">&nbsp;</a>
+          <dt>Repository visibility policies, forks and transfers</dt>
+          <dd><p>A policy that restricts repository visibility governs the actions it names, which is creating a repository and changing an existing repository’s visibility. It is not a guarantee that no public repository can ever appear in the organization. Forking a public repository, transferring one in, and other routes that bring an existing repository along with its current visibility are governed by their own separate settings.</p>
+
+<p>Reports that a visibility policy did not block a fork or a transfer are ineligible. Read the policy’s own description first, and to be eligible show a member changing the visibility of a repository in a way the policy says it prevents.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub Enterprise Server</a></h2>
+        
+          <a class="ineligible-link" id="vulnerabilities_caused_by_lack_of_subdomain_isolation">&nbsp;</a>
+          <dt>Vulnerabilities caused by lack of subdomain isolation</dt>
+          <dd><p>Vulnerabilities present in GitHub Enterprise Server when <a href="https://docs.github.com/en/enterprise-server@3.16/admin/configuring-settings/hardening-security-for-your-enterprise/enabling-subdomain-isolation?learn=improve_security_of_your_instance&amp;learnProduct=admin">subdomain isolation</a> is disabled. GitHub recommends that all GitHub Enterprise Server installations should have subdomain isolation enabled.</p>
+</dd>
+        
+          <a class="ineligible-link" id="escalation_to_the_root_user_via_sudo">&nbsp;</a>
+          <dt>Escalation to the root user via sudo</dt>
+          <dd><p>Administrative SSH access grants <code class="language-plaintext highlighter-rouge">sudo</code> to be used to escalate to root permissions. Given this existing level of privilege, local escalation of the administrative account to root permissions is <em>not</em> considered in scope.</p>
+</dd>
+        
+          <a class="ineligible-link" id="access_to_sensitive_configuration_information_with_local_access">&nbsp;</a>
+          <dt>Access to sensitive configuration information with local access</dt>
+          <dd><p>Access to the GitHub Enterprise Server appliance shell and its containers is expected to include access to sensitive information and credentials that are required to operate local services.</p>
+</dd>
+        
+          <a class="ineligible-link" id="bypassing_source_code_deobfuscation">&nbsp;</a>
+          <dt>Bypassing source code de-obfuscation</dt>
+          <dd><p>GitHub Enterprise Server uses code obfuscation to discourage the modification of the application. We are aware of de-obfuscation techniques that could be used to reveal source code or bypass license restrictions.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub Mobile</a></h2>
+        
+          <a class="ineligible-link" id="onscreen_data_is_not_hidden_when_backgrounding_the_app">&nbsp;</a>
+          <dt>On-screen data is not hidden when backgrounding the app</dt>
+          <dd><p>The GitHub Mobile apps do not clear on-screen data when they are backgrounded. This is by design and does not present a security risk.</p>
+</dd>
+        
+          <a class="ineligible-link" id="no_jailbreak_detection">&nbsp;</a>
+          <dt>No jailbreak detection</dt>
+          <dd><p>The GitHub Mobile apps do not attempt to detect jailbreaked devices. This is by design and does not present a security risk.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>*.github.net</a></h2>
+        
+          <a class="ineligible-link" id="internal_ip_addresses_and_hostnames_in_public_dns">&nbsp;</a>
+          <dt>Internal IP addresses and hostnames in public DNS</dt>
+          <dd><p>Some public DNS records resolve to RFC 1918 or otherwise internal addresses. On its own this tells an attacker nothing they can act on, because they still cannot route to those hosts. These reports are ineligible unless you pair them with a working path to reach the address, such as a server side request forgery that we can reproduce.</p>
+</dd>
+        
+          <a class="ineligible-link" id="vulnerabilities_in_outofscope_subdomains">&nbsp;</a>
+          <dt>Vulnerabilities in out-of-scope subdomains</dt>
+          <dd><p>Not all subdomains are in-scope for rewards at this time and are therefore ineligible for rewards. A list of out-of-scope subdomains is available in our <a href="/scope">scope</a> section.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub Pages</a></h2>
+        
+          <a class="ineligible-link" id="vulnerabilities_in_github_pages_hosted_content">&nbsp;</a>
+          <dt>Vulnerabilities in GitHub Pages hosted content</dt>
+          <dd><p>GitHub users are responsible for the content hosted on GitHub Pages sites. Any vulnerabilities in user content do not affect the security of GitHub.com or its users. We recommend that you report this issue to the owner of this GitHub Pages site.</p>
+</dd>
+        
+          <a class="ineligible-link" id="subdomain_takeover">&nbsp;</a>
+          <dt>Subdomain Takeover</dt>
+          <dd><p>Subdomain takeovers on GitHub Pages are a known issue that does not present a significant security risk. We are aware of the risks associated with DNS records pointing to GitHub Pages without an intended repository being configured to use the domain. If you have had your domain taken over, please reach out to <a href="https://support.github.com/request">Support</a> for help reclaiming it.</p>
+</dd>
+        
+          <a class="ineligible-link" id="code_execution_during_your_own_build">&nbsp;</a>
+          <dt>Code execution during your own build</dt>
+          <dd><p>A Pages build runs the repository’s own configuration and theme, so a user who can push to the repository can influence what the build does. That is the point of the feature. An eligible report shows a build reaching outside its own boundary: another repository’s source, another customer’s build, credentials belonging to GitHub, or the internal network. Show what you reached, not just that your code ran.</p>
+</dd>
+        
+          <a class="ineligible-link" id="domain_verification_and_custom_domains">&nbsp;</a>
+          <dt>Domain verification and custom domains</dt>
+          <dd><p>Custom domain verification proves that a domain owner intends to point at a particular account. It does not prevent anyone from setting a <code class="language-plaintext highlighter-rouge">CNAME</code> file in their own repository, and an unverified domain that nobody has claimed is not a vulnerability by itself.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>GitHub.com</a></h2>
+        
+          <a class="ineligible-link" id="including_html_in_markdown_content">&nbsp;</a>
+          <dt>Including HTML in Markdown content</dt>
+          <dd><p>Many areas of GitHub allow content formatted in <a href="https://help.github.com/articles/about-writing-and-formatting-on-github/">GitHub Flavored Markdown</a>. It is intended that these Markdown fields allow a limited subset of HTML, such as <code class="language-plaintext highlighter-rouge">&lt;b&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;sup&gt;</code> and <code class="language-plaintext highlighter-rouge">&lt;details&gt;</code>. HTML included by users in Markdown fields is filtered for malicious input such as <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code>, so this does not present a security risk. However, if you are able to demonstrate that you are able to perform malicious actions via the HTML tags, please submit a report, as this may be eligible for bounty.</p>
+</dd>
+        
+          <a class="ineligible-link" id="leaking_email_addresses_via_patch_links">&nbsp;</a>
+          <dt>Leaking email addresses via .patch links</dt>
+          <dd><p><code class="language-plaintext highlighter-rouge">.patch</code> links on GitHub show the raw commit diff, similar to <code class="language-plaintext highlighter-rouge">git-format-patch</code>, and intentionally show the email address used by the author. The email address shown in <code class="language-plaintext highlighter-rouge">.patch</code> links is configured by the user with <code class="language-plaintext highlighter-rouge">git-config</code> on their local machine. To hide email addresses from Git operations, such as <code class="language-plaintext highlighter-rouge">.patch</code> links, users can set the <code class="language-plaintext highlighter-rouge">Keep my email address private</code> and <code class="language-plaintext highlighter-rouge">Block command line pushes that expose my email</code> options. More details are available in our <a href="https://help.github.com/en/articles/setting-your-commit-email-address#about-commit-email-addresses">About Commit Email Addresses</a> documentation.</p>
+</dd>
+        
+          <a class="ineligible-link" id="phishing_using_unicode_homoglyphs_rtlo_or_nonprintable_characters">&nbsp;</a>
+          <dt>Phishing using Unicode homoglyphs, RTLO, or non-printable characters</dt>
+          <dd><p>We are aware of different ways that Unicode - specifically homoglyphs, RTLO, and non-printable characters - can be used to display misleading information to other GitHub users. We consider these low-risk and ineligible for a reward. If you have noticed someone using GitHub for phishing, please let us know by reporting it as abuse through our <a href="https://github.com/contact/report-abuse">support portal</a>.</p>
+</dd>
+        
+          <a class="ineligible-link" id="email_verification_policy">&nbsp;</a>
+          <dt>Email verification policy</dt>
+          <dd><p>Any email address that is not already associated with an account on GitHub may be claimed and this will give commit attribution to the claiming user. While we allow this attribution without requiring email address verification, any disputes around emails on accounts can be resolved by contacting our <a href="https://github.com/contact/report-abuse">support team</a>.</p>
+</dd>
+        
+          <a class="ineligible-link" id="email_invitations">&nbsp;</a>
+          <dt>Email Invitations</dt>
+          <dd><p>It is intentional that invitations sent via email can be claimed with any user account. If you wish to invite a specific GitHub user, that user should be invited directly by username.</p>
+</dd>
+        
+          <a class="ineligible-link" id="impersonating_a_user_through_git_email_address">&nbsp;</a>
+          <dt>Impersonating a user through git email address</dt>
+          <dd><p>Because Git is a distributed version control system, GitHub must use the commit email address to assign attribution. When you push a repository to GitHub.com it may contain one or more commits, some of which you may not have authored. For example, imagine a scenario where you collaborated with a number of people on a git repository before you made your first push of that repository to GitHub.com. This push would contain a number of commits from several authors. It would be incorrect to assign all of the commits to the person doing the push, so we use the commit log email addresses to assign attribution on GitHub.com. Each subsequent push to GitHub uses this same logic to assign attribution of commit authors.</p>
+
+<p>It’s important to note that impersonating another GitHub user in this fashion doesn’t grant you access to any of their repositories or give you any privileges you didn’t already have. However, GitHub does consider impersonation an account abuse issue that we take very seriously. If someone is wrongfully impersonating you, please <a href="https://github.com/contact">let us know by contacting our support team</a> and we will investigate the matter and deal with it as quickly as we can. In addition, if you are still concerned about this, you and your team can choose to use Git’s built in options to sign commits with a GPG key (check out the <code class="language-plaintext highlighter-rouge">git commit -S</code> command).</p>
+</dd>
+        
+          <a class="ineligible-link" id="dmarc_spf_and_dkim_email_policy">&nbsp;</a>
+          <dt>DMARC, SPF and DKIM email policy</dt>
+          <dd><p>Our DMARC, SPF and DKIM settings are tuned to balance security against email deliverability concerns. We continue to evaluate our setup and may make this functionality more strict in the future.</p>
+</dd>
+        
+          <a class="ineligible-link" id="bypassing_country_restrictions_for_sms_twofactor_authentication">&nbsp;</a>
+          <dt>Bypassing country restrictions for SMS two-factor authentication</dt>
+          <dd><p>The restriction on which countries are able to configure SMS two-factor authentication is based on SMS delivery reliability. We have removed countries we found to have low delivery success rates to prevent account lockout. Our validation is client-side and bypassing this validation does not present a security risk. Users in countries where SMS is unavailable can use an alternative <a href="https://help.github.com/articles/configuring-two-factor-authentication/">two-factor authentication method</a></p>
+</dd>
+        
+          <a class="ineligible-link" id="vulnerabilities_in_repositories_hosted_on_github">&nbsp;</a>
+          <dt>Vulnerabilities in repositories hosted on GitHub</dt>
+          <dd><p>GitHub users are responsible for the content hosted in their repositories. Any vulnerabilities in user content do not affect the security of GitHub.com or its users. We recommend that you report these vulnerabilities directly to the owner of the repository.</p>
+</dd>
+        
+          <a class="ineligible-link" id="host_header_injection">&nbsp;</a>
+          <dt>Host header injection</dt>
+          <dd><p>Host header injection reports are ineligible unless it can be shown to cause a specific security issue. We set the <code class="language-plaintext highlighter-rouge">Strict-Transport-Security</code> header and are in the browser preload lists, which prevent active network attacks that may attempt to inject the header.</p>
+</dd>
+        
+          <a class="ineligible-link" id="timing_attacks_which_reveal_a_private_repository_or_user">&nbsp;</a>
+          <dt>Timing attacks which reveal a private repository or user</dt>
+          <dd><p>There are architectural nuances that prevent us from systematically preventing timing attacks from determining if a specific repository exists, or if a specific user is part of a <a href="https://help.github.com/articles/about-teams/">secret team</a>, and are therefore ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="2fa_does_not_invalidate_existing_sessions">&nbsp;</a>
+          <dt>2FA does not invalidate existing sessions</dt>
+          <dd><p>Enabling 2FA does not imply that an account may have been compromised, and as a result, we do not reset all existing sessions. If a user changes/resets their password GitHub will reset all existing sessions.</p>
+</dd>
+        
+          <a class="ineligible-link" id="enabling_2fa_without_a_verified_email">&nbsp;</a>
+          <dt>Enabling 2FA without a verified email</dt>
+          <dd><p>Enabling 2FA without a verified email is allowed. While this could prevent someone from using that email address, we consider this a spam and abuse issue.</p>
+</dd>
+        
+          <a class="ineligible-link" id="vulnerabilities_caused_by_outdated_browsers">&nbsp;</a>
+          <dt>Vulnerabilities caused by out-dated browsers</dt>
+          <dd><p>Vulnerabilities that don’t affect the latest version of modern browsers, such as Chrome, Firefox, Edge and Safari, are ineligible. Vulnerabilities caused by browser extensions are also ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="camo_image_proxy">&nbsp;</a>
+          <dt>Camo image proxy</dt>
+          <dd><p>Our “Camo” system is used to proxy images included in Markdown fields via <code class="language-plaintext highlighter-rouge">githubusercontent.com</code>. We rely on the isolation of <code class="language-plaintext highlighter-rouge">githubusercontent.com</code> and the fact that we don’t send any cookies to that domain. These images are untrusted and we intentionally do not attempt to modify or filter the response. We don’t consider the ability to make requests to external services a security risk, as an attacker can perform this in many other ways without using GitHub’s image proxy, so reports that stop at “GitHub fetched my URL” are ineligible. The proxy is intended to run where it cannot reach internal addresses, and that restriction is a control we do defend: if you can get it to reach an internal host or port, or to distinguish internal hosts by their responses or timing, that is eligible and we want the report.</p>
+</dd>
+        
+          <a class="ineligible-link" id="lack_of_sudo_mode">&nbsp;</a>
+          <dt>Lack of Sudo mode</dt>
+          <dd><p>We use <a href="https://help.github.com/en/github/authenticating-to-github/sudo-mode">Sudo mode</a> to ensure legitimate users are taking certain high risk actions. If we have not included sudo mode on an endpoint, we have likely accepted its risk and most submissions will be ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="community_and_safety_bypasses_that_do_not_affect_privacy">&nbsp;</a>
+          <dt>Community and safety bypasses that do not affect privacy</dt>
+          <dd><p>GitHub employs a number of community and <a href="https://help.github.com/en/github/building-a-strong-community/maintaining-your-safety-on-github">safety</a> features, such as blocking users or locking conversations on issues/discussions/etc.  In most cases, bypasses of these features via some edge case will not result in a bounty reward unless there is a privacy (confidentiality) breach. For example, bypassing the 24 hour interaction limit at 23 hours and 10 minutes will be ineligible. However, if you are able to bypass controls and reveal another user’s <em>private</em> email address, that would be eligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="activity_in_archived_repos">&nbsp;</a>
+          <dt>Activity in archived repos</dt>
+          <dd><p>Submissions related to archived repos that do not demonstrate the ability to change the actual content in the repo (e.g. adding/removing collaborators, modifying some repo settings) will be ineligible. The same for submissions that do not demonstrate the ability to change ownership or the actual archived status.</p>
+</dd>
+        
+          <a class="ineligible-link" id="accessing_certain_disabled_functionality">&nbsp;</a>
+          <dt>Accessing certain disabled functionality</dt>
+          <dd><p>Some features may be disabled on GitHub in the UI and that ability (to disable) is more of a convenience than a hard security boundary. Projects and wikis are two examples of this. Accessing those disabled features through the API or some other technique are not eligible for a bounty reward. Being able to access functionality that is not available to underprivileged users is eligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="lack_of_rate_limiting">&nbsp;</a>
+          <dt>Lack of rate limiting</dt>
+          <dd><p>As stated elsewhere, submissions around volumetric DoS attacks are not in the scope of our bounty program. Submissions citing lack of rate limiting will be treated similarly. We generally consider such activity spammy or abusive behavior, and have a dedicated team for addressing such issues.</p>
+</dd>
+        
+          <a class="ineligible-link" id="email_and_username_enumeration">&nbsp;</a>
+          <dt>Email and Username Enumeration</dt>
+          <dd><p>There are multiple ways on GitHub.com to determine whether an email address or username is in use. We have accepted this risk to improve our users’ experience.</p>
+</dd>
+        
+          <a class="ineligible-link" id="oauth_app_redirect">&nbsp;</a>
+          <dt>OAuth App Redirect</dt>
+          <dd><p>Redirecting the user to the registered callback URL is part of the OAuth specification, and is therefore expected behavior. It is up to users to know and trust the OAuth app that they are authorizing.</p>
+</dd>
+        
+          <a class="ineligible-link" id="lack_of_secret_scanning_alert">&nbsp;</a>
+          <dt>Lack of Secret Scanning Alert</dt>
+          <dd><p>GitHub has a list of <a href="https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns">supported secret scanning patterns</a> in order to identify secrets. If the scanner is not detecting secrets using the default patterns, we encourage you to <a href="https://docs.github.com/en/code-security/secret-scanning/using-advanced-secret-scanning-and-push-protection-features/custom-patterns/defining-custom-patterns-for-secret-scanning">create custom patterns for secret scanning</a>.</p>
+</dd>
+        
+          <a class="ineligible-link" id="product_bugs_and_input_validation_without_a_security_impact">&nbsp;</a>
+          <dt>Product bugs and input validation without a security impact</dt>
+          <dd><p>Not every bug is a vulnerability. A form that accepts a malformed value, a setting that displays confusingly, a field that could validate more strictly, or an interface that behaves unexpectedly are product bugs, and <a href="https://support.github.com/request">support</a> is the right route for them.</p>
+
+<p>These become eligible when you can name what an attacker gains. If the change only happens after the account owner opens the page and saves it themselves, or the malformed value is only ever shown back to you, there is no security boundary being crossed.</p>
+</dd>
+        
+          <a class="ineligible-link" id="issue_and_pull_request_templates_and_prefilled_query_parameters">&nbsp;</a>
+          <dt>Issue and pull request templates and prefilled query parameters</dt>
+          <dd><p>Issue and pull request creation accepts query parameters that prefill the title, body, labels, assignees and template selection. A link can therefore open a form with content the author of the link chose. Nothing is created until the person clicking it reviews the form and submits it themselves, and the resulting issue is attributed to them.</p>
+
+<p>Reports that a crafted link prefills a form, selects a different template, or skips a template chooser are ineligible. To be eligible, show the parameters creating or modifying something without the user submitting it, or granting access the user does not already have on that repository.</p>
+</dd>
+        
+          <a class="ineligible-link" id="deploy_keys_and_repository_rulesets">&nbsp;</a>
+          <dt>Deploy keys and repository rulesets</dt>
+          <dd><p>A deploy key with write access is repository owner automation. It acts in the owner’s context, so where a ruleset already lists the repository owner or an owner-owned app as a bypass actor, a write deploy key inherits that bypass. This is the configuration working as set, not a way around it.</p>
+
+<p>Check the ruleset’s bypass list before reporting. To be eligible, show a ruleset being bypassed by an actor that is not on that list, or a key acting on a repository it was never added to.</p>
+</dd>
+        
+          <a class="ineligible-link" id="impersonation_through_profile_names_and_naming_patterns">&nbsp;</a>
+          <dt>Impersonation through profile names and naming patterns</dt>
+          <dd><p>Display names, usernames, biographies, and avatars are chosen by the account holder and are not a statement that we endorse anyone. Accounts that resemble GitHub staff, our triage team, or an official programme are a known abuse problem rather than a technical vulnerability, and reports whose impact depends on someone believing a profile is official are ineligible. Please report accounts impersonating GitHub through <a href="https://support.github.com/request">support</a>.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>*.githubapp.com</a></h2>
+        
+          <a class="ineligible-link" id="vulnerabilities_in_outofscope_subdomains">&nbsp;</a>
+          <dt>Vulnerabilities in out-of-scope subdomains</dt>
+          <dd><p>Not all subdomains are in-scope for rewards at this time and are therefore ineligible for rewards. A list of out-of-scope subdomains is available in our <a href="/scope">scope</a> section.</p>
+</dd>
+        
+          <a class="ineligible-link" id="subdomain_takeovers_that_cannot_actually_be_taken_over">&nbsp;</a>
+          <dt>Subdomain takeovers that cannot actually be taken over</dt>
+          <dd><p>A dangling DNS record is only eligible once you can show that you are able to claim the target and serve content from it. A CNAME pointing at a provider, a <code class="language-plaintext highlighter-rouge">NoSuchBucket</code> page, or a default landing page is not enough on its own. Include evidence that you registered the resource, and do not host anything beyond a harmless proof file.</p>
+</dd>
+        
+          <a class="ineligible-link" id="third_party_services_hosted_on_the_domain">&nbsp;</a>
+          <dt>Third party services hosted on the domain</dt>
+          <dd><p>Some subdomains point at vendor services such as identity providers and support tooling. Findings in the vendor’s own product should go to that vendor. We are interested in cases where the integration itself is broken, for example a misconfiguration that lets you reach GitHub data you should not have.</p>
+</dd>
+        
+          <a class="ineligible-link" id="content_that_is_meant_to_be_public">&nbsp;</a>
+          <dt>Content that is meant to be public</dt>
+          <dd><p>Directory listings, static assets, health check endpoints, build metadata, and framework version banners on these hosts are ineligible on their own. Explain what an attacker gains from the disclosure.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>*.githubusercontent.com</a></h2>
+        
+          <a class="ineligible-link" id="usercontent_behavior_without_a_csp_bypass">&nbsp;</a>
+          <dt>User-content behavior without a CSP bypass</dt>
+          <dd><p>We serve user-uploaded content from <code class="language-plaintext highlighter-rouge">*.githubusercontent.com</code> specifically to isolate it from <code class="language-plaintext highlighter-rouge">github.com</code> and its cookies. Cross-site scripting, open redirects, and similar behaviour in an SVG or other uploaded file are contained by that separation. Demonstrating only that user-controlled content behaves in a user-controlled way is a known low risk and is ineligible.</p>
+
+<p>We also apply a Content Security Policy as an intended security control. A report that reproducibly bypasses that policy may qualify as defense in depth even when the independent domain separation prevents user impact. A report that reaches <code class="language-plaintext highlighter-rouge">github.com</code>, its cookies, or its session state is eligible based on that demonstrated impact rather than as defense in depth.</p>
+</dd>
+        
+          <a class="ineligible-link" id="tokens_in_raw_file_urls">&nbsp;</a>
+          <dt>Tokens in raw file URLs</dt>
+          <dd><p>When you use the Raw button on a private file we generate a URL containing a cryptographically signed, time-limited token. That token authenticates access to that file for that user, and it works for anyone holding the URL until it expires. This is by design, so treat the URL as you would the file itself. Reports that a raw URL grants access without a session are ineligible unless you can show a token being forged, extended, or reused after expiry.</p>
+</dd>
+        
+          <a class="ineligible-link" id="attachments_on_private_issues_and_pull_requests">&nbsp;</a>
+          <dt>Attachments on private issues and pull requests</dt>
+          <dd><p>Images and files attached to a private issue or pull request are served from a URL containing an identifier that is intended to be unguessable to someone without access to the repository. Treat the URL as you would the file itself. Reports that an attachment URL remains reachable to someone who was given it are ineligible. Reports that the identifier can actually be predicted, enumerated, or recovered from another endpoint are eligible, and we have rewarded them, so it is worth testing rather than assuming.</p>
+</dd>
+        
+          <a class="ineligible-link" id="credentials_found_in_user_content">&nbsp;</a>
+          <dt>Credentials found in user content</dt>
+          <dd><p>Credentials committed by our users are not GitHub credentials and are not in scope. See <a href="/targets/github-credentials.html">GitHub Credentials</a> for what we do consider in scope, and please report user-owned secrets to the repository owner instead.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>npm CLI</a></h2>
+        
+          <a class="ineligible-link" id="project_configuration_in_a_repository_you_chose_to_run_npm_in">&nbsp;</a>
+          <dt>Project configuration in a repository you chose to run npm in</dt>
+          <dd><p>npm reads configuration from the directory you run it in, including the project <code class="language-plaintext highlighter-rouge">.npmrc</code>, and that file can change where npm looks for further configuration. If you cloned an attacker’s repository and ran npm inside it, the project files are attacker-controlled content you chose to trust, in the same way the lifecycle scripts below are.</p>
+
+<p>Reports that a project <code class="language-plaintext highlighter-rouge">.npmrc</code> overrides your user settings, redirects a registry, or suppresses a warning are ineligible. A report is eligible if npm does something that does not depend on you having chosen to work inside that project.</p>
+</dd>
+        
+          <a class="ineligible-link" id="social_engineering">&nbsp;</a>
+          <dt>Social engineering</dt>
+          <dd><p>Code execution requiring social engineering or unlikely user interaction is typically not eligible for rewards.</p>
+</dd>
+        
+          <a class="ineligible-link" id="local_access">&nbsp;</a>
+          <dt>Local access</dt>
+          <dd><p>Vulnerabilities which require local system access, such as local credential storage issues.</p>
+</dd>
+        
+          <a class="ineligible-link" id="arbitrary_code_execution_in_commands_that_modify_the_package_tree">&nbsp;</a>
+          <dt>Arbitrary code execution in commands that modify the package tree</dt>
+          <dd><p>By default, commands that modify the package tree, such as <code class="language-plaintext highlighter-rouge">npm install</code>, run the pre- and post-install scripts. If you would like to disable this, <a href="https://docs.npmjs.com/cli/using-npm/config#ignore-scripts">you can set the <code class="language-plaintext highlighter-rouge">--ignore-scripts</code> flag</a>. However, note that general code execution that is achieved when using the <code class="language-plaintext highlighter-rouge">--ignore-scripts</code> flag is considered out of scope. <a href="https://docs.npmjs.com/cli/using-npm/config#ignore-scripts">As stated in the npm documentation</a>, setting the <code class="language-plaintext highlighter-rouge">--ignore-scripts</code> flag to true means that “npm does not run scripts specified in package.json files.” Any code execution that occurs when using the <code class="language-plaintext highlighter-rouge">--ignore-scripts</code> flag, other than bypassing the specific intended behavior by successfully executing a pre- or post-install script from a package.json file, is considered ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="upstream_dependencies">&nbsp;</a>
+          <dt>Upstream dependencies</dt>
+          <dd><p>Vulnerabilities that are due to a vulnerability in an upstream dependency are out of scope and should instead be disclosed to the upstream maintainers. We may make exceptions for vulnerabilities that we deem to have a substantial impact; however, issues should still be directed to the maintainers of the upstream dependency first.</p>
+</dd>
+        
+      
+    
+      
+        <h2><a>npm Registry</a></h2>
+        
+          <a class="ineligible-link" id="vulnerabilities_in_packages_that_are_hosted_on_the_registry">&nbsp;</a>
+          <dt>Vulnerabilities in packages that are hosted on the registry</dt>
+          <dd><p>npm users are responsible for the content hosted in their packages. Any vulnerabilities in user content do not affect the security of npm or its users. We recommend that you report these vulnerabilities directly to the owner of the package.</p>
+</dd>
+        
+          <a class="ineligible-link" id="malicious_packages">&nbsp;</a>
+          <dt>Malicious packages</dt>
+          <dd><p>npm users are responsible for vetting the content of packages that they choose to install. However, npm takes its responsibility as steward of the JavaScript ecosystem seriously; therefore, we actively scan for malware in the registry. If you do happen to find a malicious package that has yet to be removed, please <a href="https://support.github.com/request">contact support</a>.</p>
+</dd>
+        
+          <a class="ineligible-link" id="infrastructure_vulnerabilities">&nbsp;</a>
+          <dt>Infrastructure vulnerabilities</dt>
+          <dd><p>Infrastructure vulnerabilities such as an outdated version of Transport Layer Security (TLS) or a lack of rate limiting are considered out of scope for this bounty program unless you are able to prove privilege escalation or the ability to use it as part of a larger, more impactful attack.</p>
+</dd>
+        
+          <a class="ineligible-link" id="timing_attacks_that_reveal_a_private_package">&nbsp;</a>
+          <dt>Timing attacks that reveal a private package</dt>
+          <dd><p>Architectural nuances prevent us from systematically preventing timing attacks from determining whether a specific package exists. Therefore, timing attacks are considered ineligible.</p>
+</dd>
+        
+          <a class="ineligible-link" id="account_takeover_that_depends_on_the_victim_acting">&nbsp;</a>
+          <dt>Account takeover that depends on the victim acting</dt>
+          <dd><p>Reports described as account takeover must work against a user who is behaving normally. Chains that need the victim to enter their password into a page you control, click a link you sent them, accept an invitation, or hand over a token or one-time code are social engineering rather than a flaw in npm. If the victim has to help, say so plainly in the report and explain why the step is realistic.</p>
+</dd>
+        
+          <a class="ineligible-link" id="publicly_available_package_and_user_data">&nbsp;</a>
+          <dt>Publicly available package and user data</dt>
+          <dd><p>Package names, versions, publish timestamps, dependency lists, maintainer usernames, and the contents of public packages are all intentionally public. The same applies to publisher email addresses where the publisher has chosen to make them visible. Reports that this data can be collected or enumerated are ineligible without a demonstrated impact beyond its availability.</p>
+</dd>
+        
+          <a class="ineligible-link" id="organization_invitations_and_membership_changes">&nbsp;</a>
+          <dt>Organization invitations and membership changes</dt>
+          <dd><p>Invitations, membership removal, and ownership transfer behave as designed, including that an invitation sent to an email address can be accepted by whoever controls that address. Reports that a member can be added or removed by someone with the permission to do so are not vulnerabilities.</p>
+</dd>
+        
+          <a class="ineligible-link" id="account_ownership_disputes">&nbsp;</a>
+          <dt>Account ownership disputes</dt>
+          <dd><p>Lost accounts, accounts registered against an email address you own, and disputes over a package name are handled by <a href="https://support.github.com/request">support</a> rather than the bounty program.</p>
+</dd>
+        
+          <a class="ineligible-link" id="revoking_a_token_you_already_know_the_identifier_for">&nbsp;</a>
+          <dt>Revoking a token you already know the identifier for</dt>
+          <dd><p>Being able to revoke a token whose unguessable identifier you already hold is a known low risk. The result is that the owner has to create a new token, which is inconvenient rather than a compromise. These reports are ineligible unless you can show the identifiers are predictable or enumerable, or that you can use the token rather than only destroy it.</p>
+</dd>
+        
+      
+    
+    </dl>
+  </div>
+</section>
+
+
+    <footer>
+      <div id="footer">
+        <div class="container">
+          <div class="footer-octocat">
+            <a href="/">
+              <span class="mega-octicon octicon-mark-github"></span>
+            </a>
+          </div>
+          <div class="footer-links">
+            <ul id="legal">
+              <li>&copy; 2026 GitHub, Inc.</li>
+              <li><a href="https://github.com/site/terms" target="_blank" rel="noopener noreferrer">Terms</a></li>
+              <li><a href="https://github.com/site/privacy" target="_blank" rel="noopener noreferrer">Privacy</a></li>
+              <li><a href="https://github.com/security" target="_blank" rel="noopener noreferrer">Security</a></li>
+            </ul>
+            <ul id="legal-right">
+              <li><a href="https://x.com/GitHubSecurity" target="_blank" rel="noopener noreferrer">Follow us on X</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.tipsy.js"></script>
+    <script type="text/javascript" src="/js/site.js"></script>
+    <script>
+      document.querySelector('.hamburger').addEventListener('click', function() {
+        this.classList.toggle('active');
+        document.querySelector('.top-nav').classList.toggle('open');
+      });
+    </script>
+
+  </body>
+</html>
