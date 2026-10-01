@@ -1828,3 +1828,97 @@ Nếu họ tự sửa "cho tiện", họ đã lặp lại lỗi của Reviewer1 
 1. Tôi kiểm **§2b và phần không đổi**; **không** xác minh `archived_at` một lần nữa (đã làm ở T18 đính chính #2).
 2. Tôi **không** quyết 3 dòng còn sót nên sửa hay không — **thuộc Admin**.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (reviewer T28) kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #17 (T8): phát hiện `CANDIDATES.md:64` của Reviewer1
+
+**Ngày:** 2026-10-01 · **Đối tượng:** phát hiện mới của Reviewer1 (T30) + phạm vi T29
+**Loại việc:** kiểm chéo **một phát hiện** (không phải một artifact) — kiểm xem cáo buộc có đúng không.
+
+---
+
+## 1. Reviewer1 cáo buộc T29 bỏ sót `CANDIDATES.md:64`
+
+Tôi tự quét **toàn territory** BountyRecon tìm mọi chỗ còn khẳng định "4 xung đột":
+
+```text
+$ git grep -n "4 XUNG ĐỘT\|4 xung đột\|4 tài sản bị xung đột" <branch> -- agents/bountyrecon/** security/**
+
+T26 (truoc khi sua):
+  agents/bountyrecon/tasks/T3/CANDIDATES.md:64  ## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB
+  security/gitlab/SCOPE.md:9                    ... NHƯNG có 4 XUNG ĐỘT scope ...
+  security/gitlab/SCOPE.md:254                  ... nhưng 4 tài sản bị xung đột
+  security/gitlab/SCOPE.md:259                  ... phải chốt 4 xung đột ở §2b trước
+```
+
+⇒ **Đúng 4 chỗ còn sót trên thực tế.** T29 xử lý **3 chỗ trong `SCOPE.md`**;
+**`CANDIDATES.md:64` KHÔNG nằm trong T29.** ✅ **Phát hiện của Reviewer1 CHÍNH XÁC.**
+
+## 2. Kiểm `CANDIDATES.md:64` có thật sự gây hại không — đọc nguyên văn
+
+```text
+64| ## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)
+66| Đã xác minh bằng script trên h1_gitlab.json. 4 tài sản nằm đồng thời ở cả
+67| eligible_for_submission=true và =false:
+    (bảng 4 tài sản)
+74| ⛔ **Theo D-005 ... CẤM ExploitDeep chạm 4 tài sản này** cho tới khi Admin phán quyết.
+76| **Đề nghị Admin chọn 1 trong 2:**
+```
+
+⇒ **CÓ hại thật**, và nặng hơn 3 dòng trong `SCOPE.md`:
+- Nó vẫn **khẳng định "4 xung đột"** (sai — thực tế **0**).
+- Nó vẫn **ra lệnh CẤM** như thể **chưa có phán quyết**, trong khi Admin **đã phán quyết** (D-021: loại cả 4).
+- Nó vẫn **hỏi Admin chọn (a)/(b)** như thể **câu hỏi còn treo**.
+
+⇒ Người đọc sau sẽ tưởng **việc chặn T4 còn đang chờ quyết định**, trong khi thực tế **đã quyết xong**.
+
+## 3. Kiểm xem BountyRecon có TỰ BIẾT không (để phân định trách nhiệm)
+
+```text
+agents/bountyrecon/tasks/T28/FIX_2B.md:134  | A | dòng 9  | ... Vẫn khẳng định "4 XUNG ĐỘT" ...
+agents/bountyrecon/tasks/T28/FIX_2B.md:135  | B | dòng 284 | ... Vẫn gọi "xung đột" ...
+agents/bountyrecon/tasks/T28/FIX_2B.md:136  | C | dòng 289 | ... Vẫn nói "phải chốt 4 xung đột" ...
+```
+
+⇒ BountyRecon **tự liệt kê A/B/C** (3 dòng trong `SCOPE.md`) và **từ chối sửa** vì T28 giới hạn ở §2b
+— **kỷ luật đúng**. Nhưng **`CANDIDATES.md` KHÔNG có trong danh sách A/B/C của họ** ⇒ đây là
+**bỏ sót thật**, không phải "cố ý chờ lệnh".
+
+**Phân định:** đây là **bỏ sót phạm vi**, không phải vi phạm. Nguyên nhân: T29 được giao
+*"3 dòng (9, 284, 289)"* — Admin chỉ định đúng 3 dòng, nên BountyRecon làm đúng 3 dòng.
+**Lỗi nằm ở phạm vi chỉ thị, không ở thi hành.** Reviewer1 bắt đúng chỗ chỉ thị chưa phủ.
+
+## 4. Ghi nhận về chính Reviewer1 — họ tự sửa T14 của mình
+
+Reviewer1 công khai đính chính **T14 của chính họ**:
+*"Ở T14 tôi kết luận '2 xung đột THẬT'. **KẾT LUẬN ĐÓ SAI.**"* — cùng gốc với lỗi của tôi
+(không hỏi `archived_at` dù trường **có sẵn trong schema**).
+
+```text
+Đây là lần thứ BA trong phiên một kiểm định viên tự đính chính:
+  - tôi: S29 (#10) và archived_at (T18 đ/c #2)
+  - Reviewer1: T14 "2 xung đột"
+  - Auditor2: F-07 ở vòng 1 (rút lại cáo buộc)
+Và BountyRecon cũng tự nhận "gọi tên sai" (msg #143).
+=> CẢ BỐN agent đều từng sai ở CÙNG một chỗ và đều tự sửa. Không ai bị buộc phải sửa.
+```
+
+## 5. Kết luận verify #17
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Tồn tại đúng 4 chỗ còn sót | ✅ **XÁC NHẬN** (tự quét) |
+| 2 | T29 xử lý 3 chỗ trong `SCOPE.md` | ✅ đúng phạm vi được giao |
+| 3 | `CANDIDATES.md:64` bị bỏ sót | ✅ **Reviewer1 ĐÚNG** |
+| 4 | Chỗ đó có hại thật (còn CẤM + còn hỏi Admin) | ✅ **XÁC NHẬN** — nặng hơn 3 dòng kia |
+| 5 | Nguyên nhân: phạm vi chỉ thị, không phải thi hành | ✅ phân định đúng |
+
+**Không phát hiện vi phạm.** Có **1 bỏ sót phạm vi thật** cần Admin mở rộng T29.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **cáo buộc**, không kiểm nội dung `CANDIDATES.md` ngoài mục §2.
+2. T29 **chưa push** tại thời điểm Reviewer1 kiểm — tôi cũng không thấy nhánh đó
+   ⇒ tôi **không** chấm được T29, chỉ chấm **tiền đề** của nó.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
