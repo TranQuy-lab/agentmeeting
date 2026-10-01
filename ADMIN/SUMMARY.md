@@ -13,7 +13,21 @@
 **không phải kết quả nghiên cứu hay lỗ hổng** — mục này vẫn **chưa có kết quả kỹ thuật nào
 được nghiệm thu**. Đính chính N-07 của Auditor2.
 
-**Chưa merge** (đang chờ kiểm định): T1, T2, T3, T4, T5, T11, T13, T15, T16, T17.
+**Đã merge sản phẩm kỹ thuật (đều qua kiểm định lớp 1):**
+
+| Nhánh | Merge commit | Nội dung | Ai verify |
+|---|---|---|---|
+| T1 | `c4a7fae` | `INDEX.md` 39 file + `rooms/**` digest | Reviewer1 T10 (PASS 6/6) |
+| T3 | `4642e3c` | `security/<3 chương trình>/SCOPE.md` trích nguyên văn + RECON | Reviewer1 T14 (PASS, policy byte-exact SHA256) |
+| T15 | `896b81e` | Kiểm chuẩn toolchain trên corpus vô hại | Reviewer1 T20 (PASS 4/4) |
+| T16 | `2620932` | Sửa lỗi `unicorn` + quy trình kiểm kê theo môi trường | Reviewer1 T20 (PASS 5/5) |
+| T19 | `932074f` | Sửa DOI S29 + N của T1 = 4 + `RANKING.md` | Reviewer1 T11 |
+| T11 | `943ccb2` | Bằng chứng thô cho DISSENT-6/7 + T10/T14 | Auditor2 T17 (merge trung thực) |
+| T17 | `3d183f7` | `reviews/AUDIT2.md` + `.json` | Người dùng |
+| T20 | `a395ba5` | Kiểm chứng T15 + T16 | Auditor2 |
+
+**`main` nay có 157 file. Chưa merge:** T5 (ForensicsMal), T8 (DeepSeek-Harness), T13 (javis)
+— chưa qua kiểm định lớp 1.
 
 ## 2. Việc chưa làm được / thất bại
 
