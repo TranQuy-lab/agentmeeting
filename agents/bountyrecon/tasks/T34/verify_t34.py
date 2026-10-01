@@ -36,16 +36,20 @@ FILES = [
 #  KHÔNG-nguyên-văn vào TRONG các mục đó — lấy cả mục sẽ báo KHÁC sai.)
 PROTECTED = [
     ("security/gitlab/SCOPE.md", "§1 khoi POLICY PROSE (fence, KHONG doi)", r'^Policy prose bổ sung'),
-    ("security/gitlab/SCOPE.md", "§2a out-of-scope (fence)", r'^### 2a\.'),
     ("security/gitlab/SCOPE.md", "§3 quy dinh cam (fence)", r'^## 3\.'),
     ("security/gitlab/SCOPE.md", "§4 muc thuong (fence)", r'^## 4\.'),
     ("security/github/SCOPE.md", "§1 in-scope (fence)", r'^## 1\.'),
     ("security/github/SCOPE.md", "§4b ineligible (fence)", r'^## 4b\.'),
-    ("security/cloudflare/SCOPE.md", "§1 in-scope (fence)", r'^## 1\.'),
     ("security/cloudflare/SCOPE.md", "§3 quy dinh cam (fence)", r'^## 3\.'),
     ("security/github/RECON.md", "§1 bang DNS (fence)", r'^## 1\.'),
     ("security/cloudflare/RECON.md", "§1 bang DNS (fence)", r'^## 1\.'),
     ("security/gitlab/RECON.md", "§1 bang DNS (fence)", r'^## 1\.'),
+]
+# VÙNG ĐƯỢC PHÉP ĐỔI — D-027 YÊU CẦU đổi (3 bảng AUTHORED phải có cột archived_at)
+EXPECTED_CHANGE = [
+    ("security/gitlab/SCOPE.md", "§1 (24 dong tai san) -> THEM archived_at", r'^## 1\.'),
+    ("security/gitlab/SCOPE.md", "§2a (10 dong tai san) -> THEM archived_at", r'^### 2a\.'),
+    ("security/cloudflare/SCOPE.md", "§1a (12 dong tai san) -> THEM archived_at", r'^### 1a\.'),
 ]
 ALLOWED_PREFIX = "agents/bountyrecon/tasks/T34/"
 FIXED = tuple(FILES)
@@ -140,6 +144,24 @@ def main():
               f"B:{h(sb+chr(10))}/{h(sa+chr(10))}  -> {'GIONG HET' if ok else 'KHAC !!'}")
     print()
 
+    print("=" * 78)
+    print("[2b] VUNG DUOC PHEP DOI (D-027 YEU CAU) — PHAI KHAC truoc/sau")
+    print("=" * 78)
+    for f, label, hrx in EXPECTED_CHANGE:
+        b2, a2 = lines_at(base, f), work(f)
+        rb2, ra2 = region(b2, hrx), region(a2, hrx)
+        if rb2 is None or ra2 is None:
+            print(f"  {f} :: {label}: KHONG tim thay vung -> CANH BAO")
+            all_ok = False
+            continue
+        sb2 = "\n".join(b2[rb2[0]:rb2[1]])
+        sa2 = "\n".join(a2[ra2[0]:ra2[1]])
+        ch = (sb2 != sa2)
+        all_ok &= ch
+        print(f"  {f} :: {label}")
+        print(f"    TRUOC {h(sb2)} -> SAU {h(sa2)}  -> "
+              f"{'DA DOI (dung yeu cau)' if ch else 'KHONG DOI !!'}")
+    print()
     print("=" * 78)
     print("[3] KIEM THEO LICH SU (D-023 phep kiem [2])")
     print("=" * 78)

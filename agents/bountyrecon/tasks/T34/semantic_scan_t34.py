@@ -41,7 +41,7 @@ def main():
     print()
     # ---------- bang nguon [A] D-0xx ----------
     dlines = read(DIRECTIVES)
-    d_exist = {m.group(1) for l in dlines for m in [re.search(r"\[(D-\d{3})\]", l)] if m}
+    d_exist = {m.group(0) for l in dlines for m in [re.search(r"\bD-\d{3}\b", l)] if m}  # v2: bat moi lan xuat hien, khong chi tieu de [D-0NN]
     print("=" * 78)
     print(f"[A] BANG NGUON: {DIRECTIVES} — co {len(d_exist)} chi thi")
     print("=" * 78)
@@ -115,7 +115,7 @@ def main():
     for loc in dref_hist.get("D-005", []):
         f, n = loc.rsplit(":", 1)
         line = read(f)[int(n) - 1]
-        if re.search(r"T4|G4|cổng|Cổng|cong", line):
+        if re.search(r"T4|G4|cổng|Cổng|cong", line) and "D-013" not in line:
             deltas.append((f"D-005 dung de suy ra TRANG THAI cua T4/G4 (phai dung D-013)", [loc]))
             print(f"      ⚠ DELTA: {loc} dung D-005 cho TRANG THAI G4 -> phai la D-013")
             print(f"        {line.strip()[:140]}")
@@ -134,7 +134,8 @@ def main():
                  "GitLab for Jira Cloud Plugin"]
     for i, l in enumerate(read("agents/bountyrecon/tasks/T3/CANDIDATES.md"), 1):
         for nm in ret_names:
-            if nm in l and re.search(r"trong scope|Đáng chuyển|dang chuyen", l):
+            if nm in l and re.search(r"trong scope|Đáng chuyển", l) \
+                    and "ĐÃ NGHỈ HƯU" not in l and "SAI:" not in l and "~~" not in l:
                 deltas.append((f"tai san DA RETIRED '{nm}' van duoc goi la 'trong scope'/'Đáng chuyển'", [f"T3/CANDIDATES.md:{i}"]))
                 print(f"    ⚠ DELTA: T3/CANDIDATES.md:{i}  '{nm}' + 'trong scope/Đáng chuyển'")
                 print(f"      {l.strip()[:150]}")

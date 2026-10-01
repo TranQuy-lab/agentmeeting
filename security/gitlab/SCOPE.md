@@ -121,29 +121,29 @@ Testing on subdomains that are neither explicitly in scope nor out of scope isn'
 ### 2a. Danh sách out-of-scope (n=39)
 
 ```text
-WILDCARD  *.gitlab.cn        — "gitlab.cn and the JiHu-specific GitLab distribution which are
+WILDCARD  *.gitlab.cn        — "gitlab.cn and the JiHu-specific GitLab distribution which are    archived_at=None
                                 property of GitLab Information Technology (Hubei) Co., Ltd.
                                 (JiHu), security issues in those products should be reported
                                 to security@gitlab.cn"
-WILDCARD  *.runway.gitlab.net
-WILDCARD  *.gitlab-private.org — "Dangling DNS for *.gitlab-private.org is out of scope"
-WILDCARD  *.service-now.com
-WILDCARD  *.gitter.im ; URL blog.gitter.im ; update.gitter.im ; files.gitter.im ;
+WILDCARD  *.runway.gitlab.net    archived_at=None
+WILDCARD  *.gitlab-private.org — "Dangling DNS for *.gitlab-private.org is out of scope"    archived_at=None
+WILDCARD  *.service-now.com    archived_at=None
+WILDCARD  *.gitter.im ; URL blog.gitter.im ; update.gitter.im ; files.gitter.im ;    archived_at=2021-05-25T18:36:39.198Z
           next.gitter.im ; beta.gitter.im ; api.gitter.im ; WILDCARD ws*.gitter.im
-URL       dashboards.gitlab.com | alerts.gitlab.com | support.gitlab.com | shop.gitlab.com |
+URL       dashboards.gitlab.com | alerts.gitlab.com | support.gitlab.com | shop.gitlab.com |    archived_at=XEN KE: hau het None, NHUNG gitlab.net=2020-10-05T18:32:21.936Z va gitlap.com=2020-10-05T18:32:08.263Z
           forum.gitlab.com | status.gitlab.com | partners.gitlab.com | aptly.gitlab.com |
           translate.gitlab.com | federal-support.gitlab.com | us-federal-gitlab.com |
           ir.gitlab.com | levelup.gitlab.com | packages.gitlab.com | gitlabsandbox.net |
           gitlabdemo.cloud | gitlabtraining.cloud | gitlab.net | gitlap.com
-URL       gitlab.biterg.io   — "This is a third-party website that aggregates public data from
+URL       gitlab.biterg.io   — "This is a third-party website that aggregates public data from    archived_at=None
                                 GitLab.com. It is out of scope and the data hosted there is not
                                 meant to be confidential. https://contributors.gitlab.com/
                                 redirects to this website."
-SOURCE_CODE https://gitlab.com/gitlab-org/cli/  — "This is a community project that is now
+SOURCE_CODE https://gitlab.com/gitlab-org/cli/  — "This is a community project that is now    archived_at=None
                                 officially maintained by GitLab. It will be in scope at a later
                                 time but it is not ready yet."
-SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace-ui
-SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace
+SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace-ui    archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace    archived_at=None
 ```
 
 > 🧭 **[3b] CHIỀU `archived_at` (D-026) — bảng này TRƯỚC ĐÂY THIẾU chiều này.**

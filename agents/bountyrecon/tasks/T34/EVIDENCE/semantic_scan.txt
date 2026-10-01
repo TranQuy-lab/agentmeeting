@@ -1,0 +1,87 @@
+# semantic_scan_t34.py — D-025 [3a]: JOIN (CHU THE, TRANG THAI) voi BANG NGUON
+
+==============================================================================
+[A] BANG NGUON: rooms/ab1-478d-cfa7/directives.md — co 20 chi thi
+==============================================================================
+    D-001 D-002 D-003 D-004 D-005 D-006 D-007 D-008 D-009 D-010 D-011 D-012 D-013 D-014 D-021 D-022 D-023 D-025 D-026 D-027
+
+==============================================================================
+[B] BANG NGUON: ADMIN/ASSIGNMENTS.md — 26 task
+==============================================================================
+    T1    ⏳ todo
+    T2    ✅ merged qua T19 (`932074f`)
+    T3    ⏳ todo
+    T4    ✅ merged qua T16 (`2620932`)
+    T5    ⏸ chờ task
+    T6    ⏳ todo
+    T7    ⏳ todo
+    T8    ⏸ chờ có finding
+    T9    ⏳ todo
+    T10   ⏳ todo
+    T11   ⏳ todo
+    T12   ⏳ todo
+    T13   ⏳ todo
+    T14   ⏳ todo
+    T15   ✅ xong, chờ verify
+    T16   ⏳ todo
+    T17   ⏳ todo
+    T18   ⏳ todo
+    T19   ⏳ todo
+    T20   ⏳ todo
+    T21   ⏳ todo
+    T22   ⏳ todo
+    T23   ⏳ todo
+    T24   ⏳ todo
+    T25   ⏳ todo
+    T26   ⏳ todo
+
+==============================================================================
+[C] BANG NGUON: security/gitlab/SCOPE.md §1 — 24 dong co archived_at
+==============================================================================
+    archived_at=None (LIVE): 19   |   archived_at!=None (RETIRED): 5
+      RETIRED  2022-03-21T22:30:03.041Z  URL         license.gitlab.com                    max_severi
+      RETIRED  2022-07-21T16:00:50.221Z  OTHER       Static websites                       max_severi
+      RETIRED  2023-12-07T13:38:09.687Z  OTHER       GitLab for Jira Cloud Plugin          max_severi
+      RETIRED  2021-12-28T13:36:15.653Z  SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-workhorse  
+      RETIRED  2023-06-04T21:02:31.693Z  SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/         
+
+==============================================================================
+[QUET] TAI LIEU SONG — moi tham chieu D-0xx / T<nn> / tuyen bo trang thai
+==============================================================================
+
+  --- D-0xx duoc trich trong tai lieu song (JOIN [A]) ---
+    D-004   3 lan  -> CO trong bang ✅
+    D-005   4 lan  -> CO trong bang ✅  <-- D-013 noi 'thay the moi cach hieu khac ve cong G4'; chi duoc dung cho LUAT CAM
+    D-013   5 lan  -> CO trong bang ✅
+    D-021   5 lan  -> CO trong bang ✅
+    D-025   1 lan  -> CO trong bang ✅
+    D-026   7 lan  -> CO trong bang ✅
+    D-027   1 lan  -> CO trong bang ✅
+
+  --- T<nn> duoc trich trong tai lieu song (JOIN [B]) ---
+    T3    41 lan  -> trang thai bang = ⏳ todo
+    T4    26 lan  -> trang thai bang = ✅ merged qua T16 (`2620932`)
+    T14   11 lan  -> trang thai bang = ⏳ todo
+    T24   1 lan  -> trang thai bang = ⏳ todo
+    T28   6 lan  -> KHONG co trong bang
+    T31   2 lan  -> KHONG co trong bang
+    T32   2 lan  -> KHONG co trong bang
+    T34   4 lan  -> KHONG co trong bang
+    T37   1 lan  -> KHONG co trong bang
+
+  --- Tuyen bo TRANG THAI ve TAI SAN (JOIN [C]) ---
+    (khong thay DELTA: khong tai san retired nao bi goi la 'trong scope' nua)
+
+==============================================================================
+TONG DELTA: 5
+  - tham chieu T28 khong co trong ADMIN/ASSIGNMENTS.md
+      tai: security/gitlab/SCOPE.md:12, security/gitlab/SCOPE.md:190, security/gitlab/SCOPE.md:192, security/gitlab/SCOPE.md:211, security/gitlab/SCOPE.md:214, agents/bountyrecon/tasks/T3/CANDIDATES.md:69
+  - tham chieu T31 khong co trong ADMIN/ASSIGNMENTS.md
+      tai: agents/bountyrecon/tasks/T3/CANDIDATES.md:66, agents/bountyrecon/tasks/T3/CANDIDATES.md:69
+  - tham chieu T32 khong co trong ADMIN/ASSIGNMENTS.md
+      tai: security/gitlab/SCOPE.md:55, security/gitlab/SCOPE.md:68
+  - tham chieu T34 khong co trong ADMIN/ASSIGNMENTS.md
+      tai: security/gitlab/SCOPE.md:12, security/gitlab/SCOPE.md:45, security/gitlab/SCOPE.md:54, agents/bountyrecon/tasks/T3/CANDIDATES.md:44
+  - tham chieu T37 khong co trong ADMIN/ASSIGNMENTS.md
+      tai: security/github/SCOPE.md:112
+==============================================================================

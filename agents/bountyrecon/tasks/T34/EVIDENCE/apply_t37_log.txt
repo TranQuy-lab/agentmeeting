@@ -1,0 +1,3 @@
+  security/cloudflare/SCOPE.md: them archived_at vao 12 dong
+  security/gitlab/SCOPE.md: them archived_at vao 10 dong
+  security/github/SCOPE.md: chen §1b (201 dong, 183 tai san)

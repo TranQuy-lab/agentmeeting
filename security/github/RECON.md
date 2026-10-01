@@ -48,28 +48,6 @@ Nguồn thô: `recon_github.txt` dòng 10–430.
 | `npmjs.com` | — | A `104.17.134.117`, `104.17.135.117` · AAAA `2606:4700::6811:8675`, `…8775` | Google Workspace (`aspmx.l.google.com` …) | Đứng sau Cloudflare (`104.17.0.0/16`). |
 | `npmjs.org` | `sandy.ns.cloudflare.com`, `bayan.ns.cloudflare.com` | A nhiều bản ghi `104.16.x.34` · AAAA `2606:4700::6810:…` | Google Workspace | TXT: `"v=spf1 -all"` — SPF chặt nhất (`-all`). |
 
-> 🧭 **[3b] CHIỀU `archived_at` (D-026) — bảng này TRƯỚC ĐÂY THIẾU chiều này.**
-> Tự truy vấn lại `2026-10-01T15:28Z` (`archived:false` / `archived:true`, GraphQL công khai):
-> **GitHub** — `archived:false` **39** scope (sub=True **27**) · `archived:true` **158** (sub=True **156**) · TỔNG **197**.
-> **156 bản ghi `archived_at != None` MÀ VẪN `eligible_for_submission=true`** (tạm gọi *orphan*) — bảng gốc không phân biệt được chúng với bản còn hiệu lực:
->   - `gist.github.com` — `2017-06-22T23:23:44.719Z`
->   - `http://GitHub.com/CSP` — `2017-06-22T23:29:38.991Z`
->   - `Atom` — `2017-06-22T23:35:22.423Z`
->   - `Other Applications` — `2019-02-19T19:29:54.119Z`
->   - `semmle.net / semmle.com / LGTM` — `2022-08-31T18:46:1x–33xZ`
->   - `jobs.github.com / lab.github.com` — `2022-08-31T18:48–20:36Z`
->   - `Copilot · Code Search · GitHub Enterprise Importer` — `2022-09-13T02:27:1xZ`
->   - `Codespaces` — `2022-09-13T02:27:1x–19xZ`
->   - `GHES` — `2022-09-13T02:27:19.5–9xZ`
->   - `All Other Scope (placeholder, ~150 dòng trùng)` — `2022-09-13T02:27:19–21Z`
-> Bản chụp lại **có cột `archived_at`** đầy đủ: `agents/bountyrecon/tasks/T3/EVIDENCE/scope_github_v2.md` (bản gốc `scope_github.md` **giữ nguyên**, không sửa/xoá — D-026 (a)).
->
-> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho các bản ghi này.
-> Chỉ được khẳng định: bảng **THIẾU chiều `archived_at`** ⇒ **KHÔNG PHÂN BIỆT ĐƯỢC** bản ghi còn hiệu lực hay đã nghỉ hưu.
-> Việc **loại khỏi T4** chỉ áp cho **4 tài sản GitLab** đã có phán quyết (`D-021`).
->
-> ❗ **`DISSENT-12` vẫn MỞ:** ngữ nghĩa `eligible_for_submission=True` trên một bản ghi `archived_at != None` **CHƯA có định nghĩa chính thức** (introspection `description` RỖNG;
-> tài liệu công khai không có). **Ghi hiện tượng, KHÔNG kết luận ngữ nghĩa.**
 ### 1.1 CAA (ai được phép phát hành chứng chỉ)
 
 ```text

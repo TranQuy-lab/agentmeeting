@@ -1,5 +1,5 @@
 # verify_t34.py — T34 + T36 (BountyRecon)
-# merge-base main = f29c4df98927   head = f97fa46fbf31
+# merge-base main = f29c4df98927   head = 846219637feb
 # QUY UOC RANH GIOI: dong=splitlines(); vung='\n'.join(...); hai dau DONG; khong \n cuoi
 #   Moi vung bam theo CA HAI quy uoc: (A) khong \n cuoi (B) co \n cuoi
 
@@ -7,22 +7,22 @@
 [1] BAM TUNG PHAN — moi vung KHONG DOI phai GIONG HET (ca 2 quy uoc)
 ==============================================================================
   security/gitlab/SCOPE.md
-    dong 299 -> 343 | dong sua: 26 | opcodes: [('replace', 11, 11, 11, 12), ('replace', 42, 42, 43, 69), ('replace', 45, 45, 72, 72), ('replace', 47, 47, 74, 74), ('replace', 49, 49, 76, 76), ('replace', 51, 53, 78, 80), ('replace', 55, 56, 82, 83), ('replace', 59, 63, 86, 90), ('replace', 66, 66, 93, 93), ('replace', 70, 79, 97, 106), ('insert', 122, 121, 149, 165)]
+    dong 299 -> 343 | dong sua: 36 | opcodes: [('replace', 11, 11, 11, 12), ('replace', 42, 42, 43, 69), ('replace', 45, 45, 72, 72), ('replace', 47, 47, 74, 74), ('replace', 49, 49, 76, 76), ('replace', 51, 53, 78, 80), ('replace', 55, 56, 82, 83), ('replace', 59, 63, 86, 90), ('replace', 66, 66, 93, 93), ('replace', 70, 79, 97, 106), ('replace', 97, 97, 124, 124), ('replace', 101, 104, 128, 131), ('replace', 106, 106, 133, 133), ('replace', 111, 111, 138, 138), ('replace', 115, 115, 142, 142), ('replace', 118, 119, 145, 146), ('insert', 122, 121, 149, 165)]
     moi vung khong doi GIONG HET (ca A va B): True
   security/github/SCOPE.md
-    dong 314 -> 336 | dong sua: 1 | opcodes: [('replace', 12, 12, 12, 12), ('insert', 120, 119, 120, 141)]
+    dong 314 -> 511 | dong sua: 5 | opcodes: [('replace', 12, 12, 12, 12), ('insert', 110, 109, 110, 310), ('delete', 119, 122, 320, 319)]
     moi vung khong doi GIONG HET (ca A va B): True
   security/cloudflare/SCOPE.md
-    dong 212 -> 228 | dong sua: 1 | opcodes: [('replace', 12, 12, 12, 12), ('insert', 55, 54, 55, 70)]
+    dong 212 -> 228 | dong sua: 13 | opcodes: [('replace', 12, 12, 12, 12), ('replace', 33, 33, 33, 33), ('replace', 38, 41, 38, 41), ('replace', 44, 47, 44, 47), ('replace', 50, 52, 50, 52), ('insert', 55, 54, 55, 70)]
     moi vung khong doi GIONG HET (ca A va B): True
   security/gitlab/RECON.md
-    dong 214 -> 231 | dong sua: 1 | opcodes: [('replace', 6, 6, 6, 6), ('insert', 49, 48, 49, 65)]
+    dong 214 -> 214 | dong sua: 1 | opcodes: [('replace', 6, 6, 6, 6)]
     moi vung khong doi GIONG HET (ca A va B): True
   security/github/RECON.md
-    dong 201 -> 223 | dong sua: 1 | opcodes: [('replace', 6, 6, 6, 6), ('insert', 51, 50, 51, 72)]
+    dong 201 -> 201 | dong sua: 1 | opcodes: [('replace', 6, 6, 6, 6)]
     moi vung khong doi GIONG HET (ca A va B): True
   security/cloudflare/RECON.md
-    dong 196 -> 212 | dong sua: 1 | opcodes: [('replace', 6, 6, 6, 6), ('insert', 48, 47, 48, 63)]
+    dong 196 -> 196 | dong sua: 1 | opcodes: [('replace', 6, 6, 6, 6)]
     moi vung khong doi GIONG HET (ca A va B): True
   agents/bountyrecon/tasks/T3/CANDIDATES.md
     dong 121 -> 121 | dong sua: 2 | opcodes: [('replace', 5, 5, 5, 5), ('replace', 44, 44, 44, 44)]
@@ -37,15 +37,13 @@
     dong 101 -> 104 | dong sua: 2 | opcodes: [('replace', 63, 64, 63, 67)]
     moi vung khong doi GIONG HET (ca A va B): True
 
-  => TONG dong sua (10 file): 39 | tat ca vung khong doi OK: True
+  => TONG dong sua (10 file): 65 | tat ca vung khong doi OK: True
 
 ==============================================================================
 [2] VUNG NGUYEN VAN BAO VE — phai GIONG HET truoc/sau
 ==============================================================================
   security/gitlab/SCOPE.md :: §1 khoi POLICY PROSE (fence, KHONG doi)
     dong 84..88 (n=5)  A:dd6c27c8f6a84798/dd6c27c8f6a84798  B:d0824013e4646ffa/d0824013e4646ffa  -> GIONG HET
-  security/gitlab/SCOPE.md :: §2a out-of-scope (fence)
-    dong 96..120 (n=25)  A:584fddc7806015e3/584fddc7806015e3  B:772ddd12615465c1/772ddd12615465c1  -> GIONG HET
   security/gitlab/SCOPE.md :: §3 quy dinh cam (fence)
     dong 208..217 (n=10)  A:cdd925b0429ff61b/cdd925b0429ff61b  B:03dc1df25e91b1b6/03dc1df25e91b1b6  -> GIONG HET
   security/gitlab/SCOPE.md :: §4 muc thuong (fence)
@@ -54,8 +52,6 @@
     dong 49..108 (n=60)  A:2fbdc09cf84603b9/2fbdc09cf84603b9  B:dba2d81cb3351f51/dba2d81cb3351f51  -> GIONG HET
   security/github/SCOPE.md :: §4b ineligible (fence)
     dong 248..264 (n=17)  A:ae699264d99d3b41/ae699264d99d3b41  B:9436fa7666580902/9436fa7666580902  -> GIONG HET
-  security/cloudflare/SCOPE.md :: §1 in-scope (fence)
-    dong 32..53 (n=22)  A:720b93e107eae40a/720b93e107eae40a  B:b1ccd8e1e060e175/b1ccd8e1e060e175  -> GIONG HET
   security/cloudflare/SCOPE.md :: §3 quy dinh cam (fence)
     dong 124..141 (n=18)  A:820cc05a6c158750/820cc05a6c158750  B:a8903aa681021ab5/a8903aa681021ab5  -> GIONG HET
   security/github/RECON.md :: §1 bang DNS (fence)
@@ -66,9 +62,19 @@
     dong 51..55 (n=5)  A:9107bf06b68f8570/9107bf06b68f8570  B:da166d957cbd333e/da166d957cbd333e  -> GIONG HET
 
 ==============================================================================
+[2b] VUNG DUOC PHEP DOI (D-027 YEU CAU) — PHAI KHAC truoc/sau
+==============================================================================
+  security/gitlab/SCOPE.md :: §1 (24 dong tai san) -> THEM archived_at
+    TRUOC f4faae18e56dffdb -> SAU 1982db3dbc67e760  -> DA DOI (dung yeu cau)
+  security/gitlab/SCOPE.md :: §2a (10 dong tai san) -> THEM archived_at
+    TRUOC 584fddc7806015e3 -> SAU 93d0a0438e07fc8d  -> DA DOI (dung yeu cau)
+  security/cloudflare/SCOPE.md :: §1a (12 dong tai san) -> THEM archived_at
+    TRUOC 720b93e107eae40a -> SAU 4eae8a8156603ea0  -> DA DOI (dung yeu cau)
+
+==============================================================================
 [3] KIEM THEO LICH SU (D-023 phep kiem [2])
 ==============================================================================
-  so commit trong merge-base..HEAD: 1  (chua commit -> 0 la dung)
+  so commit trong merge-base..HEAD: 5  (chua commit -> 0 la dung)
   => file bi LOAI TRU bi cham: 0  
      LOAI TRU = T28/FIX_2B.md, T28|T29|T30|T32|T33/**, moi EVIDENCE/** khac
 

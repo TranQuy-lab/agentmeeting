@@ -107,6 +107,207 @@ This is the domain for npm's public-facing websites.. All subdomains under `npmj
 This is the domain for npm's registry, public-facing databases, and APIs.. All subdomains under `npmjs.org` are in-scope
 ```
 
+### 1b. Bảng tài sản GitHub kèm `archived_at` (AUTHORED — KHÔNG phải nguyên văn)
+
+> 🧭 **Mục này do BountyRecon TẠO Ở T37 (D-027).** `§1` phía trên là **KHỐI TRÍCH NGUYÊN VĂN**
+> và **KHÔNG bị sửa một ký tự nào** — đúng nguyên tắc *trích nguyên văn > yêu cầu định dạng*.
+> Bảng dưới đây là **bảng tổng hợp do tôi lập** từ `structured_scopes` (đã TÁCH khỏi nguyên văn).
+> Tự truy vấn lại `2026-10-01T15:28Z` (`archived:false` / `archived:true`).
+>
+> **Thống kê tự đo:** `archived:false` **39** · `archived:true` **158** · TỔNG **197** · `sub=True` **183** (live **27** + archived **156**).
+>
+> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho bản ghi
+> `archived_at != None`. Chỉ được khẳng định: bảng **THIẾU chiều `archived_at`** ⇒
+> **KHÔNG PHÂN BIỆT ĐƯỢC** còn hiệu lực hay đã nghỉ hưu.
+> ❗ **`DISSENT-12` vẫn MỞ:** ngữ nghĩa `eligible_for_submission=True` trên bản ghi archived
+> **CHƯA có định nghĩa chính thức** ⇒ hiệu lực **CHƯA XÁC MINH**. Cần trả lời chính thức từ chương trình.
+
+| asset_type | asset_identifier | sub | bounty | max_severity | **archived_at** |
+|---|---|---|---|---|---|
+| URL | *.github.net | True | True | critical | `None` |
+| URL | *.githubapp.com | True | True | critical | `None` |
+| URL | *.githubusercontent.com | True | True | critical | `None` |
+| OTHER | Copilot | True | True | critical | `None` |
+| OTHER | Copilot Chat on dotcom | True | True | high | `None` |
+| OTHER | Copilot Coding Agent | True | True | critical | `None` |
+| OTHER | Copilot Spaces | True | True | critical | `None` |
+| OTHER | Copilot for Business | True | True | critical | `None` |
+| OTHER | Dependabot | True | True | critical | `None` |
+| DOWNLOADABLE_EXECUTABLES | GitHub CLI | True | True | high | `None` |
+| OTHER | GitHub CSP | True | True | high | `None` |
+| DOWNLOADABLE_EXECUTABLES | GitHub Desktop | True | True | critical | `None` |
+| OTHER | GitHub Enterprise Cloud | True | True | critical | `None` |
+| OTHER | GitHub Enterprise Cloud with Data Residency (GHEC-DR) | True | True | critical | `None` |
+| HARDWARE | GitHub Enterprise Server | True | True | critical | `None` |
+| OTHER | GitHub Pages | True | True | critical | `None` |
+| OTHER | GitHub Production Credentials | True | True | critical | `None` |
+| OTHER | GitHub Spark | True | True | critical | `None` |
+| OTHER | GitHub for mobile | True | True | critical | `None` |
+| URL | api.github.com | True | True | critical | `None` |
+| URL | classroom.github.com | True | True | critical | `None` |
+| URL | education.github.com | True | True | critical | `None` |
+| URL | gist.github.com | True | True | critical | `None` |
+| URL | github.com | True | True | critical | `None` |
+| DOWNLOADABLE_EXECUTABLES | npm CLI | True | True | high | `None` |
+| URL | npmjs.com | True | True | critical | `None` |
+| URL | npmjs.org | True | True | critical | `None` |
+| URL | https://gist.github.com | True | True | critical | `2017-06-22T23:23:44.719Z` |
+| URL | http://GitHub.com/CSP | True | True | critical | `2017-06-22T23:29:38.991Z` |
+| DOWNLOADABLE_EXECUTABLES | Atom | True | False | critical | `2017-06-22T23:35:22.423Z` |
+| DOWNLOADABLE_EXECUTABLES | Other Applications | True | True | low | `2019-02-19T19:29:54.119Z` |
+| URL | semmle.net | True | True | critical | `2022-08-31T18:46:14.564Z` |
+| OTHER | LGTM | True | True | critical | `2022-08-31T18:46:24.171Z` |
+| URL | semmle.com | True | True | critical | `2022-08-31T18:46:33.704Z` |
+| URL | jobs.github.com | True | True | critical | `2022-08-31T18:48:33.138Z` |
+| URL | lab.github.com | True | True | critical | `2022-08-31T20:36:05.233Z` |
+| OTHER | Copilot | True | True | critical | `2022-09-13T02:27:16.989Z` |
+| OTHER | Copilot | True | True | critical | `2022-09-13T02:27:17.018Z` |
+| OTHER |  Code Search | True | True | critical | `2022-09-13T02:27:17.065Z` |
+| OTHER |  Code Search | True | True | critical | `2022-09-13T02:27:17.089Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.113Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.138Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.160Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.182Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.205Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.230Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.253Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.275Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.298Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.319Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.342Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.362Z` |
+| OTHER | GitHub Enterprise Importer | True | True | critical | `2022-09-13T02:27:17.386Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:17.409Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:17.433Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:17.458Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:17.481Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:17.504Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.148Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.177Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.202Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.229Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.252Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.278Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.304Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.328Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.351Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.377Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.407Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.436Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.472Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.502Z` |
+| OTHER | Codespaces | True | True | critical | `2022-09-13T02:27:19.531Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.562Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.594Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.621Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.644Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.667Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.692Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.716Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.742Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.769Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.793Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.821Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.844Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.870Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.895Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.919Z` |
+| OTHER | GHES | True | True | critical | `2022-09-13T02:27:19.944Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:19.968Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:19.993Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.015Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.036Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.066Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.092Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.115Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.137Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.158Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.180Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.202Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.223Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.244Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.263Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.282Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.303Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.326Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.346Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.368Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.390Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.410Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.430Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.450Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.473Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.494Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.515Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.536Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.556Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.576Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.595Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.615Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.635Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.656Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.677Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.698Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.720Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.740Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.760Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.782Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.802Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.823Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.843Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.864Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.917Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.939Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.960Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:20.980Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.001Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.021Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.041Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.062Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.085Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.108Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.131Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.151Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.173Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.194Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.214Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.233Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.254Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.274Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.295Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.316Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.339Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.362Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.385Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.408Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.428Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.449Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.470Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.491Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.512Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.533Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.553Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.574Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.595Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.616Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.637Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.658Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.681Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.703Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.724Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.745Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.765Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.787Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.809Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.833Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.856Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.877Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.899Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.919Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.941Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.962Z` |
+| OTHER | All Other Scope | True | True | critical | `2022-09-13T02:27:21.983Z` |
+
 **Tài sản phi-tên-miền trong scope** (trích `instruction` từ `structured_scopes`, `eligible_for_bounty=true`):
 
 ```text
@@ -116,32 +317,6 @@ GitHub Enterprise Cloud with Data Residency (GHEC-DR) | Copilot Spaces |
 Copilot Coding Agent | GitHub Spark | GitHub CSP | Copilot Chat on dotcom
 ```
 (`asset_type = OTHER`, `max_severity = critical`, trừ `GitHub CSP` = `high` và `Copilot Chat on dotcom` = `high`.)
-
-> 🧭 **[3b] CHIỀU `archived_at` (D-026) — bảng này TRƯỚC ĐÂY THIẾU chiều này.**
-> Tự truy vấn lại `2026-10-01T15:28Z` (`archived:false` / `archived:true`, GraphQL công khai):
-> **GitHub** — `archived:false` **39** scope (sub=True **27**) · `archived:true` **158** (sub=True **156**) · TỔNG **197**.
-> **156 bản ghi `archived_at != None` MÀ VẪN `eligible_for_submission=true`** (tạm gọi *orphan*) — bảng gốc không phân biệt được chúng với bản còn hiệu lực:
->   - `gist.github.com` — `2017-06-22T23:23:44.719Z`
->   - `http://GitHub.com/CSP` — `2017-06-22T23:29:38.991Z`
->   - `Atom` — `2017-06-22T23:35:22.423Z`
->   - `Other Applications` — `2019-02-19T19:29:54.119Z`
->   - `semmle.net / semmle.com / LGTM` — `2022-08-31T18:46:1x–33xZ`
->   - `jobs.github.com / lab.github.com` — `2022-08-31T18:48–20:36Z`
->   - `Copilot · Code Search · GitHub Enterprise Importer` — `2022-09-13T02:27:1xZ`
->   - `Codespaces` — `2022-09-13T02:27:1x–19xZ`
->   - `GHES` — `2022-09-13T02:27:19.5–9xZ`
->   - `All Other Scope (placeholder, ~150 dòng trùng)` — `2022-09-13T02:27:19–21Z`
-> Bản chụp lại **có cột `archived_at`** đầy đủ: `agents/bountyrecon/tasks/T3/EVIDENCE/scope_github_v2.md` (bản gốc `scope_github.md` **giữ nguyên**, không sửa/xoá — D-026 (a)).
->
-> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho các bản ghi này.
-> Chỉ được khẳng định: bảng **THIẾU chiều `archived_at`** ⇒ **KHÔNG PHÂN BIỆT ĐƯỢC** bản ghi còn hiệu lực hay đã nghỉ hưu.
-> Việc **loại khỏi T4** chỉ áp cho **4 tài sản GitLab** đã có phán quyết (`D-021`).
->
-> ❗ **`DISSENT-12` vẫn MỞ:** ngữ nghĩa `eligible_for_submission=True` trên một bản ghi `archived_at != None` **CHƯA có định nghĩa chính thức** (introspection `description` RỖNG;
-> tài liệu công khai không có). **Ghi hiện tượng, KHÔNG kết luận ngữ nghĩa.**
-> 📝 **Quan sát của tôi (KHÔNG phải nguyên văn):** trường `asset_identifier` của 25 dòng
-> `OTHER` trong scope GitHub bị lặp chuỗi `All Other Scope` — đây là cách HackerOne biểu diễn
-> mục gộp, không phải 25 tài sản riêng biệt. Chi tiết đầy đủ ở `scope_github.md`.
 
 ---
 
