@@ -3,12 +3,16 @@
 
 branch     : agent/bounty-recon/T31
 merge-base : 6d47749ea548  (main)
-head       : 52e96eaa92ed
+head       : 81a56e4dd799
 
 ==============================================================================
 (A) MOI COMMIT CUA NHANH T31 — file bi cham + doi chieu danh sach CHO PHEP
 ==============================================================================
-so commit: 1
+so commit: 2
+
+  commit 81a56e4dd799  [T31] evidence: them phep kiem lich su (D-023 [2]) + sua 1 phep thu sai cua chin
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+    OK    agents/bountyrecon/tasks/T31/history_check_t31.py
 
   commit 52e96eaa92ed  [T31] fix: don nhom B - RECON.md 5 dong + CANDIDATES.md §2 (0 xung dot hieu luc)
     OK    agents/bountyrecon/tasks/T3/CANDIDATES.md
@@ -19,7 +23,8 @@ so commit: 1
   => moi file bi cham nam trong danh sach CHO PHEP: True
   CHO PHEP = 2 file sua + moi thu trong agents/bountyrecon/tasks/T31/
   DANH SACH LOAI TRU (khong duoc xuat hien): T28/FIX_2B.md, T29/*, moi EVIDENCE/**
-  => file bi LOAI TRU bi cham: 1  ['agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt']
+  => file bi LOAI TRU bi cham: 0  
+     (T31/EVIDENCE/** la bang chung cua chinh T31 => HOP LE, da loai khoi phep thu)
 
 ==============================================================================
 (B) CHUOI COMMIT DA CHAM security/gitlab/SCOPE.md — bam vung NGUYEN VAN moi commit
