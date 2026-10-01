@@ -1,0 +1,24 @@
+=== [1] ĐO CHI PHÍ THEO LỚP CHÍNH SÁCH (L3 vs L4 vs L7) ===
+Lặp lại 500 lần cho mỗi cấu hình quy tắc:
+
+--- Quy mô 10 quy tắc ---
+L3 (eBPF Map lookup)     : p50=0.32 µs | p90=0.38 µs | p99=0.45 µs
+L4 (eBPF TC 5-tuple)     : p50=0.40 µs | p90=0.45 µs | p99=0.55 µs
+L7 (eBPF Proxy redirect) : p50=0.41 µs | p90=0.46 µs | p99=0.63 µs
+
+--- Quy mô 100 quy tắc ---
+L3 (eBPF Map lookup)     : p50=2.11 µs | p90=2.97 µs | p99=3.60 µs
+L4 (eBPF TC 5-tuple)     : p50=3.02 µs | p90=3.23 µs | p99=3.67 µs
+L7 (eBPF Proxy redirect) : p50=3.09 µs | p90=3.23 µs | p99=6.19 µs
+
+--- Quy mô 1000 quy tắc ---
+L3 (eBPF Map lookup)     : p50=22.47 µs | p90=30.53 µs | p99=35.24 µs
+L4 (eBPF TC 5-tuple)     : p50=32.28 µs | p90=34.45 µs | p99=39.37 µs
+L7 (eBPF Proxy redirect) : p50=31.98 µs | p90=33.68 µs | p99=47.46 µs
+
+=== [2] ĐO THỜI GIAN HỘI TỤ ĐỘNG (CONVERGENCE WINDOW - RQ1/RQ3) ===
+Số nút N= 3: Hội tụ toàn cụm p50=3.43 ms | p90=4.45 ms | max=6.50 ms
+Số nút N= 5: Hội tụ toàn cụm p50=6.19 ms | p90=7.31 ms | max=8.75 ms
+Số nút N=10: Hội tụ toàn cụm p50=12.09 ms | p90=13.51 ms | max=14.88 ms
+
+Benchmark completed successfully.
