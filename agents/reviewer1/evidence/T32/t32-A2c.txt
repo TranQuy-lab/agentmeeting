@@ -1,0 +1,162 @@
+
+=== [A2c] BLOB CANDIDATES.md QUA TUNG COMMIT CUA T31 ===
+  6d47749   blob=95d16d76   dong=118
+  52e96ea   blob=ac04b460   dong=121
+  81a56e4   blob=ac04b460   dong=121
+  683e31f   blob=ac04b460   dong=121
+  209c308   blob=ac04b460   dong=121
+  9455f89   blob=095006ce   dong=121
+  ecce293   blob=095006ce   dong=121
+
+  T31 khai trong FIX_GROUP_B.md: blob CANDIDATES.md 95d16d76 -> ac04b460, dong 118 -> 121
+
+=== [A2d] FIX_GROUP_B.md @ ecce293 (head cuoi) van ghi gi? ===
+
+### Kết quả
+
+```text
+FILE security/gitlab/RECON.md   blob 5c088a23 -> 75f163cf   dong 213 -> 214
+  opcodes khac: replace 39..40 | replace 47..47 | replace 206..209 -> 206..210
+  VUNG KHONG DOI (A/B deu GIONG HET):
+    V0 dong 1..38     776ef897/776ef897   |  77d226b5/77d226b5
+    V1 dong 41..46    84baedad/84baedad   |  ff105a98/ff105a98
+    V2 dong 48..205   28f7abc2/28f7abc2   |  5efe5dea/5efe5dea
+    V3 dong 210..213  4e126826/4e126826   |  eb8682aa/eb8682aa
+
+FILE agents/bountyrecon/tasks/T3/CANDIDATES.md  blob 95d16d76 -> ac04b460  dong 118 -> 121
+  opcodes khac: 19 | 21 | 64 | 66..67 | 69->69..73 | 71..74 | 76..77 | 79..82
+  VUNG KHONG DOI (A/B deu GIONG HET):
+    V0 dong 1..18     5aa4af3d/5aa4af3d   |  1f90b9bf/1f90b9bf
+    V1 dong 20        e3b0c442/e3b0c442   |  01ba4719/01ba4719
+    V2 dong 22..63    91d499bd/91d499bd   |  2a0b7549/2a0b7549
+    V3 dong 65        e3b0c442/e3b0c442   |  01ba4719/01ba4719
+    V4 dong 68        e3b0c442/e3b0c442   |  01ba4719/01ba4719
+    V5 dong 70->74    4da1ec6f/4da1ec6f   |  831fe3c0/831fe3c0
+    V6 dong 75->79    e3b0c442/e3b0c442   |  01ba4719/01ba4719
+    V7 dong 78->83    e3b0c442/e3b0c442   |  01ba4719/01ba4719
+    V8 dong 83..118   6dadecbe/6dadecbe   |  cc2de093/cc2de093
+
+TONG dong da sua (2 file): 23
+KET LUAN: moi vung khong doi GIONG HET theo CA HAI quy uoc: True
+```
+(`e3b0c442…` = sha256 của chuỗi RỖNG — các vùng 1 dòng trống, đúng như dự kiến.)
+
+
+=== [A2e] verify_regions.txt @ ecce293 ghi blob nao? ===
+9:  blob TRUOC (HEAD) : 75f163cf40131eb862250d6a7bf7d72886bd1342
+10:  blob SAU          : 75f163cf40131eb862250d6a7bf7d72886bd1342
+49:FILE: agents/bountyrecon/tasks/T3/CANDIDATES.md
+50:  blob TRUOC (HEAD) : ac04b4605a0a8baa66fb827da848cb03c3c514d3
+51:  blob SAU          : 095006ce5914622f6634d6252793f87af1720df6
+
+=== [A2f] XAC NHAN PHAM VI khuyet diem: FIX_GROUP_B.md co nhac 095006ce khong? ===
+$ git show ecce293:.../T31/FIX_GROUP_B.md | grep -n 'ac04b460\|095006ce'
+78:FILE agents/bountyrecon/tasks/T3/CANDIDATES.md  blob 95d16d76 -> ac04b460  dong 118 -> 121
+
+$ git show ecce293:.../T31/EVIDENCE/verify_regions.txt | grep -n 'ac04b460\|095006ce'
+50:  blob TRUOC (HEAD) : ac04b4605a0a8baa66fb827da848cb03c3c514d3
+51:  blob SAU          : 095006ce5914622f6634d6252793f87af1720df6
+
+  => FIX_GROUP_B.md (BAO CAO) chi co ac04b460; verify_regions.txt (BANG CHUNG) co CA HAI
+     => bao cao va bang chung cua chinh ho MAU THUAN ve blob CANDIDATES.md
+
+  --- co ghi chu nao ve commit 9455f89 lam doi blob khong? ---
+
+=== [A3] KIEM THEO LICH SU (D-023 [2]) — 0 file bi loai tru bi cham? ===
+$ git show ecce293:.../T31/EVIDENCE/history_check.txt | head -50
+# history_check_t31.py — T31 (BountyRecon) — D-023 phep kiem [2]
+# QUY UOC RANH GIOI: dong=splitlines(); vung='\n'.join(...); hai dau DONG; khong \n cuoi
+
+branch     : agent/bounty-recon/T31
+merge-base : 6d47749ea548  (main)
+head       : 9455f8932de7
+
+==============================================================================
+(A) MOI COMMIT CUA NHANH T31 — file bi cham + doi chieu danh sach CHO PHEP
+==============================================================================
+so commit: 5
+
+  commit 9455f8932de7  [T31] fix: tu sua 1 cau SAI do chinh minh tao ra o dong 21 + doi chieu ve merge-
+    OK    agents/bountyrecon/tasks/T3/CANDIDATES.md
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+    OK    agents/bountyrecon/tasks/T31/verify_t31.py
+
+  commit 209c3084e082  [T31] evidence: cap nhat output phep kiem lich su tai head cuoi (3 commit)
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+
+  commit 683e31f35493  [T31] report: FIX_GROUP_B.md + cap nhat output phep kiem lich su
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+    OK    agents/bountyrecon/tasks/T31/FIX_GROUP_B.md
+
+  commit 81a56e4dd799  [T31] evidence: them phep kiem lich su (D-023 [2]) + sua 1 phep thu sai cua chin
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+    OK    agents/bountyrecon/tasks/T31/history_check_t31.py
+
+  commit 52e96eaa92ed  [T31] fix: don nhom B - RECON.md 5 dong + CANDIDATES.md §2 (0 xung dot hieu luc)
+    OK    agents/bountyrecon/tasks/T3/CANDIDATES.md
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+    OK    agents/bountyrecon/tasks/T31/verify_t31.py
+    OK    security/gitlab/RECON.md
+
+  => moi file bi cham nam trong danh sach CHO PHEP: True
+  CHO PHEP = 2 file sua + moi thu trong agents/bountyrecon/tasks/T31/
+  DANH SACH LOAI TRU (khong duoc xuat hien): T28/FIX_2B.md, T29/*, moi EVIDENCE/**
+  => file bi LOAI TRU bi cham: 0  
+     (T31/EVIDENCE/** la bang chung cua chinh T31 => HOP LE, da loai khoi phep thu)
+
+==============================================================================
+(B) CHUOI COMMIT DA CHAM security/gitlab/SCOPE.md — bam vung NGUYEN VAN moi commit
+==============================================================================
+so commit cham security/gitlab/SCOPE.md: 3
+
+  commit        parent        nguyen van (cha)    nguyen van (commit)  KET QUA
+  1b318ded14f3  9f73655d9f3e  05235b2a064277b4    05235b2a064277b4     GIONG HET
+  9f73655d9f3e  8006168b2f00  05235b2a064277b4    05235b2a064277b4     GIONG HET
+
+  => so commit da kiem: 2
+
+=== [A4] scope_github.md blob @ ecce293 ===
+15c946ff956a3fdb466f7f9768081af29b812088
+  khang dinh: 15c946ff956a3fdb466f7f9768081af29b812088
+
+=== [A3b] ecce293 doi nhung file nao? (co phai chi EVIDENCE khong?) ===
+ecce293 [T31] evidence: phep kiem lich su tai head 9455f89 (5 commit, tat ca trong danh sach cho phep)
+ agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+=== [A3c] LICH SU DAY DU 6d47749..ecce293 — MOI commit + file ===
+ecce293 [T31] evidence: phep kiem lich su tai head 9455f89 (5 commit, tat ca trong danh sach cho phep)
+agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+9455f89 [T31] fix: tu sua 1 cau SAI do chinh minh tao ra o dong 21 + doi chieu ve merge-base
+agents/bountyrecon/tasks/T3/CANDIDATES.md
+agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+agents/bountyrecon/tasks/T31/verify_t31.py
+209c308 [T31] evidence: cap nhat output phep kiem lich su tai head cuoi (3 commit)
+agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+683e31f [T31] report: FIX_GROUP_B.md + cap nhat output phep kiem lich su
+agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+agents/bountyrecon/tasks/T31/FIX_GROUP_B.md
+81a56e4 [T31] evidence: them phep kiem lich su (D-023 [2]) + sua 1 phep thu sai cua chinh no
+agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+agents/bountyrecon/tasks/T31/history_check_t31.py
+52e96ea [T31] fix: don nhom B - RECON.md 5 dong + CANDIDATES.md §2 (0 xung dot hieu luc)
+agents/bountyrecon/tasks/T3/CANDIDATES.md
+agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+agents/bountyrecon/tasks/T31/verify_t31.py
+security/gitlab/RECON.md
+
+=== [A3d] Dem lai: so commit chạm security/gitlab/SCOPE.md ===
+  trong 6d47749..ecce293: 0
+  trong TOAN BO lich su: 3
+1b318de [T29] fix: sua 3 dong con sot trong security/gitlab/SCOPE.md (dong 9/284/289)
+9f73655 [T28] fix: sua nhan §2b security/gitlab/SCOPE.md - 0 xung dot hieu luc + archived_at
+71f0bf8 [T3] scope: xac lap nguyen van scope 3 chuong trinh bounty cong khai (GitHub, Cloudflare, GitLab) + evidence tho
+
+  => history_check.txt ghi 'so commit cham SCOPE.md: 3' nhung CHI LIET KE 2 dong
+     va ket thuc bang 'so commit da kiem: 2'  => TU MAU THUAN trong bang chung cua chinh ho
+
+=== [A3e] history_check.txt ghi head=9455f89 nhung head that la ecce293 ===
+  head that: ecce293
+  evidence ghi: 9455f8932de7
+  => pham vi: ecce293 chi THEM file trong T31/EVIDENCE/ (xem A3b) => ket luan lich su van dung,
+     nhung bang chung KHONG chay tai head cuoi dung nghia.

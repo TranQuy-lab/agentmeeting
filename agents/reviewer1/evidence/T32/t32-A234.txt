@@ -1,0 +1,89 @@
+
+=== [A0] T31 doi nhung file nao? (merge-base) ===
+  merge-base = 6d47749ea54878ca0a8ef678efdb8087ea5d0622 (6d47749 [T0] log: merge dot cuoi (#74), ghi DISSENT-11 (Reviewer1 tu sua T14), D-023 (2 phep kiem moi), giao T31)
+M	agents/bountyrecon/tasks/T3/CANDIDATES.md
+A	agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+A	agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+A	agents/bountyrecon/tasks/T31/FIX_GROUP_B.md
+A	agents/bountyrecon/tasks/T31/history_check_t31.py
+A	agents/bountyrecon/tasks/T31/verify_t31.py
+M	security/gitlab/RECON.md
+
+=== [A0b] T31 co tai lieu bao cao nao? ===
+agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+agents/bountyrecon/tasks/T31/FIX_GROUP_B.md
+agents/bountyrecon/tasks/T31/history_check_t31.py
+agents/bountyrecon/tasks/T31/verify_t31.py
+
+=== [A2] KHOI PHUC: T31 co khai bao bam 2 quy uoc khong? ===
+54:### QUY ƯỚC RANH GIỚI (ghi rõ — Reviewer1 từng lệch 1 ký tự vì quy ước khác)
+55-
+56-```text
+57-* Tách file thành DÒNG bằng `str.splitlines()`  -> BỎ ký tự kết thúc dòng (\n, \r\n).
+58-* Một "VÙNG" = "\n".join(dòng_a .. dòng_b), 1-based, HAI ĐẦU ĐÓNG (inclusive),
+59-  KHÔNG có ký tự \n ở cuối vùng.
+60-* Vùng "đã sửa" xác định bằng difflib.SequenceMatcher (opcodes replace/delete/insert)
+61-  — KHÔNG đoán số dòng bằng tay.
+62:* ĐỂ TRIỆT TIÊU MỌI TRANH CÃI VỀ 1 KÝ TỰ: mỗi vùng được băm theo CẢ HAI quy ước
+63-      (A) KHÔNG \n ở cuối     (B) CÓ \n ở cuối
+64:  Nếu cả A và B đều khớp trước/sau  =>  kết luận KHÔNG phụ thuộc quy ước.
+65-```
+66-
+67-### Kết quả
+68-
+69-```text
+70-FILE security/gitlab/RECON.md   blob 5c088a23 -> 75f163cf   dong 213 -> 214
+71-  opcodes khac: replace 39..40 | replace 47..47 | replace 206..209 -> 206..210
+72-  VUNG KHONG DOI (A/B deu GIONG HET):
+73-    V0 dong 1..38     776ef897/776ef897   |  77d226b5/77d226b5
+74-    V1 dong 41..46    84baedad/84baedad   |  ff105a98/ff105a98
+75-    V2 dong 48..205   28f7abc2/28f7abc2   |  5efe5dea/5efe5dea
+76-    V3 dong 210..213  4e126826/4e126826   |  eb8682aa/eb8682aa
+77-
+78-FILE agents/bountyrecon/tasks/T3/CANDIDATES.md  blob 95d16d76 -> ac04b460  dong 118 -> 121
+79-  opcodes khac: 19 | 21 | 64 | 66..67 | 69->69..73 | 71..74 | 76..77 | 79..82
+80-  VUNG KHONG DOI (A/B deu GIONG HET):
+81-    V0 dong 1..18     5aa4af3d/5aa4af3d   |  1f90b9bf/1f90b9bf
+82-    V1 dong 20        e3b0c442/e3b0c442   |  01ba4719/01ba4719
+83-    V2 dong 22..63    91d499bd/91d499bd   |  2a0b7549/2a0b7549
+84-    V3 dong 65        e3b0c442/e3b0c442   |  01ba4719/01ba4719
+--
+92:KET LUAN: moi vung khong doi GIONG HET theo CA HAI quy uoc: True
+93-```
+94-(`e3b0c442…` = sha256 của chuỗi RỖNG — các vùng 1 dòng trống, đúng như dự kiến.)
+95-
+96----
+97-
+98-## 3. Bằng chứng thô — KIỂM THEO LỊCH SỬ, không chỉ 2 điểm (bịt kẽ hở K1)
+99-
+
+=== [A2b] TAI LAP BAM VUNG THEO CA HAI QUY UOC (script cua toi) ===
+=== security/gitlab/RECON.md ===
+  blob  ->   | dong 0 -> 0
+
+=== agents/bountyrecon/tasks/T3/CANDIDATES.md ===
+  blob  ->   | dong 0 -> 0
+
+
+  [ghi chu: lan chay truoc that bai vi shell khong o trong repo — loi cua toi, da sua]
+$ cd /home/noble-tran/agentmeeting-reviewer1 && python3 rv1_dual_region_hash.py
+=== security/gitlab/RECON.md ===
+  blob 5c088a23 -> 75f163cf  | dong 213 -> 214
+    V0 dong 1..38   A=776ef897  B=77d226b5
+    V1 dong 41..46   A=84baedad  B=ff105a98
+    V2 dong 48..205   A=28f7abc2  B=5efe5dea
+    V3 dong 210..213   A=4e126826  B=eb8682aa
+
+=== agents/bountyrecon/tasks/T3/CANDIDATES.md ===
+  blob 95d16d76 -> 095006ce  | dong 118 -> 121
+    V0 dong 1..18   A=5aa4af3d  B=1f90b9bf
+    V1 dong 20..20   A=e3b0c442  B=01ba4719 (chuoi RONG)
+    V2 dong 22..63   A=91d499bd  B=2a0b7549
+    V3 dong 65..65   A=e3b0c442  B=01ba4719 (chuoi RONG)
+    V4 dong 68..68   A=e3b0c442  B=01ba4719 (chuoi RONG)
+    V5 dong 70..70   A=4da1ec6f  B=831fe3c0
+    V6 dong 75..75   A=e3b0c442  B=01ba4719 (chuoi RONG)
+    V7 dong 78..78   A=e3b0c442  B=01ba4719 (chuoi RONG)
+    V8 dong 83..118   A=6dadecbe  B=cc2de093
+
