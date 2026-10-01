@@ -1,0 +1,131 @@
+# OUTPUT THO — ClientHello baseline (OpenSSL 3.0.13 / Python 3.12.3)
+# chay luc: 2026-10-01T16:06:05Z
+
+## capture_clienthello.py
+[
+  {
+    "label": "default (TLS1.2+1.3, no ALPN, no cache)",
+    "record_type": 22,
+    "record_len": 512,
+    "hs_type": 1,
+    "hs_len": 508,
+    "bytes_on_wire": 517
+  },
+  {
+    "label": "TLS1.3 only",
+    "record_type": 22,
+    "record_len": 220,
+    "hs_type": 1,
+    "hs_len": 216,
+    "bytes_on_wire": 225
+  },
+  {
+    "label": "TLS1.3 + ALPN h2,http/1.1",
+    "record_type": 22,
+    "record_len": 238,
+    "hs_type": 1,
+    "hs_len": 234,
+    "bytes_on_wire": 243
+  }
+]
+
+## parse_ch.py (mo cau truc)
+=== TLS1.3 only : 225 byte trên dây ===
+    hs_len=216 | session_id=32 | cipher_suites=8 B (4 suite) | ext_total=135 B / 9 ext
+      ext    11 ec_point_formats            4 B
+      ext    10 supported_groups           22 B
+      ext    35 session_ticket              0 B
+      ext    22 ?                           0 B
+      ext    23 extended_master_secret      0 B
+      ext    13 signature_algorithms       30 B
+      ext    43 supported_versions          3 B
+      ext    45 psk_key_exchange_modes      2 B
+      ext    51 key_share                  38 B
+
+=== TLS1.3 + ALPN : 225 byte trên dây ===
+    hs_len=216 | session_id=32 | cipher_suites=8 B (4 suite) | ext_total=135 B / 9 ext
+      ext    11 ec_point_formats            4 B
+      ext    10 supported_groups           22 B
+      ext    35 session_ticket              0 B
+      ext    22 ?                           0 B
+      ext    23 extended_master_secret      0 B
+      ext    13 signature_algorithms       30 B
+      ext    43 supported_versions          3 B
+      ext    45 psk_key_exchange_modes      2 B
+      ext    51 key_share                  38 B
+
+=== default TLS1.2+1.3 : 517 byte trên dây ===
+    hs_len=508 | session_id=32 | cipher_suites=62 B (31 suite) | ext_total=373 B / 10 ext
+      ext    11 ec_point_formats            4 B
+      ext    10 supported_groups           22 B
+      ext    35 session_ticket              0 B
+      ext    22 ?                           0 B
+      ext    23 extended_master_secret      0 B
+      ext    13 signature_algorithms       42 B
+      ext    43 supported_versions          5 B
+      ext    45 psk_key_exchange_modes      2 B
+      ext    51 key_share                  38 B
+      ext    21 padding                   220 B
+
+
+## pqc_compute.py
+=== 1. ClientHello: baseline ĐO ĐƯỢC vs bản PQC TỰ DỰNG ===
+cấu hình                            baseline     PQC   +byte    1440B(IPv6)  1460B(IPv4)
+tls13_only                               225    1453   +1228        VƯỢT 13          lọt
+default_12_13                            517    1745   +1228       VƯỢT 305     VƯỢT 285
+
+=== 2. Vì sao 'lọt/vượt' phụ thuộc cấu hình mạng (ngưỡng một gói TCP) ===
+  IPv4, không TS           MTU 1460  ->  ClientHello 1453 B : lọt
+  IPv4 + TCP timestamp     MTU 1448  ->  ClientHello 1453 B : VƯỢT 5 B
+  IPv6                     MTU 1440  ->  ClientHello 1453 B : VƯỢT 13 B
+  IPv6 + TS                MTU 1428  ->  ClientHello 1453 B : VƯỢT 25 B
+  đường hầm VPN            MTU 1400  ->  ClientHello 1453 B : VƯỢT 53 B
+
+=== 3. key_share của X25519MLKEM768 — cộng từ FIPS ===
+  ML-KEM-768 ek 1184 + X25519 32 = 1216 B payload
+  + 2B group + 2B length = 1220 B cho một entry key_share
+  so với entry X25519 thuần: 2+2+32 = 36 B
+  => một entry lai chiếm ~34 lần entry thuần
+
+=== 4. Chuỗi chứng thư mTLS 3 tầng — byte cho phần khoá CÔNG KHAI + CHỮ KÝ ===
+thuật toán       1 tầng (pk+sig)     3 tầng   so ECDSA P-256
+ECDSA P-256                  137        411             1.0x
+RSA-2048                     528       1584             3.9x
+ML-DSA-44                   3732      11196            27.2x
+ML-DSA-65                   5261      15783            38.4x
+ML-DSA-87                   7219      21657            52.7x
+  chênh lệch ML-DSA-65 vs ECDSA P-256 (3 tầng): 15372 byte
+
+## certs/gen.py (chuoi chung thu THAT)
+ecdsa_p256   root=  465  inter=  486  leaf=  501  TỔNG DER=  1452
+rsa2048      root=  855  inter=  876  leaf=  891  TỔNG DER=  2622
+rsa3072      root= 1111  inter= 1132  leaf= 1147  TỔNG DER=  3390
+
+DER của chuỗi 3 tầng (byte): {"ecdsa_p256": 1452, "rsa2048": 2622, "rsa3072": 3390}
+  ecdsa_p256: Public-Key: (256 bit)
+  rsa2048: Public-Key: (2048 bit)
+  rsa3072: Public-Key: (3072 bit)
+
+## certs/extrapolate.py
+=== overhead X.509 ĐO ĐƯỢC (cert_size - pk - sig) ===
+  ecdsa_p256   root= 328  inter= 349  leaf= 364
+  rsa2048      root= 327  inter= 348  leaf= 363
+  rsa3072      root= 305  inter= 326  leaf= 341
+  => overhead KHÁ ỔN ĐỊNH giữa 3 thuật toán ⇒ dùng mốc root=328 inter=349 leaf=364 để ngoại suy
+
+=== chuỗi 3 tầng (DER thật cho 3 dòng đầu; ngoại suy cho ML-DSA) ===
+thuật toán     root  inter   leaf   3 tầng  TLS Cert msg  gói TCP  so ECDSA
+ECDSA P-256     465    486    501     1452          1465        2      1.0x (ĐO)
+RSA-2048        856    877    892     2625          2638        2      1.8x (ĐO)
+RSA-3072       1134   1155   1170     3459          3472        3      2.4x (ĐO)
+ML-DSA-44      4060   4081   4096    12237         12250        9      8.4x (ngoại suy)
+ML-DSA-65      5589   5610   5625    16824         16837       12     11.6x (ngoại suy)
+ML-DSA-87      7547   7568   7583    22698         22711       16     15.6x (ngoại suy)
+
+=== kiểm chứng chéo: ngoại suy ECDSA/RSA có khớp số ĐO không? ===
+  ECDSA P-256  ĐO= 1452  NGOẠI SUY= 1452  lệch=  +0 B  (0.0%)
+  RSA-2048     ĐO= 2622  NGOẠI SUY= 2625  lệch=  +3 B  (0.1%)
+  RSA-3072     ĐO= 3390  NGOẠI SUY= 3459  lệch= +69 B  (2.0%)
+TLS1.3, không SNI, không ALPN : 225 B
+TLS1.3 + SNI 'localhost'      : 225 B  (server_name +18)
+TLS1.3 + ALPN h2,http/1.1     : 243 B  (ALPN +18)

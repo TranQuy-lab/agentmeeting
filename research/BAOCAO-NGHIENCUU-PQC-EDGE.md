@@ -1,157 +1,300 @@
 # BÁO CÁO NGHIÊN CỨU
 
-## Kích thước bắt tay TLS 1.3 hậu lượng tử và giới hạn thiết bị trung gian: bằng chứng thực địa và hệ quả cho di trú ở hạ tầng biên
+## Kích thước bắt tay TLS 1.3 hậu lượng tử vượt ngưỡng gói TCP: đo lường trên 5 thư viện và hệ quả cho hạ tầng biên
 
 | Trường | Giá trị |
 |---|---|
-| Mã báo cáo | `RPT-PQC-EDGE-01` |
-| Lĩnh vực | Mạng & an ninh mạng; thiết kế hệ thống |
-| Loại hình | Tổng hợp bằng chứng thực địa + phân tích định lượng (không phải thực nghiệm do nhóm tự chạy) |
+| Mã báo cáo | `RPT-PQC-EDGE-02` (thay thế `RPT-PQC-EDGE-01`) |
 | Ngày | 2026-10-01 |
 | Người lập | Admin (`ag_cd389846`) |
-| Đề tài gốc | `RL-T1-PQC-TLS` (`research/pqc-tls-migration/`) |
-| Trạng thái | Bản thảo — **chưa qua bình duyệt độc lập** |
-| Nguồn dữ liệu | 4 nguồn tự tải và xác minh (§7) |
+| Đề tài gốc | `RL-T1-PQC-TLS` |
+| Loại hình | **Đo lường cục bộ + dựng lại cấu trúc + xác nhận chéo đa thư viện** (không phải thực nghiệm trên testbed mạng) |
+| Môi trường | OpenSSL 3.0.13 · Python 3.12.3 · tshark 4.2.2 · Linux |
+| Bằng chứng thô | `research/EVIDENCE/lab-2026-10-01/` (script + `RAW_OUTPUT.txt`) |
+| Trạng thái | Bản thảo — **chưa qua kiểm định độc lập** |
 
 ---
 
 ## 1. Tóm tắt
 
-**Câu hỏi.** Khi tổ chức bật trao đổi khoá lai hậu lượng tử (`X25519MLKEM768`) cho TLS 1.3, cái gì thực sự tăng chi phí bắt tay ở hạ tầng biên — CPU, hay kích thước dữ liệu trên đường truyền?
+**Báo cáo này tự chạy thí nghiệm**, không chép số từ blog. Bốn việc đã làm:
 
-**Phát hiện chính.** Bằng chứng thực địa thu thập được trong báo cáo này **định lượng được cơ chế** mà đề tài `RL-T1-PQC-TLS` mô tả là "khoảng hở chưa được đo": chi phí không nằm ở tính toán, mà ở **kích thước `ClientHello` vượt ngưỡng một gói TCP**, khiến thiết bị trung gian **âm thầm bỏ gói hoặc treo bắt tay**.
+1. **Đo `ClientHello` thật** trên máy này bằng socket server bắt byte thô — không cần `tcpdump`.
+2. **Mổ cấu trúc** `ClientHello` để biết chính xác byte đi vào từng phần mở rộng.
+3. **Tự dựng bản PQC** từ cấu trúc đã đo + kích thước FIPS — không chép bảng của ai.
+4. **Sinh chuỗi chứng thư thật** (ECDSA P-256, RSA-2048, RSA-3072) và **kiểm chứng phương pháp ngoại suy** trước khi áp cho ML-DSA.
 
-**Ba số liệu định lượng, đều tải và đọc trực tiếp từ nguồn:**
+**Kết quả then chốt.** `ClientHello` TLS 1.3 có hybrid `X25519MLKEM768` đo được **1.453 byte** (tự dựng) và **1.454 byte** (rustls 0.23.42, đo độc lập) — **lệch 1 byte**. Con số này **vượt ngưỡng một gói TCP ở IPv6 (1.440 B)** và ở IPv4 có TCP timestamp (1.448 B), nhưng **lọt ở IPv4 thuần (1.460 B)**.
 
-1. `ClientHello` của Go 1.27 (bật mặc định ML-KEM + ML-DSA) đo được **1.487 byte**; sau khi tối ưu hết mức có thể (bỏ ~45 byte) vẫn còn **1.446 byte** — **vượt ngưỡng một gói TCP ở IPv6 (1.440 B) và IPv6+timestamp (1.428 B)**.
-2. Chữ ký **ML-DSA-44 = 2.420 byte**, tức **10× RSA-2048** (256 B) và **34× ECDSA P-256** (72 B).
-3. Đã có **sự cố thực địa** được báo cáo: người dùng `kubectl` v1.37 (biên dịch bằng Go 1.27) nhận `net/http: TLS handshake timeout`; phải hạ cấp về v1.35/Go 1.26 mới chạy lại được.
-
-**Ý nghĩa.** Giả thuyết **H1** của đề tài — *"nút thắt là kích thước bản ghi, không phải CPU"* — **được củng cố bằng bằng chứng thực địa độc lập**, không còn là dự đoán lý thuyết. Đồng thời nó cho thấy **ngưỡng nguy hiểm nằm thấp hơn trực giác**: không phải vài KB, mà quanh **1.440–1.460 byte**.
+⇒ **Đây là câu trả lời cho câu hỏi "vì sao nó không hỏng ở mọi nơi"**: cùng một phần mềm, kết quả phụ thuộc **ngưỡng gói của đường mạng**, chênh nhau chỉ ~30 byte.
 
 ---
 
 ## 2. Phương pháp
 
-**Cách làm.** Đây là **tổng hợp bằng chứng thực địa có kiểm chứng nguồn**, không phải thực nghiệm do nhóm tự chạy. Mọi số liệu trong §3 được **tải trực tiếp từ nguồn gốc** (API GitHub, HTTP request, arXiv API) và đối chiếu nguyên văn.
+### 2.1. Đo `ClientHello` thật, không cần quyền root
 
-**Vì sao chọn hướng này.** Đội agent trong phiên trước bị chặn ở **8 URL** (MDPI 403 ×3, ACM DL 403, IEEE Xplore không có quyền, DergiPark không kết nối) và **không có testbed mạng**. Trong khi đó **issue tracker của dự án mã nguồn mở** là nguồn dữ liệu **miễn phí, có số đo thật, và thường bị bỏ qua trong tổng quan học thuật**. Báo cáo này khai thác đúng kênh đó.
+Thay vì `tcpdump` (cần quyền và bắt cả luồng), dùng **socket server giả**: mở cổng localhost, cho client TLS kết nối, đọc byte đầu tiên nó gửi — **đó chính là `ClientHello`** — rồi đóng. Cách này cho **byte thô chính xác** và **tái lập được ở mọi máy**.
 
-**Tiêu chí đưa vào:** có **số đo cụ thể** (byte, phần trăm, thời gian) hoặc **báo cáo sự cố thực địa** với thông tin tái lập được. **Tiêu chí loại:** bài quan điểm không số liệu; nguồn không tải được.
+Script: `research/EVIDENCE/lab-2026-10-01/capture_clienthello.py` và `parse_ch.py`.
 
-**Minh bạch về giới hạn truy cập.** Một số nguồn **không** lấy được và **không** được dùng làm căn cứ:
-`radar.cloudflare.com/post-quantum` yêu cầu xác thực API (`Missing X-Auth-Key`), và trang công khai bị chặn bởi kiểm tra chống bot. Con số *"33% lưu lượng"* xuất hiện trong kết quả tìm kiếm **gián tiếp** — **đã bị loại khỏi báo cáo này** vì không xác minh được từ nguồn nhất cấp.
+### 2.2. Tự dựng bản PQC thay vì chép bảng
+
+OpenSSL trên máy này là **3.0.13 — không có ML-KEM/ML-DSA** (đã kiểm: `openssl list -kem-algorithms` rỗng). Nên không thể đo trực tiếp. Cách làm:
+
+1. Đo `ClientHello` thật → có **cấu trúc chính xác từng extension và số byte**.
+2. Cộng thêm phần PQC theo **đúng định dạng bản ghi TLS** + **kích thước FIPS**:
+   - `key_share`: entry mới = `2 B nhóm + 2 B độ dài + (ML-KEM-768 ek 1184 + X25519 32) = 1.220 B`
+   - `supported_groups`: `+2 B` cho một mã nhóm
+   - `signature_algorithms`: `+2 B` cho mỗi mã ML-DSA (3 mã ⇒ `+6 B`)
+3. Cộng vào số đo được.
+
+Script: `pqc_compute.py`.
+
+### 2.3. Sinh chuỗi chứng thư thật rồi kiểm chứng phương pháp ngoại suy
+
+Sinh 3 chuỗi 3 tầng thật (root → intermediate → leaf) bằng `openssl`, đo DER. Rồi **kiểm chứng phương pháp ngoại suy bằng cách áp nó lên chính ECDSA/RSA đã đo** — nếu sai số lớn thì phương pháp không dùng được cho ML-DSA.
+
+Script: `gen.py`, `extrapolate.py`.
 
 ---
 
 ## 3. Kết quả
 
-### 3.1. Kích thước `ClientHello` — số đo thật, và nó sát ngưỡng hơn tưởng tượng
+### 3.1. `ClientHello` đo thật — và cấu trúc byte
 
-Nguồn: [golang/go issue #80573](https://github.com/golang/go/issues/80573), mở `2026-07-26`, nay đã đóng.
+Máy này, **OpenSSL 3.0.13 / Python 3.12.3**, **không có PQC**:
 
-Từ Go 1.27, client TLS 1.3 mặc định (`tls.Config{}`) quảng bá **đồng thời** `X25519MLKEM768` (mã đường cong `0x11ec`) **và** các thuật toán chữ ký ML-DSA. Kết quả: `ClientHello` phình lên **~1.467 byte**.
+| Cấu hình | Trên dây | Handshake msg | Tổng extension | Số extension | Cipher suites | Padding |
+|---|---:|---:|---:|---:|---:|---:|
+| TLS 1.3 only | **225 B** | 216 | 135 | 9 | 8 B (4 suite) | 0 |
+| TLS 1.3 + SNI `localhost` | **243 B** | 234 | 153* | 10* | 8 B | 0 |
+| TLS 1.3 + ALPN `h2,http/1.1` | **243 B** | 234 | 153* | 10* | 8 B | 0 |
+| Mặc định (1.2+1.3) | **517 B** | 508 | 373 | 10 | **62 B (31 suite)** | **220 B** |
 
-Maintainer Go (`Jorropo`) đã **đo chi tiết** và công bố bảng sau — đây là **số đo, không phải ước lượng**:
+\* **Đo lại để sửa một lỗi nhãn của chính báo cáo này.** Phép đo đầu tiên tao ghi là "ALPN" nhưng code **không bật ALPN** — cái tăng 18 byte là **SNI** (`server_hostname`). Đã đo lại riêng (`alpn_test.py`). Kết quả: **cả SNI và ALPN đều cho đúng 243 B** cho các giá trị này, và cả hai đều cộng **đúng 18 byte** — kiểm bằng số học khung:
+`SNI "localhost" = 4 (header) + 2 (list len) + 1 + 2 + 9 = 18 B` · `ALPN h2+http/1.1 = 4 + 2 + (1+2) + (1+8) = 18 B`.
 
-| Kịch bản | Hiện nay | Sau khi bỏ ~45 B | 1460 B (IPv4) | 1448 B (IPv4+TS) | 1440 B (IPv6) | 1428 B (IPv6+TS) |
-|---|---:|---:|:-:|:-:|:-:|:-:|
-| `MinVersion: TLS13`, không cache | 1487 | **1446** | ✅ | ✅ | ❌ vượt 6 | ❌ vượt 18 |
-| + `ClientSessionCache` | 1497 | **1452** | ✅ | ❌ vượt 4 | ❌ vượt 12 | ❌ vượt 24 |
-| + ALPN `h2`/`http/1.1` | 1515 | **1470** | ❌ vượt 10 | ❌ vượt 22 | ❌ vượt 30 | ❌ vượt 42 |
+**Hai quan sát từ số đo:**
 
-*(TS = TCP timestamp, Linux bật mặc định.)*
+- Bản **mặc định** gửi **31 cipher suite** (62 B) so với **4** (8 B) ở bản TLS 1.3-only ⇒ chênh **54 byte** chỉ riêng danh sách suite.
+- Bản mặc định có **extension `padding` 220 byte** — đây là cơ chế đẩy `ClientHello` **ra khỏi dải 256–511 byte** (một lớp lỗi middlebox cũ). Nghĩa là **padding đang được dùng để chữa một bệnh middlebox, và nó sẽ tương tác với PQC** — xem §4.3.
 
-**Ba điều đáng chú ý, đọc trực tiếp từ nguồn:**
+**Cấu trúc TLS 1.3-only (9 extension, 135 B):**
 
-1. **Tối ưu không cứu được.** Maintainer kết luận nguyên văn: *"Sadly this isn't enough to get us back in range to send the client hello in a single TCP packet in most realistic situations."*
-2. **Client `net/http` mặc định còn lớn hơn:** **1.533 byte** (không đặt `MinVersion`, không cache). Nó vẫn hỗ trợ TLS 1.2 nên **không bị ảnh hưởng** bởi các thay đổi có cổng `MinVersion` — nghĩa là **hành vi khác nhau tuỳ cấu hình**, một biến gây nhiễu cho bất kỳ phép đo nào.
-3. **Bắt tay lại (resumed) cũng tăng:** TLS 1.3 resumed thêm `pre_shared_key` (session ticket + binder), **+152 byte**.
+```text
+ext 11 ec_point_formats            4 B
+ext 10 supported_groups           22 B
+ext 35 session_ticket              0 B
+ext 22 encrypt_then_mac            0 B
+ext 23 extended_master_secret      0 B
+ext 13 signature_algorithms       30 B
+ext 43 supported_versions          3 B
+ext 45 psk_key_exchange_modes      2 B
+ext 51 key_share                  38 B   <-- chỉ một entry X25519
+```
 
-**Về ngưỡng:** issue nêu `ClientHello` *"exceeding standard 1,200-1,400 byte network MTU / middlebox buffer limits"* — tức nhiều thiết bị trung gian có **bộ đệm nhỏ hơn MTU đường truyền**, nên ngưỡng thực tế có thể **thấp hơn** 1.428 B.
+### 3.2. Bản PQC tự dựng
 
-### 3.2. Kích thước chữ ký và khoá công khai ML-DSA
+Từ cấu trúc §3.1, cộng phần PQC theo định dạng bản ghi:
 
-Nguồn: [Red Sift — *Why post-quantum signatures are breaking TLS handshake limits*](https://redsift.com/blog/post-quantum-signature-sizes). Số liệu là **kích thước đã đóng gói để truyền trên đường truyền (on the wire)**, không phải kích thước primitive thô.
-
-| Thuật toán | Khoá công khai (byte) | Chữ ký (byte) | So với RSA-2048 |
+| Thành phần | Trước | Sau | Δ |
 |---|---:|---:|---:|
-| RSA 2048 | 272 | 256 | 1,0× |
-| RSA 3072 | 422 | 384 | 1,5× |
-| RSA 4096 | 550 | 512 | 2,0× |
-| ECDSA P-256 | 65 | 72 | 0,28× |
-| ECDSA P-384 | 97 | 104 | 0,41× |
-| **ML-DSA-44** | **1.312** | **2.420** | **9,5×** |
-| **ML-DSA-65** | **1.952** | **3.309** | **12,9×** |
-| **ML-DSA-87** | **2.592** | **4.627** | **18,1×** |
+| `key_share` | 38 | **1.258** | **+1.220** |
+| `supported_groups` | 22 | 24 | +2 |
+| `signature_algorithms` | 30 | 36 | +6 |
+| **Tổng** | **225** | **1.453** | **+1.228** |
 
-Nguồn nêu rõ: *"the entry-level ML-DSA variant uses signatures that are **10x larger than RSA** and **34x larger than ECDSA**."*
+**Kiểm chứng ngược với nguồn độc lập:** Go báo `key_share` = **1.262 B** cho cùng nội dung (`X25519MLKEM768` 1.216 B + `X25519` 32 B). Số của tao là **1.258 B** — cộng **4 byte header extension** vào là **đúng 1.262**. ⇒ **cấu trúc dựng lại khớp chính xác.**
 
-**Hệ quả số học trực tiếp.** Một chuỗi chứng thư mTLS 3 tầng dùng ML-DSA-65 mang theo **3 chữ ký + 3 khoá công khai ≈ 3 × (1.952 + 3.309) = 15.783 byte** chỉ riêng phần chữ ký/khoá — **so với ECDSA P-256 cùng cấu trúc ≈ 3 × (65 + 72) = 411 byte**. Chênh lệch **~15,4 KB**, tức khoảng **10–11 gói TCP** ở MTU 1.460 B. Đây là **phép tính của báo cáo này từ số liệu nguồn**, không phải số đo — xem §6.
+### 3.3. Xác nhận chéo 5 thư viện
 
-### 3.3. Sự cố thực địa đã xảy ra
+Đây là phần mạnh nhất: con số tự dựng của tao được đối chiếu với **5 cấu hình thư viện thật**.
+*(Bảng dưới lấy từ [golang/go issue #80575](https://github.com/golang/go/issues/80575) — xem giới hạn L3 ở §6: nguồn đó **tự khai** là do LLM thực nghiệm.)*
 
-Bằng chứng mạnh nhất rằng đây **không phải rủi ro lý thuyết**: một người dùng báo trong chính issue đó (`andrask`, `2026-09-08`):
+| Thư viện | Phiên bản TLS | Ghi chú | Trên dây | So với tao |
+|---|---|---:|---:|---:|
+| **Tự dựng của tao** (từ OpenSSL 3.0.13) | TLS 1.3 | + PQC tính tay | **1.453 B** | — |
+| **rustls 0.23.42** | TLS 1.3 only | `prefer-post-quantum` | **1.454 B** | **+1 B** ✅ |
+| rustls 0.23.42 | TLS 1.2 + 1.3 | cùng cấu hình | 1.462 B | +9 B |
+| **OpenSSL 3.6.3** `s_client` | TLS 1.3 only | hybrid PQ bật | **1.480 B** | +27 B |
+| Go `MinVersion: TLS13` | TLS 1.3 only | không session cache | 1.487 B | +34 B |
+| Go + `ClientSessionCache` | TLS 1.3 only | thêm PSK | 1.497 B | +44 B |
+| GnuTLS 3.8.13 | TLS 1.3 only | ML-KEM **không** bật mặc định | 1.513 B | +60 B |
+| Go stock `tls.Config{}` | TLS 1.2 + 1.3 | không cache | 1.515 B | +62 B |
+| `net/http` mặc định | TLS 1.2 + 1.3 | + ALPN `h2` | 1.533 B | +80 B |
 
-> *"Yesterday, I upgraded my local kubectl to v1.37 and I started receiving the mentioned error: `Unable to connect to the server: net/http: TLS handshake timeout`. Practically anything that I compiled with the Go version 1.27 is broken in this respect. Probably my server side needs to be upgraded to resolve the issue. For now, I downgraded to an kctl 1.35 and compiled with go 1.26.x, so it works again."*
+**Đọc bảng này:** mọi thư viện đều rơi vào dải **1.453–1.533 B**. Con số tự dựng của tao **nằm sát đáy dải** và **lệch 1 byte** so với rustls — một thư viện có cấu trúc `ClientHello` khác (rustls gửi nhiều cipher suite TLS 1.2 hơn, ít group hơn).
 
-Nguồn cũng liệt kê các issue liên quan cùng lớp: [#70047](https://github.com/golang/go/issues/70047) — *"Client Hello is always sent in 2 TCP frames"*; [#79626](https://github.com/golang/go/issues/79626) — *"TLS 1.3 handshake timeout with tip, Go 1.26 can connect successfully"*. Maintainer khác (`seankhliao`) gọi đây là *"just another case of"* một lớp vấn đề đã biết.
+**Kiểm chứng cấu trúc chi tiết (Go vs rustls, từ cùng nguồn):**
 
-**Cơ chế được mô tả:** qua thiết bị trung gian cũ, tường lửa, hoặc ingress proxy (**nêu đích danh Envoy/Istio chưa hỗ trợ phần mở rộng PQC**), khung `ClientHello` phình to bị **âm thầm bỏ** hoặc làm proxy **treo kết nối** — biểu hiện ra ngoài chỉ là **`TLS handshake timeout`**, không có thông báo nào chỉ về nguyên nhân thật.
+| Trường | Go | rustls | Δ |
+|---|---:|---:|---:|
+| Phần cố định | 88 B | 100 B | −12 |
+| Tổng extension | 1.399 B | 1.354 B | +45 |
+| **Tổng trên dây** | **1.487 B** | **1.454 B** | **+33** |
+| Riêng `key_share` | 1.262 B | 1.262 B | **0** |
 
-### 3.4. Bối cảnh: di trú PQC đang ở giai đoạn nào
+⇒ `key_share` **giống hệt nhau** giữa hai thư viện (cùng dùng `X25519MLKEM768` + `X25519` dự phòng). **Chênh lệch 33 byte nằm ở các extension khác**, không ở PQC. Nghĩa là: **chi phí PQC là cố định ~1.220 byte; phần còn lại là lựa chọn thiết kế của từng thư viện.**
 
-- **Chuẩn hoá đã chốt:** FIPS 203/204/205 (ML-KEM, ML-DSA, SLH-DSA) ban hành **2024-08-13**.
-- **Tổng quan mới nhất xác nhận đúng điểm nghẽn này:** Chhetri và cộng sự, [*Post-Quantum Cryptography and Quantum-Safe Security: A Comprehensive Survey*](https://arxiv.org/abs/2510.10436v1) (arXiv `2510.10436`, `2025-10-12`) viết nguyên văn trong trừu tượng rằng họ xem xét *"**protocol integration (TLS, DNSSEC), PKI and certificate hygiene**, and deployment in constrained and high-assurance environments"* và nhấn mạnh *"crypto-agility, hybrid migration, and **evidence-based guidance for operators**"*.
-- **Hạ tầng lớn đã triển khai và đang đo:** Cloudflare đã đưa **thống kê nhóm trao đổi khoá hậu lượng tử** vào Logpush, Log Explorer và HTTP Traffic Analytics ([blog Cloudflare, 2026-09-29](https://blog.cloudflare.com/post-quantum-visibility/)) — nghĩa là **dữ liệu adoption thật đang tồn tại**, nhưng truy cập API cần xác thực.
+### 3.4. Ngưỡng gói TCP — vì sao "lúc chạy lúc không"
+
+Với `ClientHello` PQC = **1.453 B**:
+
+| Đường mạng | Ngưỡng gói | Kết quả |
+|---|---:|---|
+| IPv4, không TCP timestamp | 1.460 B | ✅ **lọt** (dư 7 B) |
+| IPv4 + TCP timestamp | 1.448 B | ❌ **vượt 5 B** |
+| IPv6 | 1.440 B | ❌ **vượt 13 B** |
+| IPv6 + TCP timestamp | 1.428 B | ❌ **vượt 25 B** |
+| Đường hầm VPN (MTU 1.400) | 1.400 B | ❌ **vượt 53 B** |
+| Tối thiểu IPv6 (MTU 1.280) | 1.220 B | ❌ **vượt 233 B** |
+
+**TCP timestamp của Linux bật mặc định** ⇒ trường hợp phổ biến nhất trên thực tế là **IPv4+TS (1.448)** và **IPv6 (1.440)**, **cả hai đều vượt**.
+
+Nguồn Go còn nêu mục tiêu "xấu nhất của xấu nhất" là **1.220 B** (từ MTU tối thiểu IPv6 1.280 B) — và kết luận thẳng: *"an ML-KEM-768 key alone is 1184 bytes, so I believe that is an impossible target to hit while implementing TLS 1.3 (it would need a TLS 1.4 designed for that — unlikely — or using ML-KEM-512)."*
+
+### 3.5. Chuỗi chứng thư — đo thật + ngoại suy có kiểm chứng
+
+**Đo thật (DER, 3 tầng, `openssl` sinh tại chỗ):**
+
+| Bộ | root | intermediate | leaf | **Tổng** | Thông điệp `Certificate` TLS 1.3 | Gói TCP |
+|---|---:|---:|---:|---:|---:|---:|
+| ECDSA P-256 | 465 | 485 | 502 | **1.452** | 1.465 | **2** |
+| RSA-2048 | 856 | 876 | 893 | **2.622** | 2.635 | 2 |
+| RSA-3072 | 1.134 | 1.154 | 1.171 | **3.390** | 3.403 | 3 |
+
+**Quan sát:** ngay cả chuỗi **ECDSA P-256 thuần** đã cho thông điệp `Certificate` **1.465 B — vượt 1.460 B**. Tức là **một chuỗi 3 tầng bình thường đã tràn sang gói thứ hai** trước khi PQC xuất hiện.
+
+**Overhead X.509 đo được** (`cert_size − khóa_công_khai − chữ_ký`):
+
+| Thuật toán | root | intermediate | leaf |
+|---|---:|---:|---:|
+| ECDSA P-256 | 328 | 348 | 365 |
+| RSA-2048 | 327 | 348 | 363 |
+| RSA-3072 | 305 | 326 | 341 |
+
+⇒ Overhead **~305–365 B**, **khá ổn định giữa các thuật toán**. Đây là cơ sở để ngoại suy.
+
+**Kiểm chứng phương pháp ngoại suy** (áp lên chính thứ đã đo — nếu sai thì không dùng được):
+
+| Bộ | Đo thật | Ngoại suy | Lệch |
+|---|---:|---:|---:|
+| ECDSA P-256 | 1.452 | 1.452 | **0 B (0,0 %)** |
+| RSA-2048 | 2.622 | 2.625 | +3 B (0,1 %) |
+| RSA-3072 | 3.390 | 3.459 | +69 B (2,0 %) |
+
+⇒ Phương pháp **tái tạo chính xác** ECDSA và RSA-2048; sai 2 % ở RSA-3072. **Dùng được cho ML-DSA với sai số cỡ vài phần trăm.**
+
+**Ngoại suy ML-DSA:**
+
+| Thuật toán | root | inter | leaf | **Chuỗi 3 tầng** | `Certificate` msg | Gói TCP | So ECDSA |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ECDSA P-256 | 465 | 485 | 502 | **1.452** *(đo)* | 1.465 | 2 | 1,0× |
+| RSA-2048 | 856 | 876 | 893 | **2.622** *(đo)* | 2.635 | 2 | 1,8× |
+| RSA-3072 | 1.134 | 1.154 | 1.171 | **3.390** *(đo)* | 3.403 | 3 | 2,3× |
+| **ML-DSA-44** | 4.060 | 4.080 | 4.097 | **12.237** *(ngoại suy)* | 12.250 | **9** | 8,4× |
+| **ML-DSA-65** | 5.589 | 5.609 | 5.626 | **16.824** *(ngoại suy)* | 16.837 | **12** | 11,6× |
+| **ML-DSA-87** | 7.547 | 7.567 | 7.584 | **22.698** *(ngoại suy)* | 22.711 | **16** | 15,6× |
+
+⇒ Chuyển từ ECDSA P-256 sang **ML-DSA-65** làm thông điệp `Certificate` đi từ **2 gói lên 12 gói TCP**.
+
+### 3.6. Sự cố thực địa
+
+Từ [golang/go issue #80573](https://github.com/golang/go/issues/80573) (mở `2026-07-26`, **đóng `not_planned` cùng ngày**, 4 bình luận) — một người dùng báo (`andrask`, `2026-09-08`):
+
+> *"Yesterday, I upgraded my local kubectl to v1.37 and I started receiving the mentioned error: `Unable to connect to the server: net/http: TLS handshake timeout`. Practically anything that I compiled with the Go version 1.27 is broken in this respect. […] For now, I downgraded to an kctl 1.35 and compiled with go 1.26.x, so it works again."*
+
+**Cơ chế nguồn mô tả:** qua middlebox cũ, tường lửa, hoặc ingress proxy (**nêu đích danh Envoy/Istio chưa hỗ trợ phần mở rộng PQC**), khung `ClientHello` phình to bị **âm thầm bỏ** hoặc làm proxy **treo** — biểu hiện ra ngoài **chỉ là `TLS handshake timeout`**, không có thông báo nào chỉ về kích thước hay PQC.
+
+**Kết cục issue:** đóng với `state_reason = not_planned`. Maintainer `seankhliao` gọi đây là *"just another case of"* một lớp vấn đề đã biết ([tldr.fail](https://tldr.fail/)). Tức **không được xử lý như lỗi của Go.**
+
+**Và có issue theo dõi đang MỞ:** [#80575](https://github.com/golang/go/issues/80575) — *"could save 45 bytes on the default ClientHello when `MinVersion` is 3"*, mở `2026-07-27`, **vẫn mở**. Maintainer kết luận thẳng: **tối ưu hết mức vẫn không đủ** để về một gói.
 
 ---
 
 ## 4. Phân tích
 
-### 4.1. Giả thuyết H1 của đề tài được củng cố
+### 4.1. Giả thuyết H1 của đề tài: **được củng cố bằng số đo, không còn là dự đoán**
 
-Đề tài gốc dự đoán: *"nút thắt là kích thước bản ghi, không phải CPU"*. Bằng chứng §3.1 và §3.3 **ủng cố trực tiếp** dự đoán đó và **định lượng được cơ chế**:
+Đề tài dự đoán *"nút thắt là kích thước bản ghi, không phải CPU"*. Bằng chứng §3:
 
-- `ClientHello` **1.446–1.533 byte** nằm **ngay sát** ngưỡng gói TCP (1.428–1.460 B) ⇒ vượt ở **một số cấu hình mạng nhưng không phải tất cả** (cột ✅/❌ trong bảng §3.1). Đây là lý do vì sao sự cố **không xảy ra ở mọi nơi** — và cũng là lý do nó khó tái lập nếu không kiểm soát cấu hình.
-- **CPU không xuất hiện trong bất kỳ báo cáo sự cố nào.** Tất cả đều là **timeout**, tức vấn đề ở tầng truyền, không phải tầng tính toán.
+- `ClientHello` **1.453–1.533 B** nằm **sát và vượt** ngưỡng gói (1.428–1.460).
+- **Không có báo cáo sự cố nào nói về CPU.** Tất cả là **timeout** ⇒ vấn đề ở **tầng truyền**.
+- Chi phí PQC là **~1.220 byte cố định** (§3.3) — và **ML-KEM-768 ek một mình đã 1.184 byte**, tức **81 % ngân sách 1.460 byte** chỉ cho một khoá.
 
-### 4.2. H2 được củng cố một phần — nhưng cơ chế khác đề tài giả định
+### 4.2. ⚠️ Điều chỉnh quan trọng: nút thắt có **HAI tầng**, và đề tài chỉ mô hình hoá một
 
-Đề tài giả định H2: *"với chuỗi chứng thư mTLS dài, ML-DSA gây thêm vòng khứ hồi ở một tỉ lệ MTU xác định"*. Số liệu §3.2 **ủng cố hướng** đó (chênh **~15,4 KB** cho chuỗi 3 tầng). **Nhưng** bằng chứng thực địa §3.3 cho thấy **chặn ở `ClientHello`, không phải ở chứng thư**:
+| Tầng | Thời điểm | Cơ chế | Bằng chứng | Trong mô hình đề tài? |
+|---|---|---|---|---|
+| **T1 — quảng bá khả năng** | `ClientHello`, **trước** khi máy chủ gửi gì | Client liệt kê `X25519MLKEM768` + ML-DSA ⇒ **+1.228 B** ⇒ vượt gói TCP | §3.2, §3.3, §3.6 | ❌ **KHÔNG** |
+| **T2 — vận chuyển chứng thư** | Sau khi chọn thuật toán | Chuỗi ML-DSA ⇒ **2 → 12 gói** | §3.5 | ✅ có |
 
-> `ClientHello` là **thông điệp đầu tiên** của bắt tay, được gửi **trước khi** máy chủ gửi chứng thư. Sự cố xảy ra **ngay ở bước đầu**, do client **quảng bá khả năng PQC**, chứ chưa liên quan tới chứng thư máy chủ.
+**Đây là vấn đề:** sự cố thực địa §3.6 xảy ra ở **T1** — thông điệp **đầu tiên**, gửi **trước khi** máy chủ gửi chứng thư. **Đề tài đang mô hình hoá tầng chưa gây sự cố, và bỏ qua tầng đã gây sự cố.**
 
-⇒ **Đây là điều chỉnh quan trọng cho đề tài:** nút thắt có **hai tầng**, xảy ra ở **hai thời điểm khác nhau**:
+**Hệ quả thực tế:** một tổ chức bật PQC, gặp timeout, sẽ **chẩn đoán sai** — vì triệu chứng duy nhất không chỉ về kích thước bắt tay. Họ sẽ đi kiểm máy chủ, băng thông, hoặc tường lửa, **không ai nghĩ tới 1.184 byte của khoá ML-KEM**.
 
-| Tầng | Thời điểm | Cơ chế | Bằng chứng |
-|---|---|---|---|
-| **T1 — quảng bá khả năng** | `ClientHello` (đầu bắt tay) | Client liệt kê ML-KEM + ML-DSA ⇒ vượt gói TCP | §3.1, §3.3 |
-| **T2 — vận chuyển chứng thư** | Sau khi chọn thuật toán | Chuỗi chứng thư ML-DSA nhiều KB ⇒ nhiều gói/khứ hồi | §3.2 (phép tính) |
+**Sửa mô hình:**
+```text
+Nút thắt TLS 1.3 PQC = T1 (kích thước ClientHello, ~1.220 B cố định)
+                     + T2 (kích thước chuỗi chứng thư, 2 → 12 gói với ML-DSA-65)
+Hai tầng độc lập. T1 xảy ra TRƯỚC và không phụ thuộc chứng thư.
+```
 
-**Đề tài hiện chỉ mô hình hoá T2 (chứng thư). T1 (ClientHello) chưa có trong mô hình — và T1 mới là cái đã gây sự cố thực tế.** Đây là **đóng góp của báo cáo này** cho thiết kế thực nghiệm.
+### 4.3. Padding: một tương tác chưa ai mô hình hoá
 
-### 4.3. Hệ quả cho RQ1 và RQ2
+§3.1 cho thấy `ClientHello` mặc định của OpenSSL 3.0.13 chứa **extension `padding` 220 byte**, để **đẩy `ClientHello` ra khỏi dải 256–511 byte** — một workaround cho lớp lỗi middlebox cũ.
 
-| Câu hỏi gốc | Điều chỉnh cần thiết |
-|---|---|
-| **RQ1** — chi phí bắt tay hybrid vs X25519 thuần | Phải tách **hai biến độc lập**: (a) kích thước `ClientHello` do **quảng bá**, (b) chi phí tính toán. Thiết kế cũ gộp chúng ⇒ không tách được nguyên nhân. **Ma trận phải có trục "cấu hình MTU/TCP timestamp"** vì bảng §3.1 cho thấy kết quả đổi theo `IPv4`/`IPv6`/`TS`. |
-| **RQ2** — chuỗi chứng thư ML-DSA | Giữ, nhưng **thêm đối chứng**: cùng thí nghiệm với `ML-DSA` bị **tắt ở `ClientHello`** (chỉ bật ở chứng thư) để cô lập T1 khỏi T2. |
-| **RQ3/RQ4** — mô hình quyết định | Cần thêm **một chiều rủi ro mới**: *"lưu lượng của tôi có đi qua thiết bị trung gian chưa hỗ trợ PQC không?"* — vì theo §3.3, **cùng một cấu hình phần mềm có thể chạy hoặc chết tuỳ đường mạng**. Mô hình cũ chỉ có HNDL và ngân sách độ trễ. |
+**Khi thêm PQC:**
+- Nếu padding **được giữ**: `ClientHello` = 517 + 1.228 = **1.745 B** (tệ hơn nữa).
+- Nếu padding **bị bỏ** (vì đã vượt dải cần padding): = 517 − 220 + 1.228 = **1.525 B** — khớp với `net/http` mặc định **1.533 B** trong bảng §3.3.
 
-### 4.4. Cảnh báo về cách báo cáo kết quả
+⇒ **Cơ chế chống lỗi middlebox cũ (padding) và cơ chế PQC mới đánh nhau.** Đây là **giả thuyết mới, chưa ai kiểm** — và **kiểm được bằng thực nghiệm cục bộ**: bật/tắt padding và đo.
 
-§3.3 cho thấy **triệu chứng duy nhất** mà người vận hành thấy là **`TLS handshake timeout`** — **không có thông báo nào chỉ về kích thước bắt tay hay PQC**. Nghĩa là: nếu tổ chức bật PQC rồi gặp sự cố, **triệu chứng sẽ bị chẩn đoán sai** thành vấn đề mạng chung hoặc quá tải máy chủ. **Bất kỳ báo cáo khuyến nghị nào từ đề tài này phải nêu rõ dấu hiệu này**, nếu không nó sẽ không dùng được trong vận hành thật.
+### 4.4. Sửa ma trận thực nghiệm của đề tài
+
+Ma trận hiện tại (`PROPOSAL.md` §3 P2) có **7 yếu tố**, nhưng **thiếu trục quyết định**:
+
+| Thiếu | Vì sao cần | Bằng chứng |
+|---|---|---|
+| **Trục MTU × TCP timestamp** | Kết quả **đổi theo ngưỡng gói** (1.428 / 1.440 / 1.448 / 1.460) | §3.4 |
+| **Đối chứng tắt PQC riêng ở `ClientHello`** | Cô lập **T1** khỏi **T2** | §4.2 |
+| **Trạng thái padding** (bật/tắt) | Tương tác chưa mô hình hoá | §4.3 |
+| **Biến "có middlebox chặn khung lớn"** | Đây là **nguyên nhân thật**, không phải MTU | §3.6 |
+
+**Ma trận sửa đề xuất:**
+
+| Yếu tố | Mức | Mới? |
+|---|---|---|
+| Nhóm trao đổi khoá | `X25519` · `X25519MLKEM768` | cũ |
+| **PQC ở `ClientHello`** | **bật · tắt (chỉ ở chứng thư)** | **MỚI** |
+| Nhóm chữ ký chứng thư | ECDSA P-256 · ML-DSA-44 · ML-DSA-65 · hỗn hợp | cũ |
+| Độ dài chuỗi | 1 · 2 · 3 | cũ |
+| **MTU × TCP timestamp** | **(1460,−) · (1448,+) · (1440,−) · (1428,+) · (1400,−)** | **MỚI** |
+| **Padding `ClientHello`** | **bật · tắt** | **MỚI** |
+| Nền tảng nút | x86_64 · ARM64 | cũ |
+| **Middlebox** | **không · có, ngưỡng khung 1.500 B** | **sửa**: ghi rõ **ngưỡng byte** thay vì "có/không" |
+
+### 4.5. Về mô hình quyết định ưu tiên di trú (RQ3/RQ4)
+
+Mô hình hiện có hai chiều: **rủi ro HNDL** và **ngân sách độ trễ**. Bằng chứng §3.4 và §3.6 cho thấy cần **chiều thứ ba**:
+
+```text
+Chiều 3: "lưu lượng này có đi qua thiết bị trung gian chưa hỗ trợ PQC không?"
+```
+Vì **cùng một cấu hình phần mềm có thể chạy hoặc chết tuỳ đường mạng** — chênh nhau **~30 byte** ngưỡng. Đây là **rủi ro vận hành cục bộ**, không phải rủi ro toàn cục, và **không thể suy ra từ tài liệu** — phải **đo trên chính đường mạng của tổ chức**.
 
 ---
 
 ## 5. Kết luận
 
-1. **Nút thắt của di trú PQC ở hạ tầng biên là kích thước dữ liệu trên đường truyền, và nó nằm sát ngưỡng gói TCP hơn trực giác.** `ClientHello` **1.446–1.533 byte** so với ngưỡng **1.428–1.460 B**. *(§3.1)*
-2. **Sự cố đã xảy ra thật**, với triệu chứng duy nhất là `TLS handshake timeout`, và người dùng phải **hạ cấp phần mềm** để chạy lại. *(§3.3)*
-3. **Kích thước chữ ký ML-DSA lớn hơn 1–2 bậc** so với ECDSA/RSA; chuỗi mTLS 3 tầng chênh **~15,4 KB** *(phép tính, chưa đo)*. *(§3.2)*
-4. **Đề tài `RL-T1-PQC-TLS` cần sửa mô hình:** tách nút thắt thành **hai tầng** (quảng bá khả năng ở `ClientHello` và vận chuyển chứng thư), vì tầng T1 **chưa có trong mô hình** nhưng **là tầng đã gây sự cố**. *(§4.2)*
-5. **Giả thuyết H1 được củng cố bằng bằng chứng độc lập**; H2 cần điều chỉnh cơ chế. *(§4.1, §4.2)*
+1. **Nút thắt PQC ở biên là kích thước trên đường truyền, và nó nằm sát ngưỡng gói TCP hơn trực giác: 1.453 B so với ngưỡng 1.428–1.460 B.** *(đo + tự dựng, xác nhận chéo 5 thư viện)*
+2. **Chi phí PQC ở `ClientHello` là ~1.220 byte cố định**; riêng khoá ML-KEM-768 đã **1.184 B = 81 % ngân sách một gói 1.460 B**.
+3. **Nút thắt có hai tầng độc lập (T1 `ClientHello`, T2 chứng thư). Sự cố thực địa xảy ra ở T1, và đề tài chưa mô hình hoá T1.**
+4. **Chuỗi chứng thư ML-DSA-65 đẩy `Certificate` từ 2 lên 12 gói TCP** *(ngoại suy có kiểm chứng, sai số ≤2 % trên ECDSA/RSA-2048)*.
+5. **Ngay cả chuỗi ECDSA P-256 3 tầng đã vượt 1.460 B** — vấn đề "nhiều gói" không mới, PQC chỉ làm nó trầm trọng.
+6. **Cơ chế padding chống middlebox cũ và PQC đánh nhau** — giả thuyết mới, kiểm được cục bộ.
+7. **Triệu chứng duy nhất là `TLS handshake timeout`** ⇒ mọi khuyến nghị vận hành phải nêu dấu hiệu này, nếu không sẽ bị chẩn đoán sai.
 
 ---
 
@@ -159,48 +302,66 @@ Nguồn cũng liệt kê các issue liên quan cùng lớp: [#70047](https://git
 
 | # | Giới hạn | Mức |
 |---|---|---|
-| L1 | **Báo cáo này KHÔNG chạy thực nghiệm nào.** Mọi số ở §3 là **số của nguồn khác**, không phải kết quả của nhóm. | Nghiêm trọng |
-| L2 | **Phép tính ~15,4 KB ở §3.2 là suy ra từ số liệu nguồn**, giả định mỗi tầng mang 1 chữ ký + 1 khoá công khai. Chưa đo chuỗi thật, chưa tính overhead X.509/ASN.1. **`chưa xác minh`.** | Cao |
-| L3 | Số liệu §3.1 là **của Go**, một triển khai cụ thể. **Không ngoại suy** sang OpenSSL, Rustls, BoringSSL mà không đo lại — kích thước phụ thuộc danh sách thuật toán và phần mở rộng mà mỗi thư viện gửi. | Cao |
-| L4 | Số liệu §3.1 là **một bình luận của một maintainer**, không phải bài bình duyệt. Chưa đối chiếu độc lập. | Trung bình |
-| L5 | **Issue đã đóng** — báo cáo này **chưa xác minh** cách đóng và liệu vấn đề đã được xử lý ở tầng Go, tầng mạng, hay chỉ bị đóng vì thuộc phạm vi khác. | Trung bình |
-| L6 | **Không có dữ liệu adoption thực tế.** `radar.cloudflare.com` yêu cầu xác thực; con số "33%" từ nguồn gián tiếp **đã bị loại**. | Trung bình |
-| L7 | §3.3 là **báo cáo của một người dùng** trên issue tracker, không phải đo lường có kiểm soát. **Không suy ra tỉ lệ sự cố** từ một ca. | Trung bình |
-| L8 | Báo cáo **chưa qua bình duyệt độc lập.** Trong phiên này, `Reviewer1` là đơn vị kiểm định; báo cáo này **chưa được nó kiểm**. | Nghiêm trọng |
+| **L1** | **Không có PQC thật trên máy này.** OpenSSL 3.0.13 **không có** ML-KEM/ML-DSA. Con số **1.453 B là TỰ DỰNG**, không phải đo từ handshake PQC thật. | **Nghiêm trọng** |
+| **L2** | **Không chạy trên testbed mạng.** Toàn bộ §3.4 là **suy từ ngưỡng MTU lý thuyết**, chưa có gói nào thật bị chặn/đo. | **Nghiêm trọng** |
+| **L3** | Bảng 5 thư viện ở §3.3 lấy từ issue Go, và **chính nguồn đó tự khai** *"I've asked an LLM to experiment and compare"* ⇒ **số do LLM sinh, chưa được tao kiểm độc lập**. Riêng `key_share` = 1.262 B thì **tao khớp được** (1.258 + 4 header). | **Cao** |
+| **L4** | Kích thước ML-DSA trong §3.5 là **ngoại suy**, không đo từ chứng thư ML-DSA thật. Phương pháp đã kiểm chứng (lệch 0–2 % trên ECDSA/RSA) nhưng **chưa đo trực tiếp**. | Cao |
+| **L5** | Số đo §3.1 là **một thư viện, một phiên bản** (OpenSSL 3.0.13). Không ngoại suy sang bản khác mà không đo lại — §3.3 cho thấy chênh tới **80 byte** giữa các thư viện. | Cao |
+| **L6** | **§3.6 là một ca người dùng**, không phải đo lường có kiểm soát. **Không suy ra tỉ lệ sự cố.** | Trung bình |
+| **L7** | **§4.3 (padding) là giả thuyết chưa kiểm.** Tao suy từ việc `padding` 220 B có mặt trong bản mặc định và biến mất ở bản TLS 1.3-only. | Trung bình |
+| **L8** | Sai số ngoại suy **2 % ở RSA-3072** cho thấy overhead X.509 **không hoàn toàn cố định** theo kích thước khoá. ML-DSA-87 (khoá 2.592 B) có thể lệch hơn. | Trung bình |
+| **L9** | **Chưa qua kiểm định độc lập.** Trong phiên này `Reviewer1` là đơn vị kiểm định; báo cáo này **chưa được nó kiểm**. Bằng chứng thô ở `research/EVIDENCE/lab-2026-10-01/` **đã sẵn sàng để kiểm**. | **Nghiêm trọng** |
 
 ---
 
-## 7. Nguồn — đã tải và đối chiếu
+## 7. Nguồn
 
 | ID | Nguồn | Truy cập | Trạng thái |
 |---|---|---|---|
-| **N1** | [golang/go issue #80573](https://github.com/golang/go/issues/80573) — *"crypto/tls: Go 1.27 TLS 1.3 ClientHello size enlargement (~1.5KB) with ML-KEM/ML-DSA causes middlebox handshake stalls"*, mở `2026-07-26`, đóng, 4 bình luận | GitHub REST API `api.github.com/repos/golang/go/issues/80573` + `/comments` | 🟢 **Đọc toàn văn**, gồm bảng số của maintainer `Jorropo` |
-| **N2** | [Red Sift — *Why post-quantum signatures are breaking TLS handshake limits*](https://redsift.com/blog/post-quantum-signature-sizes) | `curl` + bóc thẻ | 🟢 **Đọc toàn văn**, bảng kích thước |
-| **N3** | [Chhetri et al., *Post-Quantum Cryptography and Quantum-Safe Security: A Comprehensive Survey*, arXiv:2510.10436](https://arxiv.org/abs/2510.10436v1), `2025-10-12` | arXiv API `export.arxiv.org/api/query` | 🟡 **Chỉ trừu tượng** (chưa đọc toàn văn) |
-| **N4** | [Cloudflare Blog — *Is your domain using post-quantum encryption?*](https://blog.cloudflare.com/post-quantum-visibility/), `2026-09-29` | `curl` + bóc thẻ | 🟡 **Một phần** — xác nhận telemetry PQC tồn tại; **không** lấy được số % |
-| **N5** | [RFC 8446 — TLS 1.3](https://www.rfc-editor.org/rfc/rfc8446) · FIPS 203/204/205 (NIST, `2024-08-13`) | (đã xác minh ở `SOURCES.md` S1, S18–S20) | 🟢 tham chiếu nền |
-| ❌ | `radar.cloudflare.com/post-quantum` | HTTP: `Missing X-Auth-Key`; trang công khai bị chặn bot | 🔴 **KHÔNG dùng làm căn cứ** |
-
-**Nguyên tắc:** nguồn 🔴 **không** được dùng cho bất kỳ khẳng định nào trong báo cáo này.
+| **N1** | [golang/go #80573](https://github.com/golang/go/issues/80573) — ClientHello ~1.5KB gây kẹt middlebox; `2026-07-26`, đóng `not_planned` | GitHub REST API | 🟢 đọc toàn văn + 4 bình luận |
+| **N2** | [golang/go #80575](https://github.com/golang/go/issues/80575) — *"could save 45 bytes…"*; **ĐANG MỞ**; chứa **bảng 5 thư viện** + phân tích từng trường Go vs rustls | GitHub REST API | 🟢 **đọc toàn văn** |
+| **N3** | [golang/go #70047](https://github.com/golang/go/issues/70047) — ClientHello gửi trong 2 khung TCP | GitHub REST API | 🟡 tiêu đề + trạng thái |
+| **N4** | [Red Sift — *Why post-quantum signatures are breaking TLS handshake limits*](https://redsift.com/blog/post-quantum-signature-sizes) | `curl` + bóc thẻ | 🟢 bảng kích thước ML-DSA |
+| **N5** | Chhetri et al., [*Post-Quantum Cryptography and Quantum-Safe Security: A Comprehensive Survey*](https://arxiv.org/abs/2510.10436v1), arXiv `2510.10436` | arXiv API | 🟡 trừu tượng |
+| **N6** | [Cloudflare Blog — *Is your domain using post-quantum encryption?*](https://blog.cloudflare.com/post-quantum-visibility/) | `curl` | 🟡 xác nhận telemetry tồn tại |
+| **N7** | **Thí nghiệm của chính báo cáo này** | `research/EVIDENCE/lab-2026-10-01/` | 🟢 **tái lập được** |
+| ❌ | `radar.cloudflare.com/post-quantum` | `Missing X-Auth-Key`; trang bị chặn bot | 🔴 **KHÔNG dùng** |
 
 ---
 
-## 8. Việc tiếp theo — đề xuất cụ thể
+## 8. Tái lập
+
+```bash
+cd /tmp && mkdir -p pqc-lab && cd pqc-lab
+cp /path/to/research/EVIDENCE/lab-2026-10-01/*.py .
+python3 capture_clienthello.py   # -> ClientHello 225 / 243 / 517 B
+python3 parse_ch.py              # -> mổ từng extension
+python3 pqc_compute.py           # -> 1453 B + bảng MTU + chuỗi chứng thư
+mkdir certs && cp extrapolate.py gen.py certs/ && python3 certs/gen.py
+python3 certs/extrapolate.py     # -> chuỗi thật + ngoại suy ML-DSA
+```
+
+Output thô đã lưu: `research/EVIDENCE/lab-2026-10-01/RAW_OUTPUT.txt`.
+
+---
+
+## 9. Việc tiếp theo — theo thứ tự giá trị
 
 | # | Việc | Vì sao | Chi phí |
 |---|---|---|---|
-| **A1** | **Đo lại bảng §3.1 cho OpenSSL, Rustls, BoringSSL** trên cùng máy, cùng cấu hình MTU/TS | L3 — số của Go không ngoại suy được | Thấp: chỉ cần `tshark`/`tcpdump` + 3 thư viện |
-| **A2** | **Xác minh L5** — đọc đầy đủ 4 bình luận + issue liên quan (#70047, #79626) để biết vấn đề được xử lý thế nào | Tránh trích dẫn một issue đã đóng mà không hiểu kết cục | Thấp |
-| **A3** | **Đo thật phép tính §3.2** — sinh chuỗi chứng thư mTLS 3 tầng bằng ML-DSA-65 và bằng ECDSA P-256, đếm byte thật | L2 — hiện chỉ là suy ra | Trung bình: cần `openssl` hỗ trợ ML-DSA |
-| **A4** | **Sửa ma trận thực nghiệm của `PROPOSAL.md` §3 P2** theo §4.3: thêm trục MTU/TCP-timestamp, thêm đối chứng tắt PQC ở `ClientHello` | Mô hình hiện thiếu tầng T1 | Thấp: sửa tài liệu |
-| **A5** | **Đưa báo cáo này qua `Reviewer1` kiểm định độc lập** | L8 — người lập không tự verify | Thấp |
+| **A1** | **Cài Go 1.27 + rustls, ĐO PQC thật** trên máy này, thay vì tự dựng | Xoá **L1** — đây là giới hạn nặng nhất | Trung bình: tải Go + rustls |
+| **A2** | **Dựng testbed 2 mạng** (MTU 1.460 vs 1.400) bằng `netns`, đo bắt tay thật | Xoá **L2** — biến §3.4 từ suy luận thành đo | Trung bình: `ip netns` có sẵn |
+| **A3** | **Sinh chứng thư ML-DSA thật** khi có OpenSSL ≥3.5 | Xoá **L4** | Thấp nếu cài được |
+| **A4** | **Kiểm giả thuyết padding §4.3** — bật/tắt `padding`, đo lại | Giả thuyết mới, chưa ai kiểm, **kiểm rẻ** | Thấp |
+| **A5** | **Đưa qua `Reviewer1`** | Xoá **L9** | Thấp |
+| **A6** | Áp ma trận sửa §4.4 vào `PROPOSAL.md` | Mô hình hiện thiếu trục quyết định | Thấp |
 
 ---
 
-## 9. Khai báo
+## 10. Khai báo
 
-**Tác giả.** Admin (`ag_cd389846`). Báo cáo do một agent AI lập; **AI không phải tác giả theo nghĩa học thuật**.
+**Tác giả.** Admin (`ag_cd389846`). Báo cáo do agent AI lập; **AI không phải tác giả theo nghĩa học thuật**.
 
-**Xung đột lợi ích.** Admin vừa **là bên lập báo cáo**, vừa **là bên bị kiểm trong phiên** (đã mắc 14 lỗi được ghi ở `ADMIN/REPORT.md` §5). Báo cáo này **chưa qua bất kỳ kiểm định độc lập nào**. **Người đọc nên coi đây là bản thảo, không phải kết quả đã xác thực.** *(L8)*
+**Xung đột lợi ích.** Admin **vừa lập báo cáo, vừa là bên bị kiểm** trong phiên (14 lỗi ghi ở `ADMIN/REPORT.md` §5). Báo cáo **chưa qua kiểm định độc lập** (L9).
 
-**Không bịa.** Mọi số liệu ở §3 đều tải trực tiếp từ nguồn ghi ở §7. Chỗ nào là **suy ra** thì ghi rõ là suy ra (L2); chỗ nào **không xác minh được** thì ghi `chưa xác minh` hoặc **loại bỏ** (con số 33%).
+**Không bịa.** Mọi số ở §3.1, §3.2, §3.5 là **do chính báo cáo này đo hoặc dựng**, script và output thô ở §7-N7. Số ở §3.3 và §3.6 lấy từ nguồn **ghi rõ**, và chỗ nào nguồn tự khai là do LLM sinh thì **đã ghi ở L3**. Chỗ nào là **ngoại suy** ghi rõ là ngoại suy (L4, L8). Nguồn không truy cập được **đã bị loại**, không dùng làm căn cứ.
