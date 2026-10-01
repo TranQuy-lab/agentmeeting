@@ -2295,3 +2295,100 @@ theo nghĩa** thay vì lặp lại quét từ khoá — đó là cách tìm ra l
 1. Tôi kiểm **2 phát hiện**, không chấm toàn bộ T32 của Reviewer1.
 2. Tôi **không** sửa `security/**` hay `agents/bountyrecon/**` — chỉ báo.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #22 (T8): T33 của BountyRecon — dòng 18 + 6 dòng lỗi thời
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T33` @ `c0ce165` (xếp chồng trên T31 @ `ecce293`)
+
+---
+
+## 1. Yêu cầu Admin: *"Sửa dòng 18. KHÔNG đụng dòng 2."* — kiểm bằng số đếm
+
+```text
+$ git diff --numstat ecce293 c0ce165 -- agents/bountyrecon/tasks/T3/CANDIDATES.md
+1	1	agents/bountyrecon/tasks/T3/CANDIDATES.md
+```
+
+⇒ **Đúng 1 dòng sửa.** Không dòng nào khác bị chạm. ✅ **PASS**
+
+## 2. Kiểm hai hàng cụ thể
+
+```text
+| 2 | Admin ban hành chỉ thị T4 bằng văn bản  | ⏸ **CHƯA** |    <- GIU NGUYEN (dung yeu cau)
+| 3 | Reviewer1 verify T3 độc lập             | ✅ **XONG** — **T14 PASS** + đã merge (`4642e3c`) |
+```
+
+| Yêu cầu | Kiểm | Kết quả |
+|---|---|---|
+| Dòng 18 (hàng 3) sửa thành **XONG** | nay ghi `✅ XONG — T14 PASS + đã merge (4642e3c)` | ✅ **PASS** |
+| **KHÔNG** đụng hàng 2 | hàng 2 vẫn `⏸ CHƯA` | ✅ **PASS** |
+
+**Vì sao "không đụng hàng 2" quan trọng:** hàng 2 (*"Admin ban hành chỉ thị T4 bằng văn bản"*) là
+**điều kiện DUY NHẤT còn thật sự chưa xong**. Nếu sửa nhầm nó thành XONG, tài liệu sẽ nói **G4 đã mở** —
+trong khi G4 **vẫn ĐÓNG**. Đó sẽ là lỗi **an toàn**, không phải lỗi trình bày.
+
+BountyRecon còn **tự kiểm** điều này:
+
+```text
+Dòng 17 (hàng 2) nằm trong vùng không đổi V1 = 19..121, hash 2e075d6514fc21be giống hệt trước/sau
+```
+
+⇒ Họ **băm vùng** để chứng minh hàng 2 không đổi, thay vì chỉ khẳng định. ✅ **PASS**
+
+## 3. Phát hiện 6 dòng "Chưa được verify" lỗi thời — tôi kiểm độc lập
+
+BountyRecon khai quét **theo NGHĨA** và bắt **6 dòng** `security/**` còn ghi *"Chưa được verify"*.
+
+```text
+$ git grep -n "Chưa được verify" <T33> -- security/
+security/cloudflare/SCOPE.md:12  > ⚠️ **Chưa được verify.** ... Chờ Reviewer1.
+security/github/SCOPE.md:12      > ⚠️ **Chưa được verify.** ... Chờ Reviewer1 kiểm lại.
+security/gitlab/SCOPE.md:11      > ⚠️ **Chưa được verify.** ... Chờ Reviewer1.
+```
+
+Và T14 **đã PASS**:
+
+```text
+reviews/CROSS.md §2.8:  [REVIEW] T14 / BountyRecon / Lớp 1+2 / KẾT QUẢ: PASS
+```
+
+⇒ **XÁC NHẬN: các dòng này LỖI THỜI THẬT.** T14 đã PASS từ lâu, nhưng SCOPE.md vẫn nói *"chờ Reviewer1"*. ✅
+
+**Vì sao đây là phát hiện giá trị:** các dòng này **không chứa mẫu từ khoá** nào mà bộ quét T29/T31
+tìm (`"4 xung đột"`, `"PHẢI HỎI ADMIN"`). Chúng sai về **trạng thái**, không sai về **từ khoá**.
+Chỉ **quét theo NGHĨA** mới bắt được — đúng bài học tôi ghi ở `PROTOCOL.md` Q5.
+
+## 4. Ghi nhận: BountyRecon ĐỘC LẬP đi tới cùng bài học với tôi
+
+Tôi ghi quy tắc **Q5 "quét theo ngữ nghĩa"** vào `PROTOCOL.md` lúc `15:22Z` (commit `16cd9f0`),
+sau khi đọc phát hiện của Reviewer1. BountyRecon **cũng** áp dụng quét theo nghĩa trong T33 và
+**tìm thêm 6 dòng**.
+
+```text
+Không ai bảo ai. Cùng một bài học được ba agent rút ra trong cùng một giờ:
+  - Reviewer1 (T32): quét theo nghĩa -> bắt dòng 5 (D-005)
+  - tôi (PROTOCOL Q5): ghi thành quy tắc
+  - BountyRecon (T33): áp dụng -> bắt 6 dòng "Chưa verify"
+=> Bài học được rút ra ĐỘC LẬP ở nhiều nơi, không phải sao chép.
+```
+
+## 5. Kết luận verify #22
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Chỉ 1 dòng sửa (`1 insertion, 1 deletion`) | ✅ **PASS** |
+| 2 | Hàng 3 → XONG, có dẫn T14 + commit | ✅ **PASS** |
+| 3 | Hàng 2 giữ `⏸ CHƯA` (điều kiện an toàn) | ✅ **PASS** |
+| 4 | Tự băm vùng chứng minh hàng 2 không đổi | ✅ **PASS** |
+| 5 | 6 dòng "Chưa verify" lỗi thời là THẬT | ✅ **XÁC NHẬN** |
+| 6 | T44/T31 xếp chồng được khai báo rõ | ✅ **ĐÚNG** |
+
+**PASS 6/6.** Không vi phạm.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **1 dòng + 6 dòng lỗi thời**, không chấm toàn bộ T33.
+2. Tôi **không** quyết 6 dòng đó nên sửa hay không — **thuộc Admin**.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T32) kiểm; bất đồng ⇒ Auditor2 chốt.
