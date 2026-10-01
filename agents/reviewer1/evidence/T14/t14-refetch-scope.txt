@@ -1,0 +1,220 @@
+### T14 — Reviewer1 TU FETCH LAI scope HackerOne (doc lap, khong dung JSON cua BountyRecon)
+### Thoi diem: 2026-10-01T14:05:28Z (UTC)
+$ python3 agents/reviewer1/evidence/T14/rv1_h1_refetch.py gitlab github cloudflare
+[gitlab] name='GitLab' bounties=True state=open
+      tong scope=63 | IN=24 | OUT=39 | policy_chars=0
+      >>> GIAO NHAU (cung identifier+type o CA HAI phia): 2
+          CONFLICT: URL          about.gitlab.com
+          CONFLICT: URL          docs.gitlab.com
+      (luu y) cung ten nhung khac asset_type: ['*.gitlab.net', '*.gitlap.com']
+[github] name='GitHub' bounties=True state=open
+      tong scope=197 | IN=183 | OUT=14 | policy_chars=0
+      >>> GIAO NHAU (cung identifier+type o CA HAI phia): 1
+          CONFLICT: DOWNLOADABLE_EXECUTABLES Atom
+[cloudflare] name='Cloudflare Public Bug Bounty' bounties=True state=open
+      tong scope=83 | IN=55 | OUT=28 | policy_chars=0
+      >>> GIAO NHAU (cung identifier+type o CA HAI phia): 0
+
+=== [T14-2] KIEM TRA 2 XUNG DOT WILDCARD/URL: co phai xung dot THAT khong? ===
+  --- *.gitlab.net ---
+      type=WILDCARD     eligible_submission=True bounty=True max_sev=medium
+      type=URL          eligible_submission=False bounty=False max_sev=none
+  --- *.gitlap.com ---
+      type=WILDCARD     eligible_submission=True bounty=True max_sev=medium
+      type=URL          eligible_submission=False bounty=False max_sev=none
+  --- about.gitlab.com ---
+      type=URL          eligible_submission=True bounty=True max_sev=medium
+      type=URL          eligible_submission=False bounty=False max_sev=none
+  --- docs.gitlab.com ---
+      type=URL          eligible_submission=True bounty=True max_sev=medium
+      type=URL          eligible_submission=False bounty=False max_sev=none
+  --- gitlab.net ---
+      type=URL          eligible_submission=False bounty=False max_sev=none
+  --- gitlap.com ---
+      type=URL          eligible_submission=False bounty=False max_sev=none
+
+=== [T14-3] GitHub 'Atom': ca hai phia deu eligible_for_bounty=False? (claim cua BountyRecon) ===
+  type=DOWNLOADABLE_EXECUTABLES eligible_submission=False bounty=False max_sev=none
+  type=DOWNLOADABLE_EXECUTABLES eligible_submission=True bounty=False max_sev=critical
+
+=== [T14-4] Cloudflare: 0 xung dot — xac nhan (Admin KHONG mo T4 cho Cloudflare) ===
+  IN: 55 OUT: 28 | giao nhau: []
+  state: open | bounties: True
+
+=== [T14-5] policy text: GraphQL tra ve RONG => BountyRecon lay policy tu dau? ===
+$ curl -sL 'https://hackerone.com/gitlab?view=policy' -> do dai + co chua cac cau trich khong
+  HTTP=200 SIZE=3481 CT=text/html; charset=utf-8
+  text len: 127
+  ❌ All GitLab Inc. products are in scope unless explicitly noted otherwise
+  ❌ Testing on subdomains that are neither explicitly in scope nor out of scope isn't encour
+  ❌ Never test DoS vulnerabilities on GitLab.com
+  ❌ Never test against projects, groups, accounts, or instances you do not own
+  ❌ Automated scanning reports of any kind
+  ❌ Sending reports from automated tools without verifying them will immediately disqualify 
+  ❌ we pay $1000 at the time the report is triaged
+  ❌ Reports about intended behavior resulting in an update of our documentation will be rewa
+  ❌ GitLab forest
+  ❌ Metadata disclosure, enumeration, and information gathering issues are out of scope
+  ❌ Please don't request Developer access to our projects
+  ❌ Always choose a non disruptive option to demonstrate the impact
+  ❌ In the case of reports related to credential leaks do not create additional access crede
+  ❌ GitLab sites of third party software and services
+  ❌ TLS/SSL or SSH issues (weak ciphers/key-size/BEAST/CRIME)
+  ❌ Lack of, or insufficient, rate limiting
+  ❌ Do not, or insufficient
+  ❌ GitLab Development kit
+  => KHOP 0/18 | KHONG THAY 18
+
+=== [T14-6] policy_*.md co phai BAN DUMP TRUNG THUC cua truong 'policy' trong JSON khong? ===
+  [gitlab] policy(JSON)=26083 ky tu | policy_md=26083 ky tu
+        md == policy ? DUNG (byte-exact)
+  [github] policy(JSON)=13768 ky tu | policy_md=13768 ky tu
+        md == policy ? DUNG (byte-exact)
+
+=== [T14-7] DOI CHIEU TUNG CAU TRICH trong security/gitlab/SCOPE.md voi policy goc ===
+  ✅ dòng   87 | §Scope                     | All GitLab Inc. products are in scope unless explicitly noted otherwise
+  ✅ dòng   89 | §Scope                     | Testing on subdomains that are neither explicitly in scope nor out of scop
+  ✅ dòng   34 | §Rules of Engagement       | When researching security issues, especially those which may compromise th
+  ✅ dòng   41 | §Rules                     | Sending reports from automated tools without verifying them will immediate
+  ✅ dòng   55 | §Rules DoS                 | Never test DoS vulnerabilities on GitLab.com.
+  ✅ dòng   57 | §Rules                     | Never test against projects, groups, accounts, or instances you do not own
+  ✅ dòng   63 | §Demonstrating Impact      | Always choose a non disruptive option to demonstrate the impact.
+  ✅ dòng   64 | §Demonstrating Impact      | In the case of reports related to credential leaks do not create additiona
+  ✅ dòng   73 | §Testing on GitLab.com     | Please don't request Developer access to our projects
+  ✅ dòng  126 | §Out of scope              | - Automated scanning reports of any kind
+  ✅ dòng  127 | §Out of scope              | - GitLab sites of third party software and services
+  ✅ dòng  136 | §Out of scope              | - TLS/SSL or SSH issues (weak ciphers/key-size/BEAST/CRIME)
+  ✅ dòng  148 | §Out of scope              | - Lack of, or insufficient, rate limiting.
+  ✅ dòng  144 | §Out of scope              | - Denial of Service (DoS) issues
+  ✅ dòng  178 | §Out of scope              | Metadata disclosure, enumeration, and information gathering issues are out
+  ✅ dòng  191 | §Out of scope              | GitLab Development kit
+  ✅ dòng    4 | §Rewards                   | we pay $1000 at the time the report is triaged
+  ✅ dòng    6 | §Rewards                   | Reports about intended behavior resulting in an update of our documentatio
+  ✅ dòng   12 | §Rewards                   | GitLab forest
+  ✅ dòng    2 | §Rewards                   | We have different rewards depending on the business impact of each asset.
+  => CO 20/20 cau trich tim thay NGUYEN VAN trong policy goc | thieu 0
+
+  Kiem con tro dong ma SCOPE.md ghi:
+    '# Scope' claim dòng 87-89:
+        d.87: All GitLab Inc. products are in scope unless explicitly noted otherwise.
+        d.88:  
+        d.89: Testing on subdomains that are neither explicitly in scope nor out of scope isn't encouraged, but if
+    '# Rules of Engagement, Testing, and Proof-of-concepts' claim dòng 34-59:
+        d.34: When researching security issues, especially those which may compromise the privacy of others, you m
+        d.35:  - Generating abuse requests
+        d.36:  - Submission of support, sales or other requests to 3rd party systems
+        d.37:  - Mass creation of users, groups, and projects
+    '## Demonstrating Impact' claim dòng 63-64:
+        d.63: - Always choose a non disruptive option to demonstrate the impact. If the only way to demonstrate an
+        d.64: - In the case of reports related to credential leaks do not create additional access credentials usi
+    'Testing on GitLab.com' claim dòng 73-73:
+        d.73: Please don't request Developer access to our projects, including the GitLab Community Forks group. W
+    '# Rewards' claim dòng 4-6:
+        d.4: See the Rewards section above for our bounty ranges. For reports with critical or high severity we p
+        d.5: 
+        d.6: Reports about intended behavior resulting in an update of our documentation will be rewarded with a 
+    '## Out of scope' claim dòng 125-191:
+        d.125: ## Out of scope
+        d.126: - Automated scanning reports of any kind
+        d.127: - GitLab sites of third party software and services (marketing services, third-party mail services, 
+        d.128:   - This includes `gitlab.cn` and the JiHu-specific GitLab distribution which are property of  GitLa
+
+=== [T14-8] Thu LAI truong 'policy' doc lap lan 2 (co the transient) ===
+  policy len lan 2: 26083
+  600 ky tu dau: # Rewards | We have different rewards depending on the business impact of each asset. A more complete description of each asset will be in the scope section, but in general GitLab.com and all our products' source code is rewarded the highest, then non-production environments have reduced bounties and our static websites have the lowest payouts. |  | See the Rewards section above for our bounty ranges. For reports with critical or high severity we pay $1000 at the time the report is triaged, and for medium severity reports we pay $500. The remainder, if any, will be paid as soon as the severity has b
+
+=== [T14-9] D-013: Admin phan xu 4 xung dot + khong mo T4 cho Cloudflare ===
+$ git grep -n 'D-013\|D-011\|D-010' origin/main -- rooms/ | head -20
+origin/main:ADMIN/ASSIGNMENTS.md:12:| T4 | ExploitDeep | Xác nhận lỗ hổng + PoC tối thiểu (**điều kiện: xem D-013**) | `security/**/FINDING.md`, `security/**/POC/**`, `security/**/EVIDENCE/**`, `agents/exploitdeep/**` | FINDING.md có mức độ + điều kiện khai thác + tác động + khắc phục; POC chạy lại được; EVIDENCE thô đã che dữ liệu thật | Reviewer1 | ⏸ chờ T3 |
+origin/main:ADMIN/LOG.md:11:| 4 | 2026-10-01 | Cho phép ExploitDeep kích hoạt ngay khi T3 xong, không cần thêm một vòng duyệt thủ công | Người dùng chỉ thị Admin tự quyết, bỏ vòng duyệt thủ công. ĐÍNH CHÍNH F-03: đây KHÔNG phải bỏ điều kiện. Trạng thái thống nhất ghi tại `directives.md` D-013 và hàng T4 của `ASSIGNMENTS.md`: cần (1) SCOPE.md trích nguyên văn phủ target, (2) chỉ thị Admin nêu target + finding_id — chỉ thị này là BẢN GHI uỷ quyền, Admin ban hành ngay khi SCOPE.md lên, KHÔNG phải vòng chờ duyệt | `rooms/ab1-478d-cfa7/directives.md` D-013; `ADMIN/ASSIGNMENTS.md` hàng T4 |
+origin/main:ADMIN/SUMMARY.md:31:| 8 | **4 tài sản GitLab có xung đột scope trong dữ liệu công bố của chính GitLab** | Trung bình | Loại khỏi T4; cấm khai thác tới khi GitLab làm rõ | D-013; báo cáo T3 BountyRecon |
+origin/main:rooms/ab1-478d-cfa7/directives.md:147:## [D-013] TRẠNG THÁI THỐNG NHẤT CỦA CỔNG G4 — 2026-10-01
+origin/main:rooms/ab1-478d-cfa7/directives.md:154:[ADMIN DIRECTIVE D-013]
+
+=== [T14-10] SO SANH BYTE-EXACT: policy TOI fetch doc lap vs policy cua BountyRecon ===
+  [gitlab] policy TOI fetch = 26083 ky tu | BountyRecon = 26083 ky tu
+        GIONG HET (byte-exact)? ✅ DUNG
+        sha256 toi  : 1629f6dd7238ed166b5ab995f0ba1fab7a332e4941bee582c9b39d82a88f3c35
+        sha256 cua ho: 1629f6dd7238ed166b5ab995f0ba1fab7a332e4941bee582c9b39d82a88f3c35
+  [github] policy TOI fetch = 13768 ky tu | BountyRecon = 13768 ky tu
+        GIONG HET (byte-exact)? ✅ DUNG
+        sha256 toi  : cddb4181b2ef35a0d8d0e145403e0914e4c7cdbc72bca52e3b281dec745c6585
+        sha256 cua ho: cddb4181b2ef35a0d8d0e145403e0914e4c7cdbc72bca52e3b281dec745c6585
+
+=== [T14-11] TOAN VAN D-013 ===
+## [D-013] TRẠNG THÁI THỐNG NHẤT CỦA CỔNG G4 — 2026-10-01
+
+> Chỉ thị này thay thế mọi cách hiểu khác về cổng G4. Trước đó 4 tài liệu mâu thuẫn hai chiều
+> (`ADMIN/LOG.md` #4, `README.md` hàng G4, `ADMIN/ASSIGNMENTS.md` hàng T4, `directives.md` D-005)
+> — phát hiện F-03 của Auditor2.
+
+```text
+[ADMIN DIRECTIVE D-013]
+Cổng G4 (ExploitDeep được chạm target) đòi ĐỦ HAI điều kiện:
+  (1) security/<program>/SCOPE.md tồn tại, trích NGUYÊN VĂN scope phủ target đó;
+  (2) Admin ban hành chỉ thị nêu rõ target + finding_id.
+
+Điều kiện (2) là BẢN GHI UỶ QUYỀN, KHÔNG phải vòng chờ duyệt thủ công.
+Admin cam kết ban hành ngay khi (1) đạt — không giữ lại, không chờ thêm.
+Nhưng nếu thiếu (2), ExploitDeep KHÔNG được chạm target: không có bản ghi thì không có
+cơ sở chứng minh hành vi được phép.
+
+BỔ SUNG sau báo cáo T3 của BountyRecon:
+  - 4 tài sản GitLab có XUNG ĐỘT SCOPE trong dữ liệu công bố của chính GitLab
+    (*.gitlab.net, *.gitlap.com, about.gitlab.com, docs.gitlab.com) => LOẠI KHỎI T4.
+    Cấm khai thác cho tới khi GitLab trả lời làm rõ. Đây là lựa chọn (a).
+  - Cloudflare: KHÔNG mở T4. Chính sách Cloudflare cấm test vào khách hàng của họ;
+    chạm nhầm có thể bị loại vĩnh viễn và phát sinh trách nhiệm pháp lý.
+  - G4 hiện vẫn ĐÓNG: chưa có chỉ thị nào nêu target cụ thể.
+```
+
+=== [T14-12] SUMMARY.md rui ro #8 (Admin da ghi nhan 4 xung dot) ===
+| 6 | **Thiếu testbed mạng và cụm K8s ⇒ 2 hồ sơ NCKH chỉ là thiết kế, không có số liệu** | **Cao** | Cấp slot 9 (Antigravity, MCP Packet Tracer thật) | `ADMIN/LOG.md` #24; báo cáo T2 ResearchLead |
+| 7 | **8 nguồn không fetch được (MDPI 403, ACM DL 403…) ⇒ mất nguồn đối chiếu lớp 2** | Trung bình | Cấp slot 10 (javis, trình duyệt thật) | `research/EVIDENCE/FETCH_STATUS`; `ADMIN/LOG.md` #25 |
+| 8 | **4 tài sản GitLab có xung đột scope trong dữ liệu công bố của chính GitLab** | Trung bình | Loại khỏi T4; cấm khai thác tới khi GitLab làm rõ | D-013; báo cáo T3 BountyRecon |
+| 9 | **Máy không có môi trường cô lập đã xác minh ⇒ phân tích động malware bị đình chỉ** | Trung bình | Đình chỉ phân tích động; chỉ làm tĩnh | `agents/forensicsmal/T5/FORENSICS_PROCEDURE.md`; `ADMIN/LOG.md` |
+
+=== [T14-13] Cloudflare: D-013 noi 'chinh sach cam test vao khach hang cua ho' — co dung khong? ===
+$ grep -n -i 'customer' policy_cloudflare.md
+13:* Do not perform tests against customers of Cloudflare. 
+15:* Make sure that scanners have a narrow scope set that is [limited to authorized Cloudflare IPs only](https://cloudflare.com/ips). Aggressive, overly broad scans or those which include Cloudflare customer IPs without permission will be considered tests against Cloudflare customers.
+21:* Testing against Cloudflare customers, partners, service providers, suppliers, or vendors
+22:* Social engineering of Cloudflare employees/contractors, including but not limited to: pre-authenticated clickjacking, phishing, impersonating Cloudflare in emails or convincing customer support to do something on behalf of another user
+48:- **Safety:** Confirmation that no testing was performed against Cloudflare customers, partners, vendors, employees, or third parties.
+67:| **Production** | Cloudflare-operated production services, live customer-facing endpoints, production APIs | Full severity per bounty table | `api.cloudflare.com`, `dash.cloudflare.com`, `*.mcp.cloudflare.com`, `1.1.1.1`, production Workers on `*.workers.dev` serving real traffic |
+84:- Reports that rely on validating leaked employee, customer, partner, or third-party credentials by attempting to log in.
+85:- Reports containing credentials for non-Cloudflare systems, customer systems, vendor systems, or partner systems, unless Cloudflare explicitly owns and operates the affected system.
+253:- Reports showing that a single managed rule, custom rule, score threshold, sensitivity level, or customer configuration did not block a request.
+254:- Reports where the WAF inspected the request and produced a score, log entry, match, or partial detection, but the customer's rule configuration allowed the request.
+256:- Reports requiring an origin server, customer application, or test endpoint configured in an insecure, non-default, or intentionally vulnerable way.
+257:- Reports against Cloudflare customer zones, customer origins, third-party applications, or researcher-owned vulnerable apps unless Cloudflare explicitly authorizes the target and the report demonstrates a Cloudflare product bypass.
+265:- A bypass of a documented Cloudflare-managed protection that should apply independent of customer rule tuning, such as a request class that is systematically invisible to WAF inspection.
+289:- Reports requiring insecure, non-default, uncommon, or intentionally vulnerable customer configuration.
+351:Researchers must demonstrate that the vulnerable code path is reachable through standard Cloudflare Workers APIs and primitives (such as `fetch`, Web Streams, `crypto`, `HTMLRewriter`, WebSocket, or JSRPC) under default production configuration. However, researchers must **not** attempt to exploit the vulnerability against Cloudflare's production Workers infrastructure, other tenants, or customer workloads. Reproduce locally against your own workerd instance and explain why the same code path is reachable in production. We will validate production reachability internally.
+419:We have to mention however, that any actions done in bad faith might result in excluding malicious reporters from the program or, in case of disclosing Cloudflare or Cloudflare customers’ information (like PII, or other sensitive information) might even force us to take legal actions.
+
+--- cac cau lien quan (nguyen van) ---
+   • * Do not perform tests against customers of Cloudflare.
+   • * Make sure that scanners have a narrow scope set that is [limited to authorized Cloudflare IPs only](https://cloudflare.com/ips). Aggressive, overly broad scans or those which include Cloudflare customer IPs without permission will be considered tests against Cloudflare customers.
+   • * Testing against Cloudflare customers, partners, service providers, suppliers, or vendors
+   • * Social engineering of Cloudflare employees/contractors, including but not limited to: pre-authenticated clickjacking, phishing, impersonating Cloudflare in emails or convincing customer support to do something on behalf of another user
+   • - **Safety:** Confirmation that no testing was performed against Cloudflare customers, partners, vendors, employees, or third parties.
+   • | **Production** | Cloudflare-operated production services, live customer-facing endpoints, production APIs | Full severity per bounty table | `api.cloudflare.com`, `dash.cloudflare.com`, `*.mcp.cloudflare.com`, `1.1.1.1`, production Workers on `*.workers.dev` serving real traffic |
+   • - Reports that rely on validating leaked employee, customer, partner, or third-party credentials by attempting to log in.
+   • - Reports containing credentials for non-Cloudflare systems, customer systems, vendor systems, or partner systems, unless Cloudflare explicitly owns and operates the affected system.
+   • - Reports showing that a single managed rule, custom rule, score threshold, sensitivity level, or customer configuration did not block a request.
+   • - Reports where the WAF inspected the request and produced a score, log entry, match, or partial detection, but the customer's rule configuration allowed the request.
+   • - Reports requiring an origin server, customer application, or test endpoint configured in an insecure, non-default, or intentionally vulnerable way.
+   • - Reports against Cloudflare customer zones, customer origins, third-party applications, or researcher-owned vulnerable apps unless Cloudflare explicitly authorizes the target and the report demonstrates a Cloudflare product bypass.
+   • - A bypass of a documented Cloudflare-managed protection that should apply independent of customer rule tuning, such as a request class that is systematically invisible to WAF inspection.
+   • - Reports requiring insecure, non-default, uncommon, or intentionally vulnerable customer configuration.
+   • Researchers must demonstrate that the vulnerable code path is reachable through standard Cloudflare Workers APIs and primitives (such as `fetch`, Web Streams, `crypto`, `HTMLRewriter`, WebSocket, or JSRPC) under default production configuration. However, researchers must **not** attempt to exploit t
+   • We have to mention however, that any actions done in bad faith might result in excluding malicious reporters from the program or, in case of disclosing Cloudflare or Cloudflare customers’ information (like PII, or other sensitive information) might even force us to take legal actions.
+
+=== [T14-14] Xac minh policy Cloudflare bang fetch doc lap (sha256) ===
+  cloudflare policy TOI=44784 | BountyRecon=44784 | giong het? ✅ DUNG
+  sha256 toi  : a5997a98f915b09a5e360360e91e5762168de1a7904bd3b351990bca1d2a5c01
+  sha256 cua ho: a5997a98f915b09a5e360360e91e5762168de1a7904bd3b351990bca1d2a5c01
+
+=== [T14-15] github policy: 'Atom' + cac cau SCOPE.md trich (kiem nguyen van) ===
+143:Atom                   — "Atom" (DOWNLOADABLE_EXECUTABLES)

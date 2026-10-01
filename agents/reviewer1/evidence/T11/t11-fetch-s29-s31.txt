@@ -1,0 +1,210 @@
+### T11 — Reviewer1 tu fetch TOAN VAN S29 (IEEE) + S31 (arXiv)
+### Thoi diem: 2026-10-01T14:03:23Z (UTC) / 2026-10-01 21:03:23 +0700
+
+=========== S31 — arXiv:2603.11006v2 ===========
+
+--- [1] arXiv API (co -L, theo dung meo ResearchLead da ghi) ---
+$ curl -sL 'http://export.arxiv.org/api/query?id_list=2603.11006'
+HTTP=200 SIZE=2890 CT=application/atom+xml; charset=utf-8 URL=https://export.arxiv.org/api/query?id_list=2603.11006
+--- entry title/summary ---
+  <entry> count: 1
+  title: arXiv Query: search_query=&amp;id_list=2603.11006&amp;start=0&amp;max_results=10
+  title: Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange
+  published: 2026-03-11T17:27:41Z
+  updated: 2026-10-01T13:54:56Z
+  updated: 2026-07-07T10:08:49Z
+  id: https://arxiv.org/api/Da3+WdC7CxptNiFsQeRfZ7BpVmw
+  id: http://arxiv.org/abs/2603.11006v2
+  summary: In this paper, we present a laboratory study focused on the impact of post-quantum cryptography (PQC) algorithms on multiple layers of stateful HTTP over TLS transactions: the TCP handshake, the intermediate TCP-TLS layer, the TLS handshake, the intermediate TLS layer, and the HTTP application layer. To this end, we propose a laboratory architecture that emulates a real-world setup in which a load test of up to 100 transactions per second is sent to a load balancer, which in turn forwards them to a backend server that returns the responses. Each set of tests is executed using the TLS 1.3 key exchange groups as follows: traditional (or non-PQC), hybrid PQC and pure PQC. Each set of tests also varied the backend response size. Across more than thirty experiments, we performed data reduction and statistical analysis for each layer, to determine the specific impact of each algorithm (PQC and traditional) at every stage of the HTTP-over-TLS transaction.
+
+--- [2] Trang abs ---
+$ curl -sL 'https://arxiv.org/abs/2603.11006v2'
+HTTP=200 SIZE=41831 CT=text/html; charset=utf-8
+
+--- [3] HTML full text (arxiv html) ---
+$ curl -sL 'https://arxiv.org/html/2603.11006v2'
+HTTP=200 SIZE=368458 CT=text/html; charset=utf-8
+
+--- [4] PDF ---
+$ curl -sL 'https://arxiv.org/pdf/2603.11006v2'
+HTTP=200 SIZE=618743 CT=application/pdf
+$ file /tmp/s31.pdf
+/tmp/s31.pdf: PDF document, version 1.7
+
+=========== S29 — 10.1109/ICICT63348.2025.10989392 ===========
+
+--- [1] doi.org resolver ---
+$ curl -sIL 'https://doi.org/10.1109/ICICT63348.2025.10989392'
+HTTP=404 SIZE=0 CT=text/html;charset=utf-8 URL=https://doi.org/10.1109/ICICT63348.2025.10989392
+--- headers ---
+HTTP/2 404 
+date: Thu, 01 Oct 2026 14:03:43 GMT
+content-type: text/html;charset=utf-8
+server: cloudflare
+vary: Origin
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-cache-status: DYNAMIC
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=I43tB8PBEUSNYuAJ3gjtyDCHscZU4nRyfbuxglmo1%2FKWyizXSbGuE%2BGoHoEZnqI3vQZ03J4Y6r%2Fo0vbdkuBZkPG89mudXuC3orOR65QkGkVTwSnSYYwoVIM1tqy6NO3kDrMTZgA%3D"}]}
+cf-ray: a43c032a2b9409ec-HKG
+alt-svc: h3=":443"; ma=86400
+
+
+--- [2] Crossref metadata ---
+$ curl -sL 'https://api.crossref.org/works/10.1109/ICICT63348.2025.10989392'
+HTTP=404 SIZE=19 CT=text/plain
+  PARSE FAIL: Expecting value: line 1 column 1 (char 0)
+
+--- [3] OpenAlex ---
+$ curl -sL 'https://api.openalex.org/works/https://doi.org/10.1109/ICICT63348.2025.10989392'
+HTTP=404 SIZE=207 CT=text/html; charset=utf-8
+  PARSE FAIL: Expecting value: line 1 column 1 (char 0)
+
+--- [4] IEEE Xplore document page ---
+$ curl -sL 'https://ieeexplore.ieee.org/document/10989392'
+HTTP=202 SIZE=0 CT=text/html; charset=UTF-8
+--- co abstract trong HTML khong? ---
+  size: 0
+  (khong tim thay truong abstract)
+  keyword 'dynamic microsegmentation': 0 lan
+  keyword 'Dynamic Microsegmentation': 0 lan
+  keyword 'RBAC': 0 lan
+  keyword 'ABAC': 0 lan
+  keyword 'convergence': 0 lan
+  keyword 'legacy': 0 lan
+
+--- [5] Thu IEEE PDF truc tiep (ielx) ---
+$ curl -sIL 'https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10989392'
+  HTTP=418 CT=text/html SIZE=0 FINAL=https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10989392
+$ curl -sIL 'https://ieeexplore.ieee.org/ielx8/10988702/10989276/10989392.pdf'
+  HTTP=418 CT=text/html SIZE=0 FINAL=https://ieeexplore.ieee.org/ielx8/10988702/10989276/10989392.pdf
+
+=========== S29 — TRUY NGUON DOI (404 o doi.org/Crossref/OpenAlex) ===========
+
+--- [6] Crossref tra theo TIEU DE ---
+$ curl -sL --get --data-urlencode "query.bibliographic=Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation" --data 'rows=5' https://api.crossref.org/works
+HTTP=200 SIZE=15797
+  total: 11171531
+  [1] Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC)
+      DOI=10.1109/iccit63348.2025.10989392 | venue=2025 4th International Conference on Computing and Informati | [[2025, 4, 13]]
+  [2] Zero-Trust Microsegmentation (ZTM): A Policy-Enforced Model for Fine-Grained Security
+      DOI=10.36227/techrxiv.174063010.01562831/v1 | venue= | [[2025, 2, 27]]
+  [3] Microsegmentation and Zero Trust: Introduction
+      DOI=10.1007/978-1-4842-5431-8_2 | venue=Zero Trust Networks with VMware NSX | [[2019]]
+  [4] The Pathway to Implementing Zero Trust: Why Microsegmentation Remains the Critical Barrier
+      DOI=10.36227/techrxiv.177274009.90250103/v1 | venue= | [[2026, 3, 5]]
+  [5] Zero Trust Enforcement Using Microsegmentation, Identity-Aware Proxies, and Continuous Adaptive Risk Assessmen
+      DOI=10.7753/ijcatr1407.1006 | venue=International Journal of Computer Applications Technology an | [[2025, 7, 14]]
+
+--- [7] OpenAlex tra theo TIEU DE ---
+HTTP=200 SIZE=112387
+  count: 414
+  [1] Zero Trust Architecture
+      DOI=https://doi.org/10.6028/nist.sp.800-207 | date=2020-08-11 | oa=gold
+  [2] Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC)
+      DOI=https://doi.org/10.1109/iccit63348.2025.10989392 | date=2025-04-13 | oa=closed
+  [3] Zero Trust Architecture (ZTA): A Comprehensive Survey
+      DOI=https://doi.org/10.1109/access.2022.3174679 | date=2022-01-01 | oa=gold
+  [4] A Security Awareness and Protection System for 5G Smart Healthcare Based on Zero-Trust Architecture
+      DOI=https://doi.org/10.1109/jiot.2020.3041042 | date=2020-11-30 | oa=hybrid
+  [5] Security of Zero Trust Networks in Cloud Computing: A Comparative Review
+      DOI=https://doi.org/10.3390/su141811213 | date=2022-09-07 | oa=gold
+
+--- [8] Crossref: kiem tra tien to DOI ICICT63348 co ton tai? ---
+$ curl -sL 'https://api.crossref.org/prefixes/10.1109' (chi kiem prefix IEEE)
+HTTP=200 SIZE=247
+  prefix 10.1109 -> Institute of Electrical and Electronics Engineers (IEEE) | owner: None
+
+--- [9] Thu DOI gan dung: ICICT63348 / ICCIT ---
+  10.1109/ICICT63348.2025.10989392           -> HTTP=404
+  10.1109/ICICT63348.2025                    -> HTTP=404
+  10.1109/ICICT63348                         -> HTTP=404
+  10.1109/ICCIT63348.2025.10989392           -> HTTP=200
+
+=========== S29 — DOI DUNG: 10.1109/iccit63348.2025.10989392 (chu thuong 'iccit') ===========
+$ curl -sIL 'https://doi.org/10.1109/iccit63348.2025.10989392'
+  HTTP=202 CT=text/html; charset=UTF-8 FINAL=https://ieeexplore.ieee.org/document/10989392/
+
+--- Crossref (DOI dung) ---
+HTTP=200 SIZE=6190
+  title     : ['Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC)']
+  subtitle  : []
+  venue     : ['2025 4th International Conference on Computing and Information Technology (ICCIT)'] | event: 2025 4th International Conference on Computing and Information Technology (ICCIT)
+  published : [[2025, 4, 13]] | page: 181-189
+  publisher : IEEE | type: proceedings-article
+  authors   : ['Adedayo Jalil Bello', 'Muhammad Diyan', 'Ikram Asghar']
+  abstract  : (Crossref KHONG co abstract)
+  license   : [{'start': {'date-parts': [[2025, 4, 13]], 'date-time': '2025-04-13T00:00:00Z', 'timestamp': 1744502400000}, 'content-version': 'stm-asf', 'delay-in-days': 0, 'URL': 'https://doi.org/10.15223/policy-029'}, {'start': {'date-parts': [[2025, 4, 13]], 'date-time': '2025-04-13T00:00:00Z', 'timestamp': 1744502400000}, 'content-version': 'stm-asf', 'delay-in-days': 0, 'URL': 'https://doi.org/10.15223/policy-037'}]
+  link      : [{'URL': 'http://xplorestaging.ieee.org/ielx8/10989281/10989283/10989392.pdf?arnumber=10989392', 'content-type': 'unspecified', 'content-version': 'vor', 'intended-application': 'similarity-checking'}]
+
+--- OpenAlex (DOI dung) ---
+HTTP=200 SIZE=14702
+  title       : Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC)
+  pub_date    : 2025-04-13 | year: 2025
+  oa          : {'is_oa': False, 'oa_status': 'closed', 'oa_url': None, 'any_repository_has_fulltext': False}
+  best_oa     : (None, None)
+  locations   : 3
+     - False https://doi.org/10.1109/iccit63348.2025.10989392
+     - False https://research.tees.ac.uk/en/publications/9ecfe129-f90f-4f87-8848-12089547fc1a
+     - False https://www.scopus.com/pages/publications/105007557857
+  ABSTRACT (day du tu OpenAlex, 1215 ky tu):
+  This paper, titled “Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC),” addresses the critical cybersecurity challenges legacy systems pose. Legacy infrastructures, integral to numerous organizations, exhibit vulnerabilities due to obsolete security architectures. The paper proposes a novel approach by implementing a Zero Trust framework, incorporating dynamic microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC). The objective is to establish a resilient security posture that adapts to real-time network changes, user behaviour, and evolving threat landscapes. The paper encompasses a comprehensive literature review, prototype design, and critical evaluation. The technical artefact, a prototype, showcases the application of cutting-edge cybersecurity concepts tailored for legacy systems. Ethical considerations guide the responsible development and evaluation of the prototype. The paper's forward-looking approach, including recommendations for enhancements, positions it as a valuable contribution to advancing cybersecurity practices in legacy environments.
+
+=========== S29 — THU LAY TOAN VAN (OpenAlex: oa_status=closed, nhung co 3 location) ===========
+
+--- [A] IEEE staging PDF (link Crossref tra ve, content-version=vor) ---
+$ curl -sL -A 'Mozilla/5.0' 'http://xplorestaging.ieee.org/ielx8/10989281/10989283/10989392.pdf?arnumber=10989392'
+  HTTP=200 SIZE=49042 CT=text/html;charset=UTF-8
+/tmp/s29_staging.pdf: HTML document, Unicode text, UTF-8 text, with very long lines (9692), with CRLF, LF line terminators
+
+--- [B] Teesside University research portal (location thu 2 cua OpenAlex) ---
+$ curl -sL 'https://research.tees.ac.uk/en/publications/9ecfe129-f90f-4f87-8848-12089547fc1a'
+  HTTP=200 SIZE=56888 CT=text/html;charset=UTF-8
+--- tim link PDF trong trang Teesside ---
+  size: 56868
+   PDF: https://connect.tees.ac.uk/docs/publicdocumentslibraries/default-document-library/legal-and-governance-services/Research-Privacy-Notice.pdf
+   kw 'convergence': 0
+   kw 'microsegmentation': 4
+   kw 'Zero Trust': 22
+   kw 'abstract': 4
+   kw 'Abstract': 1
+  TEXTBLOCK: This paper, titled “Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC),” addresses the critical cybersecurity challenges legacy systems pose. Legacy infrastructures, integral to numerous organizations, exhibit vulnerabilities due to obsolete security architectures. The paper proposes a novel approach by implementing a Zero Trust framework, incorporating dynamic microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC). The objective is to establish a resilient security posture that adapts to real-time network changes, user behaviour, and evolving threat landscapes. The paper encompasses a comprehensive literature review, prototype design, and critical evaluation. The technical artefact, a prototype, showcases the application of cutting-edge cybersecurity concepts tailored for legacy systems. Ethical considerations guide the responsible development and evaluation of the prototype. The paper's forward-looking approach, including recommendations for enhancements, positions it as a valuable contribution to advancing cybersecurity practices in legac
+
+--- [C] Thu cac duong dan PDF khac cua Teesside ---
+  https://research.tees.ac.uk/files/9ecfe129-f90f-4f87-8848-12089547fc1a/10989392.pdf                  -> HTTP=403 CT=text/html; charset=UTF-8 SIZE=0
+  https://research.tees.ac.uk/ws/portalfiles/portal/9ecfe129-f90f-4f87-8848-12089547fc1a/10989392.pdf  -> HTTP=400 CT=text/html;charset=ISO-8859-1 SIZE=0
+
+=== [D] EVIDENCE CUA ResearchLead: ho dung DOI nao de tra OpenAlex? (doi chieu Lop 2) ===
+$ git show a23c004:research/EVIDENCE/openalex_doi_lookup.txt | grep -n -i 'iccit\|icict\|10989392'
+15:10.1109/iccit63348.2025.10989392 | 2025 | cited 9 | OA: False | None
+
+$ git show a23c004:research/ebpf-microsegmentation/EVIDENCE/openalex_queries.txt | grep -n -i -B2 -A2 'iccit\|icict\|10989392'
+  (khong co dong nao khop)
+
+$ git show a23c004:research/EVIDENCE/openalex_title_filters.txt | grep -n -i -B1 -A1 'iccit\|icict\|10989392\|dynamic microseg'
+49-  ABS: This paper describes an approach for improving cyber resilience through the synthesis of optimal microsegmentation policy for a network. By leveraging microsegmentation security architecture, we can reason about fine-grained policy rules that enforce access for given combinations of source address, destination address, destinati
+50:- 2025 | https://doi.org/10.1109/iccit63348.2025.10989392 | 9 c | None | conference-paper
+51:  T: Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC)
+52:  ABS: This paper, titled “Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC),” addresses the critical cybersecurity challenges legacy systems pose. Legacy infrastructures, integral to numerous organizations, exhibit vulnerabilities d
+53-- 2019 | https://doi.org/10.1007/978-1-4842-5431-8_2 | 7 c | Apress eBooks | book-chapter
+
+=== [E] Quet MOI file tren nhanh T2 xem chuoi DOI xuat hien the nao (hoa/thuong) ===
+  research/EVIDENCE/crossref_lookups.txt : 18:10.1109/iccit63348.2025.10989392
+  research/EVIDENCE/openalex_doi_lookup.txt : 15:10.1109/iccit63348.2025.10989392
+  research/EVIDENCE/openalex_title_filters.txt : 50:10.1109/iccit63348.2025.10989392
+  research/ebpf-microsegmentation/BLINDCHECK.md : 53:10.1109/ICICT63348.2025.10989392
+  research/ebpf-microsegmentation/LITREVIEW.md : 264:10.1109/ICICT63348.2025.10989392
+264:10.1109/ICICT63348.2025.10989392
+  research/ebpf-microsegmentation/SOURCES.md : 81:10.1109/ICICT63348.2025.10989392
+  research/pqc-tls-migration/SOURCES.md : 109:10.1109/ICICT63348.2025.10989392
+
+=== [F] IEEE staging HTML (49KB) co gi? ===
+  size: 49016
+  title: Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC) | IEEE Conference Publication | IEEE Xplore
+  kw 'convergence': 0
+  kw 'microsegmentation': 15
+  kw 'Abstract': 14
+  kw 'pdf': 16
+  kw 'redirect': 0
+  kw 'captcha': 2
+  kw 'blocked': 0

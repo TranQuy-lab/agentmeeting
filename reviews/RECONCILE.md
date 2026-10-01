@@ -150,3 +150,79 @@ Kết quả: **✅ khớp = 10** · **❌ mâu thuẫn = 6** · **⚠️ `chưa 
 
 **Chưa kiểm:** T1 (DocWriter), T2 (ResearchLead), T3 (BountyRecon), T4 (ExploitDeep), T5 (ForensicsMal),
 T7 (Auditor2) — chưa có artifact. **Không có mục nào trong số này được chấm PASS.**
+
+---
+
+# VÒNG 2 — Đối chiếu cho T11, T14, T10
+
+**Ngày:** 2026-10-01 · **Base:** `origin/main` = `28cdc00` · **Bằng chứng thô:** `agents/reviewer1/evidence/{T11,T14,T10}/`
+
+## 6. T11 — Đối chiếu tính mới `RL-T1-PQC-TLS` và `RL-T2-EBPF-SEG`
+
+### 6.1 Bảng đối chiếu đa nguồn
+
+| Khẳng định | Nguồn A | Nguồn B | Khớp? | Ghi chú |
+|---|---|---|---|---|
+| S31 tiêu đề/tác giả/ngày | **(X)** arXiv API `export.arxiv.org/api/query?id_list=2603.11006` | **(D)** `research/pqc-tls-migration/SOURCES.md:86` | ✅ | API khớp nguyên văn từng trường |
+| S31 **có** làm phân tích theo tầng cho cổ điển/lai/PQC thuần | **(X)** abstract arXiv: *"traditional (or non-PQC), hybrid PQC and pure PQC"* + *"data reduction and statistical analysis for each layer"* | **(D)** `RANKING.md` §2.1 dòng N | ✅ | **Đe doạ tính mới là THẬT** |
+| S31 **không** bao phủ biên/middlebox/MTU/chứng thư ML-DSA | **(X)** toàn văn arXiv HTML 64.256 ký tự: `MTU`=0, `middlebox`=0, `fragment`=0, `packet size`=0, `network layer`=0, `certificate chain`=0; `edge`=1 (footer, 99,7%) | **(D)** `RANKING.md` xếp tổ hợp đó là "chưa xác minh" | ❌ **MÂU THUẪN** | Không phải mâu thuẫn dữ liệu — mà **điểm chưa xác minh nay ĐÃ xác minh**. Kết quả **ùng hộ T1** |
+| ML-DSA được S31 đo | **(X)** toàn văn: *"…are **planned as future work**"* | **(D)** `RANKING.md`: "chưa xác minh" | ❌ | Nay là **ĐÃ XÁC MINH: KHÔNG đo** |
+| S29 DOI | **(D)** 4 tài liệu: `10.1109/**ICICT**63348.2025.10989392` | **(G/X)** doi.org **404** · Crossref **404** · OpenAlex **404**; dạng thường `iccit…` → **200** | ❌ **MÂU THUẪN** | Dissent §7.1 |
+| S29 metadata có được xác minh thật | **(D)** `EVIDENCE/openalex_doi_lookup.txt:15` = `10.1109/iccit63348…` (**dạng đúng**) | **(X)** Crossref + OpenAlex với DOI đúng → 200, đủ title/venue/trang/tác giả/ngày | ✅ | **Metadata THẬT — lỗi là chép sai hoa/thường** |
+| S29 toàn văn | **(D)** `SOURCES.md` §D X7: "Không có bản mở; không truy cập được" | **(X)** OpenAlex `oa_status=closed`, `any_repository_has_fulltext=False`; IEEE Xplore **202**; staging PDF trả **HTML captcha**; Teesside `files/…pdf` **403**, `ws/portalfiles/…` **400** | ✅ | **Hai nguồn khớp: KHÔNG có toàn văn mở** → ghi `chưa xác minh` |
+| S29 có đo "cửa sổ hội tụ"? | **(D)** `RANKING.md` K2 (giả định có thể xảy ra) | **(X)** trừu tượng chính thức đầy đủ 1.215 ký tự: **không** có `convergence`/`latency`/`measure`; mô tả là *"literature review, prototype design, and critical evaluation"* | ⚠️ | **`chưa xác minh`** — trừu tượng **không ủng hộ** nhưng **không thay được toàn văn** |
+
+### 6.2 Kết luận đối chiếu T11
+
+- **K1 (S31 không bao phủ biên/MTU/chứng thư ML-DSA): XÁC NHẬN bằng toàn văn.** ResearchLead chấm
+  `RL-T1-PQC-TLS` **N=2** — nhưng **N=2 nghĩa là "đã có công trình trùng gần như hoàn toàn"**, và
+  bằng chứng **bác bỏ** điều đó: S31 *tự ghi* hướng middlebox/edge vào **future work**, ML-DSA
+  signature/cert cũng là **future work**. ⇒ **N=2 không có cơ sở.** Bằng chứng ủng hộ **N=3 hoặc 4**.
+- **K2 (S29 đã đo cửa sổ hội tụ): VẪN MỞ.** Không có bằng chứng S29 đã đo; nhưng **không thể loại trừ**
+  vì không có toàn văn. ⇒ **Giữ N=3 cho `RL-T2-EBPF-SEG`**, ghi rủi ro mở vào `ADMIN/DISSENT.md`.
+  **Reviewer1 KHÔNG tự nâng lên 4** — nâng lên là dùng "không chứng minh được là có" để thay cho
+  "chứng minh được là không", đúng thứ tôi phải chống.
+- **Hệ quả xếp hạng:** theo K1, `RL-T1-PQC-TLS` = 3×4×4 = **48**, **hoà** với `RL-T2-EBPF-SEG` = 48.
+  ResearchLead **không còn cơ sở** để xếp `ebpf-microsegmentation` là hạng 1 duy nhất.
+  **Việc chọn đề tài phải do Admin quyết** — Reviewer1 chỉ báo cáo, không chấm thay.
+
+## 7. VÒNG 2 — Dissent bổ sung (chờ Admin phân xử)
+
+### 7.1 [DISSENT-6] DOI của S29 ghi sai hoa/thường ở cả 4 tài liệu giao nộp
+
+- **Nguồn A (tài liệu giao nộp — SAI):** `BLINDCHECK.md:53` · `LITREVIEW.md:264` ·
+  `ebpf-microsegmentation/SOURCES.md:81` · `pqc-tls-migration/SOURCES.md:109` — tất cả ghi
+  `10.1109/ICICT63348.2025.10989392`.
+- **Nguồn B (bằng chứng của chính tác giả — ĐÚNG):** `EVIDENCE/openalex_doi_lookup.txt:15`,
+  `openalex_title_filters.txt:50`, `crossref_lookups.txt:18` — ghi `10.1109/iccit63348.2025.10989392`.
+- **Nguồn C (server, bất biến):** dạng HOA → doi.org/Crossref/OpenAlex đều **404**;
+  dạng thường → **200** với đầy đủ metadata.
+- **Ảnh hưởng:** người kiểm lớp 2 sau này tra theo tài liệu sẽ nhận 404 và có thể **kết luận oan là
+  nguồn bịa**. Đúng dạng lỗi mà Lớp 2 sinh ra để chặn.
+- **Đề xuất:** sửa 4 vị trí; thêm dòng "URL resolve: https://doi.org/10.1109/iccit63348.2025.10989392".
+  **Reviewer1 không sửa** — `research/**` ngoài territory.
+
+### 7.2 [DISSENT-7] "4 xung đột scope GitLab" — chỉ 2 là xung đột thật
+
+- **Nguồn A (BountyRecon `security/gitlab/SCOPE.md` §2b):** 4 tài sản "xuất hiện đồng thời ở cả
+  `eligible_for_submission=true` và `=false`".
+- **Nguồn B (tôi fetch lại, script riêng):** đúng 4 tài sản đó, **nhưng** `about.gitlab.com` và
+  `docs.gitlab.com` có `asset_type=URL` ở **cả hai** phía (xung đột thật); còn `*.gitlab.net` và
+  `*.gitlap.com` có `asset_type` **`WILDCARD` (IN) vs `URL` (OUT)** — khác loại.
+- **Ảnh hưởng:** nhỏ. Quyết định D-013 (loại cả 4 khỏi T4) **vẫn an toàn** — thận trọng hơn mức cần
+  nhưng không gây hại. Điều cần chỉnh là **cách ghi** trong `SUMMARY.md` rủi ro #8 và D-013, để lần
+  sau không ai tưởng GitLab có 4 mâu thuẫn dữ liệu.
+- **Đề xuất:** ghi lại là "**2 xung đột `asset_type=URL` + 2 cặp wildcard/apex khác `asset_type`**".
+
+## 8. Đã kiểm những mục nào (vòng 2)
+
+- **T11: 11 mục** — S29: 5 mục (DOI, DOI đúng, metadata, toàn văn, đo hội tụ) · S31: 8 mục
+  (metadata, abstract×3, toàn văn, từ khoá K1, ML-DSA future work, venue). **Kết quả:** S31 **đọc được
+  toàn văn** và K1 **xác nhận**; S29 **không có toàn văn** ⇒ `chưa xác minh` **+ 1 lỗi DOI phải sửa**.
+- **T14: 4 nhóm mục** — 3/3 policy **byte-exact** (SHA256 khớp) · **20/20** câu trích nguyên văn khớp
+  (kể cả số dòng) · 4 xung đột GitLab tái lập bằng script riêng (**2 thật + 2 khác `asset_type`**) ·
+  Atom + Cloudflare/D-013 **khớp dữ liệu tôi tự fetch**.
+- **T10: 6/6 mục** khớp chính xác — 39 file · 24/13/1/1/0 · 39 hàng · 7 file mới · SHA256
+  `66ac7183…8295` · 12 bản ghi. **Không mục nào `chưa xác minh`.**
+- **Dissent mới:** 2 mục (DISSENT-6 DOI S29 · DISSENT-7 "4 xung đột" → 2). **Cộng dồn: 7 dissent.**
+- **`chưa xác minh` (vòng 2):** 1 mục — **nội dung toàn văn S29**.
