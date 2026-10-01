@@ -67,7 +67,9 @@ hạng mục này phải được kiểm lại từ đầu.
 
 ## 3. Link chết — 1 vi phạm
 
-Cách kiểm: trích mọi `](đường-dẫn)` trong tất cả `.md`, đối chiếu `[ -e <đường-dẫn> ]`.
+Cách kiểm: trích mọi liên kết markdown dạng *dấu-ngoặc-vuông rồi dấu-ngoặc-đơn* trong tất cả
+`.md`, đối chiếu bằng `[ -e <đường-dẫn> ]`. (T22: câu này được viết lại để **không** còn chứa
+chuỗi ngoặc literal — chuỗi đó từng làm script kiểm link báo **dương tính giả** trên chính file này.)
 
 ```text
 OK   ADMIN/ASSIGNMENTS.md
