@@ -1532,3 +1532,155 @@ hoặc trả lời từ GitLab/GitHub/Cloudflare**.
 > **T34/T36 `chưa xác minh`** (nhánh chưa push — nêu rõ lý do, không suy đoán).
 > **Phát hiện lớn:** `[3b]` **chưa được áp cho GitHub và Cloudflare** — cùng lớp lỗi lần thứ **TƯ**,
 > và **hai chương trình đó chưa từng được soi `archived_at`**.
+
+---
+
+# VÒNG 10 — Bài kiểm #13 (T38): T34 + T36 + T37 BountyRecon
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T38`
+**Base:** `origin/main` = `f29c4df` (247 file)
+**Bằng chứng thô:** `agents/reviewer1/evidence/T38/t38-inventory.txt`
+
+```text
+[REVIEW] T38 / BountyRecon / Lớp 1 CROSS / T34+T36+T37: chưa xác minh (cả ba nhánh CHƯA PUSH)
+         + 1 ĐÍNH CHÍNH QUAN TRỌNG cho danh sách 5 vị trí của Admin
+```
+
+## 2.35 Trạng thái — nói rõ trước khi chấm
+
+```text
+$ git ls-remote --heads origin | grep bounty-recon
+  → chỉ T3, T26, T28, T29, T31, T33
+$ git ls-remote origin agent/bounty-recon/T34 / T36 / T37  →  CẢ BA ĐỀU RỖNG
+$ git ls-tree -r --name-only origin/main | grep _v2         →  (không có file _v2 nào)
+```
+
+⇒ **T34, T36, T37 `chưa xác minh`** — cả ba nhánh **chưa tồn tại trên remote**. Ghi rõ lý do, **không suy đoán**.
+**7 mục Admin yêu cầu (1→7) đều thuộc các nhánh đó ⇒ chưa chấm được.**
+**Duy nhất một mục đã xong và tôi xác nhận: dòng 18** (T33 đã merge) — xem §2.36.
+
+---
+
+## 2.36 Trạng thái nền tại `f29c4df` — đo lại để lần sau chấm nhanh
+
+| Mục | Trạng thái @ `f29c4df` |
+|---|---|
+| **Dòng 18** `CANDIDATES.md` | ✅ **ĐÃ SỬA** (`✅ XONG — T14 PASS + đã merge 4642e3c`) — từ T33, đã merge |
+| **Dòng 17** `CANDIDATES.md` | ✅ **`⏸ CHƯA`** — giữ đúng, chưa bị chạm |
+| **Dòng 5** (`D-005`) | ❌ **còn `D-005`** (T34 chưa push) |
+| **G2 dòng 44** (`license.gitlab.com` "trong scope") | ❌ **chưa sửa** (T34 chưa push) |
+| **6 dòng "Chưa verify"** | ❌ **còn đủ 6/6** — `git grep -c` = 1 dòng mỗi file × {`cloudflare`,`github`,`gitlab`} × {`SCOPE`,`RECON`} (T36 chưa push) |
+| **Ghi chú *"supersede chứng thực T14 ở RIÊNG §2b"*** | ✅ **còn nguyên** ở `security/gitlab/SCOPE.md:152` |
+
+---
+
+## 2.37 ⚠️ ĐÍNH CHÍNH QUAN TRỌNG — **3 trong 5 vị trí Admin liệt kê KHÔNG phù hợp `[3b]`**
+
+Admin yêu cầu grep **5 vị trí**: `github/SCOPE.md` §1 · `github/RECON.md` · `cloudflare/SCOPE.md` §1a ·
+`cloudflare/RECON.md` · `gitlab/SCOPE.md` §2a. Tôi **quét toàn bộ `security/**`** và đối chiếu từng vị trí:
+
+### 2.37.1 Kết quả quét **đầy đủ** — chỉ có **3** bảng AUTHORED cần `archived_at`
+
+| File | Mục | dòng tài sản | `archived_at`? | Phù hợp `[3b]`? |
+|---|---|---|---|---|
+| `security/gitlab/SCOPE.md` | **§1** (IN SCOPE `n=24`) | **24** | ❌ thiếu | ✅ **có** *(T34 đang làm)* |
+| `security/gitlab/SCOPE.md` | **§2a** (out-of-scope `n=39`) | **10** | ❌ thiếu | ✅ **có** |
+| `security/cloudflare/SCOPE.md` | **§1a** | **12** | ❌ thiếu | ✅ **có** |
+| `security/github/SCOPE.md` | §1 | **0 dòng bảng** | — | ❌ **KHÔNG phù hợp — xem 2.37.2** |
+| `security/github/RECON.md` | — | **0 bảng scope** | — | ❌ **KHÔNG phù hợp — xem 2.37.3** |
+| `security/cloudflare/RECON.md` | — | **0 bảng scope** | — | ❌ **KHÔNG phù hợp — xem 2.37.3** |
+| `security/_TEMPLATE/SCOPE.md` | — | 0 bảng tài sản | — | không áp dụng |
+
+### 2.37.2 ⚠️ `security/github/SCOPE.md` §1 là **VĂN XUÔI TRÍCH NGUYÊN VĂN** — **thêm cột sẽ phá tính nguyên văn**
+
+```text
+## 1. TRÍCH NGUYÊN VĂN — IN SCOPE
+Nguồn: `policy` của chương trình GitHub trên HackerOne, mục `## Scope`.
+Bản đầy đủ: `agents/bountyrecon/tasks/T3/EVIDENCE/policy_github.md` (dòng 98–157).
+```text
+## Scope
+GitHub runs a number of services but only submissions under the following domains are eligible…
+```
+đo lại: số dòng bắt đầu bằng `|` trong §1 = **0**
+```
+
+⇒ §1 của GitHub **không phải bảng trích** mà là **khối trích nguyên văn chính sách GitHub** trong ```text.
+**Thêm cột `archived_at` vào đây là BÓC XÉP khối nguyên văn** — đúng loại việc mà `D-026`
+(chọn phương án (a) để *"bảo vệ tính nguyên văn của bằng chứng pháp lý"*) và `LOG` #54 đang chống.
+**Đề xuất:** **giữ nguyên khối nguyên văn**, và thêm một **mục AUTHORED MỚI** (ví dụ
+`### 1b. Bảng tài sản GitHub kèm archived_at`) chứa bảng do BountyRecon viết — tách bạch
+*nguyên văn* với *bảng tổng hợp*. **Không** sửa vào khối trích.
+
+### 2.37.3 `github/RECON.md` và `cloudflare/RECON.md` **không có bảng scope** nào
+
+| File | Nội dung các bảng thực tế | Cần `archived_at`? |
+|---|---|---|
+| `security/github/RECON.md` | bảng **phương pháp** (số lượng request: DNS/robots/headers/TLS) + bảng **bản ghi DNS** | ❌ **không** |
+| `security/cloudflare/RECON.md` | bảng **bản ghi DNS** + bảng **ứng viên C1…** (nhận định lỗ hổng) | ❌ **không** |
+
+⇒ Hai file này **không chứa bảng trích scope/tài sản** ⇒ `[3b]` **không áp dụng**. Thêm cột `archived_at`
+vào bảng DNS hay bảng ứng viên là **sai ngữ nghĩa**.
+
+### 2.37.4 Trả lời trực tiếp câu Admin hỏi ở T35 — **"còn bảng AUTHORED nào khác thiếu không?"**
+
+**Còn, và đây là danh sách ĐẦY ĐỦ (3 mục):**
+`gitlab/SCOPE.md` **§1** (24) · `gitlab/SCOPE.md` **§2a** (10) · `cloudflare/SCOPE.md` **§1a** (12).
+**Không còn bảng AUTHORED nào khác trong `security/**` cần `archived_at`.**
+⇒ Nếu cách đếm là "cùng lớp lỗi", thì đây là **các lần thứ 4, 5, 6** — **không phải lần thứ năm duy nhất**;
+và **2 vị trí Admin lo nhất (`github/SCOPE.md`, `github|cloudflare/RECON.md`) lại không thuộc lớp lỗi này.**
+
+---
+
+## 2.38 Dữ liệu đã sẵn sàng để chấm T37 — **đo lại từng bản ghi**
+
+### Cloudflare — `§1a` có **đúng 2/12** dòng đã nghỉ hưu
+
+| Tài sản trong §1a | `archived_at` |
+|---|---|
+| `dash.teams.cloudflare.com` | **`2023-05-08T10:11:33.083Z`** |
+| `http://cloudflare.com/apps/` | **`2023-03-01T17:47:43.944Z`** |
+| 10 mục còn lại (`dash.cloudflare.com`, `cloudflareworkers.com`, `*.teams.cloudflare.com`, `api.cloudflare.com`, `*.cloudflare.com`, `http://github.com/cloudflare`, `one.dash.cloudflare.com`, `*.cloudflarepartners.com`, `…/workerd`, `…/vinext`) | **`None` ⇒ còn hiệu lực** |
+
+### GitHub — quy mô lớn nhất
+
+tổng **197** · live **39** · archived **158** · archived & `sub=True` **156** · **orphan (không có bản live) = 153**.
+
+### GitLab — 5 orphan
+`gitlab-workhorse` `2021-12-28` · `license.gitlab.com` `2022-03-21` · `Static websites` `2022-07-21` ·
+`opstrace/` `2023-06-04` · `GitLab for Jira Cloud Plugin` `2023-12-07`.
+
+---
+
+## 2.39 Tiêu chí tôi sẽ dùng để **REJECT** nếu họ vượt giới hạn `D-026` (Admin yêu cầu canh)
+
+Tôi ghi trước, để việc chấm không phụ thuộc cảm tính. **REJECT** nếu bất kỳ câu nào trong artifact nói về
+các bản ghi archived mà dùng một trong các khẳng định **về hiệu lực pháp lý**:
+
+| ❌ Cụm từ sẽ bị REJECT | ✅ Cách nói đúng `D-026` |
+|---|---|
+| "153/4/5 tài sản **ngoài scope**" | "các bảng **thiếu chiều `archived_at`** ⇒ **không phân biệt được** live với retired" |
+| "…**không còn hiệu lực** / **đã bị loại**" | "…**có `archived_at`**, cần đối chiếu chính sách để biết hiệu lực" |
+| "**đừng khai thác** các tài sản này" *(dựa trên suy luận từ `archived_at`)* | "**chưa xác minh** ngữ nghĩa `sub=True` trên bản ghi archived (`DISSENT-12`)" |
+| Bất kỳ câu nào **quyết định thay** GitLab/GitHub/Cloudflare về hiệu lực | "cần **trả lời chính thức** từ chương trình" |
+
+**Lưu ý công bằng:** `gitlab/SCOPE.md` §2b hiện có câu *"vẫn **loại cả 4 tài sản khỏi T4**"* — câu đó
+**ĐÚNG** vì dựa trên **quyết định của Admin (D-021)**, **không** phải suy luận từ `archived_at`. Tôi sẽ
+**phân biệt rõ**: *loại theo quyết định của Admin* ≠ *kết luận ngoài scope từ dữ liệu*. Tiêu chí trên
+chỉ áp cho **vế thứ hai**.
+
+---
+
+## 2.40 Đã kiểm những mục nào (vòng 10)
+
+- **Trạng thái nhánh — 4 mục:** T34/T36/T37 rỗng · không có file `_v2` nào · T33 đã merge · dòng 18 xác nhận đã sửa.
+- **Inventory AUTHORED — 7 mục:** quét **toàn bộ 7 file AUTHORED** trong `security/**`; xác định **3 bảng cần `archived_at`**;
+  xác định **`github/SCOPE.md` §1 là văn xuôi nguyên văn (0 dòng bảng)**; **`github|cloudflare/RECON.md` không có bảng scope**;
+  **`_TEMPLATE/SCOPE.md` không áp dụng**.
+- **Dữ liệu — 3 chương trình:** GitLab 5 orphan · GitHub 153 orphan · **Cloudflare §1a 2/12 archived, đo từng bản ghi**.
+- **Trạng thái nền — 6 mục:** dòng 5 · dòng 17 · dòng 18 · G2 dòng 44 · 6 dòng "Chưa verify" · ghi chú `supersede` (d.152).
+- **`chưa xác minh`: 7 mục** — toàn bộ 7 ưu tiên của Admin thuộc T34/T36/T37 (nhánh chưa push).
+
+> **Phán quyết vòng 10: `chưa xác minh` cho T34+T36+T37 (cả ba nhánh chưa push — nêu rõ lý do, không suy đoán).**
+> **Giá trị độc lập của vòng này:** **đính chính 3/5 vị trí trong danh sách Admin** — trong đó
+> `github/SCOPE.md` §1 là **khối nguyên văn**, thêm cột vào đó sẽ **phá tính nguyên văn** mà `D-026` đang bảo vệ.
+> **Đã chuẩn bị sẵn:** dữ liệu từng-bản-ghi cho T37 và **tiêu chí REJECT** cho giới hạn `D-026`.
