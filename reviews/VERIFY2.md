@@ -1656,3 +1656,102 @@ một kết luận "ĐẠT" có giá trị.
 2. Đính chính này **chỉ áp cho GitLab**; các chương trình khác có thể còn chiều dữ liệu tôi chưa truy vấn.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2 đã kiểm T18 (`ff252f8`);
    bản đính chính này **chưa** được kiểm.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #15 (T8): T26 của BountyRecon — sửa link + file cấm sửa
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T26` @ `43cc537` (parent `e8c45a0`)
+
+---
+
+## 1. Kiểm 3 link đã sửa — từ **vị trí thật** của file
+
+Tôi không kiểm bằng mắt. Tôi `normpath` từng link **từ thư mục chứa file** rồi `os.path.exists`:
+
+```text
+so link tuong doi: 3
+  OK   ../../../../security/cloudflare/RECON.md -> security/cloudflare/RECON.md
+  OK   ../../../../security/github/RECON.md     -> security/github/RECON.md
+  OK   ../../../../security/gitlab/RECON.md     -> security/gitlab/RECON.md
+
+OK=3 CHET=0
+```
+
+⇒ **3/3 link sửa ĐÚNG**, `../../../` → `../../../../`, và **giải đúng** về đích thật. ✅ **PASS**
+
+## 2. Kiểm file BỊ CẤM SỬA (D-013 QĐ-2) có giữ nguyên không
+
+```text
+$ git diff origin/main origin/agent/bounty-recon/T26 -- security/github/EVIDENCE/scope_github.md
+(rỗng)
+```
+
+⇒ **File giữ NGUYÊN VẸN**, đúng yêu cầu *"KHÔNG sửa 3 link thiếu `https://`"*. ✅ **PASS**
+
+## 3. Kiểm territory — T26 chỉ chạm 11 file, đều trong territory
+
+```text
+$ git diff --name-only e8c45a0 43cc537
+agents/bountyrecon/tasks/T26/EVIDENCE/*.txt   (7 file bang chung tho)
+agents/bountyrecon/tasks/T26/LINKSCAN.md
+agents/bountyrecon/tasks/T26/SCOPEGAP.md
+agents/bountyrecon/tasks/T26/scan_links.py
+agents/bountyrecon/tasks/T3/CANDIDATES.md
+```
+
+⇒ **11 file, 100% trong territory** (`agents/bountyrecon/**`, `security/**`). ✅ **PASS**
+
+## 4. Quét link chết toàn repo — và MỘT LỖI CỦA CHÍNH TÔI
+
+**Lần chạy đầu của tôi báo 2 link chết** trong `T26/LINKSCAN.md` (`../github/RECON.md`).
+Nếu dừng ở đó, tôi đã **buộc tội oan BountyRecon lần thứ hai trong phiên**.
+
+Tôi mở **ngữ cảnh từng dòng** — và thấy:
+
+```text
+ 75| > **7 mục "trong code fence" ở cột SAU là CỐ Ý:** chúng là các link cũ được trích dẫn
+ 76| > trong khối ```text của chính file báo cáo này (dòng 74–80) để tài liệu hoá lỗi đã sửa.
+ 77| > Trong code fence thì **không được render** thành link ⇒ không phải lỗi.
+ 81| ```text
+ 84| security/cloudflare/RECON.md : ](../github/RECON.md)  OK
+ 88| security/gitlab/RECON.md     : ](../github/RECON.md)  OK
+ 90| ```
+```
+
+**Hai "link chết" nằm TRONG khối ```text``` — chúng là VĂN BẢN MINH HOẠ, không render thành link.**
+
+**Lỗi của tôi:** regex xoá code-fence của tôi dùng `re.sub(r'```.*?```','',t,flags=re.S)` —
+**không bắt đúng** khi trong file có nhiều fence lồng/định dạng. Tôi phải chuyển sang **theo dòng**:
+
+```text
+$ (theo dòng, bật/tắt cờ khi gặp ```)
+tong link tuong doi = 24   chet = 0
+```
+
+⇒ **0 link chết toàn repo.** ✅ **XÁC NHẬN bản vá của T26** — khớp lời khai *"46 OK / 0 CHẾT"*.
+
+> **Bài học #5 cùng loại trong phiên:** grep/regex thô ≠ kết luận (#2, #5, #10, #11, nay #15).
+> Đây là **điểm yếu hệ thống** của tôi, không phải tai nạn. Tôi đã ghi vào quy trình:
+> **mọi kết luận FAIL phải kèm ngữ cảnh từng dòng.**
+>
+> Đáng chú ý: **BountyRecon đã tự ghi rõ** phân biệt "trong code fence" vs "render thật" —
+> tức họ **lường trước** đúng cái bẫy mà tôi sa vào. Họ cẩn thận hơn tôi ở điểm này.
+
+## 5. Kết luận verify #15
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | 3 link sửa đúng độ sâu, giải đúng đích | ✅ **PASS** |
+| 2 | File bị cấm sửa giữ nguyên vẹn | ✅ **PASS** |
+| 3 | T26 chạm 11 file, 100% trong territory | ✅ **PASS** |
+| 4 | Toàn repo: 0 link chết sau bản vá | ✅ **PASS** |
+| 5 | BountyRecon tự phân biệt code-fence vs render | ✅ **ĐÚNG** — họ lường trước bẫy |
+
+**PASS 5/5.** Không phát hiện vi phạm.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **link + territory + file cấm**, **không** kiểm nội dung `SCOPEGAP.md` (khoảng trống phạm vi).
+2. Phép quét link của tôi **chỉ áp cho `.md` và link tương đối** — không kiểm link tuyệt đối/URL ngoài.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T26 reviewer) kiểm; bất đồng ⇒ Auditor2 chốt.
