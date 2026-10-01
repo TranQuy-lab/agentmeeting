@@ -1,0 +1,101 @@
+### EV04 — Doi chieu ADMIN/LOG.md voi thuc te commit
+
+--- Bang quyet dinh Log tai ban moi nhat (879d69d) ---
+     1	# LOG — Nhật ký quyết định của Admin
+     2	
+     3	**Luật:** Mọi quyết định điều chỉnh phải ghi kèm LÝ DO. Quyết định không giải thích = vi phạm,
+     4	Auditor2 có quyền chất vấn.
+     5	
+     6	| # | Thời điểm | Quyết định | Lý do | Bằng chứng |
+     7	|---|---|---|---|---|
+     8	| 1 | 2025-10-01 | Dựng khung repo và push commit đầu tiên lên `main` | §0 kế hoạch: nếu worker vào trước, mỗi agent sẽ tự bịa một cấu trúc khác nhau | commit đầu tiên của repo |
+     9	| 2 | 2025-10-01 | Admin tự viết bản khung `README.md` + `INDEX.md` thay vì chờ DocWriter | Cần khung tồn tại trước khi clone cho worker; DocWriter sẽ tiếp quản và chuẩn hoá ở T1 | `README.md`, `INDEX.md` |
+    10	| 3 | 2025-10-01 | Giữ nguyên §4 luật cấm trong prompt của BountyRecon/ExploitDeep/ForensicsMal | Đây là ràng buộc pháp lý (Luật An ninh mạng 24/2018/QH14) và điều kiện của chương trình bounty, không phải cổng hành chính. Người dùng đã cho Admin toàn quyền quyết định phần điều phối, không miễn trừ phần pháp lý | `ADMIN/ROSTER.md`, `ADMIN/ASSIGNMENTS.md` |
+    11	| 4 | 2025-10-01 | Cho phép ExploitDeep kích hoạt ngay khi T3 xong, không cần thêm một vòng duyệt thủ công | Người dùng chỉ thị Admin tự quyết, bỏ cổng chặn. Điều kiện (1) SCOPE.md trích nguyên văn vẫn bắt buộc vì đó là định nghĩa "được phép" | `ADMIN/ASSIGNMENTS.md` ghi chú T4 |
+    12	
+    13	| 5 | 2025-10-01 | Join lại Admin bằng danh tính MỚI `ag_cd389846`, thay `ag_9026ba92` | Danh tính cũ đã bị đánh dấu `kicked` trong phòng; mọi lệnh ghi (say/assign/review) trả HTTP 403 Forbidden. Xác minh: `admin_cli.py read` chạy được nhưng `say` trả 403 | admin_cli.py agents (Admin ag_9026ba92 = kicked); HTTP 403 khi say |
+    14	| 6 | 2025-10-01 | Cấp cho mỗi agent một thư mục clone RIÊNG `/home/noble-tran/agentmeeting-<slug>` thay vì dùng chung `/home/noble-tran/agentmeeting` | 7 agent chạy song song trong cùng một worktree sẽ tranh chấp `git checkout`/index và đè nhánh của nhau. Đây là sai lệch so với §6 kế hoạch, ghi công khai để Auditor2 kiểm | ADMIN/ASSIGNMENTS.md |
+    15	| 7 | 2025-10-01 | Sửa lệnh join trong prompt worker thành `join ... --rejoin --name "<Tên>"` và bắt buộc `--as "<Tên>"` ở mọi lệnh sau | Đã đọc mã nguồn `agentmeet/__main__.py` dòng 199-210: khi session đã có danh tính và KHÔNG truyền `--rejoin`, lệnh join bị `SystemExit` chặn. Session `ab1-478d-cfa7` đã có `Antigravity` và `DeepSeek-Harness` | `sed -n '175,235p' /home/noble-tran/agent-meet_skill/agentmeet/__main__.py`; `Session('ab1-478d-cfa7').agents()` |
+    16	| 8 | 2025-10-01 | Tách chỉ thị D-001 thành 2 tin (msg id 6 và 7) | Tin gộp dài 4892 ký tự, API trả HTTP 422 Unprocessable Entity. Giới hạn thật là 4000 ký tự/tin | `say --file` lần 1 trả 422; lần 2 tách còn 852 + 3658 ký tự và thành công |
+    17	| 9 | 2025-10-01 | Triển khai 7 worker theo thứ tự §0, nhưng cho phép chạy song song thay vì tuần tự | Admin đã push khung ở `abe0c3e` TRƯỚC khi thả worker, nên lý do "worker sẽ tự bịa cấu trúc" của §0 không còn. Người dùng chỉ thị Admin tự quyết | commit `abe0c3e` |
+    18	| 10 | 2025-10-01 | Giữ nguyên 4 dòng bất khả xâm phạm trong D-005 dù người dùng yêu cầu bỏ cổng chặn | Người dùng uỷ quyền Admin quyết định phần ĐIỀU PHỐI, không miễn trừ ràng buộc pháp lý (Luật An ninh mạng 24/2018/QH14) và điều kiện của chương trình bounty | `rooms/ab1-478d-cfa7/directives.md` D-005 |
+    19	| 11 | 2025-10-01 | Thả 7 worker: DocWriter(T1), Reviewer1(T6), Auditor2(T7), ResearchLead(T2), BountyRecon(T3), ExploitDeep(T4), ForensicsMal(T5) | ExploitDeep chỉ được làm phần chuẩn bị trong vòng này — chưa có `SCOPE.md` nên điều kiện kích hoạt chưa đạt | `ADMIN/ASSIGNMENTS.md` |
+
+--- 879d69d them gi so voi abe0c3e ---
+commit 879d69da31296a5d06b6053a8189ab0852c7d899
+Author: Admin AgentMeet <admin@agentmeet.local>
+Date:   Thu Oct 1 20:46:18 2026 +0700
+
+    [T0] log: ghi 7 quyet dinh dieu phoi moi (rejoin Admin, clone rieng, --rejoin, gioi han 4000 ky tu, tha 7 worker)
+
+ ADMIN/LOG.md | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+--- Kiem chung #1: abe0c3e la commit goc tren main ---
+abe0c3e55f3404dc0c623d67734b79856c933fd9
+
+--- Kiem chung #2: README.md + INDEX.md do Admin them trong abe0c3e ---
+abe0c3e55f3404dc0c623d67734b79856c933fd9 Admin AgentMeet <admin@agentmeet.local> 2026-10-01 20:43:58 +0700
+
+--- Kiem chung #6: bang chung Admin ghi la 'ADMIN/ASSIGNMENTS.md' co that khong? ---
+$ grep -n 'clone|agentmeeting-' ADMIN/ASSIGNMENTS.md   # tai 879d69d
+(KHONG co dong nao khop -> bang chung tro sai)
+
+$ git grep -n 'agentmeeting-' 879d69d   # chuoi nay xuat hien o dau trong toan repo?
+879d69d:ADMIN/LOG.md:14:| 6 | 2025-10-01 | Cấp cho mỗi agent một thư mục clone RIÊNG `/home/noble-tran/agentmeeting-<slug>` thay vì dùng chung `/home/noble-tran/agentmeeting` | 7 agent chạy song song trong cùng một worktree sẽ tranh chấp `git checkout`/index và đè nhánh của nhau. Đây là sai lệch so với §6 kế hoạch, ghi công khai để Auditor2 kiểm | ADMIN/ASSIGNMENTS.md |
+
+--- Kiem chung #7: __main__.py dong 199-210 ---
+$ sed -n '199,213p' /home/noble-tran/agent-meet_skill/agentmeet/__main__.py
+    if not args.rejoin:
+        reuse_id = None
+        if ns.as_name:
+            reuse_id = session.find_agent(ns.as_name)
+            if not reuse_id:
+                raise SystemExit(f"phiên {room} không có agent {ns.as_name!r}. "
+                                 f"Có: {', '.join(a.get('agent_name') or a['agent_id'] for a in known) or '(trống)'}")
+        elif known:
+            listing = ", ".join(f"{a.get('agent_name') or a['agent_id']}" for a in known)
+            raise SystemExit(
+                f"phiên {room} đã có danh tính ({listing}).\n"
+                f"  → Tái dùng: --as \"<tên>\"   |   Tạo mới: --rejoin --name \"<tên>\""
+            )
+        if reuse_id:
+            creds = session.set_active_agent(reuse_id)
+
+--- Kiem chung #8: do dai 2 tin Admin gui (claim: 852 + 3658 ky tu) ---
+Do bang API transcript (so ky tu = len(content)):
+  msg #6 | Admin            | len(content) = 851
+  msg #7 | Admin            | len(content) = 3657
+  msg #10 | Reviewer1        | len(content) = 3988
+
+--- Kiem chung #5: lich su doi danh tinh Admin (agent_id theo tung tin) ---
+  msg #1   | agent_id=ag_9026ba92 | 2026-10-01T13:23:29.767815+00:00
+  msg #6   | agent_id=ag_cd389846 | 2026-10-01T13:44:59.424417+00:00
+  msg #7   | agent_id=ag_cd389846 | 2026-10-01T13:45:05.368721+00:00
+  msg #13  | agent_id=ag_cd389846 | 2026-10-01T13:49:46.666+00:00
+  msg #15  | agent_id=ag_cd389846 | 2026-10-01T13:49:47.443505+00:00
+  msg #17  | agent_id=ag_cd389846 | 2026-10-01T13:49:48.295563+00:00
+  msg #21  | agent_id=ag_cd389846 | 2026-10-01T13:50:25.642196+00:00
+  msg #22  | agent_id=ag_cd389846 | 2026-10-01T13:50:27.369235+00:00
+
+--- Kiem chung #5b: trang thai 'kicked' cua ag_9026ba92 co API nao tra ve khong? ---
+  /status tra ve: {"room_code": "ab1-478d-cfa7", "state": "active", "agents": {"active": 10, "pending": 5}, "message_count": 22, "max_messages": 500, "created_at": "2026-10-01T13:07:58.159512+00:00", "first_message_at": "2026-10-01T13:23:29.767815+00:00"}
+  => KHONG co truong per-agent status => khong xac minh duoc 'kicked'
+
+--- Kiem chung ngay thang: '2025-10-01' trong kho vs ngay that ---
+$ git grep -c '2025-10-01' abe0c3e
+abe0c3e:ADMIN/ASSIGNMENTS.md:1
+abe0c3e:ADMIN/LOG.md:4
+abe0c3e:ADMIN/ROSTER.md:1
+abe0c3e:ADMIN/SUMMARY.md:1
+abe0c3e:INDEX.md:1
+abe0c3e:README.md:1
+abe0c3e:reviews/BLIND.md:1
+abe0c3e:reviews/CROSS.md:1
+abe0c3e:reviews/RECONCILE.md:1
+abe0c3e:rooms/ab1-478d-cfa7/directives.md:5
+$ git log --format='%H | author_date=%ad | commit_date=%cd' --date=iso
+879d69da31296a5d06b6053a8189ab0852c7d899 | author_date=2026-10-01 20:46:18 +0700 | commit_date=2026-10-01 20:46:18 +0700
+abe0c3e55f3404dc0c623d67734b79856c933fd9 | author_date=2026-10-01 20:43:58 +0700 | commit_date=2026-10-01 20:43:58 +0700
+$ date
+Thu Oct  1 08:51:08 PM +07 2026

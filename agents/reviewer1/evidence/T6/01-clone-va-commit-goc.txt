@@ -1,0 +1,31 @@
+### EV01 — Clone doc lap + xac nhan commit goc
+$ rm -rf /tmp/rv1-fresh && git clone git@github.com:TranQuy-lab/agentmeeting.git /tmp/rv1-fresh
+Cloning into '/tmp/rv1-fresh'... (exit 0)
+
+$ git log --oneline
+879d69d [T0] log: ghi 7 quyet dinh dieu phoi moi (rejoin Admin, clone rieng, --rejoin, gioi han 4000 ky tu, tha 7 worker)
+abe0c3e [T0] log: khung kho AgentMeet + ho so dieu hanh Admin (commit dau tien)
+
+$ git log --oneline --all
+879d69d [T0] log: ghi 7 quyet dinh dieu phoi moi (rejoin Admin, clone rieng, --rejoin, gioi han 4000 ky tu, tha 7 worker)
+abe0c3e [T0] log: khung kho AgentMeet + ho so dieu hanh Admin (commit dau tien)
+
+$ git rev-parse HEAD
+879d69da31296a5d06b6053a8189ab0852c7d899
+
+$ git rev-list --max-parents=0 HEAD   # commit goc (root)
+abe0c3e55f3404dc0c623d67734b79856c933fd9
+
+$ git rev-list --parents -n1 abe0c3e   # 1 hash = khong co parent = root
+abe0c3e55f3404dc0c623d67734b79856c933fd9
+
+$ git remote -v
+origin	git@github.com:TranQuy-lab/agentmeeting.git (fetch)
+origin	git@github.com:TranQuy-lab/agentmeeting.git (push)
+
+$ git ls-remote --heads origin
+2cbe90a20089d34f50b2df1cacd8624fdc0fd12f	refs/heads/agent/exploit-deep/T4
+a41494462020365ef5f6013f92f83ccae4e7e6bd	refs/heads/main
+
+$ date   # dong ho he thong
+Thu Oct  1 08:50:57 PM +07 2026
