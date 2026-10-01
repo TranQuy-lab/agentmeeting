@@ -24,7 +24,7 @@
 
 ## 1. Ứng viên theo chương trình
 
-### 1.1 GitHub — [`security/github/RECON.md`](../../../security/github/RECON.md)
+### 1.1 GitHub — [`security/github/RECON.md`](../../../../security/github/RECON.md)
 
 | # | Ứng viên | Độ tin cậy | Đề xuất |
 |---|---|---|---|
@@ -36,7 +36,7 @@
 **Kết luận GitHub: KHÔNG có ứng viên tin cậy cao.** Bề mặt được cấu hình rất tốt
 (HSTS preload, CSP chỉ 1 hash SHA-256, SPF `-all`, CAA đầy đủ).
 
-### 1.2 GitLab — [`security/gitlab/RECON.md`](../../../security/gitlab/RECON.md)
+### 1.2 GitLab — [`security/gitlab/RECON.md`](../../../../security/gitlab/RECON.md)
 
 | # | Ứng viên | Độ tin cậy | Đề xuất |
 |---|---|---|---|
@@ -47,7 +47,7 @@
 | G5 | `gitlab.org`/`gitlab.net` DMARC `p=none` | **BỊ LOẠI** | ⛔ Cùng lý do G4. |
 | G6 | Lộ `gitlab-sv: web-gke-us-east1-d`, `gitlab-lb: haproxy-…` | **BỊ LOẠI** | ⛔ GitLab: *"Metadata disclosure, enumeration, and information gathering issues are out of scope"*. |
 
-### 1.3 Cloudflare — [`security/cloudflare/RECON.md`](../../../security/cloudflare/RECON.md)
+### 1.3 Cloudflare — [`security/cloudflare/RECON.md`](../../../../security/cloudflare/RECON.md)
 
 | # | Ứng viên | Độ tin cậy | Đề xuất |
 |---|---|---|---|

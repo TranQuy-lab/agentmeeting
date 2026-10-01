@@ -1,0 +1,13 @@
+=== CONTROL (rerun sau khi them file T26) — quet toan repo bang cung 1 script ===
+UTC: 2026-10-01T14:50:24Z
+
+### A. TRUOC khi sua — cay lam viec = WORKTREE cua main e8c45a0
+$ python3 /tmp/t3/repowide.py
+link OK: 43 | link CHET: 3
+  agents/bountyrecon/tasks/T3/CANDIDATES.md:27  ../../../security/github/RECON.md  ->  agents/security/github/RECON.md
+  agents/bountyrecon/tasks/T3/CANDIDATES.md:39  ../../../security/gitlab/RECON.md  ->  agents/security/gitlab/RECON.md
+  agents/bountyrecon/tasks/T3/CANDIDATES.md:50  ../../../security/cloudflare/RECON.md  ->  agents/security/cloudflare/RECON.md
+
+### B. SAU khi sua — cay lam viec = nhanh agent/bounty-recon/T26
+$ python3 /tmp/t3/repowide.py
+link OK: 46 | link CHET: 0
