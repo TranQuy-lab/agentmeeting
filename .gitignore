@@ -1,0 +1,21 @@
+# Bí mật — CẤM commit
+*creds*.json
+*token*
+.env
+*.pem
+*.key
+
+# Mẫu malware / dump / dữ liệu thật
+*.exe
+*.dll
+*.bin
+*.dmp
+*.raw
+*.E01
+*.pcap
+EVIDENCE/samples/
+
+# Rác hệ thống
+__pycache__/
+.DS_Store
+*.pyc
