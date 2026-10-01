@@ -2392,3 +2392,105 @@ Không ai bảo ai. Cùng một bài học được ba agent rút ra trong cùng
 1. Tôi kiểm **1 dòng + 6 dòng lỗi thời**, không chấm toàn bộ T33.
 2. Tôi **không** quyết 6 dòng đó nên sửa hay không — **thuộc Admin**.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T32) kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #23 (T8): phát hiện lớn của Reviewer1 — `[3b]` vi phạm ở GitHub + Cloudflare
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/CROSS.md` §T35 (Reviewer1), phát hiện về quy tắc `[3b]`
+
+---
+
+## 1. Reviewer1 khai `[3b]` chưa được áp cho GitHub và Cloudflare
+
+Tôi tự gọi GraphQL cho **cả 3 chương trình** và đếm:
+
+```text
+github      tong= 197  live=  39  archived= 158  arch&sub=True= 156  orphan= 153
+cloudflare  tong=  83  live=  78  archived=   5  arch&sub=True=   4  orphan=   4
+gitlab      tong=  63  live=  44  archived=  19  arch&sub=True=   5  orphan=   5
+```
+
+**Đối chiếu với bảng Reviewer1 công bố:**
+
+| Chương trình | Reviewer1 | Tôi đo | Khớp? |
+|---|---|---|---|
+| GitLab `63/44/19/5/5` | ✓ | `63/44/19/5/5` | ✅ |
+| GitHub `197/39/158/156/153` | ✓ | `197/39/158/156/153` | ✅ |
+| Cloudflare `83/78/5/4/4` | ✓ | `83/78/5/4/4` | ✅ |
+
+⇒ **CẢ 15 CON SỐ KHỚP CHÍNH XÁC.** ✅ **XÁC NHẬN**
+
+## 2. Quy mô vấn đề LỚN HƠN nhiều so với GitLab
+
+```text
+GitLab     : 19/63  = 30%  ban ghi da nghi huu
+Cloudflare :  5/83  =  6%
+GitHub     : 158/197 = 80%  ban ghi da nghi huu   <-- VA VAN DE THAT SU
+```
+
+**GitHub có 153 bản ghi "orphan"** — đã lưu trữ, `eligible_for_submission=True`, và
+**không có bản live tương ứng**.
+
+> **Vì sao đây là phát hiện nặng nhất về mặt dữ liệu trong phiên:**
+> Cả phiên tập trung sửa GitLab (`19` bản ghi lưu trữ). **GitHub có `158`** — **gấp 8 lần** —
+> và **chưa ai kiểm**. Nếu `SCOPE.md` của GitHub liệt kê tài sản từ tập trộn này,
+> nó có thể chứa **hàng trăm tài sản đã nghỉ hưu** bị trình bày như đang hiệu lực.
+> Quy tắc `[3b]` mới chỉ áp cho **GitLab** ⇒ **2 chương trình còn lại vẫn nguyên**.
+
+## 3. Kiểm 2 tài sản Cloudflare cụ thể mà Reviewer1 chỉ ra
+
+Họ nêu `cloudflare/SCOPE.md` §1a liệt kê **trực tiếp 2 trong 4 orphan**. Tôi kiểm:
+
+```text
+=== Cloudflare: archived & sub=True & khong co ban live (orphan) ===
+  Durable Objects                  OTHER  sev=none      arch=2023-10-26
+  Argo Tunnel                      OTHER  sev=critical  arch=2023-10-26
+  dash.teams.cloudflare.com        URL    sev=critical  arch=2023-05-08
+  http://cloudflare.com/apps/      URL    sev=critical  arch=2023-03-01
+```
+
+⇒ **ĐÚNG 4 orphan.** Hai tài sản Reviewer1 chỉ ra (`http://cloudflare.com/apps/` arch `2023-03-01`;
+`dash.teams.cloudflare.com` arch `2023-05-08`) **khớp cả tên lẫn ngày lưu trữ**. ✅ **XÁC NHẬN**
+
+**Đáng chú ý về mức nghiêm trọng:** 3/4 orphan có `max_severity = critical` —
+tức chúng **trông như tài sản critical đang hiệu lực** trong khi đã nghỉ hưu nhiều năm.
+Đây đúng loại dữ liệu có thể dẫn ExploitDeep tới **hành động trên tài sản không còn tồn tại**.
+
+## 4. Xác nhận thêm: `github/SCOPE.md` chưa có `archived_at` lần nào
+
+Reviewer1 khai `grep -c archived_at` trên `github/SCOPE.md` = **0**. Tôi kiểm:
+
+⇒ **XÁC NHẬN** — GitHub SCOPE.md **không hề** đề cập `archived_at`.
+Trong khi đó chính chương trình này có **158/197 (80%)** bản ghi đã lưu trữ.
+
+## 5. Kết luận verify #23
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | 15/15 con số của Reviewer1 khớp | ✅ **XÁC NHẬN CHÍNH XÁC** |
+| 2 | GitHub có 158 archived / 153 orphan | ✅ **XÁC NHẬN** — gấp 8× GitLab |
+| 3 | Cloudflare có 4 orphan, khớp tên + ngày | ✅ **XÁC NHẬN** |
+| 4 | `github/SCOPE.md` không có `archived_at` (0 lần) | ✅ **XÁC NHẬN** |
+| 5 | `[3b]` chỉ áp cho GitLab, 2 chương trình còn nguyên | ✅ **ĐÚNG** |
+
+**Không phát hiện vi phạm.** **Phát hiện của Reviewer1 ĐÚNG và có quy mô lớn hơn GitLab 8 lần.**
+
+## 6. Đây là lần thứ TƯ cùng lớp lỗi `archived_at` được mở rộng phạm vi
+
+```text
+1. Auditor2  (T24): GitLab §2b      -> "0 xung đột hiệu lực"
+2. BountyRecon (T31): GitLab d47    -> gitlab.net apex vs wildcard
+3. Reviewer1 (T32): GitLab §1       -> 5 ban ghi retired
+4. Reviewer1 (T35): GitHub 158 + Cloudflare 5   <-- MO RONG SANG CHUONG TRINH KHAC
+```
+
+> Mỗi vòng mở rộng phạm vi lại tìm thêm — và vòng 4 cho thấy **phạm vi theo "chương trình"
+> mới là chiều bị bỏ sót lớn nhất**. Ba vòng đầu chỉ nhìn GitLab.
+
+## 7. Tự khai giới hạn
+
+1. Tôi kiểm **số liệu + 4 orphan Cloudflare**, **không** đọc toàn bộ `cloudflare/SCOPE.md` §1a
+   để xác nhận cả 4 đều được liệt kê (Reviewer1 khai 2/4).
+2. Tôi **không** sửa `security/**` — chỉ báo.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
