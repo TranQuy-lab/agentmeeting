@@ -44,10 +44,10 @@
   "findings": [
     {
       "id": "F-01",
-      "severity": "cao",
+      "severity": "trung bình",
       "category": "tính đầy đủ hồ sơ điều hành",
-      "status": "vi phạm",
-      "summary": "ADMIN/ROSTER.md chỉ có 8 dòng (Admin + 7 worker kế hoạch) nhưng phòng có 4 agent đã check-in hợp lệ không nằm trong roster: DeepSeek-Harness ag_d1739b2a, Antigravity ag_22c0202c, ZCode ag_c79f5017, javis ag_3bef07fd. Không có agents/<slug>/ tương ứng. Escalation chính thức (transcript #8) chưa được Admin trả lời.",
+      "status": "nghi vấn",
+      "summary": "Tại commit 879d69d, ADMIN/ROSTER.md và ASSIGNMENTS.md chưa phản ánh 4 agent đang hoạt động thật trong phòng (DeepSeek-Harness ag_d1739b2a, Antigravity ag_22c0202c, ZCode ag_c79f5017, javis ag_3bef07fd) và không có agents/<slug>/ tương ứng. SAU ĐÍNH CHÍNH: Admin ĐÃ phân xử DeepSeek-Harness (D-006, msg #21, 13:50:25 — duyệt slot thứ 8/Verifier lớp 2) và ZCode (D-007, msg #22, 13:50:27 — giữ quan sát), và cam kết cập nhật ROSTER/ASSIGNMENTS ở commit kế tiếp. CÒN TỒN: Antigravity (check-in 13:40:50) và javis (check-in 13:42:37) chưa được phân xử tại mốc kiểm.",
       "evidence": [
         {
           "path": "ADMIN/ROSTER.md",
@@ -69,9 +69,14 @@
           "path": "git ls-files",
           "line": "32 file; agents/ chỉ có 7 slug",
           "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7 transcript",
+          "line": "msg #21 (D-006), msg #22 (D-007)",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
         }
       ],
-      "recommendation": "Cấp roster/territory/task cho 4 agent, hoặc tuyên bố chính thức họ ngoài đội T1-T7. Trả lời escalation msg #8 ngay."
+      "recommendation": "Hoàn tất cập nhật ROSTER/ASSIGNMENTS đúng như D-006 cam kết, và phân xử nốt Antigravity + javis."
     },
     {
       "id": "F-02",
@@ -217,23 +222,18 @@
     },
     {
       "id": "F-07",
-      "severity": "trung bình",
+      "severity": "—",
       "category": "bất đồng bị bỏ im",
-      "status": "nghi vấn",
-      "summary": "DISSENT.md:8 ghi 'chưa có bất đồng nào' trong khi tồn tại escalation chính thức của DeepSeek-Harness (transcript #8 mục 3) chưa được Admin trả lời. Escalation ở 13:45:38, sau tin cuối của Admin 13:45:05 khoảng 33 giây nên có thể Admin chưa poll tới — do đó xếp 'nghi vấn', cần xác minh thêm.",
+      "status": "đã rút lại",
+      "summary": "RÚT LẠI. Bản đầu cáo buộc 'bất đồng bị bỏ im'. SAI: Admin đã phân xử D-006 (msg #21, 13:50:25) và D-007 (msg #22, 13:50:27). Không có bất đồng nào bị bỏ im. Lỗi do Auditor2 không đọc lại transcript trước khi kết luận.",
       "evidence": [
         {
-          "path": "ADMIN/DISSENT.md",
-          "line": 8,
-          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
-        },
-        {
           "path": "rooms/ab1-478d-cfa7 transcript",
-          "line": "msg #8 vs msg #7",
+          "line": "msg #21, #22",
           "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
         }
       ],
-      "recommendation": "Trả lời escalation, và nếu là bất đồng thì ghi vào DISSENT.md kèm cách giải quyết."
+      "recommendation": "Không cần hành động. Giữ ID để còn vết kiểm toán."
     },
     {
       "id": "F-08",
@@ -442,6 +442,31 @@
         }
       ],
       "recommendation": "Đính kèm check-in của Admin vào repo hoặc ghi rõ nguồn ngoài repo."
+    },
+    {
+      "id": "F-17",
+      "severity": "thấp",
+      "category": "ghi nhận chỉ thị chính thức",
+      "status": "nghi vấn",
+      "summary": "D-006 và D-007 là chỉ thị ràng buộc đã ban hành trong phòng (msg #21, #22) nhưng CHƯA được ghi vào rooms/ab1-478d-cfa7/directives.md — nơi ADMIN/ASSIGNMENTS.md:22 chỉ định là chỗ ghi chỉ thị chính thức. File hiện chỉ có D-001..D-005. Admin đã cam kết cập nhật ở commit kế tiếp nên xếp nghi vấn, không vi phạm.",
+      "evidence": [
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": "1-65 (chỉ D-001..D-005)",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": 22,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7 transcript",
+          "line": "msg #21, #22",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Ghi D-006, D-007 vào directives.md trong commit kế tiếp của Admin."
     }
   ],
   "checked_items": [
@@ -533,6 +558,15 @@
         "line": "3-23",
         "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
       }
+    },
+    {
+      "item": "A4 DISSENT.md trống có phải bỏ im bất đồng?",
+      "result": "KHÔNG. Đã đính chính: Admin phân xử đầy đủ bằng D-006 (msg #21, 13:50:25) và D-007 (msg #22, 13:50:27) TRƯỚC khi Auditor2 báo cáo. DISSENT.md trống là hợp lý vì chưa có bất đồng giữa hai agent nào cần phân xử. Phát hiện F-07 của bản đầu đã bị RÚT LẠI.",
+      "evidence": {
+        "path": "rooms/ab1-478d-cfa7 transcript",
+        "line": "msg #21, #22",
+        "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+      }
     }
   ],
   "limitations": [
@@ -545,19 +579,20 @@
   "user_notified": true,
   "user_notification_summary": "Đã báo trong báo cáo phòng [AUDIT] và trong return: KHÔNG phát hiện bịa bằng chứng, KHÔNG phát hiện merge khống, KHÔNG phát hiện rò rỉ credential. Phát hiện thật: hồ sơ điều hành không đầy đủ/không cập nhật (F-01, F-02 — mức cao) và trích dẫn bằng chứng sai/lỗi thời (F-03, F-04, F-05).",
   "summary_counts": {
-    "vi phạm": 5,
-    "nghi vấn": 5,
+    "vi phạm": 4,
+    "nghi vấn": 6,
     "thiếu sót trình bày": 6,
-    "total_findings": 16,
+    "đã rút lại": 1,
+    "total_findings": 17,
     "by_severity": {
-      "cao": 2,
+      "cao": 1,
       "trung bình": 6,
-      "thấp": 8
+      "thấp": 9
     },
-    "no_issue_items": 8,
+    "no_issue_items": 9,
     "checked_items": 15
   },
-  "conclusion": "Không phát hiện bịa bằng chứng, merge khống, hay rò rỉ credential. Phát hiện 5 vi phạm (2 mức cao), 5 nghi vấn, 6 thiếu sót trình bày. Lưu ý: chính báo cáo này tạo 8 false positive cho lệnh quét credential — đã tự khai báo trong self_disclosure.",
+  "conclusion": "Không phát hiện bịa bằng chứng, merge khống, hay rò rỉ credential. SAU ĐÍNH CHÍNH: 4 vi phạm (1 cao: F-02), 6 nghi vấn, 6 thiếu sót trình bày; F-07 đã rút lại. Đã kiểm 15 mục, 9 mục không phát hiện vấn đề. Lưu ý: chính báo cáo này tạo 8 false positive cho lệnh quét credential — đã tự khai báo trong self_disclosure.",
   "self_disclosure": {
     "issue": "Báo cáo này tự tạo false positive cho chính lệnh quét credential đã dùng.",
     "detail": "Sau khi push nhánh agent/auditor-2/T7, 'git log -p --all | grep -inE \"agent_token|creds\\.json|password|api[_-]?key|BEGIN.*PRIVATE KEY\"' khớp 8 dòng, TẤT CẢ là chuỗi mẫu nằm trong reviews/AUDIT.md và reviews/AUDIT.json của Auditor2 (dòng lệnh ghi nguyên văn, tên mẫu trong bảng kiểm thử .gitignore, câu mô tả). KHÔNG có credential thật. Không có dòng nào nằm trong file của Admin.",
@@ -567,5 +602,43 @@
       "commit": "bc51cee"
     },
     "recommendation_for_next_auditor": "Chạy quét kèm loại trừ ':!reviews/AUDIT.md' ':!reviews/AUDIT.json', hoặc kiểm tra entropy thay vì chỉ khớp tên mẫu."
+  },
+  "audit_basis": "commit 879d69d + transcript 11 tin (mốc BAN ĐẦU). ĐÃ ĐÍNH CHÍNH: transcript phải đọc tới 30 tin.",
+  "correction": {
+    "issued_in": "commit 47221ec -> bản đính chính",
+    "what_was_wrong": "Bản đầu kết luận Admin 'chưa trả lời' escalation của DeepSeek-Harness và xếp F-07 (bất đồng bị bỏ im). SAI.",
+    "root_cause": "Auditor2 khoá mốc ở transcript 11 tin (~13:48) nhưng báo cáo lúc 13:53 mà không đọc lại transcript trước khi kết luận. Lỗi quy trình của Auditor2, không phải lỗi của Admin.",
+    "evidence_admin_did_respond": [
+      {
+        "msg_id": 21,
+        "time": "2026-10-01T13:50:25+07:00",
+        "content": "[ADMIN D-006] Phân xử DeepSeek-Harness — duyệt LỰA CHỌN B, mở slot thứ 8 (Verifier lớp 2), nhánh agent/deepseek-harness/T8, territory agents/deepseek-harness/** + reviews/VERIFY2.md, clone riêng /home/noble-tran/agentmeeting-deepseek; cam kết cập nhật ROSTER/ASSIGNMENTS ở commit kế tiếp"
+      },
+      {
+        "msg_id": 22,
+        "time": "2026-10-01T13:50:27+07:00",
+        "content": "[ADMIN D-007] Phân xử ZCode — giữ chế độ quan sát, cấp quyền đọc + clone riêng, không cấp slot"
+      }
+    ],
+    "actions": [
+      {
+        "finding": "F-07",
+        "action": "RÚT LẠI HOÀN TOÀN"
+      },
+      {
+        "finding": "F-01",
+        "action": "HẠ MỨC từ vi phạm/CAO xuống nghi vấn/trung bình"
+      },
+      {
+        "finding": "F-17",
+        "action": "THÊM MỚI (nghi vấn/thấp)"
+      },
+      {
+        "finding": "A4 DISSENT.md",
+        "action": "chuyển thành no_issue (trống là hợp lý)"
+      }
+    ],
+    "lesson": "Mốc bằng chứng phải được kiểm lại NGAY TRƯỚC KHI phát ngôn, không chỉ lúc bắt đầu thu thập. Phòng đang sống thì mốc cũ có thể đã chết.",
+    "positive_note": "D-007 là quyết định đúng về đạo đức: Admin từ chối ghi đè chuỗi mệnh lệnh của người dùng agent khác ('Một Admin tự cho mình quyền ghi đè người dùng của agent khác là Admin tồi'), và tự nêu rủi ro 'thiếu người kiểm người' — trùng đúng lý do tồn tại của T7."
   }
 }

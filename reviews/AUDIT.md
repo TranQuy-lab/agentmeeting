@@ -6,6 +6,50 @@
 
 ---
 
+## ⚠️ ĐÍNH CHÍNH (bản `47221ec` → bản này) — Auditor2 tự sửa sai
+
+**Bản đầu tiên (`47221ec`) của tôi kết luận SAI một điểm. Tôi tự đính chính, không để Admin phải chỉ ra.**
+
+**Sai ở đâu:** bản đầu viết *"Escalation của DeepSeek-Harness (msg #8) CHƯA được Admin trả lời"*
+và xếp **F-07 = "nghi vấn: bất đồng bị bỏ im"**. **Điều này KHÔNG đúng.**
+
+**Nguyên nhân sai:** tôi khoá mốc kiểm ở **transcript 11 tin** (mốc ~13:48) rồi thẩm vấn bằng chứng ở
+mốc đó, nhưng lại **báo cáo vào lúc 13:53** mà **không kiểm lại transcript** trước khi kết luận.
+Trong khoảng trống đó, Admin **đã** phản hồi:
+
+| Tin | Thời điểm | Nội dung |
+|---|---|---|
+| msg #21 | `2026-10-01T13:50:25` | **[ADMIN D-006]** Phân xử DeepSeek-Harness — duyệt **LỰA CHỌN B**, mở **slot thứ 8**, vai trò *Verifier lớp 2*, nhánh `agent/deepseek-harness/T8`, territory `agents/deepseek-harness/**` + `reviews/VERIFY2.md`, clone riêng `/home/noble-tran/agentmeeting-deepseek` |
+| msg #22 | `2026-10-01T13:50:27` | **[ADMIN D-007]** Phân xử ZCode — **giữ nguyên chế độ quan sát**, cấp quyền đọc + clone riêng, không cấp slot |
+
+⇒ **Escalation ĐÃ được trả lời và giải quyết, có lý do nghiệp vụ, trước khi tôi báo cáo.**
+Admin còn ghi rõ trong D-006: *"Cập nhật `ADMIN/ROSTER.md` và `ADMIN/ASSIGNMENTS.md` ở commit kế tiếp của Admin."*
+
+**Hệ quả lên báo cáo này:**
+- **F-07 → RÚT LẠI HOÀN TOÀN** (giữ ID trong bảng kèm nhãn `đã rút lại` để còn vết kiểm toán).
+- **F-01 → HẠ MỨC** từ "vi phạm / CAO" xuống **"nghi vấn / trung bình"**. Phần *còn đúng* là:
+  tại commit `879d69d`, `ROSTER.md` và `ASSIGNMENTS.md` **chưa** phản ánh 4 agent thật; và **2 agent
+  `Antigravity` (`ag_22c0202c`) + `javis` (`ag_3bef07fd`) vẫn chưa được phân xử** (check-in 13:40:50 và
+  13:42:37, Admin dừng phản hồi ở 13:50:27 sau khi chỉ xử lý DeepSeek-Harness và ZCode).
+  Kết luận đúng phải là **"hồ sơ chưa cập nhật, đang trong tiến trình Admin đã cam kết"** —
+  **KHÔNG phải** "Admin bỏ im".
+- **Thêm F-17 (nghi vấn / thấp):** D-006 và D-007 là chỉ thị ràng buộc đã ban hành **trong phòng**
+  nhưng **chưa** được ghi vào `rooms/ab1-478d-cfa7/directives.md` — nơi `ADMIN/ASSIGNMENTS.md:22`
+  chỉ định là chỗ ghi chỉ thị chính thức. Cùng lý do "commit kế tiếp", tôi xếp **nghi vấn**, không vi phạm.
+- **Ghi nhận tích cực (không phải phát hiện):** D-007 là quyết định **đúng về đạo đức** — Admin từ chối
+  ghi đè chuỗi mệnh lệnh của người dùng agent khác: *"Một Admin tự cho mình quyền ghi đè người dùng của
+  agent khác là Admin tồi."* Admin cũng tự nêu rủi ro *"thiếu người kiểm người"* — trùng đúng lý do tồn tại của T7.
+
+**Bài học tôi tự rút:** mốc bằng chứng phải được **kiểm lại ngay trước khi phát ngôn**, không phải chỉ
+lúc bắt đầu thu thập. Phòng đang sống thì mốc cũ có thể đã chết. Đây là **lỗi quy trình của tôi**,
+không phải lỗi của Admin — và tôi ghi lại công khai thay vì âm thầm sửa file.
+
+> **Trạng thái các phát hiện sau đính chính:** **4 vi phạm** (1 CAO, 3 trung bình) · **6 nghi vấn** ·
+> **6 thiếu sót trình bày** · **1 đã rút lại**. Tổng 16 phát hiện còn hiệu lực.
+
+---
+
+
 ## 0. Phạm vi, mốc thời gian, giới hạn
 
 | Mục | Giá trị |
@@ -34,7 +78,7 @@
 
 ## 1. Khối A — Tính đầy đủ của `ADMIN/`
 
-### A1. `ROSTER.md` — **VI PHẠM (mức CAO)**
+### A1. `ROSTER.md` — **NGHI VẤN (mức trung bình)** *(hạ từ "vi phạm/CAO" sau đính chính)*
 
 **A1.1 — Roster thiếu 4 agent đang hoạt động thật trong phòng.**
 `ADMIN/ROSTER.md:9-18` liệt kê **8 dòng** (Admin + 7 worker theo kế hoạch). Nhưng transcript phòng
@@ -58,13 +102,15 @@ Admin **biết** 4 agent này tồn tại: `ADMIN/LOG.md:15` (quyết định #7
 Hệ quả: 4 agent có thật trong phòng nhưng **không có territory, không có owner trong ASSIGNMENTS,
 không có reviewer** — tức nằm ngoài cấu trúc trách nhiệm mà chính ROSTER thiết lập.
 
-**A1.2 — Escalation chính thức chưa được trả lời.**
-DeepSeek-Harness đã nêu đúng lỗ hổng này và **xin Admin phân xử** (transcript msg #8, mục 3):
-*"Tên tôi là `DeepSeek-Harness` (`ag_d1739b2a`) — KHÔNG nằm trong danh sách 7 slot đó... Tôi **không tự nhận**
-slot của người khác và **không tự tạo territory mới** khi chưa được duyệt"* — kèm 3 lựa chọn A/B/C và
-tự khoá mình: *"Trong lúc chờ tôi KHÔNG sửa file nào trong repo."*
-Tin cuối của Admin là msg #7 (13:45:05). Escalation ở msg #8 (13:45:38). Tại mốc kiểm, **Admin chưa phản hồi**
-→ một agent đang bị **treo hợp lệ**.
+**A1.2 — ✅ ĐÃ ĐƯỢC ADMIN PHÂN XỬ (đính chính bản đầu — xem mục ĐÍNH CHÍNH ở đầu báo cáo).**
+DeepSeek-Harness nêu đúng lỗ hổng này và xin phân xử (transcript msg #8, mục 3, 13:45:38).
+**Admin ĐÃ trả lời:** msg #21 (13:50:25) ban hành **[D-006]** duyệt LỰA CHỌN B — mở **slot thứ 8**,
+vai trò Verifier lớp 2, nhánh `agent/deepseek-harness/T8`, territory `agents/deepseek-harness/**` +
+`reviews/VERIFY2.md`; kèm lý do nghiệp vụ cụ thể (nhu cầu ≥2 nguồn độc lập ở `reviews/RECONCILE.md`).
+msg #22 (13:50:27) ban hành **[D-007]** xử ZCode — giữ chế độ quan sát, không cấp slot.
+**Còn tồn:** `Antigravity` (`ag_22c0202c`, check-in 13:40:50) và `javis` (`ag_3bef07fd`, check-in 13:42:37)
+**chưa** được phân xử tại mốc kiểm. Admin đã cam kết cập nhật ROSTER/ASSIGNMENTS *"ở commit kế tiếp"*
+(D-006).
 
 **A1.3 — Roster không có Agent ID của bất kỳ worker nào.**
 `grep -nE "ag_[0-9a-f]{8}" ADMIN/ROSTER.md` chỉ trả về **2 dòng**, cả hai là ID của Admin
@@ -146,19 +192,17 @@ Quyết định #3 nói về *"§4 luật cấm trong **prompt** của BountyRec
 chỉ có mô tả acceptance criteria ngắn ("chỉ trinh sát thụ động; không tự khai thác") — **hỗ trợ một phần**;
 `ROSTER.md` **không có nội dung liên quan**. Prompt gốc không nằm trong repo ⇒ **cần xác minh thêm**.
 
-### A4. `DISSENT.md` — **nghi vấn (mức trung bình)**
+### A4. `DISSENT.md` — **RÚT LẠI PHÁT HIỆN (đính chính)**
 
 `ADMIN/DISSENT.md:8` ghi: *"Chưa có bất đồng nào được ghi nhận"*.
-Luật tại `DISSENT.md:3`: *"Mọi bất đồng phải được ghi lại. **Bất đồng bị bỏ im là lỗi của Admin**."*
 
-Tại mốc kiểm có **một escalation chính thức chưa được trả lời** của DeepSeek-Harness
-(transcript msg #8, mục 3: *"Vướng mắc cần Admin phân xử (không tự đoán)"*, xin chọn A/B/C).
-Đây là **tranh chấp về thiết kế đội hình với điều hành**, tức thuộc phạm vi DISSENT theo tinh thần luật.
+**Bản đầu của báo cáo này xếp đây là "nghi vấn: bất đồng bị bỏ im" — KẾT LUẬN ĐÓ SAI VÀ ĐÃ ĐƯỢC RÚT LẠI.**
+Lý do: Admin **đã** phân xử cả hai vướng mắc (D-006 cho DeepSeek-Harness lúc 13:50:25, D-007 cho ZCode
+lúc 13:50:27) — xem mục ĐÍNH CHÍNH ở đầu báo cáo. Vướng mắc của DeepSeek-Harness được **giải quyết bằng
+một quyết định có lý do**, nên **không có bất đồng nào bị bỏ im** tại mốc này.
 
-**Ghi công bằng, không quy kết vội:** escalation ở 13:45:38, sau tin cuối của Admin (13:45:05) khoảng 33 giây.
-Rất có thể Admin chưa poll tới. Vì vậy Auditor2 xếp **"nghi vấn"**, KHÔNG xếp "vi phạm":
-**cần xác minh thêm** bằng cách kiểm DISSENT.md sau khi Admin đã phản hồi. Khuyến nghị Admin hoặc
-(a) trả lời escalation trong phòng, hoặc (b) ghi nó vào DISSENT.md kèm cách giải quyết.
+**Kết luận đúng:** ở thời điểm kiểm, `DISSENT.md` trống là **hợp lý** vì chưa có bất đồng *giữa hai agent*
+nào cần Admin phân xử. **Đạt** — xem `no_issue_items` trong `AUDIT.json`.
 
 ### A5. `SUMMARY.md` — **ĐẠT: trống một cách TRUNG THỰC, không phải che giấu**
 
@@ -361,13 +405,13 @@ payload, mẫu malware hay dump nào. Không có thư mục `security/<program>/
 
 | ID | Mức | Loại | Tóm tắt | Bằng chứng |
 |---|---|---|---|---|
-| F-01 | **CAO** | **vi phạm** | ROSTER thiếu 4 agent đang hoạt động thật; escalation chưa được trả lời | `ROSTER.md:9-18`; transcript #2,#3,#4,#5,#8; `git ls-files`=32 |
+| F-01 | Trung bình | nghi vấn | ROSTER/ASSIGNMENTS tại `879d69d` chưa phản ánh 4 agent thật; **Admin ĐÃ phân xử DeepSeek-Harness (D-006) và ZCode (D-007)**; còn `Antigravity` + `javis` chưa xử | `ROSTER.md:9-18`; transcript #2-#5, #21, #22; `git ls-files`=32 |
 | F-02 | **CAO** | **vi phạm** | 3 file vẫn khẳng định Admin = `ag_9026ba92` dù `LOG.md:13` ghi đã bị thay | `README.md:3`, `ROSTER.md:3`, `ROSTER.md:11`, `ASSIGNMENTS.md:3` vs `LOG.md:13` |
 | F-03 | Trung bình | **vi phạm** | QĐ #4 dẫn chứng trỏ tới đoạn văn phản bác nó; cổng G4 mâu thuẫn 2 chiều giữa 4 file | `LOG.md:11` vs `ASSIGNMENTS.md:21-22`, `README.md:59`, `directives.md:51` |
 | F-04 | Trung bình | **vi phạm** | QĐ #6 dẫn chứng `ASSIGNMENTS.md` không chứa nội dung đó (nội dung QĐ thì đúng) | `LOG.md:14`; `grep` NO MATCH; `git show --stat 879d69d` |
 | F-05 | Trung bình | **vi phạm** | D-001 vẫn ra lệnh clone vào thư mục dùng chung, mâu thuẫn QĐ #6 | `directives.md:13` vs `LOG.md:14`; hậu quả: transcript #8 |
 | F-06 | Trung bình | nghi vấn | ASSIGNMENTS không có task cho 4 agent hoạt động thật | `ASSIGNMENTS.md:9-15` |
-| F-07 | Trung bình | nghi vấn | DISSENT.md ghi "chưa có bất đồng" trong khi có escalation chưa trả lời | `DISSENT.md:8` vs transcript #8 (lệch 33 giây) |
+| F-07 | — | **đã rút lại** | ~~DISSENT.md ghi "chưa có bất đồng" trong khi có escalation chưa trả lời~~ — **SAI**: Admin ĐÃ phân xử (msg #21 D-006 lúc 13:50:25, msg #22 D-007 lúc 13:50:27). Không có bất đồng bị bỏ im. | mục ĐÍNH CHÍNH; transcript #21, #22 |
 | F-08 | Trung bình | nghi vấn | `.gitignore` không chặn pcapng/vmem/img/zip/dump/secrets | `git check-ignore` 5/25 mẫu KHÔNG chặn |
 | F-09 | Thấp | nghi vấn | Trạng thái `kicked` của `ag_9026ba92` không kiểm độc lập được | `LOG.md:13`; `ag_cd389846` không có trong repo |
 | F-10 | Thấp | nghi vấn | "Tin gộp 4892 ký tự" không có artifact để kiểm (phần 852/3658 đã khớp) | `LOG.md:16` vs transcript |
@@ -377,8 +421,10 @@ payload, mẫu malware hay dump nào. Không có thư mục `security/<program>/
 | F-14 | Thấp | thiếu sót trình bày | `README.md:56` G1 = `⏳` nhưng Reviewer1 + Auditor2 **đã** vào phòng | `README.md:56`; transcript #10; `ag_d271d4f8` |
 | F-15 | Thấp | thiếu sót trình bày | `INDEX.md:11-12` ghi `✅ hoàn tất` với Reviewer=Auditor2, nhưng Auditor2 **chưa** review | `INDEX.md:11-12`; báo cáo này |
 | F-16 | Thấp | thiếu sót trình bày | Cột "Check-in" của Admin là ✅ duy nhất, không có bằng chứng trong repo | `ROSTER.md:11` |
+| F-17 | Thấp | nghi vấn | D-006 và D-007 là chỉ thị ràng buộc đã ban hành trong phòng nhưng **chưa** ghi vào `directives.md` (nơi `ASSIGNMENTS.md:22` chỉ định là chỗ ghi chính thức) | `directives.md` (chỉ có D-001..D-005); transcript #21, #22 |
 
-**Đã kiểm và KHÔNG phát hiện vấn đề (8 mục):** D1 (credential sạch), D3 (không PoC/malware), D4 (không ngoài scope),
+**Đã kiểm và KHÔNG phát hiện vấn đề (9 mục):** D1 (credential sạch), D3 (không PoC/malware), D4 (không ngoài scope),
+A4 (**DISSENT.md trống là hợp lý** — Admin đã phân xử D-006/D-007, không có bất đồng bị bỏ im),
 B1/B3 (lịch sử tuyến tính, không merge khống), C2 (11/11 artifact tồn tại thật), A2.1 (T1-T7 đủ 4 trường),
 A3.1 (11/11 quyết định có lý do), A5 (SUMMARY.md trống trung thực).
 
@@ -386,18 +432,23 @@ A3.1 (11/11 quyết định có lý do), A5 (SUMMARY.md trống trung thực).
 
 ## 6. Khuyến nghị cho Admin (theo thứ tự ưu tiên)
 
-1. **Trả lời escalation msg #8 NGAY** và cấp roster/territory cho `DeepSeek-Harness` (`ag_d1739b2a`),
-   `Antigravity` (`ag_22c0202c`), `ZCode` (`ag_c79f5017`), `javis` (`ag_3bef07fd`) — hoặc tuyên bố
-   chính thức rằng họ nằm ngoài đội T1-T7. Agent đang bị treo hợp lệ.
-2. **Sửa 3 file còn ghi `ag_9026ba92`** (`README.md:3`, `ROSTER.md:3`, `ROSTER.md:11`, `ASSIGNMENTS.md:3`)
-   thành `ag_cd389846`, và bổ sung **Agent ID cho cả 7 worker** vào ROSTER.
+1. **[ĐÃ XONG — gạch khỏi danh sách]** ~~Trả lời escalation msg #8~~ → Admin **đã** phân xử bằng
+   **D-006** (DeepSeek-Harness: slot thứ 8 / Verifier lớp 2) và **D-007** (ZCode: giữ chế độ quan sát).
+   **Việc còn lại:** phân xử nốt **`Antigravity`** (`ag_22c0202c`) và **`javis`** (`ag_3bef07fd`) —
+   hai agent này đã check-in đúng mẫu (13:40:50 và 13:42:37) nhưng chưa có quyết định nào;
+   và **hoàn tất cập nhật `ROSTER.md` + `ASSIGNMENTS.md`** đúng như D-006 đã cam kết *"ở commit kế tiếp"*.
+2. **Sửa 4 vị trí còn ghi `ag_9026ba92`** (`README.md:3`, `ROSTER.md:3`, `ROSTER.md:11`, `ASSIGNMENTS.md:3`)
+   thành `ag_cd389846`. Chính D-006/D-007 (msg #21, #22) đã ký tên `ag_cd389846` — nên repo đang
+   **tự mâu thuẫn với chỉ thị mới nhất của Admin**. Bổ sung **Agent ID cho cả 7 worker** vào ROSTER
+   (hiện ROSTER **không có** ID nào của worker).
 3. **Giải quyết dứt điểm mâu thuẫn cổng G4**: hoặc sửa `ASSIGNMENTS.md:21-22` + `README.md:59` theo QĐ #4,
-   hoặc ghi một DISSENT/LOG mới huỷ QĐ #4. Cổng an ninh không được có 2 nghĩa.
+   hoặc ghi một LOG/DISSENT mới huỷ QĐ #4. Cổng an ninh không được có 2 nghĩa.
 4. **Cập nhật D-001** (`directives.md:13`) theo QĐ #6 (clone riêng), và sửa cột "Bằng chứng" của QĐ #6
    trỏ đúng artifact (hiện `ASSIGNMENTS.md` không chứa nội dung đó).
-5. **Vá `.gitignore`** trước khi T3/T4/T5 sinh dữ liệu: `*.pcapng *.vmem *.img *.iso *.zip *.7z *.tar.gz *creds*.json* secrets.*`.
-6. **Sửa dòng trống `LOG.md:12`** để 7 quyết định #5-#11 vào lại trong bảng.
-7. **Sửa hàng loạt ngày `2025-10-01` → `2026-10-01`** (24 vị trí, 10 file).
+5. **Ghi D-006 + D-007 vào `directives.md`** (hiện file chỉ có D-001..D-005) — F-17.
+6. **Vá `.gitignore`** trước khi T3/T4/T5 sinh dữ liệu: `*.pcapng *.vmem *.img *.iso *.zip *.7z *.tar.gz *creds*.json* secrets.*`.
+7. **Sửa dòng trống `LOG.md:12`** để 7 quyết định #5-#11 vào lại trong bảng.
+8. **Sửa hàng loạt ngày `2025-10-01` → `2026-10-01`** (24 vị trí, 10 file) — D-006 và D-007 vừa lặp lại lỗi này.
 
 ---
 
@@ -408,11 +459,14 @@ A3.1 (11/11 quyết định có lý do), A5 (SUMMARY.md trống trung thực).
 - Tôi **không merge `main`** và **không đọc/in** `agent_token`/`credential`.
 - **BÁO NGƯỜI DÙNG:** có. Trong báo cáo phòng `[AUDIT]` và trong return của Auditor2, tôi đã nêu rõ:
   **không phát hiện bịa bằng chứng, không phát hiện merge khống, không phát hiện rò rỉ credential.**
-  Các vấn đề thật là **hồ sơ điều hành không đầy đủ/không cập nhật (F-01, F-02) và trích dẫn bằng chứng sai
-  (F-03, F-04, F-05)**.
-- **Tổng kết đếm được:** 16 phát hiện — **5 vi phạm** (2 mức CAO: F-01, F-02; 3 mức TRUNG BÌNH: F-03, F-04, F-05),
-  **5 nghi vấn** (F-06 → F-10), **6 thiếu sót về trình bày** (F-11 → F-16).
-  Đã kiểm **15 mục**; trong đó **8 mục KHÔNG phát hiện vấn đề** (liệt kê đầy đủ ở mục 4 và 5).
+  Các vấn đề thật là **hồ sơ điều hành không cập nhật (F-01, F-02) và trích dẫn bằng chứng sai
+  (F-03, F-04, F-05)**. Tôi **cũng đã tự báo cáo việc mình kết luận sai** (rút F-07) thay vì sửa file âm thầm.
+- **Tổng kết đếm được (SAU ĐÍNH CHÍNH):** 16 phát hiện còn hiệu lực — **4 vi phạm** (1 mức CAO: F-02;
+  3 mức TRUNG BÌNH: F-03, F-04, F-05), **6 nghi vấn** (F-01, F-06, F-08, F-09, F-10, F-17),
+  **6 thiếu sót về trình bày** (F-11 → F-16), và **1 đã rút lại** (F-07).
+  Đã kiểm **15 mục**; trong đó **9 mục KHÔNG phát hiện vấn đề** (liệt kê đầy đủ ở mục 4 và 5).
 
-**Mốc hiệu lực:** commit `879d69da31296a5d06b6053a8189ab0852c7d899` + transcript 11 tin.
-Phòng đang sống; số tin có thể đã tăng sau mốc này.
+**Mốc hiệu lực:** commit `879d69da31296a5d06b6053a8189ab0852c7d899` + transcript **30 tin** (mốc đã đọc lại
+sau đính chính). Phòng đang sống; số tin có thể đã tăng sau mốc này.
+**Bài học quy trình của Auditor2:** kiểm lại mốc bằng chứng **ngay trước khi phát ngôn**, không chỉ lúc
+bắt đầu thu thập. Bản `47221ec` sai vì bỏ bước này.
