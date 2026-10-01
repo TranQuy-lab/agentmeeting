@@ -1,0 +1,560 @@
+{
+  "checked_at": "2026-10-01T20:47:03+07:00",
+  "auditor": {
+    "name": "Auditor2",
+    "agent_id": "ag_d271d4f8",
+    "room": "ab1-478d-cfa7",
+    "clone": "/home/noble-tran/agentmeeting-auditor2",
+    "branch": "agent/auditor-2/T7",
+    "tools_forbidden": [
+      "/home/noble-tran/admin-agentmeet/admin_cli.py"
+    ]
+  },
+  "commit": "879d69da31296a5d06b6053a8189ab0852c7d899",
+  "previous_commit": "abe0c3e55f3404dc0c623d67734b79856c933fd9",
+  "scope": {
+    "blocks": [
+      "A: completeness of ADMIN/",
+      "B: merge & history integrity",
+      "C: truthfulness",
+      "D: compliance"
+    ],
+    "artifacts_cross_checked": [
+      "README.md",
+      "INDEX.md",
+      "ADMIN/ROSTER.md",
+      "ADMIN/ASSIGNMENTS.md",
+      "ADMIN/LOG.md",
+      "ADMIN/DISSENT.md",
+      "ADMIN/SUMMARY.md",
+      "reviews/CROSS.md",
+      "reviews/RECONCILE.md",
+      "reviews/BLIND.md",
+      "rooms/ab1-478d-cfa7/directives.md"
+    ],
+    "transcript_snapshot_messages": 11,
+    "tracked_files": 32,
+    "validity_note": "Phòng đang sống; transcript có thể đã tăng sau mốc kiểm."
+  },
+  "severity_levels_definition": {
+    "vi phạm": "Sai/mâu thuẫn chứng minh được bằng trích dẫn đối chiếu, không cần suy đoán.",
+    "nghi vấn": "Có dấu hiệu hoặc lỗ hổng lớp phòng vệ, chưa đủ bằng chứng kết luận.",
+    "thiếu sót trình bày": "Không sai bản chất bằng chứng, nhưng định dạng/cập nhật gây hiểu nhầm."
+  },
+  "findings": [
+    {
+      "id": "F-01",
+      "severity": "cao",
+      "category": "tính đầy đủ hồ sơ điều hành",
+      "status": "vi phạm",
+      "summary": "ADMIN/ROSTER.md chỉ có 8 dòng (Admin + 7 worker kế hoạch) nhưng phòng có 4 agent đã check-in hợp lệ không nằm trong roster: DeepSeek-Harness ag_d1739b2a, Antigravity ag_22c0202c, ZCode ag_c79f5017, javis ag_3bef07fd. Không có agents/<slug>/ tương ứng. Escalation chính thức (transcript #8) chưa được Admin trả lời.",
+      "evidence": [
+        {
+          "path": "ADMIN/ROSTER.md",
+          "line": "9-18",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 15,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899",
+          "note": "Admin biết 4 agent này tồn tại"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7 transcript",
+          "line": "msg #2,#3,#4,#5,#8",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "git ls-files",
+          "line": "32 file; agents/ chỉ có 7 slug",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Cấp roster/territory/task cho 4 agent, hoặc tuyên bố chính thức họ ngoài đội T1-T7. Trả lời escalation msg #8 ngay."
+    },
+    {
+      "id": "F-02",
+      "severity": "cao",
+      "category": "tính trung thực danh tính",
+      "status": "vi phạm",
+      "summary": "3 file vẫn khẳng định Admin hiện hành là ag_9026ba92, trong khi chính ADMIN/LOG.md:13 ghi danh tính đó đã bị đánh dấu kicked và thay bằng ag_cd389846. ag_cd389846 không xuất hiện ở bất kỳ file nào trong repo.",
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 3,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/ROSTER.md",
+          "line": 3,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/ROSTER.md",
+          "line": 11,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": 3,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 13,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899",
+          "note": "nguồn mâu thuẫn, cùng repo"
+        }
+      ],
+      "recommendation": "Cập nhật 4 vị trí sang ag_cd389846 và ghi rõ lịch sử thay danh tính."
+    },
+    {
+      "id": "F-03",
+      "severity": "trung bình",
+      "category": "trích dẫn bằng chứng / cổng kiểm soát",
+      "status": "vi phạm",
+      "summary": "LOG.md:11 (QĐ #4) nói 'không cần thêm một vòng duyệt thủ công' và trỏ bằng chứng tới 'ASSIGNMENTS.md ghi chú T4' — nhưng chú thích T4 lại YÊU CẦU chỉ thị duyệt bằng văn bản. README.md:59 (cổng G4) cũng yêu cầu, còn directives.md:51 (D-005) phủ nhận. Bốn tài liệu mâu thuẫn 2 chiều về một cổng an ninh.",
+      "evidence": [
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 11,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": "21-22",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "README.md",
+          "line": 59,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": 51,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Chọn một nghĩa duy nhất cho G4 và sửa 3 tài liệu còn lại; nếu đổi thì ghi quyết định mới có lý do."
+    },
+    {
+      "id": "F-04",
+      "severity": "trung bình",
+      "category": "trích dẫn bằng chứng",
+      "status": "vi phạm",
+      "summary": "LOG.md:14 (QĐ #6) trỏ bằng chứng tới ADMIN/ASSIGNMENTS.md, nhưng file đó KHÔNG chứa nội dung nào về thư mục clone riêng. Nội dung quyết định là thật (xác nhận độc lập qua transcript #9,#10,#11) nhưng con trỏ bằng chứng sai; commit 879d69d chỉ sửa ADMIN/LOG.md.",
+      "evidence": [
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 14,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "grep -nE 'agentmeeting-|clone riêng' ADMIN/ASSIGNMENTS.md",
+          "line": "NO MATCH",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "git show --stat 879d69d",
+          "line": "1 file changed: ADMIN/LOG.md",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7 transcript",
+          "line": "msg #9,#10,#11 xác nhận nội dung QĐ là thật",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Sửa cột bằng chứng của QĐ #6 trỏ tới artifact đúng (ví dụ log phòng/docwriter check-in)."
+    },
+    {
+      "id": "F-05",
+      "severity": "trung bình",
+      "category": "chỉ thị lỗi thời",
+      "status": "vi phạm",
+      "summary": "D-001 (directives.md:13) vẫn ra lệnh clone vào thư mục DÙNG CHUNG /home/noble-tran/agentmeeting, mâu thuẫn trực tiếp QĐ #6 (clone riêng mỗi agent). directives.md tự tuyên bố 'có hiệu lực bắt buộc'. Hậu quả thật: DeepSeek-Harness msg #8 gặp lỗi 'destination path already exists'.",
+      "evidence": [
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": 13,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 14,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899",
+          "note": "QĐ #6 phủ nhận D-001"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7 transcript",
+          "line": "msg #8",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Cập nhật D-001 theo QĐ #6, hoặc ban hành D-006 ghi đè tường minh."
+    },
+    {
+      "id": "F-06",
+      "severity": "trung bình",
+      "category": "tính đầy đủ phân công",
+      "status": "nghi vấn",
+      "summary": "ASSIGNMENTS.md chỉ có T1..T7; 4 agent hoạt động thật trong phòng không có task, territory hay reviewer nào.",
+      "evidence": [
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": "9-15",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/ROSTER.md",
+          "line": "9-18",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Bổ sung dòng phân công cho 4 agent hoặc ghi rõ họ là quan sát viên không nhận task."
+    },
+    {
+      "id": "F-07",
+      "severity": "trung bình",
+      "category": "bất đồng bị bỏ im",
+      "status": "nghi vấn",
+      "summary": "DISSENT.md:8 ghi 'chưa có bất đồng nào' trong khi tồn tại escalation chính thức của DeepSeek-Harness (transcript #8 mục 3) chưa được Admin trả lời. Escalation ở 13:45:38, sau tin cuối của Admin 13:45:05 khoảng 33 giây nên có thể Admin chưa poll tới — do đó xếp 'nghi vấn', cần xác minh thêm.",
+      "evidence": [
+        {
+          "path": "ADMIN/DISSENT.md",
+          "line": 8,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7 transcript",
+          "line": "msg #8 vs msg #7",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Trả lời escalation, và nếu là bất đồng thì ghi vào DISSENT.md kèm cách giải quyết."
+    },
+    {
+      "id": "F-08",
+      "severity": "trung bình",
+      "category": "phòng vệ .gitignore",
+      "status": "nghi vấn",
+      "summary": "Kiểm thử 25 mẫu bằng git check-ignore: 20 chặn đúng, 5 KHÔNG chặn — capture.pcapng, memory.vmem, evidence.img, realfindings.zip/dump.tar.gz/dump.json, secrets.yaml, creds_backup.json.bak. Chưa có rò rỉ thực tế (quét lịch sử sạch) nên xếp nghi vấn.",
+      "evidence": [
+        {
+          "path": ".gitignore",
+          "line": "1-21",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "git check-ignore (test 25 mẫu)",
+          "line": "5 mẫu NOT-BLOCKED",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": 59,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899",
+          "note": "cấm lưu dữ liệu thật — nhóm dữ liệu này sắp sinh ở T3/T4/T5"
+        }
+      ],
+      "recommendation": "Bổ sung *.pcapng *.vmem *.img *.iso *.zip *.7z *.tar.gz *.tgz '*creds*.json*' secrets.* trước khi T3/T4/T5 sinh dữ liệu."
+    },
+    {
+      "id": "F-09",
+      "severity": "thấp",
+      "category": "khả năng kiểm chứng",
+      "status": "nghi vấn",
+      "summary": "Trạng thái kicked của ag_9026ba92 (LOG.md:13) không kiểm độc lập được: admin_cli.py bị cấm dùng, run.py không có lệnh liệt kê agent. Danh tính ag_cd389846 chỉ xuất hiện trong thân tin nhắn #6, không có trong repo.",
+      "evidence": [
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 13,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899",
+          "note": "nguồn duy nhất"
+        },
+        {
+          "path": "run.py --help",
+          "line": "không có lệnh liệt kê agent",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Ghi bằng chứng kicked vào repo (ảnh chụp output hoặc file text) để kiểm toán được ở vòng sau."
+    },
+    {
+      "id": "F-10",
+      "severity": "thấp",
+      "category": "khả năng kiểm chứng số liệu",
+      "status": "nghi vấn",
+      "summary": "LOG.md:16 khai tin gộp dài 4892 ký tự — không có artifact để kiểm vì tin bị HTTP 422 không vào phòng. Hai tin thành công: đo được 851 + 3657, khai 852 + 3658 => khớp (lệch 1 ký tự do newline cuối).",
+      "evidence": [
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 16,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7 transcript",
+          "line": "msg #6 len=851, msg #7 len=3657",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Không cần hành động; phần kiểm được đã khớp. Ghi nhận giới hạn."
+    },
+    {
+      "id": "F-11",
+      "severity": "thấp",
+      "category": "định dạng Markdown",
+      "status": "thiếu sót trình bày",
+      "summary": "ADMIN/LOG.md:12 là dòng TRỐNG ngay giữa bảng Markdown, khiến bảng kết thúc ở quyết định #4; 7 quyết định #5-#11 (LOG.md:13-19) nằm ngoài bảng và sẽ render sai.",
+      "evidence": [
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 12,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": "13-19",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Xoá dòng trống 12 để 11 quyết định nằm trong cùng một bảng."
+    },
+    {
+      "id": "F-12",
+      "severity": "thấp",
+      "category": "sai lệch ngày tháng",
+      "status": "thiếu sót trình bày",
+      "summary": "24 lần ghi '2025-10-01' trên 10 file .md, trong khi commit thật là 2026-10-01T20:46:18+07:00 và timestamp phòng đều 2026-10-01. Sai lệch chứng minh được nhưng không ảnh hưởng bằng chứng.",
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 5,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/ROSTER.md",
+          "line": 3,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "git show 879d69d",
+          "line": "Date: 2026-10-01T20:46:18+07:00",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "grep -rc '2025-10-01' --include=*.md",
+          "line": "24 (10 file)",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Sửa hàng loạt 2025-10-01 -> 2026-10-01."
+    },
+    {
+      "id": "F-13",
+      "severity": "thấp",
+      "category": "mục lục lệch thực tế",
+      "status": "thiếu sót trình bày",
+      "summary": "INDEX.md:10 ghi INDEX.md do DocWriter viết và trạng thái 'chờ dựng', nhưng file đã tồn tại đầy đủ (23 dòng) từ abe0c3e và do Admin viết theo LOG.md:9.",
+      "evidence": [
+        {
+          "path": "INDEX.md",
+          "line": 10,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 9,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899",
+          "note": "Admin tự viết bản khung INDEX.md"
+        }
+      ],
+      "recommendation": "Cập nhật tác giả/trạng thái của dòng INDEX.md cho khớp thực tế."
+    },
+    {
+      "id": "F-14",
+      "severity": "thấp",
+      "category": "cổng duyệt lỗi thời",
+      "status": "thiếu sót trình bày",
+      "summary": "README.md:56 ghi G1 = chờ, nhưng Reviewer1 (ag_76306ba6, transcript #10) và Auditor2 (ag_d271d4f8) đã vào phòng => G1 thực tế đã đạt.",
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 56,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7 transcript",
+          "line": "msg #10",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "creds join",
+          "line": "Auditor2 ag_d271d4f8",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Đánh dấu G1 đạt. Lệch theo hướng thận trọng nên mức thấp."
+    },
+    {
+      "id": "F-15",
+      "severity": "thấp",
+      "category": "ngữ nghĩa cột trạng thái",
+      "status": "thiếu sót trình bày",
+      "summary": "INDEX.md:11-12 đánh dấu ROSTER.md và ASSIGNMENTS.md là 'hoàn tất' với Reviewer=Auditor2, nhưng Auditor2 chưa hề review; báo cáo này là lần đầu và phát hiện 5 vi phạm trong chính hai file đó. Cột Trạng thái trộn 'tác giả xong' với 'đã review xong'.",
+      "evidence": [
+        {
+          "path": "INDEX.md",
+          "line": "11-12",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/ROSTER.md",
+          "line": "9-18",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": "9-15",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Tách cột 'tác giả xong' và 'đã review', hoặc dùng nhãn 'chờ review'."
+    },
+    {
+      "id": "F-16",
+      "severity": "thấp",
+      "category": "bằng chứng không kiểm chứng được",
+      "status": "thiếu sót trình bày",
+      "summary": "ROSTER.md:11 là dòng DUY NHẤT có ✅ ở cột Check-in (của Admin, kèm ag_9026ba92), nhưng không có file check-in nào của Admin trong 32 file track. Không phải ✅ khống ở cột Xác thực (cột đó Admin để '-' là hợp lý).",
+      "evidence": [
+        {
+          "path": "ADMIN/ROSTER.md",
+          "line": 11,
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        },
+        {
+          "path": "git ls-files",
+          "line": "32 file, không có check-in của Admin",
+          "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+        }
+      ],
+      "recommendation": "Đính kèm check-in của Admin vào repo hoặc ghi rõ nguồn ngoài repo."
+    }
+  ],
+  "checked_items": [
+    "A1 ROSTER.md: đủ agent? có bảng năng lực? cột xác thực có ✅ khống?",
+    "A2 ASSIGNMENTS.md: mọi task có owner+territory+AC+reviewer?",
+    "A3 LOG.md: mọi quyết định có lý do? có trích dẫn bằng chứng hợp lệ?",
+    "A4 DISSENT.md: có bất đồng bị bỏ im?",
+    "A5 SUMMARY.md: kết luận có vượt bằng chứng? trống có trung thực?",
+    "B1 git log --all / reflog / fsck / ls-remote: viết lại lịch sử, force-push?",
+    "B2 nội dung commit abe0c3e: có gì, thiếu gì?",
+    "B3 merge khống?",
+    "C1 task đánh dấu done không có bằng chứng?",
+    "C2 đối chiếu 11 artifact được báo 'đã push'",
+    "C3 đối chiếu 7 tuyên bố số liệu/trích dẫn của Admin",
+    "D1 quét credential toàn lịch sử (git log -p --all | grep -inE ...)",
+    "D2 .gitignore: kiểm thử 25 mẫu bằng git check-ignore",
+    "D3 PoC vượt mức tối thiểu?",
+    "D4 hoạt động bảo mật ngoài scope?"
+  ],
+  "no_issue_items": [
+    {
+      "item": "D1 quét rò rỉ credential toàn bộ lịch sử",
+      "result": "SẠCH — output grep rỗng, exit=1. Không có agent_token/creds.json/password/api_key/private key trong bất kỳ commit nào.",
+      "evidence": {
+        "path": "git log -p --all | grep -inE 'agent_token|creds\\.json|password|api[_-]?key|BEGIN.*PRIVATE KEY'",
+        "line": "(rỗng)",
+        "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+      }
+    },
+    {
+      "item": "D3 PoC/malware/dump vượt mức tối thiểu",
+      "result": "KHÔNG có. 32/32 file track là text/UTF-8/rỗng; không có exploit, payload, mẫu malware hay dump. security/ chỉ có .gitkeep.",
+      "evidence": {
+        "path": "git ls-files + file",
+        "line": "32 file, 0 nhị phân",
+        "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+      }
+    },
+    {
+      "item": "D4 hoạt động an ninh ngoài scope",
+      "result": "KHÔNG quan sát thấy. Repo không có artifact an ninh. Hoạt động mạng duy nhất (BountyRecon msg #11) là HTTP GET vào trang thư mục chương trình công khai — phù hợp D-005. api.hackerone.com trả 401, không có API key.",
+      "evidence": {
+        "path": "rooms/ab1-478d-cfa7 transcript",
+        "line": "msg #11",
+        "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+      }
+    },
+    {
+      "item": "B1/B3 lịch sử bị viết lại / force-push / merge khống",
+      "result": "KHÔNG. Lịch sử tuyến tính abe0c3e->879d69d (merge-base --is-ancestor = YES), fsck không có object mồ côi, ls-remote chỉ có 1 nhánh main, không có merge commit.",
+      "evidence": {
+        "path": "git log --all, git fsck, git ls-remote --heads origin",
+        "line": "2 commit, 1 nhánh",
+        "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+      }
+    },
+    {
+      "item": "C2 đối chiếu 11 artifact Admin báo 'đã push'",
+      "result": "11/11 TỒN TẠI THẬT tại commit 879d69d. Không có artifact nào báo đã push mà không có thật.",
+      "evidence": {
+        "path": "README.md, INDEX.md, ADMIN/*.md, reviews/*.md, rooms/ab1-478d-cfa7/directives.md",
+        "line": "11/11",
+        "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+      }
+    },
+    {
+      "item": "A2.1 ASSIGNMENTS T1-T7 đủ 4 trường",
+      "result": "ĐẠT. Cả 7 task đều có owner + territory + acceptance criteria + reviewer độc lập (T1-T5 reviewer Reviewer1; T6 reviewer Auditor2; T7 reviewer Người dùng).",
+      "evidence": {
+        "path": "ADMIN/ASSIGNMENTS.md",
+        "line": "9-15",
+        "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+      }
+    },
+    {
+      "item": "A3.1 LOG mọi quyết định có lý do",
+      "result": "ĐẠT. 11/11 quyết định đều có cột Lý do được điền, không có ô trống.",
+      "evidence": {
+        "path": "ADMIN/LOG.md",
+        "line": "8-11,13-19",
+        "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+      }
+    },
+    {
+      "item": "A5 SUMMARY.md trống có trung thực",
+      "result": "TRUNG THỰC, không che giấu. Nêu rõ lý do để trống; mục 'việc thất bại' được giữ; rủi ro đang mở có nội dung thật. Kiểm chéo: giới hạn 500 tin khớp room status 10/500; rủi ro 'worker tự bịa cấu trúc' đã xử lý đúng bằng commit abe0c3e trước khi thả worker. Không có kết luận nào vượt bằng chứng vì không có kết luận nào.",
+      "evidence": {
+        "path": "ADMIN/SUMMARY.md",
+        "line": "3-23",
+        "commit": "879d69da31296a5d06b6053a8189ab0852c7d899"
+      }
+    }
+  ],
+  "limitations": [
+    "Không dùng được admin_cli.py (bị cấm) nên không xác minh độc lập được trạng thái kicked của ag_9026ba92 và không liệt kê được danh sách agent của phòng.",
+    "Không thể chứng minh VẮNG MẶT của force-push xảy ra trước thời điểm clone (reflog chỉ có 1 mục clone). Kết luận là 'không quan sát thấy'.",
+    "Phòng đang sống: số tin tăng 10->11 trong lúc kiểm. Báo cáo khoá tại commit 879d69d + transcript 11 tin.",
+    "Không có quyền ghi ngoài reviews/AUDIT.* và agents/auditor2/**; mọi phát hiện chỉ ở mức báo cáo."
+  ],
+  "user_notified": true,
+  "user_notification_summary": "Đã báo trong báo cáo phòng [AUDIT] và trong return: KHÔNG phát hiện bịa bằng chứng, KHÔNG phát hiện merge khống, KHÔNG phát hiện rò rỉ credential. Phát hiện thật: hồ sơ điều hành không đầy đủ/không cập nhật (F-01, F-02 — mức cao) và trích dẫn bằng chứng sai/lỗi thời (F-03, F-04, F-05).",
+  "summary_counts": {
+    "vi phạm": 5,
+    "nghi vấn": 5,
+    "thiếu sót trình bày": 6,
+    "total_findings": 16,
+    "by_severity": {
+      "cao": 2,
+      "trung bình": 6,
+      "thấp": 8
+    },
+    "no_issue_items": 8,
+    "checked_items": 15
+  },
+  "conclusion": "Không phát hiện bịa bằng chứng, merge khống, hay rò rỉ credential. Phát hiện 5 vi phạm (2 mức cao), 5 nghi vấn, 6 thiếu sót trình bày."
+}
