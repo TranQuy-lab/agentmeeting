@@ -1,0 +1,395 @@
+================================================================
+PASSIVE RECON — program: cloudflare
+UTC timestamp: 2026-10-01T13:51:25Z
+Local timestamp: 2026-10-01 20:51:25 +07
+Host under check: cloudflare.com
+Method: public DNS + robots.txt + public HTTP response headers +
+        public /.well-known/security.txt. NO active scanning.
+================================================================
+
+########## DNS: cloudflare.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 cloudflare.com NS
+--- output ---
+cloudflare.com.		16523	IN	NS	ns6.cloudflare.com.
+cloudflare.com.		16523	IN	NS	ns4.cloudflare.com.
+cloudflare.com.		16523	IN	NS	ns5.cloudflare.com.
+cloudflare.com.		16523	IN	NS	ns3.cloudflare.com.
+cloudflare.com.		16523	IN	NS	ns7.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 cloudflare.com A
+--- output ---
+cloudflare.com.		254	IN	A	104.16.133.229
+cloudflare.com.		254	IN	A	104.16.132.229
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 cloudflare.com AAAA
+--- output ---
+cloudflare.com.		30	IN	AAAA	2606:4700::6810:85e5
+cloudflare.com.		30	IN	AAAA	2606:4700::6810:84e5
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 cloudflare.com MX
+--- output ---
+cloudflare.com.		1800	IN	MX	5 mxb-canary.global.inbound.cf-emailsecurity.net.
+cloudflare.com.		1800	IN	MX	10 mxb.global.inbound.cf-emailsecurity.net.
+cloudflare.com.		1800	IN	MX	5 mxa-canary.global.inbound.cf-emailsecurity.net.
+cloudflare.com.		1800	IN	MX	10 mxa.global.inbound.cf-emailsecurity.net.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 cloudflare.com TXT
+--- output ---
+;; communications error to 127.0.0.53#53: timed out
+;; no servers could be reached
+--- end (rc=9) ---
+
+$ dig +noall +answer +time=5 +tries=1 cloudflare.com CAA
+--- output ---
+cloudflare.com.		300	IN	CAA	0 issuewild "digicert.com; cansignhttpexchanges=yes"
+cloudflare.com.		300	IN	CAA	0 issuewild "ssl.com"
+cloudflare.com.		300	IN	CAA	0 issue "ssl.com"
+cloudflare.com.		300	IN	CAA	0 iodef "mailto:tls-abuse@cloudflare.com"
+cloudflare.com.		300	IN	CAA	0 issue "letsencrypt.org"
+cloudflare.com.		300	IN	CAA	0 issue "digicert.com; cansignhttpexchanges=yes"
+cloudflare.com.		300	IN	CAA	0 issuewild "comodoca.com"
+cloudflare.com.		300	IN	CAA	0 issue "comodoca.com"
+cloudflare.com.		300	IN	CAA	0 issue "pki.goog; cansignhttpexchanges=yes"
+cloudflare.com.		300	IN	CAA	0 issuewild "pki.goog; cansignhttpexchanges=yes"
+cloudflare.com.		300	IN	CAA	0 issuewild "letsencrypt.org"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.cloudflare.com TXT
+--- output ---
+_dmarc.cloudflare.com.	300	IN	TXT	"v=DMARC1; p=reject; sp=reject; adkim=r; aspf=r; pct=100; rua=mailto:a1c47f179bc04efd8ee4dcd4d85dfc65@dmarc-reports.cloudflare.net,mailto:rua@cloudflare.com"
+--- end (rc=0) ---
+
+########## DNS: api.cloudflare.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 api.cloudflare.com NS
+--- output ---
+api.cloudflare.com.	86400	IN	NS	merlin.ns.cloudflare.com.
+api.cloudflare.com.	86400	IN	NS	linda.ns.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 api.cloudflare.com A
+--- output ---
+api.cloudflare.com.	105	IN	A	104.19.192.175
+api.cloudflare.com.	105	IN	A	104.19.192.177
+api.cloudflare.com.	105	IN	A	104.19.192.176
+api.cloudflare.com.	105	IN	A	104.19.193.29
+api.cloudflare.com.	105	IN	A	104.19.192.29
+api.cloudflare.com.	105	IN	A	104.19.192.174
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 api.cloudflare.com AAAA
+--- output ---
+api.cloudflare.com.	290	IN	AAAA	2606:4700:300a::6813:c0ae
+api.cloudflare.com.	290	IN	AAAA	2606:4700:300a::6813:c11d
+api.cloudflare.com.	290	IN	AAAA	2606:4700:300a::6813:c0b0
+api.cloudflare.com.	290	IN	AAAA	2606:4700:300a::6813:c0b1
+api.cloudflare.com.	290	IN	AAAA	2606:4700:300a::6813:c01d
+api.cloudflare.com.	290	IN	AAAA	2606:4700:300a::6813:c0af
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 api.cloudflare.com MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 api.cloudflare.com TXT
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 api.cloudflare.com CAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.api.cloudflare.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: dash.cloudflare.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 dash.cloudflare.com NS
+--- output ---
+dash.cloudflare.com.	86400	IN	NS	merlin.ns.cloudflare.com.
+dash.cloudflare.com.	86400	IN	NS	linda.ns.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 dash.cloudflare.com A
+--- output ---
+dash.cloudflare.com.	300	IN	A	104.17.111.184
+dash.cloudflare.com.	300	IN	A	104.17.110.184
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 dash.cloudflare.com AAAA
+--- output ---
+dash.cloudflare.com.	124	IN	AAAA	2606:4700::6811:6fb8
+dash.cloudflare.com.	124	IN	AAAA	2606:4700::6811:6eb8
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 dash.cloudflare.com MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 dash.cloudflare.com TXT
+--- output ---
+dash.cloudflare.com.	3600	IN	TXT	"google-site-verification=HF9tnjO_sKKqJwktMzJNRImLQ_TyJocDqQqOfUvg8Cg"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 dash.cloudflare.com CAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.dash.cloudflare.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: cloudflareworkers.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 cloudflareworkers.com NS
+--- output ---
+cloudflareworkers.com.	86400	IN	NS	sofia.ns.cloudflare.com.
+cloudflareworkers.com.	86400	IN	NS	clyde.ns.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 cloudflareworkers.com A
+--- output ---
+cloudflareworkers.com.	300	IN	A	104.17.55.117
+cloudflareworkers.com.	300	IN	A	104.17.54.117
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 cloudflareworkers.com AAAA
+--- output ---
+cloudflareworkers.com.	300	IN	AAAA	2606:4700::6811:3675
+cloudflareworkers.com.	300	IN	AAAA	2606:4700::6811:3775
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 cloudflareworkers.com MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 cloudflareworkers.com TXT
+--- output ---
+cloudflareworkers.com.	300	IN	TXT	"v=spf1 -all"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 cloudflareworkers.com CAA
+--- output ---
+cloudflareworkers.com.	300	IN	CAA	0 issuewild "letsencrypt.org"
+cloudflareworkers.com.	300	IN	CAA	0 iodef "mailto:tls-abuse@cloudflare.com"
+cloudflareworkers.com.	300	IN	CAA	0 issuewild "comodoca.com"
+cloudflareworkers.com.	300	IN	CAA	0 issuewild "pki.goog; cansignhttpexchanges=yes"
+cloudflareworkers.com.	300	IN	CAA	0 issue "letsencrypt.org"
+cloudflareworkers.com.	300	IN	CAA	0 issue "pki.goog; cansignhttpexchanges=yes"
+cloudflareworkers.com.	300	IN	CAA	0 issuewild "digicert.com; cansignhttpexchanges=yes"
+cloudflareworkers.com.	300	IN	CAA	0 issue "digicert.com; cansignhttpexchanges=yes"
+cloudflareworkers.com.	300	IN	CAA	0 issuewild "ssl.com"
+cloudflareworkers.com.	300	IN	CAA	0 issue "ssl.com"
+cloudflareworkers.com.	300	IN	CAA	0 issue "comodoca.com"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.cloudflareworkers.com TXT
+--- output ---
+_dmarc.cloudflareworkers.com. 300 IN	TXT	"v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;"
+--- end (rc=0) ---
+
+########## DNS: www.cloudflare.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 www.cloudflare.com NS
+--- output ---
+www.cloudflare.com.	86400	IN	NS	vin.ns.cloudflare.com.
+www.cloudflare.com.	86400	IN	NS	jule.ns.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 www.cloudflare.com A
+--- output ---
+www.cloudflare.com.	119	IN	A	104.16.124.96
+www.cloudflare.com.	119	IN	A	104.16.123.96
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 www.cloudflare.com AAAA
+--- output ---
+www.cloudflare.com.	69	IN	AAAA	2606:4700::6810:7b60
+www.cloudflare.com.	69	IN	AAAA	2606:4700::6810:7c60
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 www.cloudflare.com MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 www.cloudflare.com TXT
+--- output ---
+www.cloudflare.com.	300	IN	TXT	"adobe-idp-site-verification=6fa8fbb72d7bb29889c39830d60eb0309c678510fef7692ee2679400a4096349"
+www.cloudflare.com.	300	IN	TXT	"canva-site-verification=oOyaVnHC-OiFoR1BPvetNA"
+www.cloudflare.com.	300	IN	TXT	"google-site-verification=BGYWMGmMapwHpaj8kW5SNItcLefH74b1mrUN2zk_8aE"
+www.cloudflare.com.	300	IN	TXT	"google-site-verification=XncEvwjMqwqjZZb64HYg_DpdcrTvQKA1MObBuY_Mbsw"
+www.cloudflare.com.	300	IN	TXT	"ca3-51f5182e0f9248c5be98a7f6329814eb"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 www.cloudflare.com CAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.www.cloudflare.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## PUBLIC WEB SURFACE: cloudflare.com ##########
+
+$ curl -sS -I --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://cloudflare.com/
+--- output ---
+HTTP/2 301 
+date: Thu, 01 Oct 2026 13:51:41 GMT
+content-type: text/html; charset=UTF-8
+location: https://www.cloudflare.com/
+strict-transport-security: max-age=15780000; includeSubDomains
+set-cookie: __cf_bm=80lOyV7Pc270P_rCkl2VaKU6KW3RNHBPpMBCbWvQ61U-1790862701.610318-1.0.1.1-8lzbXY__dPfTBcShfQRZbMhafPzeBuOp38RlAGC7MlhRcZ3LOa9lbMk79t7mIxC2IOF.lI2s4VdcpaL_v6OViSqrgjJWxNXMGApeBOiML2XwGX4QXWjBPEJOydU0dk8y; HttpOnly; SameSite=None; Secure; Path=/; Domain=cloudflare.com; Expires=Thu, 01 Oct 2026 14:21:41 GMT
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=%2BYPJywp3%2FtEcRbSSVDsuSrS%2BTfb82HzMdddzLr9j5jtdIrIoLxqiBWTrmSkOzirHF2xSSMk02deGNp4M0JF1%2F%2BnO1kl5lwIIA5BrBXSBq8z%2B9nKpWFSiGqyABXd47K07bSU89aF9AriuvAGu"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a43bf18d0a827d2e-HKG
+alt-svc: h3=":443"; ma=86400
+
+--- end (rc=0) ---
+
+$ curl -sS --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://cloudflare.com/robots.txt
+--- output ---
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+--- end (rc=0) ---
+
+$ curl -sS --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://cloudflare.com/.well-known/security.txt
+--- output ---
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+--- end (rc=0) ---
+
+$ curl -sS --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://cloudflare.com/security.txt
+--- output ---
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+--- end (rc=0) ---
+
+$ bash -c echo | timeout 20 openssl s_client -connect cloudflare.com:443 -servername cloudflare.com 2>/dev/null | openssl x509 -noout -subject -issuer -dates -ext subjectAltName
+--- output ---
+subject=CN = cloudflare.com
+issuer=C = US, O = Google Trust Services, CN = WE1
+notBefore=Sep  5 22:29:39 2026 GMT
+notAfter=Dec  4 23:29:33 2026 GMT
+X509v3 Subject Alternative Name: 
+    DNS:cloudflare.com, DNS:ns.cloudflare.com, DNS:*.ns.cloudflare.com, DNS:*.secondary.cloudflare.com, DNS:secondary.cloudflare.com
+--- end (rc=0) ---
+
+================================================================
+END PASSIVE RECON — cloudflare
+================================================================
+=== SUPPLEMENT (follow redirect) ===
+2026-10-01T13:52:52Z
+
+$ curl -sSL https://www.cloudflare.com/robots.txt
+--- output ---
+# Robots.txt for www.cloudflare.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.cloudflare.com/sitemap.xml
+
+# AI/LLM friendly content
+# See https://llmstxt.org for the llms.txt specification
+# llms.txt provides curated content for AI assistants and LLMs
+
+# Allow AI crawlers to access markdown versions of pages
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Cohere-ai
+Allow: /
+
+# Content Signals — declare AI content usage preferences
+# See https://contentsignals.org/ and https://datatracker.ietf.org/doc/draft-romm-aipref-contentsignals/
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
+--- end ---
+
+$ curl -sSL https://www.cloudflare.com/.well-known/security.txt
+--- output ---
+Contact: https://hackerone.com/cloudflare
+# All abuse reports should be submitted to our Trust & Safety team through
+# our dedicated page.
+Contact: https://www.cloudflare.com/abuse/
+
+Policy: https://www.cloudflare.com/disclosure/ 
+Hiring: https://www.cloudflare.com/careers/jobs/
+
+Preferred-Languages: en
+Canonical: https://www.cloudflare.com/.well-known/security.txt
+--- end ---
+
+$ curl -sSI https://www.cloudflare.com/
+--- output ---
+HTTP/2 103 
+link: </fonts/Kunst%20Grotesk%20Regular.woff2>; as=font; crossorigin; rel=preload; type=font/woff2, </fonts/Kunst%20Grotesk%20Medium.woff2>; as=font; crossorigin; rel=preload; type=font/woff2, <https://ot.www.cloudflare.com>; crossorigin; rel=preconnect, <https://imagedelivery.net>; crossorigin; rel=preconnect, </static/hero-poster.avif>; as=image; fetchpriority=high; rel=preload; type=image/avif
+
+HTTP/2 200 
+date: Thu, 01 Oct 2026 13:52:57 GMT
+content-type: text/html; charset=utf-8
+link: <https://www.cloudflare.com/.well-known/api-catalog>; rel="api-catalog", <https://www.cloudflare.com/.well-known/agents.json>; rel="service-desc", <https://www.cloudflare.com/.well-known/webmcp.json>; rel="service-desc", <https://www.cloudflare.com/openapi.json>; rel="service-desc", <https://www.cloudflare.com/llms.txt>; rel="service-doc", <https://www.cloudflare.com/sitemap.xml>; rel="sitemap", </fonts/Kunst%20Grotesk%20Regular.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin, </fonts/Kunst%20Grotesk%20Medium.woff2>; rel=preload; as=font; type="font/woff2"; crossorigin, <https://ot.www.cloudflare.com>; rel=preconnect; crossorigin, <https://imagedelivery.net>; rel=preconnect; crossorigin, </static/hero-poster.avif>; rel=preload; as=image; type="image/avif"; fetchpriority=high
+cache-control: no-store
+vary: accept-encoding
+strict-transport-security: max-age=31536000; includeSubDomains
+content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com https://static-staging.cloudflareinsights.com https://challenges.cloudflare.com https://*.onetrust.com https://cdn.cookielaw.org https://ot.www.cloudflare.com https://www.googletagmanager.com https://tagmanager.google.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://adservice.google.com https://cdn.bizible.com https://js.adsrvr.org https://*.marketo.net https://platform.twitter.com https://static.ads-twitter.com https://scripts.demandbase.com https://tag.demandbase.com https://*.6sc.co https://*.qualified.com https://snap.licdn.com https://bat.bing.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://*.googletagmanager.com https://*.google-analytics.com https://*.google.com https://*.doubleclick.net https://www.googleadservices.com https://translate.googleapis.com https://cdn.bizible.com https://js.adsrvr.org https://*.marketo.net https://ads-twitter.com https://analytics.twitter.com https://*.twimg.com https://api.demandbase.com https://scripts.demandbase.com https://tag.demandbase.com https://tag-logger.demandbase.com https://api.company-target.com https://*.6sc.co https://epsilon.6sense.com https://*.qualified.com https://*.ads.linkedin.com https://www.linkedin.com https://bat.bing.com https: wss://*.qualified.com wss://*.registrar.cloudflare.com; frame-src https://*.adsrvr.org https://*.cloudflare.com https://*.videodelivery.net https://*.cloudflarestream.com https://www.googletagmanager.com https://*.qualified.com https://td.doubleclick.net https://bid.g.doubleclick.net https://9309168.fls.doubleclick.net https://9973066.fls.doubleclick.net https://s.company-target.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; worker-src 'self' blob:; child-src 'self' blob:; upgrade-insecure-requests
+cross-origin-opener-policy: unsafe-none
+cross-origin-resource-policy: cross-origin
+permissions-policy: geolocation=(), camera=(), microphone=()
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-served-by: marketing-site
+x-xss-protection: 1; mode=block
+x-rm: GW
+set-cookie: _ga=GA1.1.118670bd-ce96-43d0-9cfb-86db8ade20a4; Expires=Mon, 01 Nov 2027 13:52:57 GMT; Path=/
+set-cookie: cfz_google-analytics_v4={"nzcr_ga4":{"v":"118670bd-ce96-43d0-9cfb-86db8ade20a4","e":1825077177171}}; Expires=Mon Nov 01 2027 13:52:57 GMT+0000 (Coordinated Universal Time); HttpOnly; SameSite=Lax; Path=/; Secure
+set-cookie: cfz_adobe={"MsVJ_ecid":{"v":"CiY1NzQ1NjUyMzI5NzAzODgyOTYwNDg5MzU0NjY1NDQ1NTM1ODE1M1IOCNG39b2PNCoDVkE2MALwAdG39b2PNA==","e":1824990777393}}; Expires=Sun Oct 31 2027 13:52:57 GMT+0000 (Coordinated Universal Time); HttpOnly; SameSite=Lax; Path=/; Secure
+set-cookie: kndctr_8AD56F28618A50850A495FB6_AdobeOrg_identity=CiY1NzQ1NjUyMzI5NzAzODgyOTYwNDg5MzU0NjY1NDQ1NTM1ODE1M1IOCNG39b2PNCoDVkE2MALwAdG39b2PNA==; Expires=Sun, 31 Oct 2027 13:52:57 GMT; Path=/; Secure; SameSite=Lax
+set-cookie: __cf_bm=8oGNIuvK2a2WlQ2pWpAh1K10Qbjsqj2sXUbvzzPir3I-1790862777.1532211-1.0.1.1-TdKiyvlSWajBrVbdqQlMETGtRhlSy.2dSyfw4wVYMV0o7i6aN65t7HDX1nrh5bULwlbVmmdy7qXRYqplPyFF6Kg_atC.hPJbU9_ChJmG9TbrWvLqUtxjuSedHM0HNo_756.SB9VESOi5jKKlXxmkRw; HttpOnly; SameSite=None; Secure; Path=/; Domain=www.cloudflare.com; Expires=Thu, 01 Oct 2026 14:22:57 GMT
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=MT1oMWawaFNmT2jmT5%2BIMgOat8tWFCBbofklt95fc6PIBANZnktHUnyA0Rjz%2FgKCsnqEyd%2F2b5kxkZEIWAPeRNhgqQwkr1PnJsSEpNXUifNEsIzIRR7FG%2FMUMFfq%2BNEfss%2FMPG0%2Bxs%2FWhpXBs1JKFQ%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: a43bf3653d7708b4-HKG
+alt-svc: h3=":443"; ma=86400
+--- end ---

@@ -1,0 +1,58 @@
+{
+  "github": {
+    "handle": "github",
+    "name": "GitHub",
+    "offers_bounties": true,
+    "minimum_bounty_table_value": 250,
+    "maximum_bounty_table_value": 10000,
+    "bounties_total": "0",
+    "formatted_total_bounties_paid_prefix": null,
+    "formatted_total_bounties_paid_amount": 6650165,
+    "average_bounty_lower_amount": 617,
+    "average_bounty_upper_amount": 617,
+    "top_bounty_lower_amount": 10000,
+    "top_bounty_upper_amount": 100000
+  },
+  "cloudflare": {
+    "handle": "cloudflare",
+    "name": "Cloudflare Public Bug Bounty",
+    "offers_bounties": true,
+    "minimum_bounty_table_value": 100,
+    "maximum_bounty_table_value": 10000,
+    "bounties_total": "0",
+    "formatted_total_bounties_paid_prefix": null,
+    "formatted_total_bounties_paid_amount": 628500,
+    "average_bounty_lower_amount": 250,
+    "average_bounty_upper_amount": 350,
+    "top_bounty_lower_amount": 1000,
+    "top_bounty_upper_amount": 10000
+  },
+  "gitlab": {
+    "handle": "gitlab",
+    "name": "GitLab",
+    "offers_bounties": true,
+    "minimum_bounty_table_value": 100,
+    "maximum_bounty_table_value": 35000,
+    "bounties_total": "0",
+    "formatted_total_bounties_paid_prefix": null,
+    "formatted_total_bounties_paid_amount": 7443997,
+    "average_bounty_lower_amount": 1000,
+    "average_bounty_upper_amount": 1370,
+    "top_bounty_lower_amount": 10000,
+    "top_bounty_upper_amount": 36500
+  },
+  "security": {
+    "handle": "security",
+    "name": "HackerOne",
+    "offers_bounties": true,
+    "minimum_bounty_table_value": 100,
+    "maximum_bounty_table_value": 15000,
+    "bounties_total": "0",
+    "formatted_total_bounties_paid_prefix": null,
+    "formatted_total_bounties_paid_amount": 2092375,
+    "average_bounty_lower_amount": 500,
+    "average_bounty_upper_amount": 500,
+    "top_bounty_lower_amount": 2500,
+    "top_bounty_upper_amount": 25000
+  }
+}

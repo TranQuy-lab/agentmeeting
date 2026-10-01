@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/normalize.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/css/site.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/css/github-octicons.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/js/modernizr.custom.67567.js"></script>
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Report Quality | GitHub Bug Bounty</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Report Quality" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://bounty.github.com/report-quality.html" />
+<meta property="og:url" content="https://bounty.github.com/report-quality.html" />
+<meta property="og:site_name" content="GitHub Bug Bounty" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Report Quality" />
+<meta name="twitter:site" content="@githubsecurity" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Report Quality","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://bounty.github.com/images/noircat@2x.png"}},"url":"https://bounty.github.com/report-quality.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body id="report-quality">
+    <header class="site-header">
+      <div class="container clearfix">
+        <a href="/" class="site-header-logo">GitHub Security</a>
+        <button class="hamburger" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="top-nav">
+          <li><a href="/scope" class="top-nav-scope">Scope</a></li>
+          <li><a href="/targets" class="top-nav-targets">Targets</a></li>
+          <li><a href="/rules" class="top-nav-rules">Rules</a></li>
+          <li><a href="/rewards" class="top-nav-rewards">Rewards</a></li>
+          <li class="dropdown">
+            <button class="dropbtn">More</button>
+            <div class="dropdown-content">
+              <a href="/ineligible">Ineligible Submissions</a>
+              <a href="/report-quality">Report Quality</a>
+              <a href="/about">About</a>
+              <a href="https://github.blog/tag/bug-bounty/" target="_blank" rel="noopener noreferrer">Blog</a>
+              <a href="/faq">FAQs</a>
+            </div>
+          </li>
+          <li class="nav-button"><a href="https://hackerone.com/github" target="_blank" rel="noopener noreferrer">Submit a vulnerability</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <div class="container">
+<!--  <h2 class="with-anchor">Report Quality</h2>-->
+  <section id="report-quality" class="site-section">
+  <div class="container">
+    <h2 class="with-anchor">What a report needs to contain</h2>
+
+    <p>Most rejected reports fail on evidence rather than on scope. A finding can be real, in scope, and still be closed because the report does not show it happening. Keep the report concise and organize it into the three sections below. Long background explanations, repeated claims, speculative attack chains, and generic remediation advice make the actual finding harder to validate.</p>
+
+
+    <dl class="report-quality">
+      
+        <hr />
+        <dt>Summary or description</dt>
+        <dd><p>In two to four sentences, identify the affected product or component, describe the vulnerability, and state the security boundary that is crossed. This should tell us what happened without requiring a long introduction or general explanation of the vulnerability class.</p>
+</dd>
+      
+        <hr />
+        <dt>Steps to reproduce</dt>
+        <dd><p>Provide concise, numbered steps that start from a clean state and demonstrate a working proof of concept. Include every required account, permission, configuration value, request, response, command, and user action. Attach screenshots, HTTP requests and responses, terminal output, or a short video where they help prove the result. A video is supporting evidence and does not replace written reproduction steps.</p>
+</dd>
+      
+        <hr />
+        <dt>Impact statement</dt>
+        <dd><p>In two to four sentences, state what the demonstrated attack allows an attacker to gain, which user or resource is affected, and the access or interaction the attacker needs before the attack begins. Describe the impact shown by the proof of concept, not a larger theoretical outcome. “This could lead to account takeover” is not an impact statement unless the report demonstrates the takeover.</p>
+</dd>
+      
+        <hr />
+        <dt>State prerequisites honestly</dt>
+        <dd><p>Viewing an issue or pull request, cloning or opening a repository, checking out a branch, and reviewing a contribution do not automatically make a finding eligible or ineligible. Context matters: the report must show the product crossing a security boundary in a way the action does not inherently authorize, taking account of the product’s security model, prompts, and expected behavior. Copying and pasting an attacker’s command, running their script, changing a security setting, granting permissions, or overriding a warning are attacker instructions, not product behavior. Do not hide or minimize a required victim action.</p>
+</dd>
+      
+        <hr />
+        <dt>Your own verification</dt>
+        <dd><p>Scanner output and AI-assisted analysis are acceptable starting points, but you are responsible for confirming the finding is real and reproducible before submitting. Unverified automated output is the most common source of invalid reports.</p>
+</dd>
+      
+    </dl>
+  </div>
+</section>
+
+<section class="site-section">
+  <div class="container">
+    <h2 class="with-anchor">Things that reliably do not qualify</h2>
+
+    <p>These come up often enough to call out. They are closed on sight unless the report demonstrates something beyond the finding itself:</p>
+
+
+    <ul>
+      
+        <li>Missing security headers with no demonstrated attack
+</li>
+      
+        <li>Product bugs, unexpected behavior, unnecessary exposure, or best-practice gaps that do not demonstrate the failure of an intended security control
+</li>
+      
+        <li>Self-XSS, or attacks needing implausible social engineering
+</li>
+      
+        <li>Attacks that require the victim to paste a command, run attacker-supplied code, change a security setting, grant permissions, or override a warning
+</li>
+      
+        <li>Theoretical access-control issues with no proof of accessing anything sensitive
+</li>
+      
+        <li>Disclosure of information that is already public or is not sensitive
+</li>
+      
+        <li>Findings on out-of-scope, deprecated, or test endpoints
+</li>
+      
+    </ul>
+
+    <p>See also the <a href="/rules">program rules</a> and <a href="/ineligible">ineligible submissions</a>.</p>
+  </div>
+</section>
+
+</div>
+
+
+
+    <footer>
+      <div id="footer">
+        <div class="container">
+          <div class="footer-octocat">
+            <a href="/">
+              <span class="mega-octicon octicon-mark-github"></span>
+            </a>
+          </div>
+          <div class="footer-links">
+            <ul id="legal">
+              <li>&copy; 2026 GitHub, Inc.</li>
+              <li><a href="https://github.com/site/terms" target="_blank" rel="noopener noreferrer">Terms</a></li>
+              <li><a href="https://github.com/site/privacy" target="_blank" rel="noopener noreferrer">Privacy</a></li>
+              <li><a href="https://github.com/security" target="_blank" rel="noopener noreferrer">Security</a></li>
+            </ul>
+            <ul id="legal-right">
+              <li><a href="https://x.com/GitHubSecurity" target="_blank" rel="noopener noreferrer">Follow us on X</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.tipsy.js"></script>
+    <script type="text/javascript" src="/js/site.js"></script>
+    <script>
+      document.querySelector('.hamburger').addEventListener('click', function() {
+        this.classList.toggle('active');
+        document.querySelector('.top-nav').classList.toggle('open');
+      });
+    </script>
+
+  </body>
+</html>

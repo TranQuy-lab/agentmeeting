@@ -1,0 +1,1986 @@
+{
+  "data": {
+    "team": {
+      "id": "Z2lkOi8vaGFja2Vyb25lL0VuZ2FnZW1lbnRzOjpCdWdCb3VudHlQcm9ncmFtLzE4OTQ=",
+      "handle": "github",
+      "name": "GitHub",
+      "offers_bounties": true,
+      "submission_state": "open",
+      "policy": "# GitHub Security Bug Bounty\n\nSoftware security researchers are increasingly engaging with internet companies to hunt down vulnerabilities. Our bounty program gives a tip of the hat to these researchers and provides rewards of $10,000 or more for critical vulnerabilities.\n\n\nYou can find more information in our [rules](https://bounty.github.com/#rules), [scope](https://bounty.github.com/#scope), [targets](https://bounty.github.com/#targets), and [FAQ](https://bounty.github.com/#faqs) sections. \n\nHappy hacking!\n\n## Rules\n\n### Before you start\n\n* Check the [list of domains](https://bounty.github.com#scope) that are in scope for the Bug Bounty program and the [list of targets](https://bounty.github.com#targets) for useful information for getting started.\n* Check the list of bugs that have been [classified as ineligible](https://bounty.github.com/ineligible.html). Submissions which are ineligible will likely be closed as `Not Applicable`.\n* Check the [GitHub Changelog](https://github.blog/changelog/) for recently launched features.\n* Never attempt non-technical attacks such as social engineering, phishing, or physical attacks against our employees, users, or infrastructure.\n* When in doubt, contact us at `bounty@github.com`.\n* By participating in GitHub's Bug Bounty program (the \"Program\"), you acknowledge that you have read and agree to GitHub's [Terms of Service](https://docs.github.com/en/github/site-policy/github-terms-of-service) as well as the following:\n\n  * you are not currently a GitHub employee or contractor, were not a GitHub employee or contractor within six months prior to submission, and you did not collaborate on your submission with anyone who was.\n\n  * your participation in the Program will not violate any law applicable to you, or disrupt or compromise any data that is not your own.\n\n  * you are solely responsible for any applicable taxes, withholding or otherwise, arising from or relating to your participation in the Program, including from any bounty payments.\n\n  * GitHub reserves the right to terminate or discontinue the Program at its discretion.\n\n  * Only test for vulnerabilities on sites you know to be operated by GitHub and are [in-scope](https://bounty.github.com#scope). Some sites hosted on subdomains of `GitHub.com` are operated by third parties and should not be tested.\n\n  * We cannot reward any individual on any U.S. sanctions list, or any individual residing in any U.S.-sanctioned country or region. For more information, please see https://www.hackerone.com/disclosure-guidelines.\n\n\n### Legal safe harbor\n\nYour research is covered by the [GitHub Bug Bounty Program Legal Safe Harbor](https://docs.github.com/en/site-policy/security-policies/github-bug-bounty-program-legal-safe-harbor) policy. In summary:\n* We consider security research and vulnerability disclosure activities conducted consistent with this policy as “authorized” conduct under the Computer Fraud and Abuse Act, the DMCA, and other applicable computer use laws such as Cal. Penal Code 502(c). We waive any potential DMCA claim against you for circumventing the technological measures we have used to protect the applications in this bug bounty program's scope.\n* We want you to coordinate disclosure through our bug bounty program, and don't want researchers put in fear of legal consequences because of their good faith attempts to comply with our bug bounty policy. We cannot bind any third party, so do not assume this protection extends to any third party. If in doubt, ask us before engaging in any specific action you think might go outside the bounds of our policy.\n* Because both identifying and non-identifying information can put a researcher at risk, we limit what we share with third parties. We may provide non-identifying substantive information from your report to an affected third party, but only after notifying you and receiving a commitment that the third party will not pursue legal action against you. We will only share identifying information (name, email address, phone number, etc.) with a third party if you give your written permission.\n* If your security research as part of the bug bounty program violates certain restrictions in our site policies, the safe harbor terms permit a limited exemption.\n\n\n### Performing your research\n\n* Do not impact other users with your testing, this includes testing vulnerabilities in repositories or organizations you do not own. If you are attempting to find an authorization bypass, you must use accounts you own.\n* We recommend adding your HackerOne `@wearehackerone.com` email address to any GitHub account that you use to perform security research and testing. If you use multiple GitHub accounts for testing, [you can use aliases of your HackerOne email address](https://docs.hackerone.com/hackers/hacker-email-alias.html#multiple-aliases). Clearly identifying accounts that are associated with bounty research helps our teams to differentiate between possibly malicious activity and that of researchers involved in our Bug Bounty program. Please note that adding your HackerOne email address does not provide any exemptions to our Terms of Service or permit you to act beyond our bounty rules and scope.\n* The following are **never** allowed and are ineligible for reward. We may suspend your GitHub account and ban your IP address for:\n\n  * Performing distributed denial of service (DDoS) or other volumetric attacks\n  * Spamming content\n  * Large-scale vulnerability scanners, scrapers, or automated tools which produce excessive amounts of traffic.\n    * Note: We _do_ allow the use of automated tools so long as they do not produce excessive amounts of traffic. For example, running one `nmap` scan against one host is allowed, but sending 65,000 requests in two minutes using Burp Suite Intruder is excessive.\n* Researching denial-of-service attacks is allowed and eligible for rewards only if you follow these rules:\n\n  * There are no limits for researching denial of service vulnerabilities against your own instance of [GitHub Enterprise Server](https://bounty.github.com/targets/github-enterprise-server.html). We strongly recommend/prefer this method for researching denial of service issues.\n  * If you choose to test on GitHub proper (i.e. `https://github.com`)\n    * Research **must** be performed in organizations or repositories you own\n    * Stop **immediately** if you believe you have affected the availability of our services. Don't worry about demonstrating the full impact of your vulnerability, GitHub's security team will be able to determine the impact.\n\n\n### Handling personally identifiable information (PII)\n\n* Personally identifying information (PII) includes:\n  * legal and/or full names\n  * names or usernames combined with other identifiers like phone numbers or email addresses\n  * health or financial information (including insurance information, social security numbers, etc.)\n  * information about political or religious affiliations\n  * information about race, ethnicity, sexual orientation, gender, or other identifying information that could be used for discriminatory purposes\n* Do not intentionally access others' PII. If you suspect a service provides access to PII, limit queries to your own personal information.\n* Report the vulnerability *immediately* and do not attempt to access any other data. The GitHub Security team will assess the scope and impact of the PII exposure.\n* Limit the amount of data returned from services. For SQL injection, for example, limit the number of rows returned\n* You must delete all your local, stored, or cached copies of data containing PII as soon as possible. We may ask you to sign a certificate of deletion and confidentiality agreement regarding the exact information you accessed. This agreement will not affect your bounty reward.\n* We may ask you for the usernames and IP addresses used during your testing to assess the impact of the vulnerability\n\n\n### Reporting your vulnerability\n\n* Submissions must include written instructions for reproducing the vulnerability. Submissions without clear reproduction steps or which only include reproduction steps in video form may be ineligible for a reward.\n* When reporting vulnerabilities you must keep all information on HackerOne. Do not post information to video-sharing or pastebin sites. Videos and images can be uploaded directly via HackerOne.\n* For vulnerabilities involving personally identifiable information, please explain the kind of PII you believe is exposed and limit the amount of PII data included in your submissions. For textual information and screenshots, please only include redacted data in your submission.\n* During the course of an investigation, it may take time to resolve the issue you have reported. We ask that you refrain from publicly disclosing details regarding an issue you’ve reported until the fix has been publicly made available.\n\n\n### Receiving your award\n\n* All reward amounts are determined by our [severity guidelines](https://bounty.github.com/#rewards).\n* In addition to the bounty reward, some reports will also receive a coupon code that can be redeemed for swag items at [the GitHub Bug Bounty Merch Shop](https://bugbounty.printengine.com/). For more information about the store, [please visit the shop's FAQ page](https://bugbounty.printengine.com/faqs).\n* When duplicates occur, we only award the first report that was received (provided that it can be fully reproduced).\n* You are free to publish write-ups about your vulnerability, and GitHub will not limit what you write. We may pay out your reward before the vulnerability is patched, so we may ask that you delay publishing to keep other GitHub users safe.\n* GitHub is a CVE Numbering Authority (CNA) for GitHub Enterprise Server. Eligible Bug Bounty submissions that affect GitHub Enterprise Server may be assigned CVEs. These CVEs will be shared with submitters via HackerOne and listed in the GitHub Enterprise Server [release notes](https://enterprise.github.com/releases).\n* If you would prefer to donate your bounty reward to an established 501(c)(3) charitable organization, GitHub will match your donation. If the bounty has already been processed into your account, it can no longer be donated through HackerOne and is no longer eligible for matching donations. To reduce the likelihood of a bounty being processed before it can be donated, we recommend [changing your payment preferences to monthly in your account settings](https://docs.hackerone.com/hackers/payout-methods.html). To donate your reward and have it matched, submit a support ticket to HackerOne with the following information: \n  * the report ID for which you want to donate the bounty;\n  * the name and website of the charity you want to donate to;\n  * that you would like the donation matched using GitHub's process; and \n  * whether you want to be named as the donor or would prefer to remain anonymous. Keep in mind that we can only attribute the donation to you if the charity allows us to give a name.\n\n\n## Scope\n\nGitHub runs a number of services but only submissions under the following domains are eligible for rewards. Any GitHub-owned domains not listed below are *not* in scope, *not* eligible for rewards, and *not* covered by [our legal safe harbor](https://bounty.github.com#legal_safe_harbor).\n\n\n### github.com\n\nThis is our main domain for hosting user-facing GitHub services.. All subdomains under `github.com` are in-scope *except*:\n* `blog.github.com`\n* `community.github.com`\n* `email.enterprise.github.com`\n* `email.finance.github.com`\n* `email.staging.finance.github.com`\n* `email.support.github.com`\n* `email.verify.github.com`\n* `google7650dcf6146f04d8.github.com`\n* `k1._domainkey.github.com`\n* `k1._domainkey.mcmail.github.com`\n* `mcmail.github.com`\n* `resources.github.com`\n* `*.resources.github.com`\n* `sgmail.github.com`\n* `*.sgmail.github.com`\n* `shop.github.com`\n* `smtp.github.com`\n* `*.smtp.github.com`\n\n### githubassets.com\n\nThis is our domain for hosting static assets.. All subdomains under `githubassets.com` are in-scope\n\n### githubusercontent.com\n\nThis is our domain for hosting and rendering users' data.. All subdomains under `githubusercontent.com` are in-scope\n\n### githubapp.com\n\nThis is our domain for hosting employee-facing services.. All subdomains under `githubapp.com` are in-scope *except*:\n* `atom-io.githubapp.com`\n* `atom-io-staging.githubapp.com`\n* `email.enterprise-staging.githubapp.com`\n* `email.haystack.githubapp.com`\n* `reply.githubapp.com`\n\n### githubwebhooks.net\n\nThis is our domain for receiving webhooks for employee-facing services.. All subdomains under `githubwebhooks.net` are in-scope\n\n### github.net\n\nThis is our domain for hosting GitHub's internal production services. Many of these services are not accessible from outside our internal network.. All subdomains under `github.net` are in-scope\n\n### npmjs.com\n\nThis is the domain for npm's public-facing websites.. All subdomains under `npmjs.com` are in-scope\n\n### npmjs.org\n\nThis is the domain for npm's registry, public-facing databases, and APIs.. All subdomains under `npmjs.org` are in-scope\n\n\n## GitHup VIP Program\n\nWe’re stoked to hear you’d like to become a Hacktocat! In order to be eligible to receive an invitation, you must accomplish at least one of the following:\n\n        - One critical finding\n        - Two high findings\n        - Four medium findings\n        - Seven low findings\n      \nPlease note that meeting these criteria does not guarantee an invitation. We reserve the right to extend invitations at our discretion. Researchers do not need to perform any additional steps to receive an invite once they become eligible. We review eligibility and make decisions on candidates on a monthly basis. ",
+      "structured_scopes": {
+        "edges": [
+          {
+            "node": {
+              "asset_identifier": "github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "GitHub.com is our main web site. It is our most intricate application with a number of user inputs and access methods. GitHub.com is built on Ruby on Rails and leverages a number of Open Source technologies.\n\nRewards range from $555 up to $20,000 and are determined at our discretion based on a number of factors. For example, if you find a reflected XSS that is only possible in Opera, and Opera is \\<2% of our traffic, then the severity and reward will be lower. But a persistent XSS that works in Chrome, at \\>60% of our traffic, will earn a much larger reward.\n\nYou can find the app at [https://github.com](https://github.com \"https://github.com\").\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "api.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "The GitHub API is used by thousands of developers and applications to programatically interact with GitHub data and services. Because so much of the GitHub.com functionality is exposed in the API, security has always been a high priority.\n\nRewards range from $555 up to $20,000 and are determined at our discretion based on a number of factors.\n\nYou can find the app at [https://api.github.com](https://api.github.com \"https://api.github.com\") and can find the API documentation at [https://developer.github.com](https://developer.github.com \"https://developer.github.com\").\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "gist.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "Gist is one of the first products launched by GitHub after GitHub.com. It is a service for sharing snippets of code or other text content. Gist is built on Ruby on Rails and leverages a number of Open Source technologies.\n\nRewards range from $555 up to $20,000 and are determined at our discretion based on a number of factors. For example, if you find a reflected XSS that is only possible in Opera, and Opera is \\<2% of our traffic, then the severity and reward will be lower. But a persistent XSS that works in Chrome, at \\>60% of our traffic, will earn a much larger reward.\n\nYou can find the app at [https://gist.github.com](https://gist.github.com \"https://gist.github.com\").\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "classroom.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "*.githubapp.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "Subdomains under `*.githubapp.com` provide a number of internal services to GitHub employees. Not all subdomains are [in-scope](https://bounty.github.com/#scope)\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "*.github.net",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "Subdomains under `*.github.net` run services for our internal production network. Many of these services are not accessible from outside our internal network. Not all subdomains are [in-scope](https://bounty.github.com/#scope)"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "education.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "GitHub Education offers a variety of tools to help educators and researchers work more effectively inside and outside of the classroom. More details are available at https://education.github.com/. GitHub Classroom is [open-source](https://github.com/education/classroom)"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "*.githubusercontent.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "npmjs.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "This is the domain for npm’s public-facing websites. All subdomains under npmjs.com are in scope."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "npmjs.org",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "This is the domain for npm’s registry, public-facing databases, and APIs. All subdomains under npmjs.org are in scope."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Cloud",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "GitHub Enterprise Cloud is the cloud-hosted version of GitHub Enterprise. It is designed for teams who want advanced authentication and permissions without managing infrastructure. More information about GitHub Enterprise Cloud is available at https://github.com/enterprise\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Pages",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "GitHub Pages is our static site hosting service designed to host your personal, organization, or project pages directly from a GitHub repository. It uses the Jekyll static site generator and officially supported themes are are developed in the pages-themes organization. GitHub Pages support custom domains and can be secured with HTTPS. Eligible submissions include:\n- Executing arbitrary code during the build process, either via a custom Jekyll theme or vulnerabilities in the command-line Git tools when cloning or checking-out repositories from user accounts that do not have actions workflow permissions.\n- Reading arbitrary files during the build process which discloses sensitive information, for example by misusing path traversal or symbolic links in a custom Jekyll theme from user accounts that do not have permissions to view those resources.\n\nIndividual GitHub Pages sites hosted under *.github.io are out-of-scope."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Production Credentials",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "GitHub, Inc. uses a mix of our own physical infrastructure, cloud platforms and third-party services to keep everything running smoothly. Keeping credentials and access tokens secure for these resources is paramount to the security of our employees and users.\n\n* Credentials allowing access to cloud services, package managers and other resources used by GitHub, Inc employees\n* Credentials accidentally made public in repositories which allow access to GitHub, Inc resources. This does *not* include credentials exposed by our users and credentials which do not allow access to GitHub, Inc resources.\n* Credentials exposed by third-party services which allow access to GitHub, Inc resources\n\nPlease review our [guidance for handling PII](https://bounty.github.com/#handling_personally_identifiable_information_pii) before investigating credentials allowing access to GitHub, Inc resources. The reward amount is based on the impact of the leaked credential which will be determined by the GitHub Security team."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Dependabot",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "Dependabot powers GitHub's [automated security fixes](https://help.github.com/en/articles/configuring-automated-security-fixes). This feature allows GitHub users to automatically update vulnerable dependencies. The core logic of Dependabot is [open-source](https://github.com/dependabot/dependabot-core) and an [overview of the architecture](https://github.com/dependabot/dependabot-core#architecture) is available.\n\n  * Execution environment breakout attacks, providing access to private networked resources or other users' data\n  * Security issues in [`dependabot-core`](https://github.com/dependabot/dependabot-core)"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub for mobile",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "Bring GitHub collaboration tools to your small screens with [GitHub for mobile](https://github.com/mobile)."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Copilot",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Copilot for Business",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": null
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Cloud with Data Residency (GHEC-DR)",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": null
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Copilot Spaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": null
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Copilot Coding Agent",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": null
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Spark",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": null
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub CSP",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "high",
+              "instruction": "While content-injection vulnerabilities are already in-scope for our [GitHub.com bounty](https://bounty.github.com/targets/github.html), we also accept bounty reports for novel [CSP](https://developers.google.com/web/fundamentals/security/csp/) bypasses affecting GitHub.com, even if they do not include a content-injection vulnerability. Using an intercepting proxy or your browser's developer tools, experiment with injecting content into the DOM. See if you can execute arbitrary JavaScript or exfiltrate sensitive page contents such as CSRF tokens. Reports of other previously-unknown impacts from content-injection will also be considered.\n\nPreviously identified attacks are not eligible for reward (we've put a lot of thought into CSP bypasses already). You can find a discussion of known attacks and our attempts to mitigate them [here](http://githubengineering.com/githubs-csp-journey/). Attacks against CSP features not used on GitHub.com, such as script nonces, are not eligible for reward. Vulnerabilities resulting from injection in implausible locations, such as within an element that doesn't contain user-content, are not eligible for reward. Rewards are determined at our discretion: if you think you've found something cool and novel, report it!\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Copilot Chat on dotcom",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "high",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Server",
+              "asset_type": "HARDWARE",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "GitHub Enterprise Server is the on-premise version of GitHub Enterprise. GitHub Enterprise Server shares a code-base with GitHub.com, is built on Ruby on Rails and leverages a number of open source technologies. GitHub Enterprise Server adds a number of features for enterprise infrastructures, including additional authentication backends and clustering options.\n\n Below is a subset of features unique to GitHub Enterprise that might be interesting to investigate.\n\n  * Bypassing instance-wide authentication, also known as [*private mode*](https://help.github.com/enterprise/admin/guides/installation/enabling-private-mode/)\n  * External authentication backends including [CAS, LDAP, and SAML](https://help.github.com/enterprise/admin/guides/user-management/)\n  * In-app administration of the instance using a site administrator control panel\n  * [User, organization, and repository migration](https://help.github.com/enterprise/admin/guides/migrations/)\n  * [Web-based management console](https://help.github.com/enterprise/admin/guides/installation/web-based-management-console/) and [SSH access](https://help.github.com/enterprise/admin/guides/installation/administrative-shell-ssh-access/) to configure and update the instance\n  * [Pre-receive hook scripts](https://help.github.com/enterprise/admin/guides/developer-workflow/creating-a-pre-receive-hook-script/)\n  * [GitHub Connect](https://help.github.com/enterprise/admin/guides/developer-workflow/connecting-github-enterprise-server-to-github-com/) allows users to share specific features and workflows between your GitHub Enterprise Server instance and a GitHub.com organization on GitHub Enterprise Cloud.\n  * See [our documentation](https://help.github.com/enterprise/admin/guides/installation/network-ports-to-open/) for a list of services typically open on an instance.\n\nYou can request a trial of GitHub Enterprise Server for security testing at [https://enterprise.github.com/bounty](https://enterprise.github.com/bounty)."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Desktop",
+              "asset_type": "DOWNLOADABLE_EXECUTABLES",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "[GitHub Desktop](https://desktop.github.com) is an open-source [Electron](https://electronjs.org)-based app for working with your GitHub.com or GitHub Enterprise account. Only the following vulnerabilities are eligible for reward:\n  * Remote code execution via protocol handlers such as `x-github-client://`\n  * Code execution without user interaction when cloning or fetching malicious repositories\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub CLI",
+              "asset_type": "DOWNLOADABLE_EXECUTABLES",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "high",
+              "instruction": "[GitHub CLI](https://cli.github.com) is an open source command line tool for working with your GitHub.com account. It is built with Golang, and performs several GitHub.com commands from your terminal, such as viewing, commenting and performing other actions on issues and PRs."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "npm CLI",
+              "asset_type": "DOWNLOADABLE_EXECUTABLES",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "high",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "enterprise.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "`enterprise.github.com` is commonly confused with the [GitHub Enterprise Server product](https://github.com/enterprise) which is an on-premise instance of GitHub.\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "*.github.io",
+              "asset_type": "URL",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "Individual sites which are hosted on GitHub Pages are out-of-scope.\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "git.io",
+              "asset_type": "URL",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "The [git.io](https://git.io) URL shortener is out-of-scope."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "spectrum.chat",
+              "asset_type": "URL",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "[Spectrum](https://spectrum.chat) is currently out-of-scope."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "github.blog",
+              "asset_type": "URL",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "[github.blog](https://github.blog) is out-of-scope."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "http://education.github.com/forum",
+              "asset_type": "URL",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "The [GitHub Education Community forum](https://education.github.com/forum) is not in-scope and ineligible for rewards."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "blog.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "The GitHub Blog is not in-scope and ineligible for rewards.\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "community.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "The GitHub Community forum is not in-scope and ineligible for rewards."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "shop.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "The GitHub Shop is not in-scope and ineligible for rewards."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Atom",
+              "asset_type": "DOWNLOADABLE_EXECUTABLES",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "[https://atom.io](https://atom.io \"https://atom.io\")\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Electron",
+              "asset_type": "DOWNLOADABLE_EXECUTABLES",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "Electron vulnerabilities which do not directly affect GitHub Desktop are out-of-scope and should be [reported](https://electronjs.org/community) to the Electron developers.\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Classroom Assistant ",
+              "asset_type": "DOWNLOADABLE_EXECUTABLES",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "The [GitHub Classroom Assistant application](https://classroom.github.com/assistant) is currently out-of-scope."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "All Other Scope",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GHES",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Codespaces",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Enterprise Importer",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": " Code Search",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": " Code Search",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Copilot",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Copilot",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "lab.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "Get the skills you need without leaving GitHub. GitHub Learning Lab takes you through a series of fun and practical projects, sharing helpful feedback along the way."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "jobs.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "[GitHub Jobs](https://jobs.github.com/) is a great place to attract the best technical talent for your company’s open software development positions"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "semmle.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "Our main domain for Semmle and LGTM services. All subdomains under semmle.com are in-scope **except**:\n* dev.semmle.com\n* git.semmle.com\n* jira.semmle.com\n* wiki.semmle.com"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "LGTM",
+              "asset_type": "OTHER",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "LGTM is a code analysis platform for development teams to identify vulnerabilities early and prevent them from reaching production. It uses [CodeQL](https://semmle.com/ql)  which works by retrieving source code from version control systems, building it with custom tooling, and creating analysis results.\n\nLGTM uses Docker containers to isolate the build and analysis environment from the rest of the infrastructure. By nature this environment permits arbitrary code execution by any registered user, so the quality of isolation is a critical part of the security model. The public site includes two user types (user and admin user) as well as anonymous access.\n\n* [`lgtm-com.pentesting.semmle.net`](lgtm-com.pentesting.semmle.net) is a dedicated instance of LGTM for your research.\n\n* [`backend-dot-lgtm-penetration-testing.appspot.com`](backend-dot-lgtm-penetration-testing.appspot.com) is used for triggering automated tasks from other parts of the LGTM system. It does not provide a user interface.\n\n* [`downloads.lgtm.com`](downloads.lgtm.com)"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "semmle.net",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "Our domain for non-production Semmle services. All subdomains under `semmle.net` are in-scope.\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "GitHub Education Community forum",
+              "asset_type": "OTHER",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": "The [GitHub Education Community forum](https://education.github.com/forum) is not in-scope and ineligible for rewards."
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Other Applications",
+              "asset_type": "DOWNLOADABLE_EXECUTABLES",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "low",
+              "instruction": "GitHub builds and operates a number of web properties and applications. Not all of them are currently part of an open bounty, however, we still appreciate the effort researchers put forth to identify vulnerabilities. Vulnerabilities found in applications not specifically listed on the [Open bounties](https://bounty.github.com/index.html#open-bounties) are not currently eligible for cash rewards.\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "speakerdeck.com",
+              "asset_type": "URL",
+              "eligible_for_submission": false,
+              "eligible_for_bounty": false,
+              "max_severity": "none",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "Atom",
+              "asset_type": "DOWNLOADABLE_EXECUTABLES",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": false,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "http://GitHub.com/CSP",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": "While content-injection vulnerabilities are already in-scope for our [GitHub.com bounty](https://bounty.github.com/targets/github.html), we also accept bounty reports for novel [CSP](https://developers.google.com/web/fundamentals/security/csp/) bypasses affecting GitHub.com, even if they do not include a content-injection vulnerability. Using an intercepting proxy or your browser's developer tools, experiment with injecting content into the DOM. See if you can execute arbitrary JavaScript or exfiltrate sensitive page contents such as CSRF tokens. Reports of other previously-unknown impacts from content-injection will also be considered.\n\nPreviously identified attacks are not eligible for reward (we've put a lot of thought into CSP bypasses already). You can find a discussion of known attacks and our attempts to mitigate them [here](http://githubengineering.com/githubs-csp-journey/). Attacks against CSP features not used on GitHub.com, such as script nonces, are not eligible for reward. Vulnerabilities resulting from injection in implausible locations, such as within an element that doesn't contain user-content, are not eligible for reward. Rewards are determined at our discretion: if you think you've found something cool and novel, report it!\n\n"
+            }
+          },
+          {
+            "node": {
+              "asset_identifier": "https://gist.github.com",
+              "asset_type": "URL",
+              "eligible_for_submission": true,
+              "eligible_for_bounty": true,
+              "max_severity": "critical",
+              "instruction": ""
+            }
+          }
+        ]
+      }
+    }
+  }
+}
