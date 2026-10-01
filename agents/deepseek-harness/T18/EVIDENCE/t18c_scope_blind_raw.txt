@@ -1,0 +1,27 @@
+=== T18-C: TACH asset_type cho 4 tai san GitLab — doc lap ===
+Tong scope entry: 63
+IN = 24  OUT = 39
+
+--- about.gitlab.com ---
+   id=about.gitlab.com         type=URL       eligible=True
+   id=about.gitlab.com         type=URL       eligible=False
+   => XUNG DOT THAT (cung asset_type)
+
+--- docs.gitlab.com ---
+   id=docs.gitlab.com          type=URL       eligible=True
+   id=docs.gitlab.com          type=URL       eligible=False
+   => XUNG DOT THAT (cung asset_type)
+
+--- gitlab.net ---
+   id=*.gitlab.net             type=WILDCARD  eligible=True
+   id=*.runway.gitlab.net      type=WILDCARD  eligible=False
+   id=*.gitlab.net             type=URL       eligible=False
+   id=gitlab.net               type=URL       eligible=False
+   => KHAC asset_type -> KHONG phai xung dot that
+
+--- gitlap.com ---
+   id=*.gitlap.com             type=WILDCARD  eligible=True
+   id=*.gitlap.com             type=URL       eligible=False
+   id=gitlap.com               type=URL       eligible=False
+   => KHAC asset_type -> KHONG phai xung dot that
+

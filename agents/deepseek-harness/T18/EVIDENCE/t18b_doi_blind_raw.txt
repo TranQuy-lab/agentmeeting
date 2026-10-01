@@ -1,0 +1,5 @@
+=== T18-B: DOI S29 — kiem HOA/thuong doc lap ===
+Thoi diem: 2026-10-01T14:33:51Z
+
+10.1109/ICICT63348.2025.10989392         crossref=404 openalex=404 doi.org=404
+10.1109/iccit63348.2025.10989392         crossref=200 openalex=200 doi.org=302

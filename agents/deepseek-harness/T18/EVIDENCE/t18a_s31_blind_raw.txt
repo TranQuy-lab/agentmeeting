@@ -1,0 +1,35 @@
+=== T18-A: S31 TOAN VAN — phan tich doc lap cua DeepSeek-Harness ===
+Thoi diem chay: 2026-10-01T14:33:46Z
+Nguon: https://arxiv.org/html/2603.11006v2 (HTTP 200, 368458 B)
+        https://arxiv.org/pdf/2603.11006v2 (HTTP 200, 618743 B)
+
+Sau khi boc the: 64256 ky tu
+
+TU KHOA              SO LAN
+mtu                  0
+middlebox            0
+fragment             0
+packet size          0
+network layer        0
+certificate chain    0
+tunnel               0
+vpn                  0
+ml-dsa               4
+hybrid               40
+latency              74
+handshake            64
+edge                 1  (o 99.7% do dai = footer arXiv, khong phai ky thuat)
+load balancer        2
+mitm                 2
+
+--- TRICH NGUYEN VAN 1 (ML-DSA la future work) ---
+Additional tests varying the digital signature algorithm (e.g., ECDSA vs. ML-DSA vs. SLH-DSA)
+to isolate signature overhead are planned as future work.
+
+--- TRICH NGUYEN VAN 2 (MTU/edge/middlebox la future work) ---
+extending the analysis to real network environments with commercial load balancers and
+MiTM (Man-in-The-Middle) inspection devices to quantify the performance impact when using
+PQC in TLS ...
+
+--- VENUE (tu trang abs arXiv, KHONG co trong HTML body) ---
+Accepted in SPIQE 2026 (Workshop on Secure Protocol Implementations in the Quantum Era)
