@@ -343,3 +343,116 @@ Với 4 tài sản có eligible_for_submission vừa True vừa False:
 2. DNS có thể thay đổi theo thời điểm (TTL). `PASS` này đúng cho lần chạy `2026-10-01`.
 3. Tôi **không** xác minh được phần cần phiên đăng nhập HackerOne.
 4. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #4 (T8): nguồn chặn tính mới (S29, S31)
+
+**Ngày:** 2026-10-01 (đã sửa theo D-010 — xem §5) · **Đối tượng:** `origin/agent/research-lead/T2`
+**Bối cảnh:** T11 (Reviewer1) đang chặn ở hai nguồn này. Tôi kiểm **trước** để có dữ liệu độc lập.
+
+---
+
+## 1. S31 (arXiv:2603.11006) — ✅ **XÁC NHẬN HOÀN TOÀN**
+
+ResearchLead khai: *"bản đầu 2026-03-11, cập nhật 2026-07-07"*, tiêu đề *"Layered Performance Analysis
+of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange"*.
+
+Tôi tự truy vấn arXiv API (qua **HTTPS** — xem §4):
+
+```text
+$ curl -sSL "https://export.arxiv.org/api/query?id_list=2603.11006"
+
+title    : Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid,
+           and Pure Post-Quantum Key Exchange
+published: 2026-03-11T17:27:41Z
+updated  : 2026-07-07T10:08:49Z
+id       : http://arxiv.org/abs/2603.11006v2
+```
+
+| Khai của ResearchLead | Tôi kiểm được | Kết quả |
+|---|---|---|
+| Tiêu đề (nguyên văn) | khớp **từng ký tự** | ✅ |
+| Bản đầu `2026-03-11` | `published: 2026-03-11T17:27:41Z` | ✅ |
+| Cập nhật `2026-07-07` | `updated: 2026-07-07T10:08:49Z` | ✅ |
+| arXiv ID `2603.11006v2` | `abs/2603.11006v2` | ✅ |
+
+**Không có dấu hiệu bịa nguồn.** ResearchLead còn **tự khai** S31 được tìm thấy *sau* khi hồ sơ viết
+xong và **tự hạ cấp tính mới** — đây là hành vi trung thực đúng D-004, đáng ghi nhận.
+
+## 2. S29 (DOI `10.1109/ICICT63348.2025.10989392`) — ⚠️ **DOI KHÔNG PHÂN GIẢI**
+
+Đây là phát hiện của tôi. Tôi kiểm qua **hai** kênh độc lập:
+
+```text
+$ curl -sS "https://api.crossref.org/works/10.1109/ICICT63348.2025.10989392"
+HTTP=404 BYTES=19
+
+$ curl -sS -o /dev/null -w 'HTTP=%{http_code} FINAL=%{url_effective}' -L \
+      "https://doi.org/10.1109/ICICT63348.2025.10989392"
+HTTP=404 FINAL=https://doi.org/10.1109/ICICT63348.2025.10989392
+```
+
+| Kênh kiểm | Kết quả |
+|---|---|
+| CrossRef API | **HTTP 404** — không có bản ghi |
+| doi.org resolution | **HTTP 404** — không phân giải |
+| Truy vấn theo tiêu đề trên CrossRef | trả về bài **KHÁC** (TechRxiv `10.36227/techrxiv...`, Springer chapter) — **không** phải S29 |
+
+**Diễn giải thận trọng (tôi KHÔNG kết luận tác giả bịa):**
+
+1. ResearchLead **tự ghi rõ** S29 *"🔴 Không có bản mở. RỦI RO CAO cho tính mới"* và để trống
+   `BLINDCHECK.md` B2.1 ⇒ **họ không giả vờ đã đọc**. Đây là khai báo trung thực.
+2. DOI **404 trên CrossRef không đồng nghĩa bài không tồn tại** — IEEE đôi khi chưa đăng ký kịp
+   metadata lên CrossRef, hoặc DOI thuộc hệ IEEE Xplore mà CrossRef chưa index.
+   ⇒ Kết luận đúng của tôi là **`CHƯA XÁC MINH`**, **KHÔNG** phải `FAIL` hay cáo buộc bịa.
+
+```text
+KẾT LUẬN S29: CHƯA XÁC MINH — không phân giải được qua CrossRef lẫn doi.org.
+Tôi KHÔNG kết luận đây là DOI bịa. Cần người có quyền truy cập IEEE Xplore kiểm (T11 của Reviewer1).
+Nếu không ai kiểm được ⇒ theo D-004 nguồn này phải giữ nhãn "chưa xác minh" trong hồ sơ.
+```
+
+## 3. Kết luận verify #4
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | S31 tiêu đề + ngày khớp nguyên văn | ✅ **PASS** |
+| 2 | S31 arXiv ID đúng | ✅ **PASS** |
+| 3 | ResearchLead khai trung thực việc chưa đọc toàn văn | ✅ **PASS** |
+| 4 | S29 DOI phân giải được | ⚠️ **CHƯA XÁC MINH** (404 cả CrossRef lẫn doi.org) |
+| 5 | S29 có bịa không | ⚠️ **KHÔNG KẾT LUẬN** — thiếu quyền truy cập IEEE |
+
+**PASS 3/5, 2 mục chưa xác minh. KHÔNG cáo buộc vi phạm.**
+
+## 4. Ghi chú kỹ thuật có giá trị tái lập (tặng Reviewer1 cho T11)
+
+```text
+arXiv API qua HTTP://export.arxiv.org -> HTTP 301, KHONG tra du lieu.
+Phai dung HTTPS + theo redirect (-L):
+  curl -sSL "https://export.arxiv.org/api/query?id_list=2603.11006"
+Bronze ResearchLead da ghi dung "HTTP 200 (can -L)" trong FETCH_STATUS.md => khop.
+```
+
+## 5. ĐÍNH CHÍNH của chính tôi: ngày tháng
+
+Admin ban hành **D-010**: hệ thống là **2026**-10-01, không phải 2025. Tôi đã tự kiểm:
+
+```text
+$ date
+Thu Oct  1 08:58:47 PM +07 2026
+```
+
+**D-010 ĐÚNG.** Các báo cáo verify #1–#3 của tôi ghi `2025-10-01` vì tôi **chép theo bản khung của
+Admin** (README/ADMIN/* đều ghi 2025) thay vì tự chạy `date`. Đây là **lỗi của tôi**, cùng loại lỗi
+với việc worker chép `say` từ `SKILL.md`: **tin tài liệu thay vì tự kiểm**.
+
+Từ verify #4 này tôi dùng `2026-10-01`. Tôi **không sửa âm thầm** các bản đã push — giữ vết để
+Auditor2 kiểm được. Người viết hồ sơ tự nhận lỗi, không để người khác phải chỉ ra.
+
+## 6. Tự khai giới hạn
+
+1. Tôi **không** có quyền truy cập IEEE Xplore ⇒ `CHƯA XÁC MINH` cho S29 là kết luận đúng mức,
+   không được nâng thành `FAIL`.
+2. Tôi **không** đọc toàn văn S31 (chỉ metadata arXiv) ⇒ việc chấm tính mới vẫn thuộc T11.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
