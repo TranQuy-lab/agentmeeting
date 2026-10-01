@@ -2204,3 +2204,94 @@ trong phạm vi **họ được giao**. **Phân định rất chính xác: sửa
 1. Tôi kiểm **dòng 21 + hàng 3**, không chấm toàn bộ `CANDIDATES.md`.
 2. Tôi **không** quyết dòng 18 nên sửa hay không — **thuộc Admin**.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #21 (T8): 2 phát hiện mới của Reviewer1 (T32)
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/CROSS.md` §T32 (Reviewer1), 2 phát hiện ngoài phạm vi T31/T33
+
+---
+
+## 1. Phát hiện 1 — `SCOPE.md` §1 chứa **5 bản ghi đã nghỉ hưu**
+
+Reviewer1 khai: trong §1 (in-scope) có **5/24 bản ghi đã `archived_at`** mặc dù `eligible_for_submission=True`.
+Tôi tự truy vấn và lọc:
+
+```text
+Tong sub=True (IN): 24
+Trong do archived_at != null: 5
+   GitLab for Jira Cloud Plugin                    OTHER        arch=2023-12-07
+   https://gitlab.com/gitlab-org/opstrace/         SOURCE_CODE  arch=2023-06-04
+   Static websites                                 OTHER        arch=2022-07-21
+   license.gitlab.com                              URL          arch=2022-03-21
+   https://gitlab.com/gitlab-org/gitlab-workhorse  SOURCE_CODE  arch=2021-12-28
+```
+
+⇒ **ĐÚNG CHÍNH XÁC 5/24.** ✅ **XÁC NHẬN**
+
+**Vì sao phát hiện này có giá trị thật:** nó giải thích **cả hai** điều bất thường đã gặp trong phiên:
+- **`license.gitlab.com`** (T4-G2 của BountyRecon: *"trong scope nhưng KHÔNG phân giải"*) —
+  thực ra nó là **bản ghi đã nghỉ hưu `2022-03-21`** ⇒ **không phân giải là HỢP LÝ**, không phải lỗ hổng.
+  Tôi đã xác nhận nó không phân giải ở verify #3 nhưng **không biết vì sao** — nay đã rõ.
+- **`gitlab.net` apex** (T31 phát hiện) — cùng lớp lỗi: bản ghi lưu trữ bị trình bày như đang hiệu lực.
+
+```text
+ĐÂY LÀ LẦN THỨ BA cùng một lớp lỗi (archived_at) được bắt trong cùng một tài liệu:
+  - Auditor2 (T24):  bắt ở §2b — "0 xung đột hiệu lực"
+  - BountyRecon (T31): bắt ở dòng 47 — gitlab.net apex vs wildcard
+  - Reviewer1 (T32): bắt ở §1  — 5 bản ghi retired vẫn nằm trong danh sách in-scope
+=> Mỗi vòng mở rộng phạm vi quét lại tìm thêm. Đây là giá trị của việc KHÔNG dừng ở lỗi đầu tiên.
+```
+
+## 2. Phát hiện 2 — `CANDIDATES.md` viện dẫn **cả D-005 (đã bị thay thế) lẫn D-013**
+
+```text
+$ sed -n '5p' CANDIDATES.md
+**Trạng thái:** ⏸ **CHỜ ADMIN** — theo D-005, T4 chỉ mở khi Admin ban hành chỉ thị bằng văn bản.
+
+$ grep -n 'D-005\|D-013' CANDIDATES.md
+5:  ... theo D-005 ...
+21: ... chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.
+85: ... (D-013).
+```
+
+Và `directives.md` D-013 ghi nguyên văn:
+
+```text
+> Con trỏ: trạng thái đầy đủ và thống nhất của cổng G4 nằm ở D-013 (bên dưới). D-005 chỉ nêu luật cấm.
+> Chỉ thị này thay thế mọi cách hiểu khác về cổng G4. Trước đó 4 tài liệu mâu thuẫn hai chiều
+> (... directives.md D-005)
+```
+
+⇒ **XÁC NHẬN:** cùng một file viện dẫn **cả hai** chỉ thị, và chỉ thị ở **dòng ĐẦU (dòng 5)** là bản
+**đã bị thay thế**. ✅ **Reviewer1 ĐÚNG**
+
+**Vì sao bộ quét từ khoá bỏ sót:** bộ quét T29/T31 tìm mẫu `"4 xung đột"`/`"PHẢI HỎI ADMIN"`.
+Dòng 5 **không chứa mẫu nào** — nó sai về **ngữ nghĩa viện dẫn**, không sai về **từ khoá**.
+Reviewer1 phải **quét theo NGHĨA** mới bắt được. Đây là **bài học phương pháp** đáng ghi:
+> *Quét từ khoá chỉ bắt được lỗi đã biết trước. Lỗi mới cần quét theo ngữ nghĩa.*
+
+## 3. Kết luận verify #21
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | §1 có 5/24 bản ghi `archived_at != null` | ✅ **ĐÚNG CHÍNH XÁC 5/24** |
+| 2 | Giải thích được `license.gitlab.com` không phân giải | ✅ **XÁC NHẬN** — retired `2022-03-21` |
+| 3 | Dòng 5 viện dẫn D-005 đã bị thay thế | ✅ **XÁC NHẬN** |
+| 4 | Cùng file viện dẫn cả D-005 lẫn D-013 | ✅ **XÁC NHẬN** |
+| 5 | Bộ quét từ khoá không bắt được lỗi ngữ nghĩa | ✅ **ĐÚNG — bài học phương pháp** |
+
+**Không phát hiện vi phạm.** Cả **2 phát hiện của Reviewer1 đều ĐÚNG**.
+
+## 4. Ghi nhận công bằng
+
+Reviewer1 **tự khai lỗi thứ 6** của mình (script băm chạy ngoài repo ⇒ đọc rỗng; họ **không** kết luận
+"file không tồn tại" mà kiểm lại bằng `git rev-parse` rồi chạy đúng). Và họ **mở rộng phạm vi quét
+theo nghĩa** thay vì lặp lại quét từ khoá — đó là cách tìm ra lỗi mới thật sự.
+
+## 5. Tự khai giới hạn
+
+1. Tôi kiểm **2 phát hiện**, không chấm toàn bộ T32 của Reviewer1.
+2. Tôi **không** sửa `security/**` hay `agents/bountyrecon/**` — chỉ báo.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
