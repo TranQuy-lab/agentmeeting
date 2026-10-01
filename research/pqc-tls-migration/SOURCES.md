@@ -83,6 +83,7 @@
 | S15 | On the Security and Efficiency of TLS 1.3 Handshake with Hybrid Key Exchange from CPA-Secure KEMs | `10.3390/e27121242` | Entropy, 2025 | 6 | MDPI chặn tải (HTTP 403) |
 | S16 | Module-Lattice-Based Key-Encapsulation Mechanism Performance Measurements | `10.3390/sci7030091` | Sci (MDPI), 2025 | 14 | MDPI chặn tải (HTTP 403) |
 | S17 | Hybrid ML-KEM in TLS 1.3: Performance Analysis on ARM64 Under Network Stress | `10.53070/bbd.1898820` | Computer Science (DergiPark), 2026 | 4 | Máy chủ DergiPark không kết nối được từ môi trường này |
+| **S31** | **Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange** — Gómez-Cambronero, Munteanu, González-Tablas | arXiv:2603.11006v2 (không có DOI) | arXiv, 2026-03-11 (cập nhật 2026-07-07) | chưa tra | 🔴 **MỐI ĐE DOẠ TÍNH MỚI.** Đã đọc **trừu tượng** qua arXiv API (`../EVIDENCE/arxiv_lookups.txt`); **chưa đọc toàn văn** |
 
 **Nguồn chuẩn hoá (metadata):**
 | Mã | Tài liệu | DOI | Ngày | Trạng thái |
@@ -113,6 +114,7 @@
 
 | # | Thứ bị nghi | Nguồn gốc | Kết quả kiểm tra | Kết luận |
 |---|---|---|---|---|
+| X6 | `arXiv:2609.18633` — ban đầu người lập **tưởng không xác minh được** | Kết quả `web_search` cho đề tài 2 | arXiv API với `-L` → **TỒN TẠI**: "Netkit: Specializing Linux Packet Delivery for Container Networks", Borkmann & Chaignon, 2026-09-16, DOI `10.1145/3837779.3838164` | 🟢 **Đã sửa sai**: nguồn này CÓ THẬT. Nguyên nhân lỗi ban đầu: `http://export.arxiv.org/api/` trả **HTTP 301** và phải dùng `curl -L`. Xem `../EVIDENCE/arxiv_lookups.txt`. |
 | X1 | `arXiv:2605.06881` — "Hybrid configurations combining classical key exchange (X25519) with ML-KEM-768…" | Xuất hiện trong kết quả `web_search` | Gọi arXiv API `id_list=2605.06881` → **0 entry** | 🔴 Không tồn tại theo API arXiv tại thời điểm kiểm tra. **Không trích.** |
 | X2 | `https://eprint.iacr.org/2026/1938.pdf` — "Post-Quantum TLS Measurements and Protocol Variants" | Kết quả `web_search` | Không fetch được; không xác minh | 🔴 **Không trích.** |
 | X3 | `NIST SP 1800-38` (NCCoE, Migration to Post-Quantum Cryptography) | Ký ức + tìm kiếm | CrossRef trả phản hồi **không phải JSON hợp lệ** cho DOI `10.6028/NIST.SP.1800-38` | 🔴 Không xác minh được qua CrossRef. Nếu cần dùng, phải xác minh lại bằng nguồn NCCoE trực tiếp. |
@@ -139,9 +141,10 @@
 
 **Tổng kết truy cập (do người lập tự đếm, Reviewer1 phải kiểm lại):**
 - Tải **thành công** nội dung: **6** nguồn (S1, S2, S3, S4, S5, S6).
+- Đọc **trừu tượng chính thức qua arXiv API**: **1** nguồn bổ sung (S31) — *không tính là toàn văn*.
 - Xác minh **metadata** thành công nhưng không đọc toàn văn: **21** DOI (S7–S21, S22–S29).
 - **Thất bại** khi fetch: **7** URL (bảng §E, trừ 2 dòng ✅).
-- **Không xác minh được**: **5** mục (X1–X5).
+- **Không xác minh được**: **5** mục (X1–X5). **Đã tự phát hiện và sửa 1 sai sót** (X6): `arXiv:2609.18633` thực ra tồn tại — lỗi do thiếu cờ `-L` khi gọi arXiv API.
 
 ---
 

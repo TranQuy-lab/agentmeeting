@@ -96,14 +96,19 @@ Thiết kế **ba pha**, mỗi pha có đầu ra kiểm chứng được.
 | D4 | Tiêu thụ CPU/năng lượng trên ARM64 | Testbed (P2) | Chưa có — phải tạo |
 | D5 | Tập lưu lượng mẫu theo lớp (thời hạn bảo mật) | Tổ chức hợp tác, hoặc mô phỏng có khai báo | Rủi ro cao — xem §6 |
 
+**Nguồn tham chiếu bổ sung cho thiết kế P2:** S31 (arXiv:2603.11006v2) là thiết kế gần nhất đã biết; nhóm **phải** đọc toàn văn và ghi rõ đề tài này khác gì về mặt thiết kế (biên, middlebox, MTU, chứng thư ML-DSA) **trước khi** thu thập dữ liệu.
+
 **Nguyên tắc dữ liệu:** không dùng dữ liệu cá nhân thật; dữ liệu lưu lượng phải được ẩn danh hoá trước khi vào repo; không push chứng thư, khoá riêng, hay token thật.
 
 ---
 
 ## 5. Tính mới
 
-1. **Bộ dữ liệu mở đầu tiên (theo hiểu biết của người đề xuất tại thời điểm 2026-10-01) đo hybrid ML-KEM TLS 1.3 trên nút biên có middlebox và ràng buộc MTU, kèm script tái lập.**
-   *Lưu ý bằng chứng:* đây là khẳng định về **khoảng trống**, chưa phải khẳng định đã chứng minh "chưa từng có ai làm". Reviewer1 cần kiểm tra bằng một tìm kiếm có hệ thống; nếu tìm được công trình trùng, tính mới phải được hạ cấp.
+1. **Bộ dữ liệu mở đo hybrid ML-KEM TLS 1.3 trên nút biên có middlebox và ràng buộc MTU, kèm script tái lập.**
+   *Lưu ý bằng chứng — ĐÃ ĐIỀU CHỈNH:* đây là khẳng định về **khoảng trống**, chưa phải khẳng định "chưa từng có ai làm".
+   **Người đề xuất đã phát hiện một nguồn rất gần sau khi viết bản đầu:** Gómez-Cambronero, Munteanu & González-Tablas (2026), *Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange*, arXiv:2603.11006v2 (**S31**). Nguồn này đã làm **phân tích theo tầng cho ba nhóm trao đổi khoá: cổ điển / lai / hậu lượng tử thuần**, hơn 30 thí nghiệm, có backend đổi kích thước phản hồi, tải tới 100 giao dịch/giây.
+   ⇒ **Tính mới của điểm 1 đã bị hạ cấp.** Phần còn có thể mới là sự kết hợp: **nút biên + middlebox + ràng buộc MTU + chuỗi chứng thư ML-DSA trong mTLS**. Việc này **chưa được xác minh** vì người đề xuất chỉ đọc **trừu tượng** của S31.
+   ⇒ **Reviewer1 BẮT BUỘC đọc toàn văn S31 trước khi chấm tính mới.** Nếu S31 đã bao phủ các yếu tố trên, đề tài chỉ còn đóng góp ở P3 (mô hình quyết định) và tính mới phải bị hạ cấp tương ứng.
 2. **Đo chi phí chứng thư ML-DSA trong mTLS nhiều tầng** — phần bị bỏ trống trong các nghiên cứu tập trung vào trao đổi khoá.
 3. **Mô hình ưu tiên di trú kiểm chứng được**, nối rủi ro HNDL với chi phí đo được, thay vì khuyến nghị chung chung.
 

@@ -124,6 +124,19 @@ Ngày **2024-08-13** là mốc chốt: FIPS 203 (ML-KEM), FIPS 204 (ML-DSA), FIP
 
 ### 6.1. Chi phí bắt tay: từ chữ ký sang kích thước bản ghi
 
+> ## 🔴 CẢNH BÁO TÍNH MỚI — PHÁT HIỆN MUỘN, ĐÃ CẬP NHẬT HỒ SƠ
+> Trong lúc hoàn thiện hồ sơ, người lập **phát hiện thêm một nguồn rất gần với đề tài**:
+> **Gómez-Cambronero, Munteanu & González-Tablas (2026), "Layered Performance Analysis of TLS 1.3
+> Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange", arXiv:2603.11006v2 (S31).**
+> Nguồn này **đã được tải và đọc trừu tượng qua arXiv API** (`../EVIDENCE/arxiv_lookups.txt`).
+>
+> **Hệ quả trực tiếp: tính mới của đề tài này BỊ HẠ CẤP.** Cụ thể:
+> - S31 **đã làm** phân tích hiệu năng **theo tầng** cho TLS 1.3 với **ba nhóm trao đổi khoá: cổ điển, lai (hybrid), và hậu lượng tử thuần** — đúng ý tưởng "đo hybrid so với cổ điển".
+> - S31 dùng **hơn 30 thí nghiệm**, có **giảm dữ liệu và phân tích thống kê theo từng tầng**, với kiến trúc phòng thí nghiệm gồm **cân bằng tải** và máy chủ backend, tải lên tới **100 giao dịch/giây**, và **có thay đổi kích thước phản hồi backend**.
+> - Vì vậy, khẳng định ở `PROPOSAL.md` §1.1 rằng "chưa có bộ dữ liệu mở nào…" **phải được đọc lại một cách thận trọng**: nó chỉ còn đúng nếu phần **biên + middlebox + MTU + chuỗi chứng thư ML-DSA** thực sự chưa được S31 bao phủ — và điều đó **chưa được kiểm chứng**, vì người lập chỉ đọc **trừu tượng** của S31, **không đọc toàn văn**.
+>
+> **Việc Reviewer1 BẮT BUỘC phải làm:** đọc toàn văn S31 trước khi đánh giá tính mới. Nếu S31 đã bao phủ biên/MTU/middlebox hoặc chuỗi chứng thư ML-DSA, thì phần đóng góp còn lại của đề tài chỉ là **mô hình quyết định P3** — và tính mới phải bị hạ cấp tương ứng.
+
 Đây là chủ đề có **chất lượng bằng chứng tốt nhất** trong tổng quan, vì có một nguồn đọc toàn văn.
 
 **Sikeridis, Kampanakis & Devetsikiotis (S3, NDSS 2020)** đặt câu hỏi: chi phí xác thực hậu lượng tử trong TLS 1.3 là bao nhiêu trong điều kiện mạng thực tế? Họ đánh giá các ứng viên chữ ký NIST ở cả ba mặt: độ trễ bắt tay, thông lượng phiên, và đánh đổi giữa chữ ký dài với phép toán mật mã nặng.
@@ -185,15 +198,17 @@ Về phía thuật toán, ML-KEM là đối tượng của FIPS 203 (S18). Các 
 
 | # | Khoảng trống | Mức độ chắc chắn của bằng chứng | Đề tài đóng góp gì |
 |---|---|---|---|
-| G1 | Không có tập dữ liệu/harness mở cho hybrid ML-KEM ở biên có middlebox + ràng buộc MTU | 🟡 **Trung bình** — dựa trên việc không tìm thấy trong 3 CSDL đã dùng | P2 |
-| G2 | Chi phí chuỗi chứng thư ML-DSA trong mTLS chưa được đo | 🟡 **Trung bình** — cùng lý do | P2 |
+| G1 | Không có tập dữ liệu/harness mở cho hybrid ML-KEM ở biên có middlebox + ràng buộc MTU | 🔴 **YẾU SAU KHI PHÁT HIỆN S31** — S31 (2026) đã làm phân tích theo tầng cho hybrid/cổ điển/thuần, có backend đổi kích thước phản hồi. Phần chưa rõ còn lại: **biên + middlebox + MTU + chứng thư ML-DSA** | P2 |
+| G2 | Chi phí chuỗi chứng thư ML-DSA trong mTLS chưa được đo | 🟡 **Trung bình** — S31 đo **trao đổi khoá**, không thấy nói tới **chuỗi chứng thư ML-DSA** trong trừu tượng; cần Reviewer1 xác nhận bằng toàn văn | P2 |
 | G3 | Chưa có mô hình ưu tiên di trú kiểm chứng được | 🔴 **Yếu** — dựa trên *không tìm thấy*, và 2 nguồn liên quan nhất (S7, S21) chưa đọc được toàn văn | P3 |
 
-**Vị trí của đề tài:** nằm ở giao điểm của (a) đo lường hiệu năng giao thức và (b) hỗ trợ ra quyết định vận hành an ninh mạng. Nó **không** nằm trong làn sóng thiết kế lại giao thức (KEMTLS và tương tự).
+**Vị trí của đề tài (đã điều chỉnh sau khi phát hiện S31):** nằm ở giao điểm của (a) đo lường hiệu năng giao thức và (b) hỗ trợ ra quyết định vận hành an ninh mạng. Nó **không** nằm trong làn sóng thiết kế lại giao thức (KEMTLS và tương tự).
 
 ---
 
 ## 9. Đánh giá chất lượng bằng chứng
+
+**Phát hiện muộn được ghi nhận trung thực:** S31 (arXiv:2603.11006) chỉ được tìm thấy **sau** khi hồ sơ đã viết xong bản đầu, qua truy vấn arXiv trực tiếp. Người lập **không giấu** việc này và đã hạ cấp tính mới tương ứng (§6.1, §8). Đây là minh chứng rằng quy trình tìm kiếm ban đầu **có lỗ hổng độ phủ**.
 
 **Điểm mạnh của tổng quan này:**
 - Mọi trích dẫn định lượng đều truy được tới **văn bản gốc đã tải**, kèm **số dòng** (S3, S6).
@@ -234,6 +249,7 @@ Về phía thuật toán, ML-KEM là đối tượng của FIPS 203 (S18). Các 
 
 **Mức 🟡 CHỈ METADATA — không trích số liệu:**
 
+- **[S31]** Gómez-Cambronero, D., Munteanu, D., & González-Tablas, A. I. (2026). *Layered Performance Analysis of TLS 1.3 Handshakes: Classical, Hybrid, and Pure Post-Quantum Key Exchange*. arXiv:2603.11006v2 (bản đầu 2026-03-11, cập nhật 2026-07-07). URL: https://arxiv.org/abs/2603.11006. ⚠️ **Chỉ đọc TRỪU TƯỢNG**, chưa đọc toàn văn — nhưng đây là **mối đe doạ trực tiếp tới tính mới**, xem §6.1.
 - **[S7]** Alnahawi, N., Müller, J., Oupický, J., & Wiesmaier, A. (2024). *A Comprehensive Survey on Post-Quantum TLS*. IACR Communications in Cryptology. DOI: [10.62056/ahee0iuc](https://doi.org/10.62056/ahee0iuc). ⚠️ Chưa đọc toàn văn.
 - **[S8]** (2023). *The Performance of Post-Quantum TLS 1.3*. DOI: [10.1145/3624354.3630585](https://doi.org/10.1145/3624354.3630585). ⚠️ Chưa đọc toàn văn.
 - **[S9]** Schwabe, P., Stebila, D., & Wiggers, T. (2020). *Post-Quantum TLS Without Handshake Signatures*. ACM CCS 2020. DOI: [10.1145/3372297.3423350](https://doi.org/10.1145/3372297.3423350). ⚠️ Chưa đọc toàn văn. *(Danh sách tác giả đã xác minh qua OpenAlex — xem `../EVIDENCE/openalex_authors.txt`.)*
