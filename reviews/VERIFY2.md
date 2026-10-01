@@ -1273,3 +1273,70 @@ Họ cũng **tự đếm lại** `MTU`/`middlebox`… thay vì chép số của 
 1. Tôi kiểm **4 DOI + N + điều kiện đảo**, không kiểm toàn bộ nội dung T19.
 2. Tôi **không** đọc được toàn văn S29 ⇒ điều kiện đảo **vẫn treo**, đúng như ResearchLead báo.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1/Auditor2 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #12 (T8): T22 của DocWriter — bảng INDEX 157 dòng
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/doc-writer/T22` @ `38cf43d` · **Mốc đối chiếu:** `main` @ `0f41ebb`
+
+---
+
+## 1. Kiểm đối chiếu bảng ↔ cây file thật
+
+Tôi không đếm bằng mắt. Tôi **parse bảng §2** rồi so **từng đường dẫn** với `git ls-tree` tại mốc:
+
+```text
+dong du lieu trong bang : 157
+file tracked @ 0f41ebb  : 157
+
+trong bang nhung KHONG co that : 0
+co that nhung KHONG trong bang : 0
+```
+
+⇒ **157/157 KHỚP, 0 thiếu, 0 thừa.** ✅ **PASS**
+
+## 2. Kiểm phần KHÓ: tác giả từng file
+
+DocWriter khai lấy tác giả **máy móc** từ commit **thêm file lần đầu** (`--diff-filter=A`, dòng cũ nhất).
+Đây là phần dễ sai nhất — nếu họ đoán hoặc chép từ chỗ khác, tôi sẽ bắt được.
+
+Tôi **tự chạy lại** `git log --diff-filter=A --format=%an --follow` cho **cả 157 file** rồi so:
+
+```text
+tac gia khop : 157/157   lech: 0
+```
+
+⇒ **157/157 TÁC GIẢ KHỚP.** ✅ **PASS**
+
+Đây là kết quả mạnh: **không file nào** bị gán sai tác giả, và **không file nào** phải ghi
+`chưa xác minh` — đúng như DocWriter khai.
+
+## 3. Kiểm việc tác giả TỰ PHÁT HIỆN và sửa lỗi lệnh kiểm chứng
+
+DocWriter khai: lệnh kiểm chứng đầu tiên dùng `git ls-files` **trên chính nhánh T22** sẽ ra **158**
+(vì T22 thêm 1 file), khiến Reviewer1 tưởng sai. Họ **tự phát hiện trước khi báo** và sửa mọi lệnh
+trỏ về **mốc `0f41ebb`**.
+
+Tôi kiểm: bảng đối chiếu đúng ở mốc `0f41ebb` (**157**), không phải ở nhánh (**158**). ✅ **XÁC NHẬN**
+— đây là **sửa lỗi tự giác**, đúng loại hành vi D-004 muốn.
+
+## 4. Kết luận verify #12
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Bảng 157 dòng khớp 157/157 đường dẫn | ✅ **PASS** |
+| 2 | 0 đường dẫn thiếu, 0 đường dẫn thừa | ✅ **PASS** |
+| 3 | Tác giả 157/157 khớp `git --diff-filter=A` | ✅ **PASS** |
+| 4 | Mốc đối chiếu đúng `0f41ebb` (không phải nhánh) | ✅ **PASS** |
+| 5 | Tác giả tự sửa lỗi lệnh kiểm chứng | ✅ **PASS** (hành vi đúng) |
+
+**PASS 5/5.** Không phát hiện vi phạm.
+
+## 5. Tự khai giới hạn
+
+1. Tôi kiểm **bảng ↔ Git**, **KHÔNG** đọc nội dung 157 file ⇒ file có thể hỏng nội dung mà bảng vẫn đúng.
+   DocWriter **tự khai** đúng giới hạn này — tôi xác nhận và **không** nâng nó thành "nội dung đã kiểm".
+2. **Tác giả = người commit**, không chắc là người viết nội dung. Tôi cũng chỉ kiểm được tới mức đó.
+3. Bảng khoá ở mốc `0f41ebb`; `main` tiến thêm thì bảng cũ đi — cần cập nhật lại.
+4. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1/Auditor2 kiểm; bất đồng ⇒ Auditor2 chốt.
