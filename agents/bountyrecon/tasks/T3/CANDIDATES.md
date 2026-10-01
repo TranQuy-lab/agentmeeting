@@ -15,7 +15,7 @@
 |---|---|---|
 | 1 | `SCOPE.md` đã trích **nguyên văn** in-scope/out-of-scope/cấm/thưởng | ✅ xong 3 chương trình |
 | 2 | Admin ban hành chỉ thị T4 bằng văn bản | ⏸ **CHƯA** |
-| 3 | Reviewer1 verify T3 độc lập | ⏸ **CHƯA** |
+| 3 | Reviewer1 verify T3 độc lập | ✅ **XONG** — **T14 PASS** + đã merge (`4642e3c`) |
 | 4 | GitLab: **0 xung đột hiệu lực** — vế OUT là bản ghi đã nghỉ hưu (`archived_at` 2022-07-21); Admin đã **loại cả 4 tài sản khỏi T4** | ✅ **XONG** |
 
 **⇒ Điều kiện mở T4 nay là: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**

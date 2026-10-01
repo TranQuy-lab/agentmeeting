@@ -1,0 +1,64 @@
+=== T33 — QUET THEO NGHIA (khong theo mau cau) ===
+UTC: 2026-10-01T15:18:38Z
+Muc tieu: moi dong KHANG DINH mot dieu kien/viec la CHUA XONG, trong:
+  agents/bountyrecon/tasks/T3/CANDIDATES.md
+  security/gitlab/RECON.md
+Marker 'chua xong': CHUA / chua / ⏸ / TODO / chờ / CẦN / ĐỀ NGHỊ / Đề nghị
+
+######## agents/bountyrecon/tasks/T3/CANDIDATES.md ########
+  5:**Trạng thái:** ⏸ **CHỜ ADMIN** — theo D-005, T4 chỉ mở khi Admin ban hành chỉ thị **bằng văn bản**.
+  17:| 2 | Admin ban hành chỉ thị T4 bằng văn bản | ⏸ **CHƯA** |
+  31:| C1 | `npmjs.com` DMARC `p=quarantine; pct=5` (chỉ áp 5% thư) | **THẤP** | ⚠️ Cân nhắc. GitHub **chưa** loại trừ tường minh SPF/DMARC, nhưng cũng **chưa xác minh** đây là hạng mục được thưởng. Rủi ro bị coi là "known risk" ⇒ mất thời gian. |
+  67:> (CẦN ADMIN PHÁN QUYẾT)"*. **Việc phán quyết ĐÃ XONG.** Chi tiết: `security/gitlab/SCOPE.md` §2b.
+  93:| GitLab chặn **500 request chưa xác thực / cửa sổ** | `ratelimit-limit: 500`, `ratelimit-name: throttle_unauthenticated_web` | `security/gitlab/RECON.md` §2.1 |
+
+######## security/gitlab/RECON.md ########
+  6:**Trạng thái:** ⚠️ **Chưa verify — chờ Reviewer1.** Đây là *quan sát bề mặt*, KHÔNG phải kết luận lỗ hổng.
+  28:⇒ **SPF gốc của `gitlab.com`: CHƯA XÁC MINH.** Không suy đoán.
+  109:> `ratelimit-remaining: 499` ⇒ **GitLab chặn 500 request chưa xác thực mỗi cửa sổ.**
+  165:> 🔎 **Quan sát (CHƯA XÁC MINH):** chứng chỉ này **gộp 6 tên** — gồm cả `auth.gitlab.com`
+  176:| C1 | **`registry.gitlab.com` không qua Cloudflare** — A `35.227.35.254` (GCP trực tiếp) | §1 | **THẤP** | Khác biệt hạ tầng so với `gitlab.com` (sau Cloudflare). Đây là **quan sát kiến trúc**, chưa phải lỗi. Có thể đáng kiểm vì là tài sản **critical** và ít lớp phòng vệ hơn. |
+  185:**chưa xác minh**, **không phải lỗ hổng**.
+  203:## 5. Hạn chế & điều CHƯA xác minh
+  205:1. `dig gitlab.com TXT` **timeout** ⇒ SPF gốc **chưa xác minh**.
+  212:4. `license.gitlab.com` không phân giải — **chưa xác minh** lý do.
+
+
+=== QUET BO SUNG: khang dinh 'DA XONG / DA MERGE / DA PHAN QUYET' ===
+######## agents/bountyrecon/tasks/T3/CANDIDATES.md ########
+  18:| 3 | Reviewer1 verify T3 độc lập | ✅ **XONG** — **T14 PASS** + đã merge (`4642e3c`) |
+  45:| G3 | `design.gitlab.com` / `advisories.gitlab.com` → CNAME vào GitLab Pages | **THẤP** | ❌ **Không phải takeover** — cả `gitlab-org.gitlab.io` và `pages.gitlab.io` **đều phân giải** ⇒ đã được sở hữu. Đã kiểm bằng DNS thụ động. |
+  64:## 2. GitLab — **0 xung đột hiệu lực**; 4 tài sản đã nghỉ hưu (ĐÃ PHÁN QUYẾT)
+  67:> (CẦN ADMIN PHÁN QUYẾT)"*. **Việc phán quyết ĐÃ XONG.** Chi tiết: `security/gitlab/SCOPE.md` §2b.
+  85:(đã xong) mà là **chỉ thị nêu target cụ thể của Admin** (D-013).
+
+######## security/gitlab/RECON.md ########
+  177:| C2 | `design.gitlab.com` + `advisories.gitlab.com` → CNAME vào hạ tầng GitLab Pages | §1 | **THẤP** | ⚠️ **KHÔNG phải subdomain takeover:** cả hai target (`gitlab-org.gitlab.io`, `pages.gitlab.io`) **đều phân giải** ra `35.185.44.232` ⇒ đã được sở hữu. Tôi đã kiểm bằng DNS thụ động. **Không** thử chiếm. |
+  195:| **Subdomain takeover** | **Không thấy.** Các CNAME treo tiềm năng (`gitlab-org.gitlab.io`, `pages.gitlab.io`) **đều phân giải** ⇒ đã được sở hữu. |
+  206:2. **4 tài sản đã được Admin loại khỏi T4** (`*.gitlab.net`, `*.gitlap.com`, `about.gitlab.com`,
+  210:   ⛔ **Phán quyết đã xong (D-021): CẤM chạm 4 tài sản này trong T4.** Xem [`SCOPE.md`](SCOPE.md) §2b.
+
+=== 11 dong dau CANDIDATES.md (trang thai/tieu de) ===
+     1	# T3 → T4 HANDOFF — Ứng viên chuyển ExploitDeep
+     2	
+     3	**Từ:** BountyRecon (`ag_579fc4fa`) · **Tới:** ExploitDeep · **Đồng gửi:** Admin (`ag_cd389846`), Reviewer1
+     4	**Task:** T3 · **Nhánh:** `agent/bounty-recon/T3` · **Ngày:** `2026-10-01`
+     5	**Trạng thái:** ⏸ **CHỜ ADMIN** — theo D-005, T4 chỉ mở khi Admin ban hành chỉ thị **bằng văn bản**.
+     6	
+     7	> ⛔ **Tôi (BountyRecon) KHÔNG ra lệnh.** Đây là **đề xuất chuyển tiếp**. ExploitDeep chỉ bắt đầu
+     8	> khi Admin phê duyệt và ghi vào `rooms/ab1-478d-cfa7/directives.md`.
+     9	
+    10	---
+    11	
+
+=== 10 dong dau RECON.md ===
+     1	# RECON — GitLab Bug Bounty (trinh sát THỤ ĐỘNG)
+     2	
+     3	**Chương trình:** GitLab — xem [`SCOPE.md`](SCOPE.md) (scope đã trích nguyên văn)
+     4	**Người thực hiện:** BountyRecon (`ag_579fc4fa`) · **Task:** T3 · **Nhánh:** `agent/bounty-recon/T3`
+     5	**Ngày chạy:** `2026-10-01`, giờ máy UTC `2026-10-01T13:52:0xZ`
+     6	**Trạng thái:** ⚠️ **Chưa verify — chờ Reviewer1.** Đây là *quan sát bề mặt*, KHÔNG phải kết luận lỗ hổng.
+     7	**Đặc biệt:** chương trình GitLab **tuyên bố thẳng** rằng báo cáo quét tự động và báo cáo thu thập
+     8	thông tin là **out of scope** ⇒ nội dung file này **KHÔNG** phải finding. Xem §3.
+     9	
+    10	---

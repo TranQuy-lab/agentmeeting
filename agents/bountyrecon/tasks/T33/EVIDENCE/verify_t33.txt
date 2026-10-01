@@ -1,0 +1,149 @@
+# verify_t33.py — T33 (BountyRecon)
+# T33 xep chong tren T31: base cua T33 = ecce293d2921 (origin/agent/bounty-recon/T31)
+# merge-base main = 6d47749ea548   head = ecce293d2921  (chua commit -> HEAD = T31)
+# QUY UOC RANH GIOI: dong=splitlines(); vung='\n'.join(...); hai dau DONG; khong \n cuoi
+
+==============================================================================
+[1] CO LAP THAY DOI CUA RIENG T33 (T31 -> cay lam viec)
+==============================================================================
+  agents/bountyrecon/tasks/T3/CANDIDATES.md: dong TRUOC=121 SAU=121
+    opcodes khac: [('replace', 18, 18, 18, 18)]
+      - | 3 | Reviewer1 verify T3 độc lập | ⏸ **CHƯA** |
+      + | 3 | Reviewer1 verify T3 độc lập | ✅ **XONG** — **T14 PASS** + đã merge (`4642e3c`) |
+    DONG DA SUA: 1
+    VUNG KHONG DOI (A/B deu phai GIONG HET):
+      V0: TRUOC 1..17 (SAU 1..17) n=17  (A)9317e9a78e13b14a/9317e9a78e13b14a OK  (B)39fce0a4330764c1/39fce0a4330764c1 OK
+      V1: TRUOC 19..121 (SAU 19..121) n=103  (A)2e075d6514fc21be/2e075d6514fc21be OK  (B)b6d656bf9576a6a6/b6d656bf9576a6a6 OK
+    => MOI VUNG KHONG DOI GIONG HET theo CA HAI quy uoc: True
+
+  security/gitlab/RECON.md: dong TRUOC=214 SAU=214
+    opcodes khac: []
+    DONG DA SUA: 0
+    VUNG KHONG DOI (A/B deu phai GIONG HET):
+      V0: TRUOC 1..214 (SAU 1..214) n=214  (A)9a221ca46fb801ca/9a221ca46fb801ca OK  (B)80726013cba9adc1/80726013cba9adc1 OK
+    => MOI VUNG KHONG DOI GIONG HET theo CA HAI quy uoc: True
+
+==============================================================================
+[2] DOI CHIEU MERGE-BASE (main) -> CAY LAM VIEC, ca 2 file
+==============================================================================
+  agents/bountyrecon/tasks/T3/CANDIDATES.md: dong TRUOC=118 SAU=121
+    opcodes khac: [('replace', 18, 19, 18, 19), ('replace', 21, 21, 21, 21), ('replace', 64, 64, 64, 64), ('replace', 66, 67, 66, 67), ('replace', 69, 69, 69, 73), ('replace', 71, 74, 75, 78), ('replace', 76, 77, 80, 82), ('replace', 79, 82, 84, 85)]
+      - | 3 | Reviewer1 verify T3 độc lập | ⏸ **CHƯA** |
+      - | 4 | Chốt 4 **xung đột scope** của GitLab (xem §2) | ⏸ **CHƯA** — **CẦN ADMIN PHÁN QUYẾT** |
+      + | 3 | Reviewer1 verify T3 độc lập | ✅ **XONG** — **T14 PASS** + đã merge (`4642e3c`) |
+      + | 4 | GitLab: **0 xung đột hiệu lực** — vế OUT là bản ghi đã nghỉ hưu (`archived_at` 2022-07-21); Admin đã **l
+      - **⇒ Chưa đủ 4/4. ĐỀ NGHỊ CHƯA MỞ T4.**
+      + **⇒ Điều kiện mở T4 nay là: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**
+      - ## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)
+      + ## 2. GitLab — **0 xung đột hiệu lực**; 4 tài sản đã nghỉ hưu (ĐÃ PHÁN QUYẾT)
+      - Đã xác minh bằng script trên `h1_gitlab.json`. 4 tài sản nằm **đồng thời** ở cả
+      - `eligible_for_submission=true` **và** `=false`:
+      + > 🔄 **ĐÍNH CHÍNH (T31).** Mục này trước đây là *"🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB
+      + > (CẦN ADMIN PHÁN QUYẾT)"*. **Việc phán quyết ĐÃ XONG.** Chi tiết: `security/gitlab/SCOPE.md` §2b.
+      - | # | Tài sản | IN | OUT |
+      + Bằng chứng (`h1_gitlab.json`; tái lập ở T28 và T31): truy vấn `archived:false` cho
+      + **44 entry · IN=19 · OUT=25 · giao = 0**. Bốn tài sản từng bị coi là "xung đột" thực chất là
+      + **bản ghi OUT đã nghỉ hưu ngày 2022-07-21**. Biến quyết định là **`archived_at`**, không phải `asset_type`:
+      + 
+      + | # | Tài sản | Vế IN (còn hiệu lực) | Vế OUT (`archived_at`) |
+      - | 1 | `*.gitlab.net` | WILDCARD, bounty=True, medium | URL, bounty=False, none |
+      - | 2 | `*.gitlap.com` | WILDCARD, bounty=True, medium | URL, bounty=False, none |
+      - | 3 | `about.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, none |
+      - | 4 | `docs.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, none |
+      + | 1 | `*.gitlab.net` | WILDCARD, bounty=True, medium | URL, bounty=False, **2022-07-21T15:51:33.499Z** |
+      + | 2 | `*.gitlap.com` | WILDCARD, bounty=True, medium | URL, bounty=False, **2022-07-21T15:51:16.877Z** |
+      + | 3 | `about.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, **2022-07-21T15:53:03.572Z** |
+      + | 4 | `docs.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, **2022-07-21T15:53:13.475Z** |
+      - ⛔ **Theo D-005 ("Nghi ngờ về phạm vi ⇒ DỪNG, hỏi Admin. KHÔNG tự đoán"):**
+      - **CẤM ExploitDeep chạm 4 tài sản này** cho tới khi Admin phán quyết.
+      + ⛔ **QUYẾT ĐỊNH CỦA ADMIN (giữ nguyên): loại cả 4 tài sản khỏi T4.** Thận trọng hơn mức cần
+      + nhưng **không gây hại**, trong khi khai thác nhầm gây hại không khắc phục được. Nay gọi đúng tên:
+      + **"0 xung đột thật + 4 loại thận trọng"** (D-021; `DISSENT-7`/`DISSENT-8`).
+      - **Đề nghị Admin chọn 1 trong 2:**
+      - - **(a)** Loại 4 tài sản khỏi mọi hoạt động T4 (an toàn nhất), **hoặc**
+      - - **(b)** Cho phép tôi (BountyRecon) gửi câu hỏi làm rõ tới GitLab qua kênh HackerOne **trước**
+      -   khi T4 chạm.
+      + ⇒ **ExploitDeep: CẤM chạm 4 tài sản này.** Điều kiện mở T4 **không** còn là "chốt xung đột"
+      + (đã xong) mà là **chỉ thị nêu target cụ thể của Admin** (D-013).
+    DONG DA SUA: 17
+    VUNG KHONG DOI (A/B deu phai GIONG HET):
+      V0: TRUOC 1..17 (SAU 1..17) n=17  (A)9317e9a78e13b14a/9317e9a78e13b14a OK  (B)39fce0a4330764c1/39fce0a4330764c1 OK
+      V1: TRUOC 20..20 (SAU 20..20) n=1  (A)e3b0c44298fc1c14/e3b0c44298fc1c14 OK  (B)01ba4719c80b6fe9/01ba4719c80b6fe9 OK
+      V2: TRUOC 22..63 (SAU 22..63) n=42  (A)91d499bdd55bf3db/91d499bdd55bf3db OK  (B)2a0b7549cdcfc9a6/2a0b7549cdcfc9a6 OK
+      V3: TRUOC 65..65 (SAU 65..65) n=1  (A)e3b0c44298fc1c14/e3b0c44298fc1c14 OK  (B)01ba4719c80b6fe9/01ba4719c80b6fe9 OK
+      V4: TRUOC 68..68 (SAU 68..68) n=1  (A)e3b0c44298fc1c14/e3b0c44298fc1c14 OK  (B)01ba4719c80b6fe9/01ba4719c80b6fe9 OK
+      V5: TRUOC 70..70 (SAU 74..74) n=1  (A)4da1ec6f47782090/4da1ec6f47782090 OK  (B)831fe3c04df7a963/831fe3c04df7a963 OK
+      V6: TRUOC 75..75 (SAU 79..79) n=1  (A)e3b0c44298fc1c14/e3b0c44298fc1c14 OK  (B)01ba4719c80b6fe9/01ba4719c80b6fe9 OK
+      V7: TRUOC 78..78 (SAU 83..83) n=1  (A)e3b0c44298fc1c14/e3b0c44298fc1c14 OK  (B)01ba4719c80b6fe9/01ba4719c80b6fe9 OK
+      V8: TRUOC 83..118 (SAU 86..121) n=36  (A)6dadecbec68780b1/6dadecbec68780b1 OK  (B)cc2de093eef77ed5/cc2de093eef77ed5 OK
+    => MOI VUNG KHONG DOI GIONG HET theo CA HAI quy uoc: True
+
+  security/gitlab/RECON.md: dong TRUOC=213 SAU=214
+    opcodes khac: [('replace', 39, 40, 39, 40), ('replace', 47, 47, 47, 47), ('replace', 206, 209, 206, 210)]
+      - | `about.gitlab.com` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | `shaz`/`julio.ns.cloudflare.com` | A `104.18.28.129`, `10
+      - | `docs.gitlab.com` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | — | A `104.18.39.11`, `172.64.148.245` | TXT: `google-site
+      + | `about.gitlab.com` | ✅ URL (medium) — **Admin loại khỏi T4** (§2b) | `shaz`/`julio.ns.cloudflare.com` | A `1
+      + | `docs.gitlab.com` | ✅ URL (medium) — **Admin loại khỏi T4** (§2b) | — | A `104.18.39.11`, `172.64.148.245` |
+      - | `gitlab.net` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-
+      + | `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (med
+      - 2. **4 tài sản bị XUNG ĐỘT scope** (`*.gitlab.net`, `*.gitlap.com`, `about.gitlab.com`,
+      -    `docs.gitlab.com`) — tôi đã trinh sát `about.gitlab.com`, `docs.gitlab.com` và `gitlab.net`
+      -    ở mức **thụ động thuần** (chỉ đọc DNS công khai) **trước khi** phát hiện xung đột.
+      -    ⛔ **Từ thời điểm phát hiện: CẤM chạm.** Xem [`SCOPE.md`](SCOPE.md) §2b. **Cần Admin phán quyết.**
+      + 2. **4 tài sản đã được Admin loại khỏi T4** (`*.gitlab.net`, `*.gitlap.com`, `about.gitlab.com`,
+      +    `docs.gitlab.com`) — **0 xung đột hiệu lực**: vế OUT là bản ghi **đã nghỉ hưu**
+      +    (`archived_at` 2022-07-21). Tôi đã trinh sát `about.gitlab.com`, `docs.gitlab.com` và `gitlab.net`
+      +    ở mức **thụ động thuần** (chỉ đọc DNS công khai) **trước khi** biết điều đó.
+      +    ⛔ **Phán quyết đã xong (D-021): CẤM chạm 4 tài sản này trong T4.** Xem [`SCOPE.md`](SCOPE.md) §2b.
+    DONG DA SUA: 7
+    VUNG KHONG DOI (A/B deu phai GIONG HET):
+      V0: TRUOC 1..38 (SAU 1..38) n=38  (A)776ef89770730c78/776ef89770730c78 OK  (B)77d226b5cee7f331/77d226b5cee7f331 OK
+      V1: TRUOC 41..46 (SAU 41..46) n=6  (A)84baedade6f78a75/84baedade6f78a75 OK  (B)ff105a989771d175/ff105a989771d175 OK
+      V2: TRUOC 48..205 (SAU 48..205) n=158  (A)28f7abc25a838969/28f7abc25a838969 OK  (B)5efe5dea6d9d5bed/5efe5dea6d9d5bed OK
+      V3: TRUOC 210..213 (SAU 211..214) n=4  (A)4e126826f6fb027c/4e126826f6fb027c OK  (B)eb8682aaf58021e2/eb8682aaf58021e2 OK
+    => MOI VUNG KHONG DOI GIONG HET theo CA HAI quy uoc: True
+
+==============================================================================
+[3] KIEM THEO LICH SU (D-023 phep kiem [2]) — moi commit merge-base..HEAD
+==============================================================================
+  so commit: 6
+    ecce293d2921  [T31] evidence: phep kiem lich su tai head 9455f89 (5 commit, tat ca t
+      OK          agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+    9455f8932de7  [T31] fix: tu sua 1 cau SAI do chinh minh tao ra o dong 21 + doi chieu
+      OK          agents/bountyrecon/tasks/T3/CANDIDATES.md
+      OK          agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+      OK          agents/bountyrecon/tasks/T31/verify_t31.py
+    209c3084e082  [T31] evidence: cap nhat output phep kiem lich su tai head cuoi (3 com
+      OK          agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+    683e31f35493  [T31] report: FIX_GROUP_B.md + cap nhat output phep kiem lich su
+      OK          agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+      OK          agents/bountyrecon/tasks/T31/FIX_GROUP_B.md
+    81a56e4dd799  [T31] evidence: them phep kiem lich su (D-023 [2]) + sua 1 phep thu sa
+      OK          agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+      OK          agents/bountyrecon/tasks/T31/history_check_t31.py
+    52e96eaa92ed  [T31] fix: don nhom B - RECON.md 5 dong + CANDIDATES.md §2 (0 xung dot
+      OK          agents/bountyrecon/tasks/T3/CANDIDATES.md
+      OK          agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+      OK          agents/bountyrecon/tasks/T31/verify_t31.py
+      OK          security/gitlab/RECON.md
+  => moi file bi cham nam trong danh sach CHO PHEP: True
+     CHO PHEP = agents/bountyrecon/tasks/T3/CANDIDATES.md, security/gitlab/RECON.md, hoac thuoc ('agents/bountyrecon/tasks/T31/', 'agents/bountyrecon/tasks/T33/')
+  => file bi LOAI TRU bi cham: 0  
+     LOAI TRU = T28/FIX_2B.md, T28|T29|T30|T32/**, va moi EVIDENCE/** ngoai T31/T33
+
+  VUNG TRICH NGUYEN VAN cua security/gitlab/SCOPE.md qua tung commit (tu merge-base tro di):
+    commit        parent        cha               commit            KET QUA
+    => so commit kiem: 0; VUNG NGUYEN VAN KHONG DOI: True
+    GHI CHU: KHONG commit nao trong khoang 6d47749ea548..ecce293d2921 cham security/gitlab/SCOPE.md
+             => vung trich nguyen van duong nhien khong doi (T28/T29 da o trong main)
+
+==============================================================================
+[4] blob scope_github.md
+==============================================================================
+  HEAD -> 15c946ff956a3fdb466f7f9768081af29b812088
+  main -> 15c946ff956a3fdb466f7f9768081af29b812088
+  mong doi -> 15c946ff956a3fdb466f7f9768081af29b812088
+  => KHOP CA HAI
+
+==============================================================================
+TONG: [1] ok=True (sua 1 dong) | [2] ok=True (sua 24 dong) | lich su ok=True | blob=True
