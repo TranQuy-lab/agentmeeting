@@ -1,0 +1,16 @@
+=== VERIFY #16: T28 cua BountyRecon — chi §2b thay doi (tai lap doc lap) ===
+Nguon: origin/main:security/gitlab/SCOPE.md  vs  origin/agent/bounty-recon/T28
+
+Tach file tai ranh gioi '## 2b.' va '## 3.', bam sha256 tung phan:
+  TRUOC §2b                09fce4b8afac0ede -> 09fce4b8afac0ede   GIONG HET
+  than §2b                 2f7322f812e7e249 -> 099b489f47f5e953   KHAC (dung, day la phan sua)
+  SAU §2b (tu '## 3.')     40904074229cbabc -> 40904074229cbabc   GIONG HET
+
+=> Khop CHINH XAC hash ma BountyRecon cong bo.
+=> Phan trich nguyen van (§1,§2a,§3,§4) NGUYEN VEN TUNG BYTE.
+
+=== 3 dong cu con sot (BountyRecon tu bao, KHONG sua) ===
+  dong 9  : 'NHUNG co 4 XUNG DOT scope — xem §2b'
+  dong 284: 'nhung 4 tai san bi xung dot'
+  dong 289: 'phai chot 4 xung dot o §2b truoc'
+=> XAC NHAN: 3 dong nay THAT SU con sot va THAT SU nam ngoai §2b.
