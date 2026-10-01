@@ -1,0 +1,26 @@
+
+=== [6] CANARY theo D-028 quy uoc (A) — bat buoc kem lenh + 3 bien the + do dai byte ===
+  LENH TRICH XUAT (python3):
+    c = git show <rev>:security/github/SCOPE.md
+    i = c.index("## 1."); j = c.index("## 2.", i); sec = c[i:j]
+    k1 = sec.index("```text"); k2 = sec.index("```", k1+7)
+    raw = sec[k1+7:k2]      # (A)
+
+  (A) raw (nguyen van, gom \n ngay sau rao mo):
+      sha256 = 2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72
+      do dai = 2109 ky tu / 2109 byte
+  (B) raw.lstrip('\n'):
+      sha256 = f27a0c17d9b66f8e9dc2d9dcd8de2a70574d8655e0f237766f2fc0b2b84c77b5  | 2108 ky tu / 2108 byte
+  (C) raw.strip('\n'):
+      sha256 = 40c578341b031e50734d99139652d18d299a8b545257b9df56930884c4f40fbf  | 2107 ky tu / 2107 byte
+
+  blob ca file security/github/SCOPE.md: daf7a2c3cc751559f5fcf38ea66f3816f3fd2d65
+
+=== [BASELINE cho T41] 2 dong T41 se sua — nguyen van TRUOC khi sua ===
+  (1) CANDIDATES.md dong 44:
+| **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải** | **TRUNG BÌNH–THẤP** | ✅ **Đáng chuyển + cần Admin/GitLab làm rõ.** ⚠️ **KHÔNG có CNAME treo ⇒ KHÔNG phải takeover.** **CẤM tự đoán.** |
+      blob CANDIDATES.md = a5ac41f80f61144e8891b9ad97a58072018e32de
+
+  (2) gitlab/RECON.md dong 47:
+| `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
+      blob gitlab/RECON.md = 75f163cf40131eb862250d6a7bf7d72886bd1342
