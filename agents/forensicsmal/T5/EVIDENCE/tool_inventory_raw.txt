@@ -1,0 +1,79 @@
+# RAW OUTPUT — Kiem ke cong cu (T5-A)
+# Ngay chay: 2026-10-01T13:46:48Z UTC
+# May: Linux noble-tran-XiaoXin-14-AHP9 7.0.0-34-generic #34~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Sep  4 15:38:29 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+# OS: Ubuntu 24.04.4 LTS
+
+$ python3 --version
+Python 3.12.3
+
+$ which sha256sum file strings xxd binwalk foremost
+/usr/bin/sha256sum
+/usr/bin/file
+/usr/bin/strings
+/usr/bin/xxd
+
+$ which tshark tcpdump
+/usr/bin/tshark
+/usr/bin/tcpdump
+
+$ tshark --version | head -1
+TShark (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3).
+
+$ python3 -c "import volatility3; print(volatility3.__version__)"
+Traceback (most recent call last):
+
+$ python3 -c "import scapy; print('scapy', scapy.__version__)"
+Traceback (most recent call last):
+
+$ python3 -c "import yara; print('yara-python ok')"
+Traceback (most recent call last):
+
+$ which yara zeek
+
+$ python3 -c "import pefile; print('pefile ok')"
+Traceback (most recent call last):
+
+=== CHI TIET LOI IMPORT (dong cuoi) ===
+volatility3    -> ModuleNotFoundError: No module named 'volatility3'
+scapy          -> ModuleNotFoundError: No module named 'scapy'
+yara           -> ModuleNotFoundError: No module named 'yara'
+pefile         -> ModuleNotFoundError: No module named 'pefile'
+capstone       -> ModuleNotFoundError: No module named 'capstone'
+oletools       -> ModuleNotFoundError: No module named 'oletools'
+
+=== pip list (goi lien quan) ===
+(khong co goi nao)
+
+=== command -v ===
+binwalk     : THIEU
+foremost    : THIEU
+yara        : THIEU
+zeek        : THIEU
+vol         : THIEU
+volatility  : THIEU
+exiftool    : THIEU
+steghide    : THIEU
+fls         : THIEU
+icat        : THIEU
+photorec    : THIEU
+
+=== Cong cu CO (bo sung) ===
+python3     : CO -> /usr/bin/python3
+sha256sum   : CO -> /usr/bin/sha256sum
+sha1sum     : CO -> /usr/bin/sha1sum
+md5sum      : CO -> /usr/bin/md5sum
+file        : CO -> /usr/bin/file
+strings     : CO -> /usr/bin/strings
+xxd         : CO -> /usr/bin/xxd
+tshark      : CO -> /usr/bin/tshark
+tcpdump     : CO -> /usr/bin/tcpdump
+objdump     : CO -> /usr/bin/objdump
+readelf     : CO -> /usr/bin/readelf
+nm          : CO -> /usr/bin/nm
+gdb         : CO -> /usr/bin/gdb
+upx         : THIEU
+git         : CO -> /usr/bin/git
+curl        : CO -> /usr/bin/curl
+jq          : CO -> /usr/bin/jq
+unzip       : CO -> /usr/bin/unzip
+7z          : THIEU
