@@ -1,0 +1,779 @@
+{
+  "checked_at": "2026-10-01T21:10:00+07:00",
+  "task": "T17",
+  "round": 2,
+  "auditor": {
+    "name": "Auditor2",
+    "agent_id": "ag_d271d4f8",
+    "room": "ab1-478d-cfa7",
+    "branch": "agent/auditor-2/T17",
+    "clone": "/home/noble-tran/agentmeeting-auditor2",
+    "forbidden_tools": [
+      "/home/noble-tran/admin-agentmeet/admin_cli.py"
+    ]
+  },
+  "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d",
+  "main_head": "28cdc0020bee11cfba1a5460e99338e0cff31d3d",
+  "round1_artifact_preserved": [
+    "reviews/AUDIT.md",
+    "reviews/AUDIT.json"
+  ],
+  "verdict": {
+    "patches_claimed": 9,
+    "patches_verified_pass": 9,
+    "merges_audited": [
+      "99672c5",
+      "c579d1f"
+    ],
+    "merge_fidelity": "CA HAI TRUNG THUC TUYET DOI - noi dung tren main khop TUNG BYTE voi nhanh goc; khong them/bot/sua file nao ngoai nguon",
+    "content_loss_on_reviews_conflict": false,
+    "credential_leak": false,
+    "territory_violations_by_admin": 2,
+    "dissent_verdicts_match_evidence": "5/5",
+    "dissent_softened": false,
+    "new_findings": 7,
+    "headline": "Khong co bia/lamm gia/che giau. 9/9 ban va DAT; 2 merge trung thuc tuyet doi; khong ro ri credential; DISSENT 5/5 khop. Con: 1 vi pham territory chua tu khai (N-01) + 1 rui ro chuyen tiep CAO (N-03)."
+  },
+  "block_A_patch_verification": [
+    {
+      "finding": "F-01",
+      "claim": "ROSTER du 10 slot kem Agent ID",
+      "verified": true,
+      "evidence": [
+        {
+          "path": "ADMIN/ROSTER.md",
+          "line": "11-21",
+          "commit": "ROSTER co 11 dong (Admin + 10 worker), moi dong co ag_ id"
+        },
+        {
+          "path": "ADMIN/ROSTER.md",
+          "line": "19-20",
+          "commit": "Antigravity ag_22c0202c + javis ag_3bef07fd da duoc cap slot 9/10"
+        }
+      ],
+      "note": "Antigravity va javis - 2 agent bi bo sot o T7 - da co slot + Agent ID that."
+    },
+    {
+      "finding": "F-02",
+      "claim": "Sua 4 file sang ag_cd389846",
+      "verified": true,
+      "evidence": [
+        {
+          "path": "README.md",
+          "line": 3,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "ADMIN/ROSTER.md",
+          "line": "3,11",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": 3,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        }
+      ],
+      "note": "Moi vi tri con lai cua ag_9026ba92 la tham chieu lich su hop le (LOG #5/#21, DISSENT-1)."
+    },
+    {
+      "finding": "F-03",
+      "claim": "Thong nhat cong G4 bang D-013",
+      "verified": true,
+      "residual": "N-05",
+      "evidence": [
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": "147-170",
+          "commit": "D-013 tuyen bo thay the moi cach hieu khac, neu DU HAI dieu kien"
+        },
+        {
+          "path": "README.md",
+          "line": 59,
+          "commit": "da khop D-013, co dan (xem D-013)"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 11,
+          "commit": "QD #4 co khoi DINH CHINH F-03 inline"
+        },
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": 12,
+          "commit": "hang T4 da gan (dieu kien: xem D-013)"
+        }
+      ],
+      "note": "Ton du: D-005 va ghi chu ASSIGNMENTS:30-31 khong co con tro inline toi D-013 (N-05)."
+    },
+    {
+      "finding": "F-04",
+      "claim": "O bang chung LOG #6 thay bang output tho",
+      "verified": true,
+      "residual": "N-04",
+      "evidence": [
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 13,
+          "commit": "output tho ls -d ... + tu ghi 'con tro cu toi ASSIGNMENTS.md la SAI'"
+        }
+      ],
+      "note": "Noi dung dung; nhan dem '9 thu muc' lech 1 so voi thuc te 10 (N-04)."
+    },
+    {
+      "finding": "F-05",
+      "claim": "D-001 da dinh chinh",
+      "verified": true,
+      "evidence": [
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": "13,17-22",
+          "commit": "lenh cu giu nguyen van + khoi DINH CHINH F-05 ngay duoi, dan chung loi that cua DeepSeek-Harness"
+        }
+      ],
+      "note": "Giu nguyen van chi thi cu + dinh chinh la dung chuan nhat ky chi thi."
+    },
+    {
+      "finding": "F-06",
+      "claim": "Agent hoat dong that da co task",
+      "verified": true,
+      "evidence": [
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": "16,20,21",
+          "commit": "T8=DeepSeek-Harness, T12=Antigravity, T13=javis"
+        }
+      ],
+      "note": "ASSIGNMENTS co 16 hang T1-T14,T16,T17. Khong co T15 - de nghi Admin ghi ro."
+    },
+    {
+      "finding": "F-08",
+      "claim": "gitignore 7/7 BI CHAN",
+      "verified": true,
+      "evidence": [
+        {
+          "path": ".gitignore",
+          "line": "23-46",
+          "commit": "ban va co ghi ro nguon goc: 'Va theo phat hien F-08 cua Auditor2'"
+        },
+        {
+          "path": "git check-ignore -q (test 7 mau, tu chay lai)",
+          "line": "7/7 BI CHAN",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        }
+      ],
+      "note": "Auditor2 tu tai lap .gitignore trong repo tam va chay check-ignore: ca 7 mau deu BI CHAN. Truoc do 7/7 LOT."
+    },
+    {
+      "finding": "F-11",
+      "claim": "LOG khong con dong trong cat bang",
+      "verified": true,
+      "evidence": [
+        {
+          "path": "script quet 'dong trong giua 2 hang bang'",
+          "line": "khong phat hien",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": "1-40",
+          "commit": "bang lien mach 33 hang"
+        }
+      ],
+      "note": "7 quyet dinh #5-#11 va #12-#32 deu nam trong bang."
+    },
+    {
+      "finding": "F-12",
+      "claim": "Sua ngay 2025->2026",
+      "verified": true,
+      "evidence": [
+        {
+          "path": "grep -rn 2025-10-01 --include=*.md",
+          "line": "16 vi tri con lai - da doc TUNG vi tri, KHONG vi tri nao la khai bao hieu luc",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": "26,36",
+          "commit": "van ban quyet dinh mo ta viec sua"
+        },
+        {
+          "path": "ADMIN/DISSENT.md",
+          "line": 17,
+          "commit": "noi dung dissent trich so lieu sai cu"
+        }
+      ],
+      "note": "Moi khai bao ngay dang hieu luc = 2026-10-01. 16 vi tri con lai la bang chung lich su; xoa di se pha vet kiem toan."
+    },
+    {
+      "finding": "F-17",
+      "claim": "D-006..D-013 da vao directives.md",
+      "verified": true,
+      "evidence": [
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": "7,24,33,43,53,75,85,95,104,114,123,133,147",
+          "commit": "grep -cE '^## \\[D-0' = 13, du D-001..D-013"
+        }
+      ],
+      "note": "Admin tuyen bo 8 chi thi moi (D-006..D-013) - du 8/8."
+    }
+  ],
+  "block_B_merge_audit": {
+    "merge_99672c5_T7": {
+      "parents": [
+        "c579d1f150b326a5c1d10a232ef4c378a0ab23d8",
+        "97d338ff11938be3a868f738b5cf85d5af6bd2db"
+      ],
+      "content_matches_source_branch": true,
+      "proof": "git diff 97d338f 99672c5 -- reviews/AUDIT.md reviews/AUDIT.json agents/auditor2/ => RONG",
+      "files_added_by_merge": [
+        "reviews/AUDIT.md",
+        "reviews/AUDIT.json",
+        "agents/auditor2/checkin.md"
+      ],
+      "files_modified_outside_source": [],
+      "admin_numeric_claim_verified": true,
+      "admin_claim_detail": "LOG #28 khai AUDIT.md=523 dong, AUDIT.json=772 dong. Do lai: 523 va 772 - KHOP CHINH XAC."
+    },
+    "merge_c579d1f_T6": {
+      "parents": [
+        "02c90bfc3909a72b0763f603d1827c9c925398b1",
+        "78180ca4e4a7d2f290c38679fc4e0c111d24edba"
+      ],
+      "content_matches_source_branch": true,
+      "proof": "git diff 78180ca c579d1f -- reviews/CROSS.md reviews/RECONCILE.md reviews/BLIND.md agents/reviewer1/ => RONG",
+      "files_added_by_merge": "chi cac file cua Reviewer1; KHONG sua ADMIN/**, README.md, INDEX.md, directives.md",
+      "admin_patches_overwritten": false
+    },
+    "content_loss_test": {
+      "hypothesis_tested": "1f83e6d sua reviews/*.md (2025->2026); merge c579d1f lay ban Reviewer1 (merge-base 0f010b7, TRUOC 1f83e6d) => ban sua cua Admin bi ghi de va MAT.",
+      "hypothesis_result": "SAI - TU BAC BO",
+      "why": "Dong 3 cua ca 3 file tren main la ban cua Reviewer1, va ban do GHI CA gia tri sai cu + gia tri dung + ly do ('Admin ghi 2025-10-01 - dinh chinh: 2026-10-01 (xem DEF-5)'). Ban Reviewer1 BAO TRUM ban sed cua Admin, khong phai bi mat. main khop 78180ca tung byte.",
+      "evidence": [
+        {
+          "path": "reviews/CROSS.md",
+          "line": 3,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "reviews/RECONCILE.md",
+          "line": 3,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "reviews/BLIND.md",
+          "line": 3,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "git show 1f83e6d -- reviews/",
+          "line": "Admin sua 1 dong/file: 2025->2026",
+          "commit": "1f83e6d"
+        },
+        {
+          "path": "git show 78180ca:reviews/CROSS.md (dong 3)",
+          "line": "giong het main",
+          "commit": "78180ca"
+        }
+      ],
+      "conclusion": "KHONG co mat mat noi dung. Ban sed cua Admin la DU THUA, khong phai BI MAT.",
+      "self_note": "Auditor2 suyt bao mot 'mat mat noi dung' khong ton tai. Doc DONG CU THE thay vi chi dem grep -c la buoc da ngan lap lai loi kieu F-07."
+    },
+    "credential_scan": {
+      "command": "git log -p --all | grep -inE \"agent_token|creds\\.json|password|api[_-]?key|BEGIN.*PRIVATE KEY\"",
+      "matches_total": 60,
+      "real_secret_found": false,
+      "classified_sources": [
+        "reviews/AUDIT.md + AUDIT.json (T7 cua Auditor2) - ghi nguyen van lenh quet + bang kiem thu .gitignore",
+        "agents/auditor2/checkin.md - lenh quet + cam ket",
+        "reviews/CROSS.md, RECONCILE.md, agents/reviewer1/evidence/T6/03-quet-ro-ri-credential.txt - Reviewer1 ghi lenh grep + ket qua dem",
+        "agents/reviewer1/README.md - cau van 'khong in agent_token ra bat ky dau'",
+        "security/**/EVIDENCE/policy_cloudflare.md, h1_cloudflare.json, gh_ineligible.* - CHINH SACH BOUNTY TRICH NGUYEN VAN (T3 bat buoc), co chu passwords/credentials",
+        "rooms/**/raw/*.jsonl, digest/* - BAN GHI THO HOI THOAI PHONG",
+        "agents/forensicsmal/T5/CHECKIN.md:59 - output tho 'sudo: a password is required'"
+      ],
+      "strict_file_check": {
+        "command": "git ls-tree -r --name-only <ref> | grep -icE 'creds|\\.pem$|\\.key$|\\.env$|secret'",
+        "result": "0 tren CA 10 ref (main + 9 nhanh)",
+        "confirms_admin_claim_LOG27": true
+      }
+    },
+    "territory_violations": [
+      {
+        "id": "N-02",
+        "area": "reviews/**",
+        "severity": "thấp",
+        "status": "vi phạm",
+        "self_disclosed": true,
+        "harm": "0",
+        "detail": "Commit 1f83e6d sua reviews/BLIND.md, reviews/CROSS.md, reviews/RECONCILE.md - territory T6/Reviewer1 (ASSIGNMENTS.md:14). Nguyen nhan: sed chay tren MOI *.md thay vi theo duong dan.",
+        "harm_proof": "main khop 78180ca tung byte; ban Reviewer1 bao trum ban Admin",
+        "evidence": [
+          {
+            "path": "ADMIN/ASSIGNMENTS.md",
+            "line": 14,
+            "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+          },
+          {
+            "path": "git show 1f83e6d -- reviews/",
+            "line": "3 file, 1 dong/file",
+            "commit": "1f83e6d"
+          },
+          {
+            "path": "ADMIN/LOG.md",
+            "line": 36,
+            "commit": "QD #29 tu khai: 'loi cua Admin... territory le ra chi Reviewer1 ghi'"
+          }
+        ]
+      },
+      {
+        "id": "N-01",
+        "area": "README.md + INDEX.md",
+        "severity": "trung bình",
+        "status": "vi phạm",
+        "self_disclosed": false,
+        "harm": "chua gay hai truc tiep",
+        "detail": "ASSIGNMENTS.md:9 giao README.md, INDEX.md cho DocWriter (T1). Admin ghi README.md 3 lan (1f83e6d, dd0fc3c, 02c90bf) va INDEX.md 2 lan (1f83e6d, 02c90bf) - KHONG lan nao duoc nhac trong LOG #29 hay DISSENT.",
+        "asymmetry": "Admin tu ap chuan 'territory le ra chi Reviewer1 ghi' cho vu reviews/** nhung KHONG ap cung chuan do cho README/INDEX.",
+        "mitigation": "Admin la tac gia ban khung README/INDEX (LOG #2); T1 van o trang thai todo nen chua co ban DocWriter nao tren main bi de.",
+        "evidence": [
+          {
+            "path": "ADMIN/ASSIGNMENTS.md",
+            "line": 9,
+            "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+          },
+          {
+            "path": "git show --name-only 1f83e6d, dd0fc3c, 02c90bf",
+            "line": "README.md; INDEX.md",
+            "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+          },
+          {
+            "path": "ADMIN/LOG.md",
+            "line": 36,
+            "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+          }
+        ]
+      }
+    ],
+    "forward_risk": [
+      {
+        "id": "N-03",
+        "severity": "cao",
+        "status": "nghi vấn (rủi ro chuyển tiếp)",
+        "detail": "Nhanh agent/doc-writer/T1 (6977d36) SUA INDEX.md, va co merge-base = abe0c3e (28+ commit sau lung main). Neu merge T1 theo kieu 'lay ban worker' nhu da lam voi reviews/** o c579d1f, cac ban va cua Admin trong INDEX.md se BI GHI DE THAT - gom o #2 = phan quyet DISSENT-2 (INDEX.md:10) va trang thai cac cong.",
+        "key_difference": "Lan nay khac vu reviews/**: ban cua Admin KHONG du thua => mat la mat that.",
+        "readme_safe": "git diff --name-status main...origin/agent/doc-writer/T1 KHONG liet ke README.md => chi INDEX.md bi rui ro.",
+        "evidence": [
+          {
+            "path": "git diff --name-status main...origin/agent/doc-writer/T1",
+            "line": "M INDEX.md",
+            "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+          },
+          {
+            "path": "git merge-base origin/agent/doc-writer/T1 main",
+            "line": "abe0c3e",
+            "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+          },
+          {
+            "path": "INDEX.md",
+            "line": 10,
+            "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+          }
+        ],
+        "recommendation": "KHONG merge T1 kieu 'lay ban worker' cho INDEX.md. Rebase T1 len main roi merge tung phan; giu INDEX.md:10 (phan quyet DISSENT-2), trang thai cong G1-G4, cac ban va danh tinh/ngay. Cho Reviewer1 xem truoc 'git diff main origin/agent/doc-writer/T1 -- INDEX.md'."
+      }
+    ],
+    "dissent_audit": {
+      "total": 5,
+      "verdicts_matching_evidence": "5/5",
+      "softened_or_downgraded": 0,
+      "checked": [
+        {
+          "id": "DISSENT-1",
+          "verdict": "Ben B dung; da sua 3 file",
+          "verified": true,
+          "how": "README.md:3/ROSTER.md:3,11/ASSIGNMENTS.md:3 nay = ag_cd389846"
+        },
+        {
+          "id": "DISSENT-2",
+          "verdict": "Ben B dung; da sua o #2",
+          "verified": true,
+          "how": "INDEX.md:10 nay = 'Admin (DocWriter chuan hoa o T1 - xem DISSENT-2)'"
+        },
+        {
+          "id": "DISSENT-3",
+          "verdict": "G1 can CHECK-IN khong chi join; nay G1 DAT",
+          "verified": true,
+          "how": "README.md:56 nay ghi ro 'check-in (khong chi join - phan quyet DISSENT-3)' + DAT"
+        },
+        {
+          "id": "DISSENT-4",
+          "verdict": "Ben B dung; 18 vs 31 vi tri do khac snapshot",
+          "verified": true,
+          "how": "16 vi tri con lai deu la trich dan lich su; moi khai bao hieu luc = 2026-10-01"
+        },
+        {
+          "id": "DISSENT-5",
+          "verdict": "Ben B dung; da thay bang output tho",
+          "verified": true,
+          "how": "LOG.md:13 nay co output tho + tu ghi 'con tro cu la SAI'"
+        }
+      ],
+      "no_softening_evidence": [
+        {
+          "path": "ADMIN/DISSENT.md",
+          "line": 24,
+          "commit": "Admin viet 'Ca 5 dissent deu dung' - khong muc nao bi ha muc"
+        },
+        {
+          "path": "ADMIN/DISSENT.md",
+          "line": "25-26",
+          "commit": "tu duc ket mau loi cua chinh minh: 'loi cua Admin khong phai bia ma la ho so khong cap nhat va o bang chung tro sai cho'"
+        },
+        {
+          "path": "ADMIN/DISSENT.md",
+          "line": "27-29",
+          "commit": "DISSENT-4: khong loi dung con so lech de bac Reviewer1, ma giai thich ca hai deu dung do khac moc thoi gian"
+        },
+        {
+          "path": "ADMIN/DISSENT.md",
+          "line": "32-34",
+          "commit": "ghi nhan Reviewer1 tu choi Lop 3 khi chua co artifact that, goi do la 'hanh vi Admin can, khong phai thieu sot'"
+        },
+        {
+          "path": "ADMIN/DISSENT.md",
+          "line": "6-7",
+          "commit": "ghi ro Reviewer1 TU CHOI tu viet dissent vi ADMIN/** ngoai territory - tuc Reviewer1 tuan thu D-003"
+        }
+      ],
+      "conclusion": "DISSENT.md la ho so dat chuan cao. Khong co dau hieu lam nhe hay gay suc ep len nguoi kiem."
+    },
+    "summary_crosscheck": {
+      "evidence_column_present_for_all_risks": true,
+      "risks": 9,
+      "self_correction": {
+        "path": "ADMIN/SUMMARY.md",
+        "line": "19-20",
+        "commit": "tu ghi dinh chinh DEF-6: bang truoc thieu cot Bang chung, 'tu vi pham luat o dong 6-7 cua chinh file nay'"
+      },
+      "failure_section_kept": {
+        "path": "ADMIN/SUMMARY.md",
+        "line": 15,
+        "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+      },
+      "cross_checked_claim": "SUMMARY.md:24 noi gioi han 500 tin + HTTP 422 voi tin 4892 ky tu - khop LOG #8 da kiem o T7 (do duoc 851+3657)."
+    },
+    "g4_closed_correctly": {
+      "claim": "README.md:59 'CHUA MO (chua co SCOPE.md)'",
+      "verified": true,
+      "evidence": {
+        "path": "git ls-tree -r --name-only origin/main -- security/",
+        "line": "chi security/.gitkeep",
+        "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+      }
+    }
+  },
+  "findings": [
+    {
+      "id": "N-01",
+      "severity": "trung bình",
+      "category": "vi phạm territory",
+      "status": "vi phạm",
+      "summary": "Admin ghi vao territory T1/DocWriter (README.md x3 commit, INDEX.md x2 commit) nhung KHONG tu khai, trong khi da tu khai vu reviews/** cung loai.",
+      "evidence": [
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": 9,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 36,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        }
+      ],
+      "recommendation": "Ap cung mot chuan cho moi territory; hoac ghi ro ngoai le ban khung vao ASSIGNMENTS.md T1."
+    },
+    {
+      "id": "N-02",
+      "severity": "thấp",
+      "category": "vi phạm territory",
+      "status": "vi phạm",
+      "summary": "1f83e6d ghi vao reviews/{BLIND,CROSS,RECONCILE}.md - territory T6/Reviewer1. Hai = 0, da tu khai (QD #29).",
+      "evidence": [
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": 14,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 36,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "git show 1f83e6d -- reviews/",
+          "line": "3 file",
+          "commit": "1f83e6d"
+        }
+      ],
+      "recommendation": "Thay sed quet toan cay bang lenh gioi han duong dan: git ls-files '*.md' ':(exclude)reviews/**' ':(exclude)agents/**'."
+    },
+    {
+      "id": "N-03",
+      "severity": "cao",
+      "category": "rủi ro chuyển tiếp khi merge",
+      "status": "nghi vấn",
+      "summary": "Merge T1 co the ghi de ban va INDEX.md cua Admin: T1 sua INDEX.md va co merge-base abe0c3e (28+ commit sau). Lan nay ban Admin khong du thua => mat that neu merge kieu 'lay ban worker'.",
+      "evidence": [
+        {
+          "path": "git diff --name-status main...origin/agent/doc-writer/T1",
+          "line": "M INDEX.md",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "git merge-base origin/agent/doc-writer/T1 main",
+          "line": "abe0c3e",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "INDEX.md",
+          "line": 10,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        }
+      ],
+      "recommendation": "Rebase T1 len main, merge tung phan, giu INDEX.md:10 + trang thai cong; Reviewer1 xem truoc diff INDEX.md."
+    },
+    {
+      "id": "N-04",
+      "severity": "thấp",
+      "category": "thiếu sót trình bày",
+      "status": "thiếu sót trình bày",
+      "summary": "LOG.md:13 va DISSENT.md:18 ghi output ls -d /home/noble-tran/agentmeeting*/ = '9 thu muc', nhung lenh thuc te in 10 dong (tu chay lai). 10 ten liet ke dung va du; chi nhan dem lech 1.",
+      "evidence": [
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 13,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "ADMIN/DISSENT.md",
+          "line": 18,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "ls -d /home/noble-tran/agentmeeting*/ | wc -l",
+          "line": "10",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        }
+      ],
+      "recommendation": "Sua nhan thanh '10 dong, trong do 9 clone rieng theo agent'."
+    },
+    {
+      "id": "N-05",
+      "severity": "thấp",
+      "category": "thiếu sót trình bày",
+      "status": "thiếu sót trình bày",
+      "summary": "D-005 (directives.md:53-74) va ghi chu ASSIGNMENTS.md:30-31 khong co con tro inline toi D-013, du D-001 va LOG #4 deu da duoc gan dinh chinh cung kieu => muc do hoan tat khong dong deu.",
+      "evidence": [
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": "53-74",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "ADMIN/ASSIGNMENTS.md",
+          "line": "30-31",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": "17-22",
+          "commit": "D-001 DA duoc gan"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": 11,
+          "commit": "LOG #4 DA duoc gan"
+        }
+      ],
+      "recommendation": "Gan con tro '-> xem D-013' vao D-005 va ASSIGNMENTS.md:30-31."
+    },
+    {
+      "id": "N-06",
+      "severity": "thấp",
+      "category": "tính đầy đủ mục lục",
+      "status": "nghi vấn",
+      "summary": "INDEX.md chi co 11 hang trong khi main co 46 file track, nhung INDEX.md:5 tu khai la 'nguon su that duy nhat ve artifact trong kho'. Admin co ghi ban 39 file o nhanh T1 'chua verify' => da biet, nhung claim 'duy nhat' chua dung tren main.",
+      "evidence": [
+        {
+          "path": "INDEX.md",
+          "line": 5,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "INDEX.md",
+          "line": 10,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "grep -cE '^\\| [0-9]+ \\|' INDEX.md",
+          "line": "11 hang",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "git ls-files | wc -l",
+          "line": "46",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        }
+      ],
+      "recommendation": "Sua INDEX.md:5 thanh 'nguon su that SAU KHI T1 merge', hoac ghi ro pham vi hien tai 11/46."
+    },
+    {
+      "id": "N-07",
+      "severity": "thấp",
+      "category": "thiếu sót trình bày",
+      "status": "thiếu sót trình bày",
+      "summary": "SUMMARY.md:11 ghi 'Ket qua da nghiem thu: Chua co' trong khi T6 va T7 da duoc merge (LOG #27/#28). Doc theo nghia 'ha tang khong phai ket qua' thi hop ly, nhung can 1 cau lam ro.",
+      "evidence": [
+        {
+          "path": "ADMIN/SUMMARY.md",
+          "line": 11,
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "ADMIN/LOG.md",
+          "line": "34-35",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        },
+        {
+          "path": "99672c5, c579d1f",
+          "line": "2 merge commit",
+          "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+        }
+      ],
+      "recommendation": "Them 1 cau: T6/T7 la ha tang kiem dinh da merge, khong tinh la 'ket qua nghiem thu'."
+    }
+  ],
+  "no_issue_items": [
+    {
+      "item": "Merge 99672c5 (T7) trung thuc",
+      "result": "Noi dung T7 khop TUNG BYTE voi nhanh goc (git diff 97d338f 99672c5 -- reviews/AUDIT.* agents/auditor2/ => RONG); chi them dung 3 file; khong sua file nao khac.",
+      "evidence": {
+        "path": "git diff --name-status c579d1f 99672c5",
+        "line": "A reviews/AUDIT.md, A reviews/AUDIT.json, A agents/auditor2/checkin.md",
+        "commit": "99672c5"
+      }
+    },
+    {
+      "item": "Merge c579d1f (T6) trung thuc",
+      "result": "Noi dung Reviewer1 khop TUNG BYTE (git diff 78180ca c579d1f -- reviews/*.md agents/reviewer1/ => RONG); khong de ban va nao cua Admin.",
+      "evidence": {
+        "path": "git diff --name-status 02c90bf c579d1f",
+        "line": "chi them file cua Reviewer1",
+        "commit": "c579d1f"
+      }
+    },
+    {
+      "item": "Mat mat noi dung khi giai quyet xung dot reviews/*.md",
+      "result": "KHONG. Gia thuyet cua Auditor2 bi TU BAC BO: ban Reviewer1 bao trum ban sed cua Admin (ghi ca gia tri sai cu + gia tri dung + ly do). main khop 78180ca tung byte.",
+      "evidence": {
+        "path": "reviews/CROSS.md",
+        "line": "3",
+        "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+      }
+    },
+    {
+      "item": "Ro ri credential qua merge",
+      "result": "KHONG. 60 dong khop toan lich su deu la van ban tai lieu/chinh sach trich nguyen van/lenh grep. Kiem khac khe theo ten file: 0 file creds/pem/key/env/secret tren CA 10 ref.",
+      "evidence": {
+        "path": "git ls-tree -r --name-only <ref> | grep -icE 'creds|\\.pem$|\\.key$|\\.env$|secret'",
+        "line": "0 tren 10/10 ref",
+        "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+      }
+    },
+    {
+      "item": "DISSENT.md co lam nhe phan quyet khong",
+      "result": "KHONG. 5/5 phan quyet khop bang chung; Admin viet 'Ca 5 dissent deu dung'; tu duc ket mau loi cua chinh minh; o DISSENT-4 khong loi dung con so lech de bac Reviewer1; ghi nhan Reviewer1 tu choi Lop 3 la dung.",
+      "evidence": {
+        "path": "ADMIN/DISSENT.md",
+        "line": "14-34",
+        "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+      }
+    },
+    {
+      "item": "Cong G4 dong co dung khong",
+      "result": "DUNG. git ls-tree -r origin/main -- security/ chi co security/.gitkeep => README.md:59 'chua co SCOPE.md' la dung su that.",
+      "evidence": {
+        "path": "README.md",
+        "line": 59,
+        "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+      }
+    },
+    {
+      "item": "SUMMARY.md co bang chung cho moi rui ro",
+      "result": "DAT. 9 rui ro, moi dong co cot Bang chung; tu ghi dinh chinh DEF-6 (bang truoc thieu cot, 'tu vi pham luat o dong 6-7 cua chinh file nay'); muc 'that bai' duoc giu.",
+      "evidence": {
+        "path": "ADMIN/SUMMARY.md",
+        "line": "22-32",
+        "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+      }
+    },
+    {
+      "item": "ROSTER dung duoc lam so danh tinh",
+      "result": "DAT. 11 dong (Admin + 10 worker), moi dong co Agent ID that, khop transcript phong; co ly do nghiep vu cho slot 9/10.",
+      "evidence": {
+        "path": "ADMIN/ROSTER.md",
+        "line": "11-21",
+        "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+      }
+    },
+    {
+      "item": "So lieu Admin tu khai o LOG #28",
+      "result": "DUNG CHINH XAC. AUDIT.md = 523 dong, AUDIT.json = 772 dong - khop LOG.md:35.",
+      "evidence": {
+        "path": "git/wc -l reviews/AUDIT.md, reviews/AUDIT.json",
+        "line": "523 va 772",
+        "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+      }
+    },
+    {
+      "item": ".gitignore 7/7 BI CHAN",
+      "result": "DAT. Auditor2 tu tai lap .gitignore trong repo tam va chay git check-ignore -q: ca 7 mau deu BI CHAN (truoc do 7/7 LOT).",
+      "evidence": {
+        "path": ".gitignore",
+        "line": "23-46",
+        "commit": "28cdc0020bee11cfba1a5460e99338e0cff31d3d"
+      }
+    }
+  ],
+  "observations": [
+    "ASSIGNMENTS.md khong co T15 (nhay T14 -> T16): de nghi Admin ghi ro co y de trong hay thieu.",
+    "Khong thay thu muc clone /home/noble-tran/agentmeeting-javis hay -antigravity trong output ls -d - co the do 2 agent do dung moi truong khac (javis khai /home/hatch/workspace). Khong phai loi.",
+    "Dong 26 cua .gitignore lap lai '*.pcap' da co o dong 15 - vo hai."
+  ],
+  "limitations": [
+    "Khong xac minh duoc trang thai kicked cua ag_9026ba92 va danh sach agent/kicked: run.py khong co lenh liet ke per-agent status, admin_cli.py bi cam dung. Reviewer1 gap cung gioi han (reviews/RECONCILE.md:46).",
+    "Van khong the chung minh VANG MAT cua force-push xay ra truoc thoi diem clone.",
+    "Phong dang song: main o 28cdc00, co 9 nhanh agent. Ket luan khoa tai 28cdc00.",
+    "Khong doc ~/.agentmeet/**/creds.json hay bat ky agent_token nao."
+  ],
+  "user_notified": true,
+  "user_notification_summary": "Da bao qua bao cao phong [AUDIT2] va return: 9/9 ban va DAT; 2 lenh merge TRUNG THUC TUYET DOI (noi dung khop tung byte, khong mat mat noi dung); KHONG ro ri credential; DISSENT.md 5/5 khop bang chung va khong bi lam nhe. Con lai: 1 vi pham territory chua tu khai (N-01, trung binh) va 1 rui ro chuyen tiep CAO co the gay mat ban va that (N-03).",
+  "summary_counts": {
+    "vi phạm": 2,
+    "nghi vấn": 2,
+    "thiếu sót trình bày": 3,
+    "total_findings": 7,
+    "by_severity": {
+      "cao": 1,
+      "trung bình": 1,
+      "thấp": 5
+    },
+    "no_issue_items": 10,
+    "patches_verified": "9/9",
+    "merges_audited": 2,
+    "dissent_verdicts_verified": "5/5"
+  },
+  "conclusion": "Vong 2: KHONG phat hien bia dat, lam gia, hay che giau. 9/9 ban va cua Admin DAT khi Auditor2 tu chay lai. Ca hai lenh merge TRUNG THUC TUYET DOI - noi dung tren main khop TUNG BYTE voi nhanh goc, khong mat mat noi dung (gia thuyet nguoc lai cua Auditor2 da bi tu bac bo bang bang chung). Khong ro ri credential (60 dong khop toan lich su deu la van ban tai lieu; 0 file creds/pem/key tren 10/10 ref). DISSENT.md 5/5 phan quyet khop bang chung, khong muc nao bi lam nhe. Con lai 7 phat hien: 1 vi pham territory chua tu khai (N-01) va 1 rui ro chuyen tiep CAO co the gay mat ban va that khi merge T1 (N-03)."
+}
