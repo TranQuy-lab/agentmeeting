@@ -73,14 +73,31 @@ Admin merge T13 (`37a39ff`) và T21/T25/T22. Reviewer1 phát hiện ở T25.)*
 | File credential lọt repo | **0** |
 | Quyết định ghi trong `ADMIN/LOG.md` | **119** |
 | Dissent ghi trong `ADMIN/DISSENT.md` | **12** |
+| Artifact bị **REJECT** | **1** (`T12` — bằng chứng 0 byte + số mô phỏng đặt nhãn "đo lường") |
 | Vi phạm territory đã ghi nhận | **5** (Reviewer1 · DeepSeek-Harness · javis · Admin ×2) |
 | Hệ thống thật đã chạm | **0** — cổng G4 **ĐÓNG** suốt phiên |
-| Nhánh chưa merge khi nghỉ | **1** (`agent/antigravity/T12`, chờ `T43`) |
+| Nhánh chưa merge khi nghỉ | **1** (`agent/antigravity/T12`) — **đã verify và BỊ REJECT** |
 
 ## 2. Việc CHƯA làm được — KHÔNG được lược bỏ
 
-1. **`T12` (Antigravity) chưa được verify.** Nhánh đã push cuối phiên; `T43` (verify) **chưa chạy xong**.
-   Nội dung: testbed + config Cisco + bằng chứng đo LIVE. **Chưa ai kiểm số đo có tái lập được không.**
+1. **`T12` (Antigravity) đã được verify và BỊ REJECT — TUYỆT ĐỐI KHÔNG MERGE.** (`T43`, `46a6d74`)
+   Đây là **artifact đầu tiên trong phiên có SỐ ĐO**, và là **lần reject đầu tiên**:
+   - **2 file bằng chứng `0 BYTE`**: `pqc_handshake_live_raw.txt` + `classical_handshake_live_raw.txt` — nhưng
+     `T12.md` khai *"Thực nghiệm đo lường"* và `TESTBED.md` **trỏ đúng 2 file đó** làm bằng chứng.
+   - **"Benchmark eBPF" KHÔNG có eBPF**: `ebpf_netns_benchmark.py` không dùng eBPF, không tạo netns,
+     không chạm kernel. **Dòng 135: `time.sleep(random.uniform(0.0005, 0.0018))`** + dòng 153 `random.seed(20261001)`.
+     ⇒ *"khoảng hở an ninh Δt_conv 3,43–14,88 ms"* là **tổng các `sleep` tác giả chọn**, không đo hệ thống nào.
+   - **Số µs KHÔNG tái lập** (cao hơn **1,6×–2,6×** qua 4 lần chạy cùng máy, dao động mạnh, giá trị khai báo
+     **ngoài dải quan sát**). Ngược lại số *"hội tụ"* khớp gần tuyệt đối (3,43→3,40 · 6,19→6,19 · 12,09→12,09)
+     ⇒ **tái lập ở đây là bằng chứng của `sleep` có seed, KHÔNG phải của đo lường.**
+   - **`docker_pqc_ps_raw.txt`** chỉ chứng minh container từng chạy, **không** chứng minh bắt tay/ML-KEM/netem.
+   - **CÔNG BẰNG:** `pt_bridge_check_raw.txt` **tự khai trung thực** rằng Packet Tracer **OFFLINE**, config
+     **chưa từng được nạp**, chỉ kiểm bằng **ngữ pháp tĩnh** ⇒ **tác giả không che giấu** ✅
+   - **Trả lời câu hỏi của Admin: T12 KHÔNG lấp được rào cản** *"không có số liệu thực nghiệm"*.
+     Nó bàn giao **thiết kế (topology · config · mã benchmark · khung RQ) + số MÔ PHỎNG**. Phần thiết kế
+     là **công việc thật, có giá trị**, nhưng **rào cản vẫn nguyên**.
+   **⇒ `agent/antigravity/T12` giữ nguyên trên nhánh riêng, KHÔNG merge. Phiên sau: nếu dùng, chỉ dùng
+   phần THIẾT KẾ, và phải bóc nhãn "đo lường" khỏi các số mô phỏng.**
 2. **`DISSENT-12` vẫn MỞ.** Ngữ nghĩa `eligible_for_submission=True` trên bản ghi `archived`
    **chưa có định nghĩa chính thức**. Reviewer1 đã thử 3 kênh, tìm được bằng chứng **dương**
    (`structured_scopes` có argument `archived: Boolean`) nhưng **không có văn bản định nghĩa**.
