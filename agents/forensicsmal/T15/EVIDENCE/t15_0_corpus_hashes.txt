@@ -1,0 +1,33 @@
+# RAW — HASH TOAN BO CORPUS + SCRIPT + RULE (T15)
+# Ngay: 2026-10-01T14:26:07Z UTC
+# Muc dich: neo bang chung — moi ket luan T15 tro tới hash nay.
+
+## Script kiem chuan
+74106e34a1825628dad86baca428d6e6cefba2a5d9bba8e62c5f021fafc98f20  scripts/t15_elf_test.py
+43c9e49ae9567eaf22ecf04380ab147492b9dd431ca7c1c6b730e088a2b253b8  scripts/t15_pcap_test.py
+8d8485550a267d2fb1325ca39d59363f40842f3e625c07628b85f19c0e69a21e  scripts/t15_volatility_test.py
+c08d628ab87b403affd8fc3ba8c74975a8c4be26e7096c54782a15256352945c  scripts/t15_yara_test.py
+
+## Corpus (vo hai, tu tao)
+aeb9293d3878b9c2b93e6093e8faa03aef657d7e3e3b1b6e2b47b85683af4ff5  corpus/bench_elf
+519fe0eee0a08a57deb711cd65415e293109e313d6055b60c9d1b173e02d0b0e  corpus/bench_elf.c
+3a2b04e563063aa01fb1fa7ba18b9e623ab124ae0bbb1c7b9161b937a9c78b90  corpus/bench_elf.text.bin
+dcc400749ded352532909c05eece89dc0d0b96a66cf81a86d5cf473c6ce2c89b  corpus/dns_harmless.pcap
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  corpus/invalid_empty.bin
+bb8db5e7d40b4468cf24e12ad7d64281d83cd0b81774632ec7bcefa9b22d2e2d  corpus/invalid_garbage.bin
+55764fd4e1604b6507debbea9fce08ca3744b46a6a7be7d34581c63d3f1e6148  corpus/invalid_short.bin
+ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7  corpus/invalid_zeros.bin
+93af88e86c243ac3086083fbe8c9a4d1d845ff67ae02ce3b67d7bee30df66927  corpus/t15_rules.yar
+4d02818a81e717ece91af1b0d2b9224cb72997490791aeb1e44079bd6a8285a8  corpus/yara_A_marker_upper.txt
+36c77dd53cf8c2d85a6b1fc77375de0de540212428937901fffb29bb457cb310  corpus/yara_B_url.txt
+19ad65685f1e4721237b1a7dd1820472f3488679b9efb4b94274f00bbf69b223  corpus/yara_C_lowercase.txt
+9d3bbf2293079a47118dc3c7b7f71894e125e231b1e95546867da14eda2399cf  corpus/yara_D_clean.txt
+21d825a9df8d4f195dbf471c775c864b0548bc45b8d7ad5c882512afaa9c4946  corpus/yara_F_boundary.bin
+79e74e9cda460a6505dfac53d98c7c7b9d9c406c7205ba26135cea8bc35332d6  corpus/yara_G_wide.bin
+
+## Rule YARA
+93af88e86c243ac3086083fbe8c9a4d1d845ff67ae02ce3b67d7bee30df66927  corpus/t15_rules.yar
+
+## Ghi chu: KHONG co mau doc hai nao trong corpus nay.
+# 'corpus/bench_elf' la ELF do chinh chung ta bien dich tu bench_elf.c (vo hai).
+# 'corpus/*.bin' la byte rac / marker vo hai do script tao ra, seed co dinh (1337).

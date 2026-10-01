@@ -1,0 +1,225 @@
+# RAW OUTPUT — T15-1 KIEM CHUAN PCAP (scapy <-> tshark)
+# Ngay chay: 2026-10-01T14:03:59Z UTC
+# Nguoi chay: ForensicsMal (ag_82f7cb07)
+# Corpus: TU TAO, VO HAI (DNS cho 'example.invalid' — RFC 2606/6761; IP TEST-NET-1 RFC 5737)
+# KHONG goi mang that. KHONG co mau doc hai. PHAN TICH DONG VAN DINH CHI.
+
+## Phien ban cong cu
+$ /home/noble-tran/forensicsmal-tooling/.venv/bin/python -c 'import scapy; print(scapy.__version__)'
+2.7.0
+$ tshark --version | head -1
+TShark (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3).
+
+## Chay kiem chuan
+/home/noble-tran/forensicsmal-tooling/.venv/lib/python3.12/site-packages/scapy/layers/tls/crypto/groups.py:25: CryptographyDeprecationWarning: Diffie-Hellman over finite fields (FFDH) is deprecated and support will be removed in a future release. Use a more modern key exchange algorithm.
+  from cryptography.hazmat.primitives.asymmetric.dh import DHParameterNumbers
+
+======================================================================
+BUOC 1 — scapy DUNG va GHI file pcap
+======================================================================
+# corpus: /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/dns_harmless.pcap
+# Ten mien 'example.invalid' thuoc RFC 2606/6761 — reserved, vo hai.
+
+$ python -c "...scapy: Ether/IP/UDP/DNS..."; wrpcap(...)"
+  packet built: Ether / IP / UDP / DNS Qry b'example.invalid.'
+  packet bytes: 75 byte
+  packet.show():
+###[ Ethernet ]###
+  dst       = 02:00:00:00:00:02
+  src       = 02:00:00:00:00:01
+  type      = IPv4
+###[ IP ]###
+     version   = 4
+     ihl       = None
+     tos       = 0x0
+     len       = None
+     id        = 1
+     flags     = 
+     frag      = 0
+     ttl       = 64
+     proto     = udp
+     chksum    = None
+     src       = 192.0.2.10
+     dst       = 192.0.2.53
+     \options   \
+###[ UDP ]###
+        sport     = 40000
+        dport     = domain
+        len       = None
+        chksum    = None
+###[ DNS ]###
+           id        = 4660
+           qr        = 0
+           opcode    = QUERY
+           aa        = 0
+           tc        = 0
+           rd        = 1
+           ra        = 0
+           z         = 0
+           ad        = 0
+           cd        = 0
+           rcode     = ok
+           qdcount   = 1
+           ancount   = None
+           nscount   = None
+           arcount   = None
+           \qd        \
+            |###[ DNS Question Record ]###
+            |  qname     = b'example.invalid.'
+            |  qtype     = A
+            |  unicastresponse= 0
+            |  qclass    = IN
+           \an        \
+           \ns        \
+           \ar        \
+
+  -> da ghi: /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/dns_harmless.pcap (115 byte)
+
+======================================================================
+BUOC 2 — scapy DOC LAI chinh file vua ghi (self round-trip)
+======================================================================
+  scapy doc lai: 1 goi
+    scapy.frame_count = 1
+    scapy.eth_src = '02:00:00:00:00:01'
+    scapy.eth_dst = '02:00:00:00:00:02'
+    scapy.ip_src = '192.0.2.10'
+    scapy.ip_dst = '192.0.2.53'
+    scapy.ip_proto = 17
+    scapy.udp_sport = 40000
+    scapy.udp_dport = 53
+    scapy.dns_id = 4660
+    scapy.dns_qr = 0
+    scapy.dns_qdcount = 1
+    scapy.dns_qname = 'example.invalid.'
+    scapy.dns_qtype = 1
+    scapy.dns_qclass = 1
+
+======================================================================
+BUOC 3 — tshark DOC LAI file do scapy ghi
+======================================================================
+# tshark version: TShark (Wireshark) 4.2.2 (Git v4.2.2 packaged as 4.2.2-1.1build3).
+
+$ tshark -r /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/dns_harmless.pcap
+--- stdout ---
+    1   0.000000   192.0.2.10 → 192.0.2.53   DNS 75 Standard query 0x1234 A example.invalid
+--- stderr ---
+(rong)
+
+$ /usr/bin/tshark -r /home/noble-tran/agentmeeting-forensicsmal/agents/forensicsmal/T15/corpus/dns_harmless.pcap -T fields -E separator=| -e frame.number -e eth.src -e eth.dst -e ip.src -e ip.dst -e ip.proto -e udp.srcport -e udp.dstport -e dns.id -e dns.flags.response -e dns.count.queries -e dns.qry.name -e dns.qry.type -e dns.qry.class
+--- stdout ---
+1|02:00:00:00:00:01|02:00:00:00:00:02|192.0.2.10|192.0.2.53|17|40000|53|0x1234|False|1|example.invalid|1|0x0001
+
+--- tshark parsed ---
+    tshark.frame.number = '1'
+    tshark.eth.src = '02:00:00:00:00:01'
+    tshark.eth.dst = '02:00:00:00:00:02'
+    tshark.ip.src = '192.0.2.10'
+    tshark.ip.dst = '192.0.2.53'
+    tshark.ip.proto = '17'
+    tshark.udp.srcport = '40000'
+    tshark.udp.dstport = '53'
+    tshark.dns.id = '0x1234'
+    tshark.dns.flags.response = 'False'
+    tshark.dns.count.queries = '1'
+    tshark.dns.qry.name = 'example.invalid'
+    tshark.dns.qry.type = '1'
+    tshark.dns.qry.class = '0x0001'
+
+======================================================================
+BUOC 4 — DOI CHIEU truong giua scapy va tshark
+======================================================================
+So goi:
+  [PASS] frame_count: scapy=1 tshark=1
+  [PASS] dns.count.queries: scapy='1' tshark='1'
+
+Truong goi:
+  [PASS] eth.src: scapy='02:00:00:00:00:01' tshark='02:00:00:00:00:01'
+  [PASS] eth.dst: scapy='02:00:00:00:00:02' tshark='02:00:00:00:00:02'
+  [PASS] ip.src: scapy='192.0.2.10' tshark='192.0.2.10'
+  [PASS] ip.dst: scapy='192.0.2.53' tshark='192.0.2.53'
+  [PASS] ip.proto: scapy='17' tshark='17'
+  [PASS] udp.srcport: scapy='40000' tshark='40000'
+  [PASS] udp.dstport: scapy='53' tshark='53'
+  [PASS*] dns.id: scapy='4660' tshark='0x1234'
+         ^ chi lech BIEU DIEN, gia tri tuong duong: 4660 == 4660
+  [PASS*] dns.flags.response: scapy='0' tshark='False'
+         ^ chi lech BIEU DIEN, gia tri tuong duong: 0 == 0
+  [PASS] dns.qry.name (bo dau cham cuoi): scapy='example.invalid' tshark='example.invalid'
+  [PASS] dns.qry.type: scapy='1' tshark='1'
+  [PASS*] dns.qry.class: scapy='1' tshark='0x0001'
+         ^ chi lech BIEU DIEN, gia tri tuong duong: 1 == 1
+
+======================================================================
+KET LUAN T15-1
+======================================================================
+{
+  "scapy_fields": {
+    "frame_count": 1,
+    "eth_src": "02:00:00:00:00:01",
+    "eth_dst": "02:00:00:00:00:02",
+    "ip_src": "192.0.2.10",
+    "ip_dst": "192.0.2.53",
+    "ip_proto": 17,
+    "udp_sport": 40000,
+    "udp_dport": 53,
+    "dns_id": 4660,
+    "dns_qr": 0,
+    "dns_qdcount": 1,
+    "dns_qname": "example.invalid.",
+    "dns_qtype": 1,
+    "dns_qclass": 1
+  },
+  "tshark_fields": {
+    "frame.number": "1",
+    "eth.src": "02:00:00:00:00:01",
+    "eth.dst": "02:00:00:00:00:02",
+    "ip.src": "192.0.2.10",
+    "ip.dst": "192.0.2.53",
+    "ip.proto": "17",
+    "udp.srcport": "40000",
+    "udp.dstport": "53",
+    "dns.id": "0x1234",
+    "dns.flags.response": "False",
+    "dns.count.queries": "1",
+    "dns.qry.name": "example.invalid",
+    "dns.qry.type": "1",
+    "dns.qry.class": "0x0001"
+  },
+  "failures_value_mismatch": [],
+  "repr_only_differences": [
+    {
+      "field": "dns.id",
+      "scapy": "4660",
+      "tshark": "0x1234"
+    },
+    {
+      "field": "dns.flags.response",
+      "scapy": "0",
+      "tshark": "False"
+    },
+    {
+      "field": "dns.qry.class",
+      "scapy": "1",
+      "tshark": "0x0001"
+    }
+  ]
+}
+
+  So truong doi chieu        : 14
+  Lech GIA TRI that su       : 0
+  Chi lech BIEU DIEN (PASS*) : 3
+
+  GHI CHU VE CAC LECH BIEU DIEN (KHONG phai loi du lieu):
+    - dns.id: scapy bieu dien '4660', tshark bieu dien '0x1234' => cung gia tri 4660
+    - dns.flags.response: scapy bieu dien '0', tshark bieu dien 'False' => cung gia tri 0
+    - dns.qry.class: scapy bieu dien '1', tshark bieu dien '0x0001' => cung gia tri 1
+  => Bai hoc: SO SANH CHUOI THO giua 2 cong cu se bao 'lech' gia.
+     Phai chuan hoa ve gia tri (int(x,0), bool) truoc khi ket luan.
+
+>>> KET QUA: 0 LECH GIA TRI — scapy<->tshark nhat quan tren 14 truong.
+    LUU Y: corpus VO HAI tu tao; KHONG goi mang that.
+
+## Exit code cua script: 0
+
+## sha256 cua pcap (chung minh doc lai KHONG lam doi file)
+dcc400749ded352532909c05eece89dc0d0b96a66cf81a86d5cf473c6ce2c89b  corpus/dns_harmless.pcap
