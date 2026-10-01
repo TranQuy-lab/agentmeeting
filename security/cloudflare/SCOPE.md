@@ -9,7 +9,7 @@
 **Trạng thái:** ✅ **Trích được NGUYÊN VĂN in-scope + out-of-scope + cấm.**
 ⚠️ **Mức thưởng: chỉ có khoảng min/max công bố, KHÔNG có bảng theo mức độ trong policy.**
 
-> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1.
+> ✅ **Đã verify — T14 PASS** (Reviewer1; `reviews/CROSS.md` §2.8, mốc `03d304b`; đã merge `4642e3c`). Theo D-004, người viết KHÔNG tự verify.
 
 ---
 
@@ -30,28 +30,44 @@ Script + JSON thô: `agents/bountyrecon/tasks/T3/EVIDENCE/` (`fetch_h1.py`, `h1_
 ### 1a. Tên miền / tài sản web (từ `structured_scopes`, `eligible_for_submission=true`)
 
 ```text
-URL          dash.cloudflare.com           max_severity=critical
+URL          dash.cloudflare.com           max_severity=critical    archived_at=None
              instruction: "The Cloudflare dashboard (https://dash.cloudflare.com/) and any
              direct calls from the dashboard to other Cloudflare owned resources are
              considered in scope."
 
-URL          cloudflareworkers.com         critical
-URL          *.teams.cloudflare.com        critical
-URL          api.cloudflare.com            critical
-URL          *.cloudflare.com              critical
+URL          cloudflareworkers.com         critical    archived_at=None
+URL          *.teams.cloudflare.com        critical    archived_at=None
+URL          api.cloudflare.com            critical    archived_at=None
+URL          *.cloudflare.com              critical    archived_at=None
              instruction: "Excluding support.cloudflare.com, community.cloudflare.com
              and other SaaS applications"
-URL          http://github.com/cloudflare  critical
-URL          one.dash.cloudflare.com       critical
-URL          dash.teams.cloudflare.com     critical   instruction: "Secondary scope."
-URL          http://cloudflare.com/apps/   critical
+URL          http://github.com/cloudflare  critical    archived_at=None
+URL          one.dash.cloudflare.com       critical    archived_at=None
+URL          dash.teams.cloudflare.com     critical   instruction: "Secondary scope."    archived_at=2023-05-08T10:11:33.083Z
+URL          http://cloudflare.com/apps/   critical    archived_at=2023-03-01T17:47:43.944Z
              instruction: "This is the Cloudflare Marketplace. Only the platform itself
              and first-party apps (those created by Cloudflare) are considered in scope."
-OTHER        *.cloudflarepartners.com      critical
-SOURCE_CODE  https://github.com/cloudflare/workerd     critical
-SOURCE_CODE  https://github.com/cloudflare/vinext      critical
+OTHER        *.cloudflarepartners.com      critical    archived_at=None
+SOURCE_CODE  https://github.com/cloudflare/workerd     critical    archived_at=None
+SOURCE_CODE  https://github.com/cloudflare/vinext      critical    archived_at=None
 ```
 
+> 🧭 **[3b] CHIỀU `archived_at` (D-026) — bảng này TRƯỚC ĐÂY THIẾU chiều này.**
+> Tự truy vấn lại `2026-10-01T15:28Z` (`archived:false` / `archived:true`, GraphQL công khai):
+> **Cloudflare** — `archived:false` **78** scope (sub=True **51**) · `archived:true` **5** (sub=True **4**) · TỔNG **83**.
+> **4 bản ghi `archived_at != None` MÀ VẪN `eligible_for_submission=true`** (tạm gọi *orphan*) — bảng gốc không phân biệt được chúng với bản còn hiệu lực:
+>   - `http://cloudflare.com/apps/` — `2023-03-01T17:47:43.944Z`
+>   - `dash.teams.cloudflare.com` — `2023-05-08T10:11:33.083Z`
+>   - `Argo Tunnel` — `2023-10-26T15:25:05.200Z`
+>   - `Durable Objects` — `2023-10-26T15:40:54.533Z`
+> Bản chụp lại **có cột `archived_at`** đầy đủ: `agents/bountyrecon/tasks/T3/EVIDENCE/scope_cloudflare_v2.md` (bản gốc `scope_cloudflare.md` **giữ nguyên**, không sửa/xoá — D-026 (a)).
+>
+> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho các bản ghi này.
+> Chỉ được khẳng định: bảng **THIẾU chiều `archived_at`** ⇒ **KHÔNG PHÂN BIỆT ĐƯỢC** bản ghi còn hiệu lực hay đã nghỉ hưu.
+> Việc **loại khỏi T4** chỉ áp cho **4 tài sản GitLab** đã có phán quyết (`D-021`).
+>
+> ❗ **`DISSENT-12` vẫn MỞ:** ngữ nghĩa `eligible_for_submission=True` trên một bản ghi `archived_at != None` **CHƯA có định nghĩa chính thức** (introspection `description` RỖNG;
+> tài liệu công khai không có). **Ghi hiện tượng, KHÔNG kết luận ngữ nghĩa.**
 ### 1b. Sản phẩm / dịch vụ trong scope (n=55 tổng; `eligible_for_bounty=true`)
 
 ```text

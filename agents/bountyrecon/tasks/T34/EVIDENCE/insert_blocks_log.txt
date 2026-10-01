@@ -1,0 +1,6 @@
+  security/gitlab/SCOPE.md: chen khoi [3b] tai dong 149 (prog=gitlab)
+  security/github/SCOPE.md: chen khoi [3b] tai dong 120 (prog=github)
+  security/cloudflare/SCOPE.md: chen khoi [3b] tai dong 55 (prog=cloudflare)
+  security/gitlab/RECON.md: chen khoi [3b] tai dong 49 (prog=gitlab)
+  security/github/RECON.md: chen khoi [3b] tai dong 51 (prog=github)
+  security/cloudflare/RECON.md: chen khoi [3b] tai dong 48 (prog=cloudflare)

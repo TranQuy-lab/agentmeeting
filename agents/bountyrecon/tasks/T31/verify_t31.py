@@ -60,8 +60,11 @@ def main():
 
         print("=" * 78)
         print(f"FILE: {f}")
-        print(f"  blob TRUOC (HEAD) : {subprocess.run(['git','rev-parse',f'HEAD:{f}'],capture_output=True,text=True).stdout.strip()}")
-        print(f"  blob SAU          : {subprocess.run(['git','hash-object',f],capture_output=True,text=True).stdout.strip()}")
+        print(f"  blob DOI CHIEU (merge-base {base[:12]}) : {subprocess.run(['git','rev-parse',f'{base}:{f}'],capture_output=True,text=True).stdout.strip()}")
+        print(f"  blob HEAD                            : {subprocess.run(['git','rev-parse',f'HEAD:{f}'],capture_output=True,text=True).stdout.strip()}")
+        print(f"  blob SAU (cay lam viec)              : {subprocess.run(['git','hash-object',f],capture_output=True,text=True).stdout.strip()}")
+        print("  (Truoc T34 nhan ghi 'blob TRUOC (HEAD)' nhung GIA TRI la HEAD, trong khi phep so dung")
+        print("   merge-base => nhan SAI. Da sua: in ro CA merge-base LAN HEAD.)")
         print(f"  so dong TRUOC={len(before)}  SAU={len(after)}")
         print(f"  opcodes khac: {[(o[0],o[1]+1,o[2],o[3]+1,o[4]) for o in ops]}")
         print()

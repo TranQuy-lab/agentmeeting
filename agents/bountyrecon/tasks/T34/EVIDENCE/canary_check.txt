@@ -1,0 +1,38 @@
+=== T34 CANARY + NET-VS-MAIN (tu kiem) ===
+UTC: 2026-10-01T15:33:42Z   main: b9c9037
+
+[1] github/SCOPE.md §1 — KHONG duoc doi (D-027)
+  quy uoc 'khoi fence' (verbatim): main vs work phai GIONG
+    main fence: fe26dab294f5111796c500512287210bc740733d7af45e54b3b98a2236ceb051  -
+    work fence: fe26dab294f5111796c500512287210bc740733d7af45e54b3b98a2236ceb051  -
+  CANARY Reviewer1 = 2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72
+  => KHONG tai lap duoc canary nay bang 7 quy uoc x 7 moc (xem EVIDENCE/canary_check.txt)
+
+[2] 4 blob CAPTURE — KHONG duoc doi (D-026)
+    scope_github         15c946ff956a3fdb466f7f9768081af29b812088
+    scope_cloudflare     62cb927e95ce5d552c1cb8a9bc2013b9dbd67755
+    scope_security       aec4f6dcd178c7190abc5b48783631be957482f3
+    scope_gitlab         22e3dc7d031076627c5be463ffa6523ecd25ff25
+
+[3] canary AM: github/RECON.md + cloudflare/RECON.md phai KHONG co archived_at
+    security/github/RECON.md:0
+    security/cloudflare/RECON.md:0
+
+[4] 2 file PHAI doi: gitlab/SCOPE.md de53744f -> 2d597468 ; cloudflare/SCOPE.md 03eeac13 -> dd15ade1
+
+[5] NET vs origin/main (ngoai T34/)
+    2	2	agents/bountyrecon/tasks/T3/CANDIDATES.md
+    104	0	agents/bountyrecon/tasks/T3/EVIDENCE/scope_cloudflare_v2.md
+    218	0	agents/bountyrecon/tasks/T3/EVIDENCE/scope_github_v2.md
+    84	0	agents/bountyrecon/tasks/T3/EVIDENCE/scope_gitlab_v2.md
+    94	0	agents/bountyrecon/tasks/T3/EVIDENCE/scope_security_v2.md
+    27	2	agents/bountyrecon/tasks/T31/FIX_GROUP_B.md
+    11	2	agents/bountyrecon/tasks/T31/history_check_t31.py
+    5	2	agents/bountyrecon/tasks/T31/verify_t31.py
+    0	30	security/_TEMPLATE/SCOPE.md
+    1	1	security/cloudflare/RECON.md
+    29	13	security/cloudflare/SCOPE.md
+    1	1	security/github/RECON.md
+    202	1	security/github/SCOPE.md
+    1	1	security/gitlab/RECON.md
+    80	36	security/gitlab/SCOPE.md

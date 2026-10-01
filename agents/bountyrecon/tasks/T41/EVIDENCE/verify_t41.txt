@@ -1,0 +1,40 @@
+# verify_t41.py — T41 (BountyRecon)
+# T41 xep chong tren T34: base = c097df8e0fa3 (origin/agent/bounty-recon/T34) | HEAD = c097df8e0fa3
+# QUY UOC: dong=splitlines(); vung='\n'.join(a..b); hai dau DONG; khong \n cuoi
+
+==============================================================================
+[1] BAM TUNG PHAN — moi vung KHONG DOI phai GIONG HET (ca A va B)
+==============================================================================
+  agents/bountyrecon/tasks/T3/CANDIDATES.md: dong 121->121 | dong sua: 1 | opcodes [('replace', 44, 44, 44, 44)]
+    - | **G2** | ~~**`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải**~~ → **SAI: tài sản ĐÃ NGHỈ HƯU** — `a
+    + | **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải** — `archived_at = 2022-03-21T22:30:03.04
+    moi vung khong doi GIONG HET (ca A va B): True
+  security/gitlab/RECON.md: dong 214->214 | dong sua: 1 | opcodes [('replace', 47, 47, 47, 47)]
+    - | `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `ha
+    + | `gitlab.net` | ⛔ **NGOÀI scope** — **căn cứ: chính sách công bố `SCOPE.md` §2a** (apex `gitlab.net` nằm trong danh sác
+    moi vung khong doi GIONG HET (ca A va B): True
+
+  => TAT CA VUNG KHONG DOI OK: True
+
+==============================================================================
+[2] KIEM THEO LICH SU (D-023 [2])
+==============================================================================
+  so commit c097df8e..c097df8e: 0 (chua commit -> 0 la dung)
+  => file bi LOAI TRU bi cham: 0  
+     LOAI TRU = T28/FIX_2B.md, T28|T29|T30|T32|T33/**, T34/EVIDENCE/**
+
+==============================================================================
+[3] QUET THEO NGHIA (D-025 [3a]) — can cu 'archived_at' cho ket luan loai/ngoai scope
+==============================================================================
+  (cho DUNG da biet, can cu la chinh sach/luat cam/quyet dinh Admin -> KHONG vi pham:)
+    OK  CANDIDATES.md G4/G5/G6
+    OK  gitlab/RECON.md:179-181
+    OK  cloudflare/RECON.md:158
+    OK  github/SCOPE.md:511
+    OK  4 khoi GIOI HAN (D-026)
+    OK  _TEMPLATE/SCOPE.md:46
+
+  => KHONG con dong nao ket luan 'loai/ngoai scope' ma can cu CHI la archived_at ✅
+
+==============================================================================
+TONG: vung khong doi OK=True | file bi cam cham=0 | nghi vi pham=0

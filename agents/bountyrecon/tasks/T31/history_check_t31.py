@@ -107,22 +107,28 @@ def main():
     print("=" * 78)
     # lay moi commit trong lich su cua file, gioi han tu commit T28 tro di
     logc = [c for c in git("log", "--format=%H", "--", SCOPE).split() if c]
-    print(f"so commit cham {SCOPE}: {len(logc)}")
+    print(f"  commit cham {SCOPE} (TOAN BO lich su): {len(logc)}")
+    print("  (chi KIEM commit co >=1 cha VA co du heading; commit khac bi BO QUA va dem rieng)")
     print()
     print(f"  {'commit':<14}{'parent':<14}{'nguyen van (cha)':<20}{'nguyen van (commit)':<21}KET QUA")
     ok_verbatim = True
     checked = 0
+    skipped_noparent = 0
+    skipped_noheading = 0
     for c in logc:
         parents = git("rev-list", "--parents", "-n", "1", c).split()
         if len(parents) < 2:
+            skipped_noparent += 1
             continue
         p = parents[1]
         lc = lines_at(c, SCOPE)
         lp = lines_at(p, SCOPE)
         if lc is None or lp is None:
+            skipped_noheading += 1
             continue
         vc, vp = verbatim(lc), verbatim(lp)
         if vc is None or vp is None:
+            skipped_noheading += 1
             print(f"  {c[:12]:<14}{p[:12]:<14}{'(khong tim thay heading)':<20}")
             continue
         same = vc == vp
@@ -130,7 +136,10 @@ def main():
         checked += 1
         print(f"  {c[:12]:<14}{p[:12]:<14}{h(vp):<20}{h(vc):<21}{'GIONG HET' if same else 'KHAC !!'}")
     print()
-    print(f"  => so commit da kiem: {checked}")
+    print(f"  => DA KIEM: {checked}  |  BO QUA: {skipped_noparent} (khong co cha) + "
+          f"{skipped_noheading} (thieu heading)")
+    print(f"  => tong {len(logc)} = {checked} + {skipped_noparent} + {skipped_noheading}")
+    print(f"  => so DONG liet ke o tren = DA KIEM ({checked}), KHONG phai tong ({len(logc)})")
     print(f"  => VUNG TRICH NGUYEN VAN cua SCOPE.md KHONG DOI qua MOI commit: {ok_verbatim}")
     print("     (neu co commit trung gian 'sua roi revert', dong nay se la KHAC !!)")
     print()

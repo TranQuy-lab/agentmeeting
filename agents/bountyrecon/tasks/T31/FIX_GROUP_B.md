@@ -75,7 +75,7 @@ FILE security/gitlab/RECON.md   blob 5c088a23 -> 75f163cf   dong 213 -> 214
     V2 dong 48..205   28f7abc2/28f7abc2   |  5efe5dea/5efe5dea
     V3 dong 210..213  4e126826/4e126826   |  eb8682aa/eb8682aa
 
-FILE agents/bountyrecon/tasks/T3/CANDIDATES.md  blob 95d16d76 -> ac04b460  dong 118 -> 121
+FILE agents/bountyrecon/tasks/T3/CANDIDATES.md  blob 95d16d76 -> 095006ce  dong 118 -> 121
   opcodes khac: 19 | 21 | 64 | 66..67 | 69->69..73 | 71..74 | 76..77 | 79..82
   VUNG KHONG DOI (A/B deu GIONG HET):
     V0 dong 1..18     5aa4af3d/5aa4af3d   |  1f90b9bf/1f90b9bf
@@ -92,6 +92,19 @@ TONG dong da sua (2 file): 23
 KET LUAN: moi vung khong doi GIONG HET theo CA HAI quy uoc: True
 ```
 (`e3b0c442…` = sha256 của chuỗi RỖNG — các vùng 1 dòng trống, đúng như dự kiến.)
+
+> 🔄 **ĐÍNH CHÍNH (T34) — khuyết điểm mức thấp (a), Reviewer1 nêu ở T32.**
+> Bản đầu dòng trên ghi `blob … -> ac04b460`. **SAI:** `ac04b460` là blob **TRUNG GIAN**
+> (đúng cho các commit `52e96ea`→`209c308`), nhưng **blob CUỐI** là **`095006ce`** — sau commit
+> `9455f89` tôi **tự sửa dòng 21** (bỏ chữ *"duy nhất"*). `EVIDENCE/verify_regions.txt` ghi đúng
+> `095006ce`; **báo cáo ↔ bằng chứng đã mâu thuẫn**, nay đã khớp.
+> Kiểm chứng blob theo từng commit: `52e96ea`,`81a56e4`,`683e31f`,`209c308` → `ac04b460…`;
+> `9455f89`,`ecce293` → `095006ce…`. **`EVIDENCE/**` KHÔNG bị sửa** (theo đúng chỉ thị).
+>
+> 🔎 **Tôi còn tự tìm thêm 1 khuyết điểm cùng họ (chưa ai nêu):** `verify_t31.py` in nhãn
+> `blob TRUOC (HEAD)` nhưng **giá trị là blob của `HEAD`**, trong khi **phép so dùng `merge-base`**
+> ⇒ **nhãn SAI** (đây chính là nguồn gây lệch `ac04b460` vs `095006ce` khi đọc báo cáo).
+> Đã sửa script: in rõ **cả** `blob DOI CHIEU (merge-base …)` **và** `blob HEAD`.
 
 ---
 
@@ -117,10 +130,14 @@ branch agent/bounty-recon/T31   merge-base 6d47749   head 81a56e4
      (DANH SACH LOAI TRU: T28/FIX_2B.md, T29/*, moi EVIDENCE/** khac)
 
 (B) CHUOI COMMIT DA CHAM security/gitlab/SCOPE.md — bam vung NGUYEN VAN moi commit
-  so commit cham SCOPE.md: 3
+  commit cham security/gitlab/SCOPE.md (TOAN BO lich su): 3
+  (chi KIEM commit co >=1 cha VA co du heading; commit khac bi BO QUA va dem rieng)
     commit        parent        nguyen van (cha)   nguyen van (commit)  KET QUA
     1b318ded14f3  9f73655d9f3e  05235b2a064277b4   05235b2a064277b4     GIONG HET
     9f73655d9f3e  8006168b2f00  05235b2a064277b4   05235b2a064277b4     GIONG HET
+  => DA KIEM: 2  |  BO QUA: 0 (khong co cha) + 1 (thieu heading)
+  => tong 3 = 2 + 0 + 1
+  => so DONG liet ke o tren = DA KIEM (2), KHONG phai tong (3)
   => VUNG TRICH NGUYEN VAN cua SCOPE.md KHONG DOI qua MOI commit: True
 
 (C) scope_github.md
@@ -133,6 +150,14 @@ branch agent/bounty-recon/T31   merge-base 6d47749   head 81a56e4
 `[từ dòng '## 1.' .. trước '## 2b.'] + [từ '## 3.' .. trước '## 5.']` — tức §1+§2+§2a+§3+§4,
 **cố ý loại §2b** (đã sửa ở T28), §0 và §5 (là phần tổng hợp, không phải nguyên văn).
 ⇒ Không commit nào trong chuỗi T28→T29 đụng vào vùng nguyên văn ⇒ **kẽ hở K1 đã được bịt**.
+
+> 🔄 **ĐÍNH CHÍNH (T34) — khuyết điểm mức thấp (b), Reviewer1 nêu ở T32.**
+> Bản đầu in `so commit cham SCOPE.md: 3` rồi **chỉ liệt kê 2 dòng** ⇒ **con số không khớp số dòng**.
+> **Nguyên nhân:** con số in ra là **TỔNG** commit chạm file (3), còn vòng lặp **bỏ qua** commit
+> thiếu cha hoặc thiếu heading (ở đây **1 bị bỏ qua vì thiếu heading**).
+> **Đã sửa trong `history_check_t31.py`** (script, **KHÔNG** phải `EVIDENCE/**`): nay in rõ
+> `DA KIEM`, `BO QUA` (tách 2 lý do) và phép cộng `tong = kiem + boqua`.
+> **`EVIDENCE/history_check.txt` giữ nguyên** (là bản ghi lịch sử) — theo đúng chỉ thị.
 
 ---
 

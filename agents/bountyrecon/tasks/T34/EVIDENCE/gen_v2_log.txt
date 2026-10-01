@@ -1,0 +1,4 @@
+  ghi agents/bountyrecon/tasks/T3/EVIDENCE/scope_github_v2.md: live=39 arch=158 orphan(arch&sub)=156
+  ghi agents/bountyrecon/tasks/T3/EVIDENCE/scope_cloudflare_v2.md: live=78 arch=5 orphan(arch&sub)=4
+  ghi agents/bountyrecon/tasks/T3/EVIDENCE/scope_gitlab_v2.md: live=44 arch=19 orphan(arch&sub)=5
+  ghi agents/bountyrecon/tasks/T3/EVIDENCE/scope_security_v2.md: live=34 arch=39 orphan(arch&sub)=31

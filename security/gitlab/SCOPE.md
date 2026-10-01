@@ -8,7 +8,8 @@
 **Người lập:** BountyRecon (`ag_579fc4fa`) · **Task:** T3 · **Nhánh:** `agent/bounty-recon/T3`
 **Trạng thái:** ✅ **Trích được nguyên văn. 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §2b.**
 
-> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1.
+> ✅ **Đã verify — T14 PASS** (Reviewer1; `reviews/CROSS.md` §2.8, mốc `03d304b`; đã merge `4642e3c`). Theo D-004, người viết KHÔNG tự verify.
+> 🔄 **Riêng §1 và §2b đã được sửa SAU T14** (T34/T28) — xem ghi chú "supersede" trong từng mục.
 
 ---
 
@@ -39,44 +40,70 @@ Script + JSON thô: `agents/bountyrecon/tasks/T3/EVIDENCE/` (`fetch_h1.py`, `h1_
 
 ---
 
-## 1. TRÍCH NGUYÊN VĂN — IN SCOPE (`eligible_for_submission=true`, n=24)
+## 1. TRÍCH NGUYÊN VĂN — IN SCOPE (`eligible_for_submission=true`)
+
+> ⚠️ **ĐÍNH CHÍNH (T34) — bổ sung trường `archived_at` (BẮT BUỘC theo D-025 [3b] / bài học M-01).**
+> **Thay đổi này supersede chứng thực T14 ở RIÊNG phần §1 được THÊM/BỔ SUNG dưới đây**
+> (trường `archived_at` và bảng 5 bản ghi nghỉ hưu). **Mọi giá trị CŨ (`asset_identifier`,
+> `asset_type`, `eligible_for_bounty`, `max_severity`, `instruction`) KHÔNG bị sửa một ký tự nào**
+> ⇒ chứng thực byte-exact của T14 **vẫn nguyên giá trị cho các giá trị đó**.
+> Truy vấn T3 gốc **không truyền tham số `archived`** ⇒ trả **63 entry**, trong đó
+> `eligible_for_submission=true` = **24**; nhưng **24 đó TRỘN 19 bản còn hiệu lực + 5 bản đã nghỉ hưu**.
+> Truy vấn lại với `archived:false` ⇒ **19**. Đây là **cùng một lỗi gốc** với M-01 (thiếu chiều dữ liệu).
+>
+> 📋 **5 bản ghi ĐÃ NGHỈ HƯU đang bị trộn trong `n=24`** — tôi **tự truy vấn lại ở T34**,
+> khớp **từng mili-giây** với danh sách Admin/Reviewer1 nêu ở T32:
+>
+> | Tài sản | `archived_at` |
+> |---|---|
+> | `https://gitlab.com/gitlab-org/gitlab-workhorse` | **2021-12-28T13:36:15.653Z** |
+> | `license.gitlab.com` | **2022-03-21T22:30:03.041Z** |
+> | `Static websites` | **2022-07-21T16:00:50.221Z** |
+> | `https://gitlab.com/gitlab-org/opstrace/` | **2023-06-04T21:02:31.693Z** |
+> | `GitLab for Jira Cloud Plugin` | **2023-12-07T13:38:09.687Z** |
+>
+> ⛔ **ExploitDeep:** 5 tài sản này **KHÔNG phải target đang mở** — đừng tốn công.
+>
+> ❗ **KHÔNG kết luận ngữ nghĩa:** việc một bản ghi **đã `archived`** vẫn mang
+> `eligible_for_submission=true` **chưa xác minh** nghĩa là gì (Reviewer1 T32 cũng ghi `chưa xác minh`;
+> Admin cũng không đoán). Tôi **ghi hiện tượng, KHÔNG suy ra ngữ nghĩa.**
 
 ```text
-WILDCARD    *.gitlab.net
+WILDCARD    *.gitlab.net                            archived_at=None
             instruction: "Hosts owned and operated by GitLab."
-WILDCARD    *.gitlab.org
+WILDCARD    *.gitlab.org                            archived_at=None
             instruction: "Hosts owned and operated by GitLab."
-WILDCARD    *.gitlap.com
+WILDCARD    *.gitlap.com                            archived_at=None
             instruction: "Hosts owned and operated by GitLab. gitla**p** with a p!"
-URL         gitlab.com                            max_severity=critical
-URL         registry.gitlab.com                   max_severity=critical
-URL         customers.gitlab.com                  max_severity=critical
+URL         gitlab.com                            max_severity=critical    archived_at=None
+URL         registry.gitlab.com                   max_severity=critical    archived_at=None
+URL         customers.gitlab.com                  max_severity=critical    archived_at=None
             instruction: "Server-side Denial of Service is out of scope as per our Policy."
-URL         license.gitlab.com                    max_severity=critical
-URL         about.gitlab.com                      max_severity=medium
+URL         license.gitlab.com                    max_severity=critical    archived_at=2022-03-21T22:30:03.041Z   <-- RETIRED
+URL         about.gitlab.com                      max_severity=medium    archived_at=None
             instruction: "There is no user data therefore no confidentiality impact is possible,
             however we want to know if you can modify the content or make it unavailable."
-URL         docs.gitlab.com                       max_severity=medium   (instruction như trên)
-URL         design.gitlab.com                     max_severity=medium   (instruction như trên)
-URL         advisories.gitlab.com                 max_severity=medium   (instruction như trên)
-OTHER       Your Own GitLab Instance              max_severity=critical
-OTHER       Other non-production infrastructure   max_severity=medium
+URL         docs.gitlab.com                       max_severity=medium    archived_at=None   (instruction như trên)
+URL         design.gitlab.com                     max_severity=medium    archived_at=None   (instruction như trên)
+URL         advisories.gitlab.com                 max_severity=medium    archived_at=None   (instruction như trên)
+OTHER       Your Own GitLab Instance              max_severity=critical    archived_at=None
+OTHER       Other non-production infrastructure   max_severity=medium    archived_at=None
             instruction: "Hosts owned and operated by GitLab other than gitlab.com itself
             and our static websites."
-OTHER       Static websites                       max_severity=medium
+OTHER       Static websites                       max_severity=medium    archived_at=2022-07-21T16:00:50.221Z   <-- RETIRED
             instruction: "Our static websites like the marketing website, the handbook, or the
             documentation. There is no user data therefore no confidentiality impact is possible,
             however we want to know if you can modify the content or make it unavailable."
-OTHER       GitLab for Jira Cloud                 max_severity=medium
-OTHER       GitLab for Jira Cloud Plugin          max_severity=critical
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-runner
-SOURCE_CODE https://gitlab.com/gitlab-org/gitaly
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-pages
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-shell
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-vscode-extension
-SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-workhorse
-SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/
+OTHER       GitLab for Jira Cloud                 max_severity=medium    archived_at=None
+OTHER       GitLab for Jira Cloud Plugin          max_severity=critical    archived_at=2023-12-07T13:38:09.687Z   <-- RETIRED
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab                    archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-runner             archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitaly                    archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-pages              archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-shell              archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-vscode-extension   archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/gitlab-workhorse          archived_at=2021-12-28T13:36:15.653Z   <-- RETIRED
+SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/                 archived_at=2023-06-04T21:02:31.693Z   <-- RETIRED
 ```
 
 Policy prose bổ sung — `policy_gitlab.md` § `# Scope`, dòng 87–89:
@@ -94,31 +121,48 @@ Testing on subdomains that are neither explicitly in scope nor out of scope isn'
 ### 2a. Danh sách out-of-scope (n=39)
 
 ```text
-WILDCARD  *.gitlab.cn        — "gitlab.cn and the JiHu-specific GitLab distribution which are
+WILDCARD  *.gitlab.cn        — "gitlab.cn and the JiHu-specific GitLab distribution which are    archived_at=None
                                 property of GitLab Information Technology (Hubei) Co., Ltd.
                                 (JiHu), security issues in those products should be reported
                                 to security@gitlab.cn"
-WILDCARD  *.runway.gitlab.net
-WILDCARD  *.gitlab-private.org — "Dangling DNS for *.gitlab-private.org is out of scope"
-WILDCARD  *.service-now.com
-WILDCARD  *.gitter.im ; URL blog.gitter.im ; update.gitter.im ; files.gitter.im ;
+WILDCARD  *.runway.gitlab.net    archived_at=None
+WILDCARD  *.gitlab-private.org — "Dangling DNS for *.gitlab-private.org is out of scope"    archived_at=None
+WILDCARD  *.service-now.com    archived_at=None
+WILDCARD  *.gitter.im ; URL blog.gitter.im ; update.gitter.im ; files.gitter.im ;    archived_at=2021-05-25T18:36:39.198Z
           next.gitter.im ; beta.gitter.im ; api.gitter.im ; WILDCARD ws*.gitter.im
-URL       dashboards.gitlab.com | alerts.gitlab.com | support.gitlab.com | shop.gitlab.com |
+URL       dashboards.gitlab.com | alerts.gitlab.com | support.gitlab.com | shop.gitlab.com |    archived_at=XEN KE: hau het None, NHUNG gitlab.net=2020-10-05T18:32:21.936Z va gitlap.com=2020-10-05T18:32:08.263Z
           forum.gitlab.com | status.gitlab.com | partners.gitlab.com | aptly.gitlab.com |
           translate.gitlab.com | federal-support.gitlab.com | us-federal-gitlab.com |
           ir.gitlab.com | levelup.gitlab.com | packages.gitlab.com | gitlabsandbox.net |
           gitlabdemo.cloud | gitlabtraining.cloud | gitlab.net | gitlap.com
-URL       gitlab.biterg.io   — "This is a third-party website that aggregates public data from
+URL       gitlab.biterg.io   — "This is a third-party website that aggregates public data from    archived_at=None
                                 GitLab.com. It is out of scope and the data hosted there is not
                                 meant to be confidential. https://contributors.gitlab.com/
                                 redirects to this website."
-SOURCE_CODE https://gitlab.com/gitlab-org/cli/  — "This is a community project that is now
+SOURCE_CODE https://gitlab.com/gitlab-org/cli/  — "This is a community project that is now    archived_at=None
                                 officially maintained by GitLab. It will be in scope at a later
                                 time but it is not ready yet."
-SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace-ui
-SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace
+SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace-ui    archived_at=None
+SOURCE_CODE https://gitlab.com/gitlab-org/opstrace/opstrace    archived_at=None
 ```
 
+> 🧭 **[3b] CHIỀU `archived_at` (D-026) — bảng này TRƯỚC ĐÂY THIẾU chiều này.**
+> Tự truy vấn lại `2026-10-01T15:28Z` (`archived:false` / `archived:true`, GraphQL công khai):
+> **GitLab** — `archived:false` **44** scope (sub=True **19**) · `archived:true` **19** (sub=True **5**) · TỔNG **63**.
+> **5 bản ghi `archived_at != None` MÀ VẪN `eligible_for_submission=true`** (tạm gọi *orphan*) — bảng gốc không phân biệt được chúng với bản còn hiệu lực:
+>   - `gitlab-workhorse` — `2021-12-28T13:36:15.653Z`
+>   - `license.gitlab.com` — `2022-03-21T22:30:03.041Z`
+>   - `Static websites` — `2022-07-21T16:00:50.221Z`
+>   - `opstrace/` — `2023-06-04T21:02:31.693Z`
+>   - `GitLab for Jira Cloud Plugin` — `2023-12-07T13:38:09.687Z`
+> Bản chụp lại **có cột `archived_at`** đầy đủ: `agents/bountyrecon/tasks/T3/EVIDENCE/scope_gitlab_v2.md` (bản gốc `scope_gitlab.md` **giữ nguyên**, không sửa/xoá — D-026 (a)).
+>
+> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho các bản ghi này.
+> Chỉ được khẳng định: bảng **THIẾU chiều `archived_at`** ⇒ **KHÔNG PHÂN BIỆT ĐƯỢC** bản ghi còn hiệu lực hay đã nghỉ hưu.
+> Việc **loại khỏi T4** chỉ áp cho **4 tài sản GitLab** đã có phán quyết (`D-021`).
+>
+> ❗ **`DISSENT-12` vẫn MỞ:** ngữ nghĩa `eligible_for_submission=True` trên một bản ghi `archived_at != None` **CHƯA có định nghĩa chính thức** (introspection `description` RỖNG;
+> tài liệu công khai không có). **Ghi hiện tượng, KHÔNG kết luận ngữ nghĩa.**
 Prose out-of-scope (không nằm trong bảng structured) — `policy_gitlab.md` § `## Out of scope`,
 dòng 125–191, danh sách rất dài. Các mục quan trọng nhất cho giai đoạn trinh sát:
 

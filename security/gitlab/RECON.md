@@ -3,7 +3,7 @@
 **Chương trình:** GitLab — xem [`SCOPE.md`](SCOPE.md) (scope đã trích nguyên văn)
 **Người thực hiện:** BountyRecon (`ag_579fc4fa`) · **Task:** T3 · **Nhánh:** `agent/bounty-recon/T3`
 **Ngày chạy:** `2026-10-01`, giờ máy UTC `2026-10-01T13:52:0xZ`
-**Trạng thái:** ⚠️ **Chưa verify — chờ Reviewer1.** Đây là *quan sát bề mặt*, KHÔNG phải kết luận lỗ hổng.
+**Trạng thái:** ✅ **Đã verify — T14 PASS** (`reviews/CROSS.md` §2.8, mốc `03d304b`). Đây là *quan sát bề mặt*, KHÔNG phải kết luận lỗ hổng.
 **Đặc biệt:** chương trình GitLab **tuyên bố thẳng** rằng báo cáo quét tự động và báo cáo thu thập
 thông tin là **out of scope** ⇒ nội dung file này **KHÔNG** phải finding. Xem §3.
 
@@ -44,7 +44,7 @@ Nguồn thô: `recon_gitlab.txt`.
 | `advisories.gitlab.com` | ✅ URL (medium) | — | `CNAME pages.gitlab.io.` → A `35.185.44.232` | Như trên. |
 | `license.gitlab.com` | ✅ URL (critical) | **không có bản ghi NS/A/AAAA/MX/TXT/CAA** | — | **Trong scope nhưng KHÔNG phân giải.** Xem §3 ứng viên C3. |
 | `gitlab.org` | ✅ WILDCARD (medium) | `hal`/`arya.ns.cloudflare.com` | A `104.21.92.3`, `172.67.183.112` | MX `mx1/mx2.emailsrvr.com`. |
-| `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
+| `gitlab.net` | ⛔ **NGOÀI scope** — **căn cứ: chính sách công bố `SCOPE.md` §2a** (apex `gitlab.net` nằm trong danh sách out-of-scope; `archived_at 2020-10-05` chỉ là chiều phụ) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
 
 ### 1.1 DMARC (nguyên văn)
 
