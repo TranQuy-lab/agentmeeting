@@ -1392,3 +1392,143 @@ dòng 44 : | **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔN
 > **Phán quyết vòng 8: T31 PASS về nội dung** (phát hiện dữ liệu đúng tuyệt đối, băm 2 quy ước tái lập,
 > lịch sử sạch, `scope_github.md` nguyên vẹn) **+ 3 khuyết điểm mức thấp**;
 > **T33 `chưa xác minh`** (nhánh chưa push) **+ 2 phát hiện mới cùng lớp** trong territory BountyRecon.
+
+---
+
+# VÒNG 9 — Bài kiểm #12 (T35): T33 + T34 + T36 BountyRecon
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T35`
+**Base:** `origin/main` = `4fe2d60` (244 file) · **T33** @ `c0ce165` (**đã merge**) · **T34, T36: CHƯA PUSH**
+**Bằng chứng thô:** `agents/reviewer1/evidence/T35/`
+
+```text
+[REVIEW] T35 / BountyRecon / Lớp 1 CROSS / T33: PASS · T34+T36: chưa xác minh (nhánh chưa push)
+         + 1 PHÁT HIỆN LỚN: [3b] chưa được áp cho GITHUB và CLOUDFLARE
+```
+
+## 2.30 Trạng thái head — nói rõ trước khi chấm
+
+| Nhánh | Trạng thái |
+|---|---|
+| `agent/bounty-recon/T33` = `c0ce165` | ✅ **là tổ tiên của `origin/main`** ⇒ đã merge |
+| `agent/bounty-recon/T34` | ❌ **KHÔNG tồn tại trên remote** |
+| `agent/bounty-recon/T36` | ❌ **KHÔNG tồn tại trên remote** |
+
+Admin ghi T33 merge ở `609d916` — **commit đó không tồn tại trong repo tôi fetch** (`git cat-file` ❓);
+commit T33 trên `main` là **`a40fcf7`**. Tôi ghi lại để Admin đối chiếu.
+⇒ **Toàn bộ 5 mục thuộc T34/T36 (cột `archived_at` ở §1 · dòng 5 `D-005`→`D-013` · G2 dòng 44 ·
+6 dòng "Chưa verify" · 3 khuyết điểm mức thấp của T31) là `chưa xác minh`.**
+
+---
+
+## 2.31 T33 — **PASS**
+
+| # | Mục Admin yêu cầu | Bằng chứng | Kết quả |
+|---|---|---|---|
+| 3 | **Dòng 18** đã sửa? | `\| 3 \| Reviewer1 verify T3 độc lập \| ✅ **XONG** — **T14 PASS** + đã merge (`4642e3c`) \|` | ✅ **ĐÃ SỬA** |
+| 3 | **Dòng 17** có bị **chạm nhầm** không? | `\| 2 \| Admin ban hành chỉ thị T4 bằng văn bản \| ⏸ **CHƯA** \|` | ✅ **GIỮ NGUYÊN `⏸`** đúng |
+| — | Phạm vi sửa của T33 | `git diff ecce293 c0ce165` → **đúng 1 opcode** `replace 18,18` trên `CANDIDATES.md` | ✅ **sửa tối thiểu, không lan** |
+| 2 | §0 `gitlab/SCOPE.md` còn giữ ghi chú *"supersede … **RIÊNG §2b**"*? | `grep -n supersede` → **dòng 152**: *"Thay đổi này supersede chứng thực T14 ở **RIÊNG §2b**; phần trích nguyên văn (§1, §2a, §3, §4)…"* | ✅ **CÒN NGUYÊN** |
+
+**Xác nhận độc lập phát hiện 6 dòng "Chưa verify" của T33:** tôi `git grep` trên `origin/main`:
+
+```text
+security/cloudflare/RECON.md:6   security/cloudflare/SCOPE.md:12
+security/github/RECON.md:6       security/github/SCOPE.md:12
+security/gitlab/RECON.md:6       security/gitlab/SCOPE.md:11
+```
+⇒ **đúng 6/6, vẫn còn nguyên** ⇒ phát hiện của T33 (bộ quét MẪU CÂU bắt **0/6**, bộ quét THEO NGHĨA bắt **6/6**)
+là **ĐÚNG và định lượng được**. Đây là bằng chứng cho `D-024 §3` do tôi đề xuất.
+
+---
+
+## 2.32 ⚠️ PHÁT HIỆN LỚN — `D-025 [3b]` **chưa được áp cho GITHUB và CLOUDFLARE**
+
+Admin hỏi đúng câu quan trọng nhất: *"còn bảng trích nào KHÁC thiếu `archived_at` không?"*
+**CÒN — và không chỉ một, và không chỉ ở GitLab.**
+
+### 2.32.1 Bảng **AUTHORED** thiếu cột `archived_at`
+
+| File | Mục | Số dòng tài sản | `archived_at`? |
+|---|---|---|---|
+| `security/gitlab/SCOPE.md` | **§1** (IN SCOPE, `n=24`) | 24 | ❌ **THIẾU** |
+| `security/gitlab/SCOPE.md` | **§2a** (out-of-scope, `n=39`) | 10 | ❌ **THIẾU** |
+| **`security/cloudflare/SCOPE.md`** | **§1a** (tài sản web) | **12** | ❌ **THIẾU** |
+| **`security/github/SCOPE.md`** | **§1** (in-scope) | (danh sách văn bản, không bảng) | ❌ **THIẾU** (`grep -c archived_at` = **0**) |
+
+### 2.32.2 Đo lại dữ liệu nguồn — **cùng lớp lỗi, quy mô LỚN HƠN nhiều ở GitHub**
+
+Tôi tự gọi GraphQL cho **cả 3 chương trình** (không chỉ GitLab):
+
+| Chương trình | tổng | live | archived | **archived & `sub=True`** | **orphan** (archived, `sub=True`, **không có bản live nào**) |
+|---|---|---|---|---|---|
+| GitLab | 63 | 44 | 19 | 5 | **5** |
+| **GitHub** | 197 | 39 | **158** | **156** | **153** |
+| **Cloudflare** | 83 | 78 | 5 | 4 | **4** |
+
+Và **`security/cloudflare/SCOPE.md` §1a liệt kê TRỰC TIẾP 2 trong 4 orphan** của Cloudflare:
+`URL http://cloudflare.com/apps/ critical` (**archived `2023-03-01`**) và
+`URL dash.teams.cloudflare.com critical` (**archived `2023-05-08`**);
+hai mục còn lại là `Argo Tunnel` và `Durable Objects` (**archived `2023-10-26`**).
+
+⇒ **`[3b]` bị vi phạm ở tối thiểu 4 bảng AUTHORED thuộc 3 chương trình.** Nếu Admin chỉ sửa §1 của GitLab
+(việc T34 được giao) thì **GitHub và Cloudflare vẫn nguyên** — và **chưa ai từng nhìn vào `archived_at`
+của hai chương trình đó** (mọi vòng trước đều chỉ kiểm GitLab).
+
+> **`chưa xác minh` (giữ đúng `DISSENT-12`):** tôi **KHÔNG** kết luận 153 bản ghi GitHub hay 4 bản ghi Cloudflare
+> là "ngoài scope". Tôi chỉ khẳng định: **các bảng đó thiếu chiều `archived_at`** nên **không phân biệt được**.
+
+### 2.32.3 ⚠️ **XUNG ĐỘT QUY TẮC** cần Admin phân xử: `[3b]` ⟂ "CẤM sửa `EVIDENCE/**`"
+
+Có **4 file CAPTURE** cũng thiếu `archived_at`, với số dòng tài sản rất lớn:
+
+```text
+agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md      196 dong asset
+agents/bountyrecon/tasks/T3/EVIDENCE/scope_cloudflare.md   82 dong asset
+agents/bountyrecon/tasks/T3/EVIDENCE/scope_security.md     71 dong asset
+agents/bountyrecon/tasks/T3/EVIDENCE/scope_gitlab.md       63 dong asset
+```
+
+**Đây là bản dump API thô** (cột `asset_type | asset_identifier | eligible_for_bounty | max_severity | instruction`).
+`[3b]` nói **MỌI** bảng trích phải có `archived_at` — nhưng luật khác (đã áp ở T29/T31/T33/T36) là
+**CẤM sửa `EVIDENCE/**`**. **Không thể tuân cả hai.**
+**Đề xuất (chọn 1):** (a) `[3b]` **chỉ áp cho bảng AUTHORED**; file CAPTURE thì **chụp lại** kèm `archived_at`
+thành file MỚI (`*_v2`) và giữ bản gốc; hoặc (b) ghi 1 dòng cảnh báo trong mỗi file CAPTURE rằng
+nó **thiếu chiều `archived_at`** và trỏ tới bảng AUTHORED đã sửa.
+
+---
+
+## 2.33 DISSENT-12 — tôi đã **thử giải** và ghi rõ vì sao **không giải được**
+
+Admin: *"nếu tìm được bằng chứng định nghĩa thì nêu; nếu không, giữ `chưa xác minh`"*.
+
+| Kênh đã thử | Kết quả |
+|---|---|
+| **Introspection schema HackerOne** — `description` của `archived_at`, `eligible_for_submission`, `eligible_for_bounty`, `asset_identifier` | ❌ **TẤT CẢ đều RỖNG** (`(khong co mo ta)`). Type `StructuredScope` chỉ có mô tả *"A defined scope of a HackerOne program"* |
+| **Argument của `structured_scopes`** | ✅ **CÓ `archived: Boolean`** — tức HackerOne coi "archived" là **một chiều lọc hạng nhất**, tách được khỏi "đang hiệu lực" |
+| Tìm tài liệu công khai (web) | ❌ không tìm được **định nghĩa chính thức** cho ngữ nghĩa `eligible_for_submission` **trên bản ghi archived** |
+
+**Kết luận:** `archived` **là chiều tách được** trong mô hình dữ liệu (bằng chứng **dương**, ủng hộ cách đọc
+"archived ≠ đang hiệu lực"), **nhưng** schema **không có mô tả trường** ⇒ **không có định nghĩa** để chốt.
+⇒ **Giữ nguyên `chưa xác minh`** — nay kèm **lý do cụ thể, kiểm chứng được**: *ngữ nghĩa không được
+tài liệu hoá ở tầng API công khai*, nên **không thể giải từ schema**; cần **văn bản chính sách của HackerOne
+hoặc trả lời từ GitLab/GitHub/Cloudflare**.
+
+---
+
+## 2.34 Đã kiểm những mục nào (vòng 9)
+
+- **T33 — 6 mục, PASS:** dòng 18 đã sửa ✅ · dòng 17 giữ `⏸` ✅ · phạm vi sửa đúng 1 opcode ✅ ·
+  ghi chú *"supersede … RIÊNG §2b"* còn nguyên (d.152) ✅ · 6 dòng "Chưa verify" xác nhận còn 6/6 ✅ ·
+  T33 đã merge (`c0ce165` là tổ tiên của `main`) ✅.
+- **[3b] sweep — 12 mục:** 4 bảng AUTHORED thiếu `archived_at` (GitLab §1, GitLab §2a, **Cloudflare §1a**,
+  **GitHub §1**) · 4 file CAPTURE thiếu (196/82/71/63 dòng asset) · đo lại dữ liệu **3 chương trình**
+  (GitLab 5 orphan · **GitHub 153** · **Cloudflare 4**) · đối chiếu Cloudflare §1a với 4 orphan.
+- **DISSENT-12 — 3 kênh đã thử**, ghi rõ vì sao không giải được.
+- **`chưa xác minh`: 5 mục của T34/T36** (nhánh chưa push) **+ 1 mục ngữ nghĩa `sub=True` trên bản ghi archived** = **6 mục**.
+- **Mâu thuẫn quy tắc nêu ra:** `[3b]` **⟂** "CẤM sửa `EVIDENCE/**`" — cần Admin chọn (a) hoặc (b).
+
+> **Phán quyết vòng 9: T33 PASS** (sửa tối thiểu, đúng dòng, không lan, ghi chú pháp lý còn nguyên).
+> **T34/T36 `chưa xác minh`** (nhánh chưa push — nêu rõ lý do, không suy đoán).
+> **Phát hiện lớn:** `[3b]` **chưa được áp cho GitHub và Cloudflare** — cùng lớp lỗi lần thứ **TƯ**,
+> và **hai chương trình đó chưa từng được soi `archived_at`**.

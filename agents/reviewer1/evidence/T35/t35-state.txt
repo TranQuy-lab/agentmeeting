@@ -1,0 +1,235 @@
+### T35 — verify tai HEAD CUOI
+### Thoi diem: 2026-10-01T15:23:27Z UTC
+### main = 4fe2d60 (244 file)
+
+=== [0] T33 da merge vao main chua? (Admin noi 609d916) ===
+  c0ce165   ✅ co trong main
+  609d916   ❓ khong ton tai trong repo
+  a40fcf7   ✅ co trong main
+
+=== [0b] main doi gi tu 154b65e -> 4fe2d60? ===
+4fe2d60 [T0] log: Admin sot T31 chua merge (#85), bang chung dinh luong 0/6 vs 6/6 cho D-024 §3 (#86), giao T36 (#87)
+a40fcf7 [T33] fix: sua CANDIDATES.md dong 18 (dieu kien da xong)
+fd53ffe [T31] fix: don nhom B (RECON.md 5 dong + CANDIDATES.md §2) + phat hien du lieu that gitlab.net
+c0ce165 [T33] evidence: cap nhat verify_t33.txt tai head 78e030d (co commit T33 trong lich su)
+78e030d [T33] fix: dong 18 CANDIDATES.md -> XONG (T14 PASS + merge 4642e3c) + quet theo NGHIA
+ecce293 [T31] evidence: phep kiem lich su tai head 9455f89 (5 commit, tat ca trong danh sach cho phep)
+9455f89 [T31] fix: tu sua 1 cau SAI do chinh minh tao ra o dong 21 + doi chieu ve merge-base
+209c308 [T31] evidence: cap nhat output phep kiem lich su tai head cuoi (3 commit)
+683e31f [T31] report: FIX_GROUP_B.md + cap nhat output phep kiem lich su
+81a56e4 [T31] evidence: them phep kiem lich su (D-023 [2]) + sua 1 phep thu sai cua chinh no
+52e96ea [T31] fix: don nhom B - RECON.md 5 dong + CANDIDATES.md §2 (0 xung dot hieu luc)
+  --- file thay doi ---
+M	ADMIN/LOG.md
+M	agents/bountyrecon/tasks/T3/CANDIDATES.md
+A	agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+A	agents/bountyrecon/tasks/T31/EVIDENCE/verify_regions.txt
+A	agents/bountyrecon/tasks/T31/FIX_GROUP_B.md
+A	agents/bountyrecon/tasks/T31/history_check_t31.py
+A	agents/bountyrecon/tasks/T31/verify_t31.py
+A	agents/bountyrecon/tasks/T33/EVIDENCE/semantic_scan.txt
+A	agents/bountyrecon/tasks/T33/EVIDENCE/verify_t33.txt
+A	agents/bountyrecon/tasks/T33/FIX_LINE18.md
+A	agents/bountyrecon/tasks/T33/SEMANTIC_SCAN.md
+A	agents/bountyrecon/tasks/T33/verify_t33.py
+M	security/gitlab/RECON.md
+
+=== [0c] T34 va T36 tren remote? ===
+  T34  : (rong = chua push)
+  T36  : (rong = chua push)
+
+=== [2] 6 DONG 'Chua verify' — con khong @ origin/main? ===
+$ git grep -n 'Chưa verify\|Chưa được verify' origin/main -- security/
+origin/main:security/cloudflare/RECON.md:6:**Trạng thái:** ⚠️ **Chưa verify — chờ Reviewer1.** Đây là *quan sát bề mặt*, KHÔNG phải kết luận lỗ hổng.
+origin/main:security/cloudflare/SCOPE.md:12:> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1.
+origin/main:security/github/RECON.md:6:**Trạng thái:** ⚠️ **Chưa verify — chờ Reviewer1.** Đây là *quan sát bề mặt*, KHÔNG phải kết luận lỗ hổng.
+origin/main:security/github/SCOPE.md:12:> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1 kiểm lại.
+origin/main:security/gitlab/RECON.md:6:**Trạng thái:** ⚠️ **Chưa verify — chờ Reviewer1.** Đây là *quan sát bề mặt*, KHÔNG phải kết luận lỗ hổng.
+origin/main:security/gitlab/SCOPE.md:11:> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1.
+
+  --- §0 cua security/gitlab/SCOPE.md con giu ghi chu 'supersede ... RIÊNG §2b' khong? ---
+9:**Trạng thái:** ✅ **Trích được nguyên văn. 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §2b.**
+
+=== [4] G2 (dong 44) va dong 5/17/18 @ origin/main ===
+$ sed -n '5p;17p;18p;44p' CANDIDATES.md
+**Trạng thái:** ⏸ **CHỜ ADMIN** — theo D-005, T4 chỉ mở khi Admin ban hành chỉ thị **bằng văn bản**.
+| 2 | Admin ban hành chỉ thị T4 bằng văn bản | ⏸ **CHƯA** |
+| 3 | Reviewer1 verify T3 độc lập | ✅ **XONG** — **T14 PASS** + đã merge (`4642e3c`) |
+| **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải** | **TRUNG BÌNH–THẤP** | ✅ **Đáng chuyển + cần Admin/GitLab làm rõ.** ⚠️ **KHÔNG có CNAME treo ⇒ KHÔNG phải takeover.** **CẤM tự đoán.** |
+
+=== [1b] D-025 [3b] QUET: moi BANG TRICH tai san trong territory co cot archived_at chua? ===
+  so file .md trong territory: 25
+  ⚠️ agents/bountyrecon/tasks/T3/EVIDENCE/scope_cloudflare.md  bang 50 dong asset @ d.8..57  -> THIEU COT archived_at
+        header: | asset_type | asset_identifier | eligible_for_bounty | max_severity | instruction |
+  ⚠️ agents/bountyrecon/tasks/T3/EVIDENCE/scope_cloudflare.md  bang 4 dong asset @ d.59..62  -> THIEU COT archived_at
+        header: | OTHER | Hyperdrive | True | critical | https://developers.cloudflare.com/hyperdrive/ |
+  ⚠️ agents/bountyrecon/tasks/T3/EVIDENCE/scope_cloudflare.md  bang 28 dong asset @ d.68..95  -> THIEU COT archived_at
+        header: | OTHER | Images | True | none | https://developers.cloudflare.com/speed/optimization/images/#image-optimization |
+  ⚠️ agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md  bang 183 dong asset @ d.8..190  -> THIEU COT archived_at
+        header: | asset_type | asset_identifier | eligible_for_bounty | max_severity | instruction |
+  ⚠️ agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md  bang 14 dong asset @ d.196..209  -> THIEU COT archived_at
+        header: | OTHER | LGTM | True | critical | LGTM is a code analysis platform for development teams to identify vulnerabilities ea
+  ⚠️ agents/bountyrecon/tasks/T3/EVIDENCE/scope_gitlab.md  bang 24 dong asset @ d.8..31  -> THIEU COT archived_at
+        header: | asset_type | asset_identifier | eligible_for_bounty | max_severity | instruction |
+  ⚠️ agents/bountyrecon/tasks/T3/EVIDENCE/scope_gitlab.md  bang 39 dong asset @ d.37..75  -> THIEU COT archived_at
+        header: | OTHER | GitLab for Jira Cloud | True | medium |  |
+  ⚠️ agents/bountyrecon/tasks/T3/EVIDENCE/scope_security.md  bang 57 dong asset @ d.8..64  -> THIEU COT archived_at
+        header: | asset_type | asset_identifier | eligible_for_bounty | max_severity | instruction |
+  ⚠️ agents/bountyrecon/tasks/T3/EVIDENCE/scope_security.md  bang 16 dong asset @ d.70..85  -> THIEU COT archived_at
+        header: | URL | https://app.pullrequest.com | True | critical | Please use your `@wearehackerone.com` email address when signing
+
+=== [1c] 'supersede ... RIÊNG §2b' con o dau trong security/gitlab/SCOPE.md? ===
+$ git show origin/main:security/gitlab/SCOPE.md | grep -n 'supersede'
+152:> **Thay đổi này supersede chứng thực T14 ở RIÊNG §2b; phần trích nguyên văn (§1, §2a, §3, §4)
+$ ... | grep -n 'RIÊNG §2b\|RIÊNG'
+152:> **Thay đổi này supersede chứng thực T14 ở RIÊNG §2b; phần trích nguyên văn (§1, §2a, §3, §4)
+
+=== [1d] QUET LAI [3b] — tach AUTHORED vs CAPTURE, gom moi dang bang ===
+  FILE                                                       LOAI      dang bang  archived_at?
+  security/cloudflare/SCOPE.md                               AUTHORED  pipe=0 fence=1     ❌ THIEU
+  security/gitlab/SCOPE.md                                   AUTHORED  pipe=0 fence=8     ✅
+  agents/bountyrecon/tasks/T3/EVIDENCE/scope_cloudflare.md   CAPTURE   pipe=82 fence=0    ❌ THIEU
+  agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md       CAPTURE   pipe=196 fence=0   ❌ THIEU
+  agents/bountyrecon/tasks/T3/EVIDENCE/scope_gitlab.md       CAPTURE   pipe=63 fence=0    ❌ THIEU
+  agents/bountyrecon/tasks/T3/EVIDENCE/scope_security.md     CAPTURE   pipe=71 fence=0    ❌ THIEU
+
+  AUTHORED thieu archived_at : 1 -> ['security/cloudflare/SCOPE.md']
+  CAPTURE  thieu archived_at : 4
+
+=== [1e] PHAN TICH TUNG BANG trong 3 file SCOPE.md AUTHORED ===
+
+  ===== security/gitlab/SCOPE.md (300 dong) =====
+    ## 1. TRÍCH NGUYÊN VĂN — IN SCOPE (`eligible_for_submission= asset_dong=24   archived_at: ❌ THIEU
+    ### 2a. Danh sách out-of-scope (n=39)                        asset_dong=10   archived_at: ❌ THIEU
+
+  ===== security/github/SCOPE.md (315 dong) =====
+
+  ===== security/cloudflare/SCOPE.md (213 dong) =====
+    ### 1a. Tên miền / tài sản web (từ `structured_scopes`, `eli asset_dong=12   archived_at: ❌ THIEU
+
+=== [1f] RIENG §1 cua gitlab/SCOPE.md ===
+## 1. TRÍCH NGUYÊN VĂN — IN SCOPE (`eligible_for_submission=true`, n=24)
+
+```text
+WILDCARD    *.gitlab.net
+            instruction: "Hosts owned and operated by GitLab."
+WILDCARD    *.gitlab.org
+            instruction: "Hosts owned and operated by GitLab."
+WILDCARD    *.gitlap.com
+  ...
+  so lan archived_at trong §1: 0
+
+=== [1g] security/github/SCOPE.md — dang bang la gi? ===
+## 1. TRÍCH NGUYÊN VĂN — IN SCOPE
+
+Nguồn: `policy` của chương trình GitHub trên HackerOne, mục `## Scope`.
+Bản đầy đủ: `agents/bountyrecon/tasks/T3/EVIDENCE/policy_github.md` (dòng 98–157).
+
+```text
+## Scope
+
+GitHub runs a number of services but only submissions under the following domains are eligible for rewards. Any GitHub-owned domains not listed below are *not* in scope, *not* eligible for rewards, and *not* covered by [our legal safe harbor](https://bounty.github.com#legal_safe_harbor).
+
+### github.com
+
+This is our main domain for hosting user-facing GitHub services.. All subdomains under `github.com` are in-scope *except*:
+* `blog.github.com`
+* `community.github.com`
+* `email.enterprise.github.com`
+* `email.finance.github.com`
+* `email.staging.finance.github.com`
+* `email.support.github.com`
+* `email.verify.github.com`
+* `google7650dcf6146f04d8.github.com`
+* `k1._domainkey.github.com`
+* `k1._domainkey.mcmail.github.com`
+* `mcmail.github.com`
+* `resources.github.com`
+  --- co cot/chu archived_at khong? ---
+  tong so lan: 0
+
+=== [1h] security/cloudflare/SCOPE.md §1a ===
+### 1a. Tên miền / tài sản web (từ `structured_scopes`, `eligible_for_submission=true`)
+
+```text
+URL          dash.cloudflare.com           max_severity=critical
+             instruction: "The Cloudflare dashboard (https://dash.cloudflare.com/) and any
+             direct calls from the dashboard to other Cloudflare owned resources are
+             considered in scope."
+
+URL          cloudflareworkers.com         critical
+URL          *.teams.cloudflare.com        critical
+URL          api.cloudflare.com            critical
+URL          *.cloudflare.com              critical
+             instruction: "Excluding support.cloudflare.com, community.cloudflare.com
+             and other SaaS applications"
+URL          http://github.com/cloudflare  critical
+URL          one.dash.cloudflare.com       critical
+URL          dash.teams.cloudflare.com     critical   instruction: "Secondary scope."
+URL          http://cloudflare.com/apps/   critical
+             instruction: "This is the Cloudflare Marketplace. Only the platform itself
+             and first-party apps (those created by Cloudflare) are considered in scope."
+OTHER        *.cloudflarepartners.com      critical
+SOURCE_CODE  https://github.com/cloudflare/workerd     critical
+
+=== [1i] GOI LAI GRAPHQL cho CA 3 CHUONG TRINH: co ban ghi archived-but-sub=True khong? ===
+  --- gitlab ---
+    tong=63  live=44  archived=19
+    archived VA sub=True : 5
+    trong do KHONG con ban live cung identifier (orphan): 5
+       https://gitlab.com/gitlab-org/gitlab-workhorse             SOURCE_CODE  2021-12-28T13:36:15.653Z
+       license.gitlab.com                                         URL          2022-03-21T22:30:03.041Z
+       Static websites                                            OTHER        2022-07-21T16:00:50.221Z
+       https://gitlab.com/gitlab-org/opstrace/                    SOURCE_CODE  2023-06-04T21:02:31.693Z
+       GitLab for Jira Cloud Plugin                               OTHER        2023-12-07T13:38:09.687Z
+  --- github ---
+    tong=197  live=39  archived=158
+    archived VA sub=True : 156
+    trong do KHONG con ban live cung identifier (orphan): 153
+       https://gist.github.com                                    URL          2017-06-22T23:23:44.719Z
+       http://GitHub.com/CSP                                      URL          2017-06-22T23:29:38.991Z
+       Other Applications                                         DOWNLOADABLE_EXECUTABLES 2019-02-19T19:29:54.119Z
+       semmle.net                                                 URL          2022-08-31T18:46:14.564Z
+       LGTM                                                       OTHER        2022-08-31T18:46:24.171Z
+       semmle.com                                                 URL          2022-08-31T18:46:33.704Z
+       jobs.github.com                                            URL          2022-08-31T18:48:33.138Z
+       lab.github.com                                             URL          2022-08-31T20:36:05.233Z
+        Code Search                                               OTHER        2022-09-13T02:27:17.065Z
+        Code Search                                               OTHER        2022-09-13T02:27:17.089Z
+       GitHub Enterprise Importer                                 OTHER        2022-09-13T02:27:17.113Z
+       GitHub Enterprise Importer                                 OTHER        2022-09-13T02:27:17.138Z
+       ... va 141 muc nua
+  --- cloudflare ---
+    tong=83  live=78  archived=5
+    archived VA sub=True : 4
+    trong do KHONG con ban live cung identifier (orphan): 4
+       http://cloudflare.com/apps/                                URL          2023-03-01T17:47:43.944Z
+       dash.teams.cloudflare.com                                  URL          2023-05-08T10:11:33.083Z
+       Argo Tunnel                                                OTHER        2023-10-26T15:25:05.200Z
+       Durable Objects                                            OTHER        2023-10-26T15:40:54.533Z
+
+=== [1j] DISSENT-12: TIM DINH NGHIA tu SCHEMA (description cua truong) ===
+  description cua TYPE StructuredScope: A defined scope of a HackerOne program
+
+  --- field 'archived_at' (type DateTime) ---
+      description: (khong co mo ta)
+  --- field 'asset_identifier' (type String) ---
+      description: (khong co mo ta)
+  --- field 'asset_type' (type StructuredScopeAssetTypeEnum) ---
+      description: (khong co mo ta)
+  --- field 'eligible_for_bounty' (type Boolean) ---
+      description: (khong co mo ta)
+  --- field 'eligible_for_submission' (type Boolean) ---
+      description: (khong co mo ta)
+
+  --- co filter arg 'archived' tren structured_scopes khong? ---
+Traceback (most recent call last):
+  File "<stdin>", line 7, in <module>
+KeyError: 'data'
+
+=== [1k] structured_scopes co arg 'archived' khong? (truy van lai dung) ===
+  structured_scopes args: [('after', 'String'), ('before', 'String'), ('first', 'Int'), ('last', 'Int'), ('search', 'String'), ('asset_type', None), ('archived', 'Boolean'), ('eligible_for_submission', 'Boolean'), ('eligible_for_bounty', 'Boolean'), ('has_credentials', 'Boolean'), ('has_credential_inquiry', 'Boolean'), ('order_by', 'StructuredScopeOrder'), ('id', 'Int'), ('ids', None), ('start_date', 'DateTime')]
+  query that bai: {"errors": [{"message": "Field '__schema' doesn't exist on type 'Query'", "locations": [{"line": 1, "column": 2}], "path": ["query", "__schema"], "extensions": {"code": "undefinedField", "typeName": "
+
+  => Neu KHONG co arg 'archived' va KHONG co description => ngu nghia archived_at KHONG duoc
+     tai lieu hoa trong schema cong khai => DISSENT-12 khong the giai tu schema.
