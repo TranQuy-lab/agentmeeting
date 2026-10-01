@@ -26,8 +26,10 @@
 | T17 | `3d183f7` | `reviews/AUDIT2.md` + `.json` | Người dùng |
 | T20 | `a395ba5` | Kiểm chứng T15 + T16 | Auditor2 |
 
-**`main` nay có 157 file. Chưa merge:** T5 (ForensicsMal), T8 (DeepSeek-Harness), T13 (javis)
-— chưa qua kiểm định lớp 1.
+**`main` nay có 172 file. Chưa merge:** T5 + T23 (ForensicsMal — chờ verify bản vá C2),
+T8 (DeepSeek-Harness — chờ Auditor2 T24), T24 (Auditor2), T26 (BountyRecon).
+*(Đính chính: dòng cũ ghi 157 file và liệt T13 là chưa merge — cả hai đều lạc hậu sau khi
+Admin merge T13 (`37a39ff`) và T21/T25/T22. Reviewer1 phát hiện ở T25.)*
 
 ## 2. Việc chưa làm được / thất bại
 
