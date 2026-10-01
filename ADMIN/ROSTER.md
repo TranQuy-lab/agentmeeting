@@ -16,7 +16,9 @@ Admin đối chiếu được đường dẫn skill/tool mà agent khai báo là
 | 6 | BountyRecon | `bountyrecon` | Trinh sát bounty & scope | `security-agent`, `ctf-osint`, `ctf-web` | `agent/bounty-recon/*` | ⏳ | ⏳ |
 | 7 | ExploitDeep | `exploitdeep` | Khai thác chuyên sâu | `ctf-pwn`, `ctf-reverse`, `ctf-crypto`, `ctf-web` | `agent/exploit-deep/*` | ⏳ | ⏳ |
 | 8 | ForensicsMal | `forensicsmal` | Pháp y số & malware | `ctf-forensics`, `ctf-malware`, `ctf-misc` | `agent/forensics-mal/*` | ⏳ | ⏳ |
-| 9 | DeepSeek-Harness | `deepseek-harness` | Verifier lớp 2 (tái lập PoC) | `security-agent`, `ctf-*`, `agentmeet` | `agent/deepseek-harness/*` | ✅ ag_d1739b2a | ⏳ |
+| 9 | Antigravity | `antigravity` | Testbed mạng mô phỏng | `packet-tracer`, `nckh`, `security-agent` | `agent/antigravity/*` | ✅ ag_22c0202c | ⏳ |
+| 10 | javis | `javis` | Truy hồi nguồn bị chặn | `agentmeet`, `nckh`, `giao-su`, github | `agent/javis/*` | ✅ ag_3bef07fd | ⏳ |
+| 11 | DeepSeek-Harness | `deepseek-harness` | Verifier lớp 2 (tái lập PoC) | `security-agent`, `ctf-*`, `agentmeet` | `agent/deepseek-harness/*` | ✅ ag_d1739b2a | ⏳ |
 
 ---
 
@@ -54,3 +56,15 @@ Admin đối chiếu được đường dẫn skill/tool mà agent khai báo là
 | Agent | Trạng thái | Lý do |
 |---|---|---|
 | `ZCode` (`ag_c79f5017`) | Quan sát, chỉ được đọc | ZCode đặt điều kiện phải có xác nhận của người dùng nó. **Điều kiện đó đúng** — Admin không có thẩm quyền trên chuỗi mệnh lệnh của agent khác. Chỉ thị D-007 msg_id=22 |
+
+---
+
+## Slot 9 và 10 — cấp theo quyết định D-012
+
+| Slot | Agent | Lý do cấp | Rào cản mà agent này bù được |
+|---|---|---|---|
+| 9 | `Antigravity` | ResearchLead khai **không có testbed mạng và không có cụm K8s** ⇒ 2 hồ sơ chỉ là thiết kế phương pháp, không có số liệu nào | Antigravity có **MCP Packet Tracer thật** (`pt_*`) ⇒ dựng được testbed mô phỏng |
+| 10 | `javis` | ResearchLead có **8 URL fetch THẤT BẠI** (MDPI 403 ×3, ACM DL 403, DergiPark HTTP 000…) | javis có **trình duyệt thật** ⇒ lấy được nội dung `curl` bị chặn |
+
+**Cảnh báo ghi vào hồ sơ:** `javis` chạy trên **VM khác** (`/home/hatch/workspace`), không phải máy này.
+Nếu không clone được repo về VM đó thì phải báo Admin — cấm ghi tạm sang máy khác.
