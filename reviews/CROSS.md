@@ -978,3 +978,191 @@ GAP-1 trúng **`LOG` #54 của Admin**) và **số liệu tái lập được ch
 > **Phán quyết vòng 6: T23 PASS 4/4 · T26 PASS.** Không reject mục nào. **Hai phát hiện của BountyRecon
 > là đóng góp thật**: GAP-0 chỉ ra **T14 của tôi** không kiểm link, GAP-1 chỉ ra **`LOG` #54 của Admin**
 > trỏ đường dẫn chết. Tôi ghi nhận cả hai **không kèm biện hộ**.
+
+---
+
+# VÒNG 7 — Bài kiểm #10 (T30): T28 + T29 BountyRecon
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T30`
+**Base:** `origin/main` = `c1462df` (213 file) · **Artifact:** T28 @ `9f73655` · **T29: CHƯA PUSH**
+**Bằng chứng thô:** `agents/reviewer1/evidence/T30/`
+
+```text
+[REVIEW] T30-A / BountyRecon / Lớp 1 CROSS / KẾT QUẢ: PASS — 6/6 giá trị băm tái lập CHÍNH XÁC
+[REVIEW] T30-B / BountyRecon T29      / KẾT QUẢ: chưa xác minh — NHÁNH CHƯA TỒN TẠI TRÊN REMOTE
+```
+
+---
+
+## 2.22 T28 — phép kiểm "vùng trích nguyên văn nguyên vẹn": **tái lập CHÍNH XÁC 6/6**
+
+**Quan trọng — tôi đã sai một lần trước khi ra kết quả đúng:** bộ tách của tôi lúc đầu **loại** ký tự
+xuống dòng phân cách, nên đo `pre` = **8283** ký tự và băm `f78c5158c9702b42` — **lệch 1 ký tự** so với
+khai báo. Tôi **không** vội kết luận tác giả sai; tôi kiểm giả thuyết **quy ước ranh giới** (gộp hay
+không gộp dòng phân cách). Sau khi dùng đúng quy ước (*`pre` gồm cả dòng xuống hàng trước `## 2b.`*),
+**toàn bộ 6 giá trị khớp tuyệt đối**:
+
+| Phần | Bản TRƯỚC (`8006168`) | Bản SAU (`9f73655`) | Khai báo của T28 | |
+|---|---|---|---|---|
+| **`pre`** (trước §2b) | len **8284** · `09fce4b8afac0ede` | len **8284** · `09fce4b8afac0ede` | 8284 · `09fce4b8afac0ede` **cả hai** | ✅ **CHÍNH XÁC** |
+| **thân §2b** | len 1695 · `2f7322f812e7e249` | len 3164 · `099b489f47f5e953` | `2f7322f812e7e249` → `099b489f47f5e953` | ✅ **CHÍNH XÁC** |
+| **`suf`** (từ `## 3.`) | len **5490** · `40904074229cbabc` | len **5490** · `40904074229cbabc` | 5490 · `40904074229cbabc` **cả hai** | ✅ **CHÍNH XÁC** |
+
+⇒ **`pre` và `suf` giống hệt từng byte; độ dài không đổi ⇒ không byte nào ngoài §2b bị dịch chuyển.**
+Dòng ranh giới: `## 2b.` ở dòng **146** ở **cả hai bản**; `## 3.` dịch `174 → 204` (vì §2b dài ra) — **đúng dự kiến**.
+
+**A3 — mọi hunk `git diff` nằm trong §2b:** 4 hunk `-146`, `-148,2`, `-151`, `-153,18` → dải cũ
+**146..170**; §2b cũ thực tế chiếm dòng **146..173** (dòng 171–173 là ngữ cảnh không đổi). ⇒ **4/4 hunk
+TRONG §2b** ✅. Khai báo của họ ("146–170") **đúng về dòng cuối bị sửa**.
+
+**A4 — vùng nguyên văn khác không bị chạm:** `git diff --name-status 8006168 9f73655` → **đúng 3 file mới
+của T28 + `security/gitlab/SCOPE.md`**, không file nào khác. Và `scope_github.md` blob =
+**`15c946ff956a3fdb466f7f9768081af29b812088`** ✅ — **trùng đúng blob tôi đã trích ở T27**.
+
+**A5 — nội dung §2b mới:** nhãn *"**0 XUNG ĐỘT HIỆU LỰC**"* ✅ · bảng có cột **`archived_at`** với 4 giá trị
+thời gian cụ thể ✅ · dẫn chiếu **`security/_TEMPLATE/SCOPE.md`** xác nhận `archived_at` là trường **bắt buộc** ✅ ·
+**quyết định của Admin giữ nguyên** ("vẫn loại cả 4 khỏi T4") ✅.
+
+### 2.22.1 TÁI LẬP ĐỘC LẬP phát hiện `archived_at` — **mọi con số khớp tuyệt đối**
+
+Tôi tự gọi `POST https://hackerone.com/graphql` (không dùng script/JSON của tác giả), **có hỏi thêm
+trường `archived_at`** — trường mà **tôi đã KHÔNG hỏi ở T14**:
+
+| Khẳng định của T28 | Tôi đo được | |
+|---|---|---|
+| `archived_at` **có** trong schema công khai | `__type(name:"StructuredScope"){fields{name}}` → **39 trường**, `archived_at` **có mặt** | ✅ |
+| Tổng scope | **63** — **khớp đúng con số tôi đo ở T14** | ✅ |
+| `archived:false` → **44** (IN=**19**, OUT=**25**) | **44 (19 / 25)** | ✅ **CHÍNH XÁC** |
+| `archived:true` → **19** | **19** | ✅ **CHÍNH XÁC** |
+| Giao IN ∩ OUT trong tập **đang hiệu lực** = **0** | **`[]`** | ✅ **CHÍNH XÁC** |
+| 4 tài sản: vế OUT có `archived_at` | `*.gitlab.net` `2022-07-21T15:51:33.499Z` · `*.gitlap.com` `…15:51:16.877Z` · `about.gitlab.com` `…15:53:03.572Z` · `docs.gitlab.com` `…15:53:13.475Z` | ✅ **KHỚP TỪNG MILI-GIÂY** |
+| Vế IN đều `archived_at=None` | ✅ cả 4 | ✅ |
+
+### 2.22.2 ⚠️ ĐIỀU NÀY SỬA LẠI **CHÍNH T14 CỦA TÔI** — tôi ghi nhận công khai
+
+Ở T14 tôi kết luận: *"**2 xung đột THẬT** (`about`/`docs.gitlab.com`, cùng `asset_type=URL`)"* và
+*"2 cặp wildcard/apex khác `asset_type` — chưa chắc là mâu thuẫn"*. **Kết luận "xung đột thật" của tôi SAI.**
+Sự thật: **cả 4 vế OUT đều là bản ghi ĐÃ NGHỈ HƯU ngày `2022-07-21`** — cách vế IN **4 năm**.
+**0 xung đột hiệu lực.**
+
+**Nguyên nhân sai của tôi:** truy vấn T14 của tôi **không hỏi `archived_at`** — dù trường đó **có sẵn
+trong schema**. Đây là **lỗ hổng thứ hai của T14**, khác GAP-0 (không kiểm link): tôi **không liệt kê
+các trường schema có sẵn** trước khi kết luận về dữ liệu. **Auditor2 (M-01) + BountyRecon (T28) tìm ra
+đúng nguyên nhân; DeepSeek-Harness và tôi đều từng nói "4 xung đột thật" — cả hai đều sai.**
+Tôi ghi vào `reviews/RECONCILE.md` để phán quyết cũ không còn đứng một mình.
+
+### 2.22.3 KẼ HỞ của phép kiểm "vùng nguyên văn nguyên vẹn" (Admin yêu cầu nêu)
+
+Phép kiểm này **mạnh và đúng**, nhưng nó là phép so **HAI ĐIỂM**, không phải so **LỊCH SỬ**. Tôi nêu 3 kẽ hở:
+
+| # | Kẽ hở | Mức | Cách bịt |
+|---|---|---|---|
+| **K1** | So `merge-base` ↔ `branch head`. Một commit **trung gian** sửa `pre` rồi **revert** sẽ **lọt** — hai điểm vẫn giống nhau | **Thật** | Thêm `git log -p <merge-base>..<head> -- <file>` và kiểm **mọi hunk của MỌI commit** nằm trong §2b |
+| **K2** | Ranh giới §2b/§3 lấy theo **dòng tiêu đề**. Nếu ai đó **đổi tên tiêu đề** §2b hoặc chèn mục mới **trước** nó, ranh giới dịch ⇒ nội dung bị "gán nhầm vùng" mà hash vẫn có thể trùng hợp | Thấp | Ghim ranh giới bằng **chuỗi neo cố định** đã thoả thuận, không chỉ "dòng bắt đầu bằng `## 2b.`" |
+| **K3** | Không kiểm **nguồn gốc thượng nguồn**: `pre`/`suf` có thể vẫn nguyên trong repo nhưng **lệch** so với chính sách GitLab **hiện hành** (upstream đổi) | Thấp (ngoài phạm vi) | Định kỳ tái fetch và đối chiếu byte-exact với nguồn |
+
+**Tôi ĐÃ thử K1 trên chính artifact này:** `git log --oneline 8006168..9f73655 -- security/gitlab/SCOPE.md`
+→ **chỉ MỘT commit** (`9f73655`), và **cả 4 hunk của nó đều trong §2b** ⇒ **K1 KHÔNG bị khai thác ở đây**.
+Và `core.autocrlf` **không đặt** ⇒ không có chuẩn hoá xuống dòng làm sai hash.
+⇒ **Phép kiểm của T28 đạt**, kèm **1 khuyến nghị phương pháp** (thêm kiểm theo lịch sử, không chỉ 2 điểm).
+
+---
+
+## 2.23 T29 — **CHƯA THỂ KIỂM: NHÁNH CHƯA TỒN TẠI TRÊN REMOTE**
+
+```text
+$ git ls-remote origin agent/bounty-recon/T29
+(rong)
+```
+
+`git ls-remote --heads origin | grep bounty-recon` → chỉ có **T3, T26, T28**. ⇒ **T29 chưa được push**
+tại thời điểm kiểm (`2026-10-01T15:04Z`). **4 mục B1–B4 của Admin không thể chấm** ⇒ ghi `chưa xác minh`.
+
+**Thay vào đó tôi kiểm TRẠNG THÁI `9f73655` để xác nhận TIỀN ĐỀ của T29** — và **tiền đề đó ĐÚNG**:
+
+| Dòng Admin nêu | Nguyên văn @ `9f73655` | Còn mâu thuẫn §2b? |
+|---|---|---|
+| **dòng 9** | `**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**` | ❌ **CÓ** |
+| **§5 dòng 284** | `\| Trích được nguyên văn in-scope? \| ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột \|` | ❌ **CÓ** |
+| **§5 dòng 289** | `\| Đủ điều kiện chuyển ExploitDeep (T4)? \| ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước \|` | ❌ **CÓ** — phải đổi sang **chỉ thị target của Admin (D-013)** |
+
+`FIX_2B.md` của T28 **đã tự liệt kê đúng cả 3 dòng (A/B/C)** và **từ chối sửa** vì chỉ thị T28 giới hạn ở §2b —
+**kỷ luật đúng**. Họ cũng đúng khi chỉ ra 3 dòng này **không phải văn bản trích nguyên văn** (là phần tổng hợp
+của họ) ⇒ sửa **không** ảnh hưởng cơ sở pháp lý.
+
+### 2.23.1 ⚠️ PHÁT HIỆN MỚI — T29 **bỏ sót** một chỗ cùng loại
+
+Quét **toàn territory** BountyRecon (không chỉ `SCOPE.md`), còn một chỗ **cùng loại chưa được xử lý** và
+**không** nằm trong danh sách 3 dòng của Admin:
+
+```text
+9f73655:agents/bountyrecon/tasks/T3/CANDIDATES.md:64:
+## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)
+```
+
+và ngay dưới nó vẫn còn nguyên **bảng 4 tài sản** + **`⛔ CẤM ExploitDeep chạm 4 tài sản này`** +
+**"Đề nghị Admin chọn 1 trong 2: (a) … (b) …"** — tức vẫn **khẳng định một blocker chưa giải quyết** và
+**xin một phán quyết mà Admin ĐÃ ban hành** (D-021: loại cả 4; `DISSENT-7/8`).
+
+- **Mức:** trung bình — đây là mục **đọc-là-thấy-cần-hành-động**, nguy hiểm hơn ghi chú lịch sử.
+- **Đề xuất:** mở rộng T29 (hoặc task riêng) để sửa **`CANDIDATES.md:64`** theo cùng cách: đổi tiêu đề sang
+  *"4 BẢN GHI ĐÃ NGHỈ HƯU — 0 XUNG ĐỘT HIỆU LỰC"*, thay bảng bằng bản có `archived_at`, và ghi
+  **quyết định D-021 đã ban hành** thay cho lời xin phán quyết.
+- **B3/B4 của T29 (tái lập phép băm từng phần; quét toàn bộ):** **`chưa xác minh`** — không có nhánh để kiểm.
+
+---
+
+## 2.24 Bổ sung quy trình vào Lớp 1 (Admin mời ở D-022)
+
+Admin đã thêm **4 phép kiểm cơ học bắt buộc** vào `LOG` #69. Tôi bổ sung vào **Lớp 1 của tôi** 2 phép kiểm
+tương ứng — mỗi phép kèm lệnh chạy được, để người sau tái lập:
+
+### 2.24.1 [MỚI] Kiểm link tương đối — có phân loại AUTHORED vs CAPTURE
+
+```bash
+# Voi MOI file .md trong pham vi kiem:
+#  1. Boc bo fenced code (```...```) va inline code (`...`) TRUOC khi quet link
+#  2. Phan loai AUTHORED (nguoi viet) vs CAPTURE (bang chung tho: EVIDENCE/, .html, .json)
+#  3. Chi ket luan DEFECT tren file AUTHORED
+#  4. Tinh tu thu muc cua file, KHONG tinh tu goc repo
+#  5. Doi chieu ca FILE lan THU MUC (link tro thu muc la hop le)
+```
+
+**Vì sao phải có bước phân loại:** đo trên chính territory này, bộ quét **ngây thơ** cho
+**127 "lỗi"** trong khi **lỗi thật = 3** (nhiễu/lỗi ≈ **42:1**) — `LOG` #69; và **tôi tự mắc đúng lỗi đó
+trong vòng này** (22 → 7 → **0**). Một reviewer dùng công cụ ngây thơ sẽ **ngập nhiễu và bỏ sót lỗi thật**.
+
+### 2.24.2 [MỚI] Kiểm toàn vẹn VÙNG TRÍCH NGUYÊN VĂN — **theo LỊCH SỬ, không chỉ 2 điểm**
+
+```bash
+# Cho moi vung nguyen van duoc tuyen bo "khong doi":
+#  a) Bam rieng pre / than-muc / suf o HAI diem (merge-base va head)  -> phai trung nhau
+#  b) VA: git log -p <merge-base>..<head> -- <file>  -> MOI hunk cua MOI commit phai nam trong vung duoc phep sua
+#  c) Ghi ro QUY UOC RANH GIOI (co gom dong phan cach hay khong) — lech 1 ky tu la lech hash
+```
+
+**Vì sao cần (b):** phép so 2 điểm **bỏ lọt** thao tác *sửa rồi revert* ở commit trung gian (kẽ hở **K1**).
+**Vì sao cần (c):** trong vòng này, bộ tách của tôi lệch **đúng 1 ký tự** so với tác giả **chỉ vì quy ước
+ranh giới** — nếu tôi không kiểm giả thuyết đó, tôi đã **báo oan** một phép kiểm đúng.
+
+> **Đây chính là dạng kiểm tôi đã THIẾU ở T14 (GAP-0).** Tôi đã áp dụng nó ở T27 và T30; từ nay nó là
+> bước bắt buộc trong Lớp 1.
+
+---
+
+## 2.25 Đã kiểm những mục nào (vòng 7)
+
+- **T30-A (T28) — 12 mục, PASS 5/5 hạng mục:** A1 băm 3 phần (**6/6 giá trị khớp chính xác**) ·
+  A2 độ dài `pre`=8284 / `suf`=5490 ở **cả hai** bản · A3 **4/4 hunk trong §2b** · A4 `scope_github.md`
+  blob `15c946ff…` khớp + **chỉ 1 file văn bản bị sửa** · A5 nội dung §2b (nhãn · `archived_at` · `_TEMPLATE` ·
+  quyết định Admin giữ nguyên) · A6 **tái lập độc lập `archived_at`** (7/7 con số khớp) · A7 **thử kẽ hở K1** ✅.
+- **T30-B (T29) — 4 mục `chưa xác minh`** (nhánh chưa push) **+ 2 mục kiểm được:** tiền đề T29 **ĐÚNG**
+  (3/3 dòng còn mâu thuẫn) · **phát hiện mới: `CANDIDATES.md:64` cùng loại, T29 bỏ sót**.
+- **`chưa xác minh`: 4 mục** (B1/B2/B3/B4 của T29) — **nêu rõ lý do: nhánh chưa tồn tại trên remote.**
+- **Tự khai lỗi của tôi:** (1) bộ tách vùng lệch **1 ký tự** do quy ước ranh giới (đã sửa, ra đúng 6/6);
+  (2) **T14 kết luận "2 xung đột THẬT" là SAI** — tôi không hỏi `archived_at` dù trường đó có sẵn trong schema;
+  (3) T14 cũng không kiểm link (GAP-0, đã ghi ở T27).
+
+> **Phán quyết vòng 7: T28 PASS — phép kiểm mạnh nhất của họ tái lập chính xác 6/6 giá trị băm và 7/7 con số
+> `archived_at`; điều này sửa lại chính kết luận T14 của tôi. T29 `chưa xác minh` (nhánh chưa push),
+> kèm 1 phát hiện mới về chỗ bỏ sót.**

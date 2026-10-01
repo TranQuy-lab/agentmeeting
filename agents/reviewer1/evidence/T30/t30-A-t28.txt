@@ -1,0 +1,209 @@
+### T30-A — Reviewer1 kiem T28 BountyRecon @ 9f73655
+### Thoi diem: 2026-10-01T15:04:14Z UTC
+### CANH BAO: nhanh agent/bounty-recon/T29 KHONG ton tai tren remote tai thoi diem kiem
+$ git ls-remote origin agent/bounty-recon/T29
+  (rong) => T29 CHUA duoc push
+  => Phan B (T29) khong the kiem; toi se kiem TRANG THAI T28 de xac nhan tien de cua T29.
+
+=== [A1] BAM RIENG 3 PHAN (sha256, 16 hex dau) ===
+  PHAN                       TRUOC                SAU                  KET QUA
+  TRUOC §2b (pre)            f78c5158c9702b42     f78c5158c9702b42     GIONG HET
+  §2b (than muc)             0c1baf1901faa810     8d3ea9ac146d2aa3     KHAC
+  SAU §2b (suf)              40904074229cbabc     40904074229cbabc     GIONG HET
+
+  Khang dinh cua BountyRecon: pre=09fce4b8afac0ede | suf=40904074229cbabc
+  Toi do duoc              : pre=f78c5158c9702b42 | suf=40904074229cbabc
+  pre khop? False | suf khop? True
+
+=== [A2] DO DAI tung phan (ky tu / code point) ===
+  pre   TRUOC=  8283  SAU=  8283  GIONG
+  mid   TRUOC=  1694  SAU=  3163  KHAC
+  suf   TRUOC=  5490  SAU=  5490  GIONG
+  tong  TRUOC= 15469  SAU= 16938
+  Khang dinh: pre=8284, suff=5490 o CA HAI ban
+  => pre SAI | suf DUNG
+
+=== [A2b] dong ranh gioi §2b / §3 co dich chuyen khong? ===
+  dong bat dau '## 2b.' : TRUOC=146  SAU=146
+  dong bat dau '## 3.'  : TRUOC=174   SAU=204
+=== TRUOC ===
+  pre (khong newline cuoi): len=  8282  sha256[:16]=30f74668ce2a3c15
+  pre (CO newline cuoi)   : len=  8284  sha256[:16]=09fce4b8afac0ede
+  khang dinh cua ho        : len=8284  sha256[:16]=09fce4b8afac0ede
+  suf (bo newline dau): len=  5490 sha256[:16]=40904074229cbabc
+  suf (giu newline dau): len=  5491 sha256[:16]=6f2ff56824504d4f
+  khang dinh cua ho   : len=5490 sha256[:16]=40904074229cbabc
+  mid: len=1695 sha256[:16]=2f7322f812e7e249
+
+=== SAU ===
+  pre (khong newline cuoi): len=  8282  sha256[:16]=30f74668ce2a3c15
+  pre (CO newline cuoi)   : len=  8284  sha256[:16]=09fce4b8afac0ede
+  khang dinh cua ho        : len=8284  sha256[:16]=09fce4b8afac0ede
+  suf (bo newline dau): len=  5490 sha256[:16]=40904074229cbabc
+  suf (giu newline dau): len=  5491 sha256[:16]=6f2ff56824504d4f
+  khang dinh cua ho   : len=5490 sha256[:16]=40904074229cbabc
+  mid: len=3164 sha256[:16]=099b489f47f5e953
+
+
+=== [A3] MOI HUNK git diff co nam trong §2b khong? ===
+$ git diff -U0 8006168 9f73655 -- security/gitlab/SCOPE.md | grep -E '^@@'
+@@ -146 +146 @@ dòng 125–191, danh sách rất dài. Các mục quan trọng nhất cho giai
+@@ -148,2 +148,6 @@ dòng 125–191, danh sách rất dài. Các mục quan trọng nhất cho giai
+@@ -151 +155,31 @@ thời** ở cả `eligible_for_submission=true` **và** `=false` trong chính d
+@@ -153,18 +187,14 @@ thời** ở cả `eligible_for_submission=true` **và** `=false` trong chính d
+
+  §2b CU chiem dong 146..173 (tu '## 2b.' den truoc '## 3.')
+    hunk cu dong 146..146  -> TRONG §2b ✅
+    hunk cu dong 148..149  -> TRONG §2b ✅
+    hunk cu dong 151..151  -> TRONG §2b ✅
+    hunk cu dong 153..170  -> TRONG §2b ✅
+  => moi hunk trong §2b? ✅ DUNG
+  (khang dinh cua ho: 'trong dong 146-170' — §2b cu thuc te 146..173)
+
+=== [A4] scope_github.md blob ===
+$ git rev-parse 9f73655:agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md
+15c946ff956a3fdb466f7f9768081af29b812088
+  khang dinh: 15c946ff956a3fdb466f7f9768081af29b812088 (trung blob toi trich o T27)
+  ✅ KHOP
+
+=== [A4b] Cac file TRICH NGUYEN VAN khac co bi cham khong? (so voi merge-base 8006168) ===
+$ git diff --name-status 8006168 9f73655
+A	agents/bountyrecon/tasks/T28/EVIDENCE/residual_old_wording.txt
+A	agents/bountyrecon/tasks/T28/EVIDENCE/verify_section2b.txt
+A	agents/bountyrecon/tasks/T28/FIX_2B.md
+M	security/gitlab/SCOPE.md
+
+=== [A5] NOI DUNG §2b MOI ===
+## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT HIỆU LỰC** (đã đính chính ở T28)
+
+> 🔄 **ĐÍNH CHÍNH (T28, `2026-10-01`).** Mục này trước đây gọi là *"4 XUNG ĐỘT SCOPE ĐÃ XÁC MINH"*.
+> **Cách gọi đó SAI.** Cách đọc đúng: **0 xung đột hiệu lực + 4 bản ghi đã nghỉ hưu
+> (`archived_at` = 2022-07-21)**.
+>
+> **Thay đổi này supersede chứng thực T14 ở RIÊNG §2b; phần trích nguyên văn (§1, §2a, §3, §4)
+> KHÔNG đổi nên chứng thực byte-exact vẫn nguyên giá trị cho phần đó.**
+
+### Nguyên nhân gốc — bài học M-01 (Auditor2 T24)
+
+Bốn tài sản xuất hiện ở **cả hai phía** không phải vì chính sách mâu thuẫn, mà vì phép so đã đem
+vế IN **đang hiệu lực** so với vế OUT **đã nghỉ hưu từ 2022-07-21** — cách nhau **4 năm**.
+
+Biến quyết định **không phải `asset_type`**, mà là **`archived_at`** — trường mà **cả ba** kiểm
+định viên ở thời điểm đó (BountyRecon, Reviewer1, DeepSeek-Harness) **đều không truy vấn**.
+
+> 📋 Theo `security/_TEMPLATE/SCOPE.md`: **`archived_at` của MỌI asset là trường BẮT BUỘC.**
+> Bỏ nó ⇒ sinh ra "xung đột scope" giả giữa chính sách **đang hiệu lực** và bản ghi **đã nghỉ hưu**.
+
+Truy vấn T3 của tôi **không hỏi** trường này ⇒ bỏ sót một chiều dữ liệu. **`archived_at` CÓ trong
+schema công khai** (đã tự kiểm ở T28: `{__type(name:"StructuredScope"){fields{name}}}` →
+`archived_at` = `True`), nên đây **không phải giới hạn công cụ** mà là chiều dữ liệu tôi đã không hỏi.
+
+### Bằng chứng thô — tự tái lập (T28)
+
+`POST https://hackerone.com/graphql` (công khai, không auth), `team(handle:"gitlab")`:
+
+```text
+archived:false -> tong 44   IN=19   OUT=25
+IN giao OUT (theo asset_identifier): 0        <-- KHONG con xung dot nao
+
+archived:true  -> tong 19
+   *.gitlab.net      type=URL  eligible=False  archived_at=2022-07-21T15:51:33.499Z
+   *.gitlap.com      type=URL  eligible=False  archived_at=2022-07-21T15:51:16.877Z
+   about.gitlab.com  type=URL  eligible=False  archived_at=2022-07-21T15:53:03.572Z
+   docs.gitlab.com   type=URL  eligible=False  archived_at=2022-07-21T15:53:13.475Z
+```
+
+| # | Tài sản | Vế IN (còn hiệu lực) | Vế OUT (**`archived_at`**) |
+|---|---|---|---|
+| 1 | `*.gitlab.net` | `WILDCARD`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:51:33.499Z`** |
+| 2 | `*.gitlap.com` | `WILDCARD`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:51:16.877Z`** |
+| 3 | `about.gitlab.com` | `URL`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:53:03.572Z`** |
+| 4 | `docs.gitlab.com` | `URL`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:53:13.475Z`** |
+
+⇒ **0 xung đột hiệu lực.** Cả 4 vế OUT thuộc **một đợt lưu trữ duy nhất ngày 2022-07-21**.
+
+> ⛔ **QUYẾT ĐỊNH CỦA ADMIN KHÔNG ĐỔI:** vẫn **loại cả 4 tài sản khỏi T4**.
+> Nay gọi đúng tên: **"0 xung đột thật + 4 loại thận trọng"**. Thận trọng hơn mức cần nhưng
+> **không gây hại**, trong khi khai thác nhầm gây hại không khắc phục được
+> (D-021 §1; `DISSENT-7`/`DISSENT-8`).
+
+*(Ghi chú: GitHub cũng có 1 mục tương tự — `Atom`, nhưng cả hai phía đều `eligible_for_bounty=False`
+nên dù hiểu thế nào thì Atom cũng không được thưởng.)*
+
+---
+
+## 3. TRÍCH NGUYÊN VĂN — QUY ĐỊNH CẤM / GIỚI HẠN
+
+=== [A6] TAI LAP DOC LAP: archived_at co that khong? (GraphQL cua TOI) ===
+$ python3 agents/reviewer1/evidence/T30/rv1_gitlab_archived.py
+=== [1] SCHEMA: truong 'archived_at' co trong StructuredScope khong? ===
+  tong truong: 39
+  archived_at co trong schema? ✅ CO
+    - asset_identifier: ✅
+    - asset_type: ✅
+    - eligible_for_submission: ✅
+    - eligible_for_bounty: ✅
+    - max_severity: ✅
+    - archived_at: ✅
+
+=== [2] TONG so scope (khong loc): 63  (T14 cua toi do 63) ===
+  archived_at=None (dang hieu luc): 44   (ho khai archived:false -> 44)
+  archived_at!=None (da nghi huu) : 19   (ho khai archived:true  -> 19)
+
+  TRONG tap DANG HIEU LUC: IN=19 OUT=25   (ho khai IN=19 OUT=25)
+  >>> GIAO NHAU (IN ∩ OUT) = []   (ho khai 0)
+  TRONG tap DA NGHI HUU : IN=5 OUT=14
+
+=== [3] 4 tai san trong tam: ve NAO co archived_at? ===
+  --- *.gitlab.net ---
+      type=WILDCARD  sub=True  bounty=True  sev=medium  archived_at=None
+      type=URL       sub=False bounty=False sev=none    archived_at=2022-07-21T15:51:33.499Z
+  --- *.gitlap.com ---
+      type=WILDCARD  sub=True  bounty=True  sev=medium  archived_at=None
+      type=URL       sub=False bounty=False sev=none    archived_at=2022-07-21T15:51:16.877Z
+  --- about.gitlab.com ---
+      type=URL       sub=True  bounty=True  sev=medium  archived_at=None
+      type=URL       sub=False bounty=False sev=none    archived_at=2022-07-21T15:53:03.572Z
+  --- docs.gitlab.com ---
+      type=URL       sub=True  bounty=True  sev=medium  archived_at=None
+      type=URL       sub=False bounty=False sev=none    archived_at=2022-07-21T15:53:13.475Z
+
+=== [4] So sanh VOI T14 (toi do nam 2026-10-01T14:05Z, KHONG hoi archived_at) ===
+  T14: 63 scope | IN=24 | OUT=39 | giao = 4 (about, docs, *.gitlab.net, *.gitlap.com)
+  Nay: 63 scope | IN(tat ca)=24 | OUT(tat ca)=39
+  => tong 63 KHOP T14; nhung khi tach theo archived_at thi giao = 0
+
+=== [A7] KE HO CUA PHEP KIEM 'vung nguyen van nguyen ven' — toi thu KHE HO 3 ===
+  Phep kiem cua ho so SANH 2 DIEM (merge-base vs branch head).
+  Neu mot commit TRUNG GIAN sua roi revert 'pre', kiem 2 diem VAN PASS.
+  => Toi kiem THEO LICH SU: moi commit trong nhanh T28 cham file nay
+
+$ git log --oneline 8006168..9f73655 -- security/gitlab/SCOPE.md
+9f73655 [T28] fix: sua nhan §2b security/gitlab/SCOPE.md - 0 xung dot hieu luc + archived_at
+
+$ git log --numstat --format='%h %s' 8006168..9f73655 -- security/gitlab/SCOPE.md
+9f73655 [T28] fix: sua nhan §2b security/gitlab/SCOPE.md - 0 xung dot hieu luc + archived_at
+
+52	22	security/gitlab/SCOPE.md
+
+  --- HUNK cua MOI commit trong lich su, kiem co nam trong §2b khong ---
+    §2b goc = dong 146..173
+      9f73655 hunk cu 146..146 -> TRONG §2b ✅
+      9f73655 hunk cu 148..149 -> TRONG §2b ✅
+      9f73655 hunk cu 151..151 -> TRONG §2b ✅
+      9f73655 hunk cu 153..170 -> TRONG §2b ✅
+    => LICH SU SACH (moi hunk moi commit trong §2b)? ✅ DUNG
+
+  --- Kiem core.autocrlf (co the lam mat khac biet xuong dong khi so sanh) ---
+    (khong dat = false tren Linux) => khong chuan hoa
+
+=== [B1] T29 CHUA PUSH — kiem TRANG THAI T28 de xac nhan tien de cua T29 ===
+$ git show 9f73655:security/gitlab/SCOPE.md | sed -n '9p'
+**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+
+  --- §5 dong 284 va 289 ---
+| Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột |
+| Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+
+  --- so dong cua file ---
+299
