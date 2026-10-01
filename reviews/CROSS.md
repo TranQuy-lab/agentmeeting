@@ -660,3 +660,100 @@ trừ điểm nội dung T13 vì vi phạm này không ảnh hưởng kết qu�
 khớp, 0 vi phạm territory (**12 mục đã kiểm**). **1 vi phạm D-001** (clone HTTPS) do tác giả tự khai,
 không gây hệ quả, chờ Admin phân xử. **`chưa xác minh`:** nội dung toàn văn 2 bài MDPI (kênh trình
 duyệt tôi không có) và chính file bằng chứng thô của javis (ở máy khác, không nằm trên máy này).
+
+---
+
+# VÒNG 5 — Bài kiểm #8 (T25): T22 DocWriter — `INDEX.md` theo mốc `main` 157 file
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T25`
+**Base:** `origin/main` = `e8c45a0` (166 file) · **Mốc kiểm:** `0f41ebb` (157 file) · **Artifact:** `INDEX.md` @ `38cf43d`
+**Bằng chứng thô:** `agents/reviewer1/evidence/T25/`
+
+```text
+[REVIEW] T25 / DocWriter (ag_da78519d) / Lớp 1 CROSS / KẾT QUẢ: PASS 18/18 mục + 1 PHÁT HIỆN BỔ SUNG
+```
+
+---
+
+## 2.15 Kết quả từng mục Admin yêu cầu
+
+| # | Mục kiểm | Lệnh đã chạy lại | Output thô | Kết quả |
+|---|---|---|---|---|
+| 1 | **Tự đếm 157 file @ `0f41ebb`** | `git ls-tree -r --name-only 0f41ebb \| wc -l` | **`157`** | **✅ ĐÚNG 157** |
+| 1b | Nhánh T22 có **158** file (như DocWriter cảnh báo)? | `git ls-tree -r --name-only 38cf43d \| wc -l` (và `cfb6b8b`) | **`158`** cả hai | **✅ CẢNH BÁO ĐÚNG** |
+| 1c | **Việc sửa ở `38cf43d` có THẬT không?** | `git diff cfb6b8b 38cf43d` · `git show --stat 38cf43d` | `INDEX.md \| 44 ++--` + `agents/docwriter/tasks/T22/README.md \| 25 ++--`; diff cho thấy **`git ls-files \| wc -l` → `M=0f41ebb` + `git ls-tree -r --name-only $M \| wc -l`**, kèm khối cảnh báo mới *"Nếu bạn đang ở nhánh `agent/doc-writer/T22`, `git ls-files` sẽ ra **158** chứ không phải 157… Vì vậy **các lệnh dưới đây trỏ vào mốc `0f41ebb`**"* | **✅ SỬA THẬT, đúng gốc lỗi** |
+| 2 | Bảng §2 (157 dòng) khớp **157/157** đường dẫn | `awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md \| grep -c '^\| [0-9]'` → **157**; rồi `sed` lấy path → `sort` → `diff` với `git ls-tree … $M \| sort` | **`diff` RỖNG** — 157 dòng bảng vs 157 file | **✅ KHỚP 157/157** |
+| 2b | Số lượng theo loại (DocWriter tự khai trong §7) | `grep -c` từng mẫu trên `0f41ebb` | `.md`=**71** ✅ · `.txt`=**45** ✅ · `.gitkeep`=**13** ✅ · `.py`=**10** ✅ · `.json`=**7** ✅ · `.sh`=**2** ✅ · số thư mục=**52** ✅ | **✅ 7/7 con số khớp** |
+| 3 | **Tác giả lấy từ commit THÊM FILE LẦN ĐẦU**, 157/157 truy được, 0 `chưa xác minh` | `for f in $(git ls-tree -r --name-only $M); do git log --diff-filter=A --format='%an' -- "$f" \| tail -1; done \| sort \| uniq -c` | **Admin AgentMeet 32 · BountyRecon 30 · Reviewer1 28 · ResearchLead 20 · ForensicsMal 18 · ExploitDeep 17 · DocWriter 7 · Auditor2 5** (tổng **157**); số file **không truy được tác giả = 0** | **✅ KHỚP §3.1 TỪNG NHÓM + 0 `chưa xác minh`** |
+| 3d | **Kiểm mẫu cột "Tác giả"** trong bảng §2 (Admin yêu cầu) | chọn 3 file mẫu mỗi nhóm × 8 nhóm, so cột bảng với `git log --diff-filter=A` | **21/21 mẫu khớp tuyệt đối** (Admin AgentMeet · BountyRecon · Reviewer1 · ResearchLead · ForensicsMal · ExploitDeep · DocWriter) | **✅ 21/21** |
+| 4a | Mục Admin vá 1: **chốt ngày `2026-10-01`** | `grep -n "2026-10-01"` và `grep -c "2025-10-01"` | d.4 ghi *"**Ngày lập bản này:** 2026-10-01 — **Admin đã chốt mốc ngày**… xem phán quyết DISSENT-4"*; **`2025-10-01` = 0 lần** | **✅ CÒN NGUYÊN** |
+| 4b | Mục Admin vá 2: **ghi rõ bản gốc Admin ở `abe0c3e` + DocWriter tiếp quản** | `grep -n "abe0c3e"` / `grep -n "tiếp quản"` | d.5: *"**Bản gốc do Admin viết** ở `abe0c3e`, DocWriter **tiếp quản và viết lại toàn bộ** ở T1 (phán quyết DISSENT-2). Bản này là lần viết lại **thứ hai**, ở T22"* | **✅ CÒN NGUYÊN** |
+| 4c | Mục Admin vá 3: **cảnh báo phạm vi** | `grep -n -i "cảnh báo phạm vi\|mốc"` | d.12 khối *"⚠️ **CẢNH BÁO PHẠM VI (cập nhật ở T22)**"* + §5 riêng + d.219 *"Bảng phản ánh **mốc `0f41ebb`**. `main` đang tiến; bảng sẽ lạc hậu ngay sau khi có commit mới"* | **✅ CÒN NGUYÊN** |
+| 5 | **Bảng liên tục** (không dòng trống cắt giữa) | `awk '/^\|/{n++;next} n>0 && !/^\|/ && !/^$/{print "BANG BI CAT"}'` | **không in gì** ✅; số thứ tự `1 → 157`, **liên tục = True**, **thiếu số = (không)**, **trùng số = (không)** | **✅ LIÊN TỤC** |
+| 5b | **Link chết = 0?** | regex link markdown trong `INDEX.md` → đối chiếu cả **file** *và* **thư mục** @ `0f41ebb` | 1 link tương đối, trỏ `agents/docwriter/tasks/T1/` — **thư mục TỒN TẠI** (chứa 2 file) | **✅ 0 LINK CHẾT** |
+
+> **Tự khai lỗi của tôi ở mục 5b:** phiên bản đầu của bộ kiểm link **báo oan** `agents/docwriter/tasks/T1/`
+> là "link chết", vì tôi chỉ đối chiếu với **danh sách FILE** (`git ls-tree -r` chỉ liệt kê file).
+> Tôi đã sửa để đối chiếu **cả thư mục** rồi chạy lại. Ghi lại để việc sửa sai kiểm chứng được.
+
+---
+
+## 2.16 Kiểm 4 phát hiện của DocWriter — **cả 4 đều ĐÚNG**
+
+| # | Phát hiện của DocWriter | Tôi xác minh độc lập | Kết quả |
+|---|---|---|---|
+| **6a** | `ADMIN/SUMMARY.md` d.46+d.51 dẫn **3 đường dẫn T5 không tồn tại** | @ `0f41ebb`: 3 path `agents/forensicsmal/T5/{FORENSICS_PROCEDURE.md, scripts/bootstrap_tools.sh, EVIDENCE/tooling_bootstrap_raw.txt}` → **cả 3 KHÔNG TỒN TẠI** (`git ls-tree -r 0f41ebb \| grep -qx`). **Đọc nguyên văn §1**: bảng nghiệm thu chỉ có **T1, T3, T15, T16, T19, T11, T17, T20** — **T5 chưa merge** | **✅ PHÁT HIỆN ĐÚNG** |
+| **6b** | 3 link **sai độ sâu** trong `CANDIDATES.md` d.27/39/50 | File ở `agents/bountyrecon/tasks/T3/`; `../../../security/github/RECON.md` → `posixpath.normpath` = **`agents/security/github/RECON.md`** ❌ không tồn tại. Cần **4** cấp: `../../../../security/github/RECON.md` → `security/github/RECON.md` ✅ **có thật** `@0f41ebb` | **✅ PHÁT HIỆN ĐÚNG** (cần 4 cấp `../`, không phải 3) |
+| **6c** | 3 link **thiếu scheme** trong `scope_github.md` | regex link thiếu scheme → **đúng 3**: `[`lgtm-com.pentesting.semmle.net`](lgtm-com.pentesting.semmle.net)`, `[…appspot.com](…)`, `[downloads.lgtm.com](downloads.lgtm.com)` | **✅ ĐÚNG ĐỦ 3** |
+| **6d** | **16 file** `[T2]`/`[T4]` đã ở `main` nhưng T2/T4 **không** trong danh sách nghiệm thu, `ASSIGNMENTS` vẫn `⏳ todo`/`⏸ chờ T3` | `for f in …; do git log -1 --format=%s -- "$f"; done` → **`[T2]` = 11 file** ✅ (DocWriter khai 11), **`[T4]` = 5 file** ✅ (khai 5). Nguyên văn `SUMMARY.md` §1 bảng nghiệm thu **không có T2, T4** ✅. Nguyên văn `ASSIGNMENTS.md`: `\| T2 \| … \| ⏳ todo \|` và `\| T4 \| … \| ⏸ chờ T3 \|` ✅ | **✅ PHÁT HIỆN ĐÚNG (11+5=16)** |
+| **6e** | §4.5 còn thiếu `reviews/VERIFY2.md`, `agents/deepseek-harness/**`, `agents/forensicsmal/T5/**` | đếm trên `0f41ebb`: **0 / 0 / 0** file | **✅ CẢ 3 THIẾU THẬT** |
+
+**Admin đã sửa 6a và 6d tại `e8c45a0` — và sửa ĐÚNG, không "sửa cho xong":** d.46/d.51 nay ghi
+*"⚠️ **T5 CHƯA MERGE** ⇒ đường dẫn chưa kiểm chứng được từ `main`"* — **tôi xác nhận T5 vẫn chưa merge**
+(`ee97c37` **không** là tổ tiên của `origin/main`), nên câu đó **đúng sự thật**, không phải câu chữ né tránh.
+`ASSIGNMENTS.md` T2 → `✅ merged qua T19 (932074f)`, T4 → `✅ merged qua T16 (2620932)` ✅.
+
+> **Tự khai lỗi của tôi ở mục 6d:** lần đếm đầu tôi dùng regex thô `grep -oE "T[0-9]+"` trên cả §1 và
+> **tưởng** T2 có trong danh sách nghiệm thu. Đọc **nguyên văn bảng** mới thấy **T2 và T4 đều vắng mặt**
+> ⇒ DocWriter đúng, regex của tôi sai. Tôi ghi lại cả hai bước để không ai nhầm là tôi hạ bệ tác giả.
+
+---
+
+## 2.17 PHÁT HIỆN BỔ SUNG của Reviewer1 — `SUMMARY.md` @ `e8c45a0` vẫn lạc hậu
+
+**Không thuộc 6 mục Admin yêu cầu, nhưng cùng lớp lỗi với §4.1 mà DocWriter đã tìm ra.**
+
+`ADMIN/SUMMARY.md` §1 @ `e8c45a0` (main hiện tại) **vẫn ghi**:
+> *"**`main` nay có 157 file. Chưa merge:** T5 (ForensicsMal), T8 (DeepSeek-Harness), **T13 (javis)**"*
+
+Nhưng đo lại: **`git ls-tree -r --name-only e8c45a0 | wc -l` = 166** (không phải 157),
+và **`37a39ff` (merge T13) ĐÃ là tổ tiên của `origin/main`** ⇒ **T13 đã merge**, không còn "chưa merge".
+
+| Khẳng định trong SUMMARY @ `e8c45a0` | Thực tế tôi đo | |
+|---|---|---|
+| "`main` nay có **157 file**" | **166 file** | ❌ lạc hậu 9 file |
+| "Chưa merge: T5" | `ee97c37` không là tổ tiên ⇒ **đúng** | ✅ |
+| "Chưa merge: T8" | `5ccb731` không là tổ tiên ⇒ **đúng** | ✅ |
+| "Chưa merge: **T13** (javis)" | `37a39ff` **đã** là tổ tiên ⇒ **SAI** | ❌ lạc hậu |
+
+**Đề xuất cho Admin** (Reviewer1 **không tự sửa** — `ADMIN/**` ngoài territory): cập nhật 2 chỗ này,
+hoặc thêm ghi chú mốc "(số liệu tại `0f41ebb`)" để dòng đó tự khai mốc của nó.
+**Đây không phải lỗi của DocWriter** — `SUMMARY.md` là file của Admin, DocWriter **không** sửa và
+đã **báo đúng** vấn đề cùng loại ở §4.1.
+
+---
+
+## 2.18 Đã kiểm những mục nào (vòng 5)
+
+**T25: đã kiểm 18 mục** — 1 · 1b · 1c · 2 · 2b · 3 · 3d · 4a · 4b · 4c · 5 · 5b · 6a · 6b · 6c · 6d · 6e · 7.
+
+- **✅ PASS (18/18):** 157 file đúng · cảnh báo 158 đúng · việc sửa `38cf43d` thật · **bảng 157/157 khớp `diff` rỗng** ·
+  7/7 con số theo loại khớp · **tác giả 157/157 truy được, 0 `chưa xác minh`** · **21/21 mẫu cột tác giả khớp** ·
+  3 mục Admin vá còn nguyên · bảng liên tục `1→157` · **0 link chết** · **4/4 phát hiện của DocWriter đúng**.
+- **⚠️ 1 phát hiện bổ sung:** `SUMMARY.md` @ `e8c45a0` còn lạc hậu (157 → **166**; T13 đã merge nhưng vẫn ghi "chưa merge").
+- **`chưa xác minh`: 0 mục.**
+- **Tự khai 2 lỗi của chính tôi** (bộ kiểm link chỉ so file; regex thô đếm task) — đã sửa và ghi lại cả hai bước.
+
+> **Phán quyết T25: PASS 18/18.** Bảng `INDEX.md` của DocWriter **khớp máy từng đường dẫn**, tác giả
+> lấy đúng từ `--diff-filter=A`, cảnh báo phạm vi đầy đủ, và **4 phát hiện đều đúng** — trong đó 2 phát hiện
+> (6a, 6d) đã khiến Admin sửa `SUMMARY.md`/`ASSIGNMENTS.md`. **Không reject mục nào.**

@@ -1,0 +1,142 @@
+### T25 — Reviewer1 kiem chung T22 DocWriter @ 38cf43d
+### Thoi diem: 2026-10-01T14:46:46Z UTC
+
+=== [1] TU DEM so file tai moc 0f41ebb ===
+$ git ls-tree -r --name-only 0f41ebb | wc -l
+157
+$ git ls-files | wc -l  (tai 0f41ebb, dung worktree tam)
+166
+
+=== [1b] So file tren NHANH T22 (38cf43d) — DocWriter khai 158 ===
+  git ls-tree -r --name-only 38cf43d | wc -l = 158
+  git ls-tree -r --name-only cfb6b8b | wc -l = 158
+
+=== [1c] VIEC SUA o 38cf43d CO THAT khong? diff cfb6b8b -> 38cf43d ===
+$ git diff --stat cfb6b8b 38cf43d
+ INDEX.md                             | 44 +++++++++++++++++++++++++-----------
+ agents/docwriter/tasks/T22/README.md | 25 ++++++++++++++------
+ 2 files changed, 49 insertions(+), 20 deletions(-)
+$ git diff cfb6b8b 38cf43d
+diff --git a/INDEX.md b/INDEX.md
+index c993af2..066459b 100644
+--- a/INDEX.md
++++ b/INDEX.md
+@@ -409,22 +409,40 @@ grep -n 'say\|send' ~/.agents/skills/agentmeet/SKILL.md | head -1   # -> send --
+ 
+ ## 6. Lệnh kiểm chứng bảng này
+ 
++> ⚠️ **ĐỌC TRƯỚC:** bảng mô tả **mốc `main@0f41ebb`**. Nếu bạn đang ở **nhánh `agent/doc-writer/T22`**,
++> `git ls-files` sẽ ra **158** chứ không phải 157, vì T22 **thêm 1 file**
++> (`agents/docwriter/tasks/T22/README.md`). Vì vậy **các lệnh dưới đây trỏ vào mốc `0f41ebb`** —
++> chạy ở nhánh nào cũng ra cùng kết quả.
++
+ ```bash
+ cd /home/noble-tran/agentmeeting-docwriter
+-git ls-files | wc -l                      # phải ra 157 (mốc 0f41ebb)
+-git ls-files '*.md' | wc -l               # phải ra 71
+-git ls-files '*.txt' | wc -l              # phải ra 45
+-git ls-files '*.gitkeep' | wc -l          # phải ra 13
+-git ls-files '*.py' | wc -l               # phải ra 10
+-git ls-files '*.json' | wc -l             # phải ra 7
+-git ls-files '*.sh' | wc -l               # phải ra 2
+-git ls-files | grep '/' | sed 's|/[^/]*$||' | sort -u | wc -l   # phải ra 52
+-git log --oneline -1                      # phải ra 0f41ebb
+-# tác giả từng file (lấy commit thêm file lần đầu):
+-for f in $(git ls-files); do git log --diff-filter=A --format='%an' -- "$f" | tail -1; done | sort | uniq -c
++M=0f41ebb                                  # mốc của bảng
++git ls-tree -r --name-only $M | wc -l                              # phải ra 157
++git ls-tree -r --name-only $M | grep -c '\.md$'                    # phải ra 71
++git ls-tree -r --name-only $M | grep -c '\.txt$'                   # phải ra 45
++git ls-tree -r --name-only $M | grep -c '\.gitkeep$'               # phải ra 13
++git ls-tree -r --name-only $M | grep -c '\.py$'                    # phải ra 10
++git ls-tree -r --name-only $M | grep -c '\.json$'                  # phải ra 7
++git ls-tree -r --name-only $M | grep -c '\.sh$'                    # phải ra 2
++git ls-tree -r --name-only $M | grep '/' | sed 's|/[^/]*$||' | sort -u | wc -l   # phải ra 52
++git log --oneline -1 $M                                            # phải ra 0f41ebb
++# tác giả từng file (commit THÊM file lần đầu; git log mới->cũ nên lấy dòng CUỐI):
++for f in $(git ls-tree -r --name-only $M); do git log --diff-filter=A --format='%an' -- "$f" | tail -1; done | sort | uniq -c
+ # phải khớp bảng §3.1
+-# đếm lại bảng §2 (không được thiếu/thừa dòng, không dòng trống giữa bảng):
+-grep -c '^| [0-9]' INDEX.md               # phải ra 157
++```
++
++Đếm lại **bảng §2** rồi **đối chiếu từng đường dẫn** với mốc (không thiếu, không thừa, bảng liên tục):
++
++```bash
++# chỉ đếm trong §2 — grep cả file sẽ đếm lẫn các bảng khác:
++awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md | grep -c '^| [0-9]'   # phải ra 157
++awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md \
++  | sed -n 's/^| [0-9]* | `\([^`]*\)`.*/\1/p' | sort > /tmp/idx.txt
++git ls-tree -r --name-only $M | sort > /tmp/git.txt
++diff /tmp/idx.txt /tmp/git.txt && echo "KHOP 157/157"          # phải in ra KHOP 157/157
++# bảng §2 phải LIÊN TỤC, không dòng trống cắt giữa:
++awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md \
++  | awk '/^\|/{n++;next} n>0 && !/^\|/ && !/^$/{print "BANG BI CAT"; exit}'   # không in gì = đạt
+ ```
+ 
+ Nếu bất kỳ lệnh nào cho kết quả khác bảng ⇒ **bảng sai, phải sửa bảng**.
+diff --git a/agents/docwriter/tasks/T22/README.md b/agents/docwriter/tasks/T22/README.md
+index 9291831..553bb25 100644
+--- a/agents/docwriter/tasks/T22/README.md
++++ b/agents/docwriter/tasks/T22/README.md
+@@ -20,17 +20,21 @@
+ 
+ ## 2. Cách lập bảng (để Reviewer1 tái lập được)
+ 
++> ⚠️ **Nhánh `agent/doc-writer/T22` có 158 file, không phải 157** — vì T22 **thêm 1 file**
++> (`agents/docwriter/tasks/T22/README.md`). Bảng mô tả **mốc `main@0f41ebb` = 157 file**, nên mọi
++> lệnh dưới đây **trỏ vào mốc `$M`**, không trỏ vào nhánh. Lần đầu DocWriter viết `git ls-files | wc -l`
++> và tự phát hiện lệnh đó **sẽ ra 158** khi Reviewer1 chạy trên nhánh — đã sửa trước khi báo.
++
+ ```bash
+ cd /home/noble-tran/agentmeeting-docwriter
+-git ls-files | wc -l                     # 157
++M=0f41ebb                                # mốc của bảng
++git ls-tree -r --name-only $M | wc -l    # 157
+ # danh sách file:
+-git ls-files
++git ls-tree -r --name-only $M
+ # tác giả (commit THÊM file lần đầu — git log mới->cũ nên lấy dòng CUỐI):
+ git log --diff-filter=A --format='%h|%an' -- <file> | tail -1
+ # sửa cuối (để suy task):
+ git log -1 --format='%h|%s' -- <file>
+-# đếm lại bảng trong INDEX.md:
+-grep -c '^| [0-9]' INDEX.md              # LƯU Ý: đếm cả bảng khác -> dùng lệnh ở §5
+ ```
+ 
+ **Suy trạng thái:** `✅ đã nghiệm thu (lớp 1)` nếu task của commit **sửa cuối** nằm trong danh sách
+@@ -57,14 +61,21 @@ nghiệm thu của `ADMIN/SUMMARY.md` §1: `T1 T3 T6 T7 T11 T15 T16 T17 T19 T20`
+ 4. Bảng khoá ở mốc `0f41ebb`; `main` đang tiến nên bảng sẽ lạc hậu.
+ 5. **Chưa được Reviewer1 kiểm định** — theo D-004, DocWriter **không** tự verify.
+ 
+-## 5. Lệnh kiểm chứng bảng §2 (không đếm lẫn bảng khác)
++## 5. Lệnh kiểm chứng bảng §2 (không đếm lẫn bảng khác, không lẫn file mới của T22)
+ 
+ ```bash
++cd /home/noble-tran/agentmeeting-docwriter
++M=0f41ebb
+ # chỉ đếm trong §2, từ tiêu đề "## 2." tới "### 2.1"
+ awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md | grep -c '^| [0-9]'   # phải ra 157
+-# đối chiếu từng đường dẫn trong bảng với git ls-files (không thiếu, không thừa):
++# đối chiếu từng đường dẫn trong bảng với MỐC 0f41ebb (không thiếu, không thừa):
+ awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md \
+   | sed -n 's/^| [0-9]* | `\([^`]*\)`.*/\1/p' | sort > /tmp/idx.txt
+-git ls-files | sort > /tmp/git.txt
++git ls-tree -r --name-only $M | sort > /tmp/git.txt
+ diff /tmp/idx.txt /tmp/git.txt && echo "KHOP 157/157"
++# bảng §2 phải liên tục:
++awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md \
++  | awk '/^\|/{n++;next} n>0 && !/^\|/ && !/^$/{print "BANG BI CAT"; exit}'   # không in gì = đạt
+ ```
++
++**Kết quả DocWriter đã chạy trước khi push:** `157` · `KHOP 157/157` · không in gì (bảng liên tục).
+$ git show --stat 38cf43d
+commit 38cf43d07f8bbce77ee04bef03364f4584d48a17
+Author: DocWriter <docwriter@agentmeet.local>
+Date:   Thu Oct 1 21:43:59 2026 +0700
+
+    [T22] fix: lenh kiem chung tro vao moc 0f41ebb (nhanh T22 co 158 file, khong phai 157)
+
+ INDEX.md                             | 44 +++++++++++++++++++++++++-----------
+ agents/docwriter/tasks/T22/README.md | 25 ++++++++++++++------
+ 2 files changed, 49 insertions(+), 20 deletions(-)
