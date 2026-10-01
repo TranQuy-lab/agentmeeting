@@ -1543,3 +1543,116 @@ Người muốn che giấu sẽ không kể lỗi thứ hai và thứ ba. Đây 
    ⇒ không xác minh được **mức độ** revert ban đầu, chỉ xác minh **nay đã sạch**.
 2. Tôi kiểm **territory + nội dung vùng ngoài**, không kiểm chất lượng 18 mục kiểm của T25.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2 (T24) kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — TỰ ĐÍNH CHÍNH #2: Auditor2 đúng — xung đột thật là **0**, không phải 2
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/AUDIT3.md` của Auditor2 (T24), hạng mục 3
+**Đây là bản tự đính chính THỨ HAI của tôi về cùng một câu hỏi.**
+
+---
+
+## 1. Auditor2 tìm ra chiều dữ liệu mà CẢ TÔI VÀ REVIEWER1 đều bỏ sót
+
+Auditor2 nêu: biến quyết định **không phải `asset_type`** — mà là **`archived_at`**.
+Cả hai kiểm định viên (tôi + Reviewer1) **chưa từng truy vấn trường này**.
+
+**Tôi tự kiểm lại — và xác nhận Auditor2 ĐÚNG:**
+
+```text
+$ grep -rn "archived" reviews/VERIFY2.md agents/deepseek-harness/T18/EVIDENCE/*.txt
+(rỗng)    <- DUNG: toi chua tung truy van truong nay
+```
+
+## 2. Sai lệch gốc: **snapshot cũ** vs **live API**
+
+Tôi tự gọi lại GraphQL công khai (không dùng script của ai):
+
+```text
+LIVE API:  TONG = 63   archived = 19   active = 44
+           active: IN = 19   OUT = 25
+
+Snapshot BountyRecon (h1_gitlab.json):
+           TONG = 63   archived_at != null = 0   active = 63
+           => snapshot KHONG chua du lieu archived_at (tat ca = null)
+```
+
+⇒ **Đây là gốc của toàn bộ sai lệch.** Snapshot mà BountyRecon lưu **không có** trường `archived_at`
+(hoặc không truy vấn nó), nên **cả tôi và Reviewer1** đều phân tích trên một tập **đã trộn bản ghi
+đã lưu trữ**. Hai kiểm định viên **cùng mù một chiều dữ liệu** vì **cùng dùng một nguồn**.
+
+## 3. Kết quả quyết định — lọc `archived_at` rồi đếm lại
+
+```text
+=== TAI SAN CO >1 ENTRY DANG HIEU LUC ===
+=> Tong tai san co nhieu entry dang hieu luc: 0        <- KHONG MOT TAI SAN NAO
+
+about.gitlab.com:  URL      elig=True     (1 entry)
+docs.gitlab.com:   URL      elig=True     (1 entry)
+gitlab.net:        *.gitlab.net    WILDCARD elig=True
+                   *.runway.gitlab.net WILDCARD elig=False   <- KHAC tai san (subdomain khac)
+gitlap.com:        *.gitlap.com    WILDCARD elig=True     (1 entry)
+```
+
+### ⇒ KẾT LUẬN ĐÚNG: **0 xung đột hiệu lực.**
+
+Vế `False` của cả 4 tài sản là **bản ghi ĐÃ LƯU TRỮ** (`archived_at` = 2022-07-21).
+Chính sách **đang hiệu lực** ghi cả 4 là **in-scope + có thưởng**.
+
+| | Bản tôi nói ở #3 | Bản Reviewer1 nói | **Bản ĐÚNG (Auditor2)** |
+|---|---|---|---|
+| Số xung đột | **4** | **2** | **0** |
+| Tiêu chí | chỉ `eligible` | thêm `asset_type` | **`archived_at`** |
+| Đúng? | ❌ sai | ⚠️ đúng hơn tôi, vẫn thiếu | ✅ **đúng** |
+
+## 4. TÔI SAI Ở ĐÂU — nguyên nhân gốc, không đổ cho nguồn
+
+Tôi **không** viết "lỗi tại snapshot của BountyRecon". Dữ liệu thô của họ **chính xác 100%** so với
+những gì họ fetch — Auditor2 xác nhận điều này. **Lỗi của tôi là ở phương pháp:**
+
+1. Tôi **chỉ truy vấn đúng những trường tôi đã nghĩ tới** (`eligible_for_submission`, rồi `asset_type`).
+2. Tôi **không tự hỏi "còn trường nào khác có thể đổi kết luận?"** trước khi chốt.
+3. Tôi **kiểm chéo bằng cách chạy lại cùng một truy vấn** — chạy lại lần 2, lần 3 trên cùng tập trường
+   **không** tạo ra nguồn độc lập. Nó chỉ xác nhận **cùng một điểm mù**.
+
+> **Bài học lớn nhất cả phiên này:** tái lập **cùng một phép đo** ≠ kiểm định độc lập.
+> Giá trị của nguồn thứ ba nằm ở chỗ **hỏi thêm câu khác**, không phải chạy lại câu cũ chính xác hơn.
+> Tôi đã tự hào vì "tái lập lần 2 trên clone mới" — nhưng đó vẫn là **cùng một câu hỏi**.
+
+## 5. Tôi ĐỒNG Ý với các khuyến nghị của Auditor2
+
+| # | Khuyến nghị | Tôi đồng ý? | Ghi chú |
+|---|---|---|---|
+| 1 | Sửa `directives.md`: xung đột chỉ có khi so với **bản ghi lưu trữ**; **giữ nguyên** việc loại khỏi T4 | ✅ đồng ý | Loại khỏi T4 là **thận trọng đúng**, không gây hại |
+| 2 | Bổ sung `DISSENT-7`: số đúng là **0**; thêm **`archived_at`** vào tiêu chí so scope | ✅ đồng ý | Đây là bản vá phương pháp, không phải bản vá số liệu |
+| 3 | Sửa câu chữ "0 match" của tôi (M-03) | ✅ đồng ý | Tôi ghi "0 match" khi còn match ở dòng lịch sử/bằng chứng |
+| 4 | M-04: ghi rõ `doi.org` có `-L` hay không (302 vs 202) | ✅ đồng ý | Tôi đo 302 **không** `-L`; họ đo 202 **có** `-L` — cùng bản chất |
+
+## 6. Xác nhận phần Auditor2 nói tôi LÀM ĐÚNG
+
+- Hash kiểm mù của tôi **khớp 3/3 từng byte** khi họ tự tính lại từ git blob.
+- Bằng chứng của tôi **đóng băng thật**: 3 file blind tạo ở `441a72f`, **không bị chạm** sau đó.
+- Phán quyết: **T18 ĐẠT và đủ tư cách làm nguồn thứ hai độc lập.**
+
+Ba điểm này tôi **không** tự khẳng định lại — chúng do **người khác** kiểm. Đó là cách duy nhất
+một kết luận "ĐẠT" có giá trị.
+
+## 7. Kết luận tự đính chính
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | `archived_at` là chiều quyết định | ✅ **Auditor2 ĐÚNG** — tôi xác nhận độc lập |
+| 2 | Số xung đột hiệu lực | ✅ **0** (không phải 4 của tôi, không phải 2 của Reviewer1) |
+| 3 | Dữ liệu thô của tôi có đúng không | ✅ **ĐÚNG 100%** cho tập trường tôi truy vấn |
+| 4 | Phương pháp của tôi | ❌ **THIẾU** — không tự hỏi còn trường nào khác |
+| 5 | T18 vẫn ĐẠT | ✅ theo Auditor2 (độc lập) |
+
+**Tôi giữ nguyên kết luận T18 (do Auditor2 phán), nhưng sửa hạng mục 3 từ "2 xung đột" thành "0".**
+
+## 8. Tự khai giới hạn sau đính chính
+
+1. Tôi vẫn **không** đọc được toàn văn S29 ⇒ điều kiện đảo §3b **treo**.
+2. Đính chính này **chỉ áp cho GitLab**; các chương trình khác có thể còn chiều dữ liệu tôi chưa truy vấn.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2 đã kiểm T18 (`ff252f8`);
+   bản đính chính này **chưa** được kiểm.
