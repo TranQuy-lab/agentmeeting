@@ -1684,3 +1684,135 @@ chỉ áp cho **vế thứ hai**.
 > **Giá trị độc lập của vòng này:** **đính chính 3/5 vị trí trong danh sách Admin** — trong đó
 > `github/SCOPE.md` §1 là **khối nguyên văn**, thêm cột vào đó sẽ **phá tính nguyên văn** mà `D-026` đang bảo vệ.
 > **Đã chuẩn bị sẵn:** dữ liệu từng-bản-ghi cho T37 và **tiêu chí REJECT** cho giới hạn `D-026`.
+
+---
+
+# VÒNG 11 — Bài kiểm #14 (T39): T34 + T36 + T37 BountyRecon
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T39`
+**Base:** `origin/main` = `c5f8ed7` (249 file) · **Bằng chứng thô:** `agents/reviewer1/evidence/T39/t39-canary.txt`
+
+```text
+[REVIEW] T39 / BountyRecon / Lớp 1 CROSS / T34+T36+T37: chưa xác minh (cả ba VẪN chưa push)
+         + ĐĂNG KÝ TRƯỚC "canary" cho D-026/D-027 + xác định NGUỒN GỐC hệ thống
+```
+
+## 2.41 Trạng thái — nói rõ trước khi chấm
+
+```text
+$ git ls-remote --heads origin | grep bounty-recon   → chỉ T3, T26, T28, T29, T31, T33
+$ git ls-remote origin agent/bounty-recon/{T34,T36,T37}  → CẢ BA VẪN RỖNG
+$ git ls-tree -r --name-only origin/main | grep _v2       → (không có file _v2 nào)
+```
+
+⇒ **T34, T36, T37 `chưa xác minh`** — **lần thứ ba liên tiếp** (T30/T32 cũng vậy). **8 mục ưu tiên của Admin
+đều thuộc các nhánh đó.** Ghi rõ lý do, **không suy đoán**.
+**Mục duy nhất xác nhận được:** dòng 18 đã sửa (T33, đã merge) — và tôi đã ghi ở `CROSS.md` §2.36.
+
+---
+
+## 2.42 ĐĂNG KÝ TRƯỚC "CANARY" — để vòng sau chấm **cơ học**, không cảm tính
+
+Đúng cách tôi đã làm với **tiêu chí REJECT** ở T38 (Admin chấp nhận, `LOG` #95): **đo và ghi trước** các giá trị
+phải **không đổi** hoặc **phải đổi**. Khi BountyRecon push, việc chấm chỉ còn là so hash.
+
+### 2.42.1 `D-027` — CANARY khối **NGUYÊN VĂN** của `security/github/SCOPE.md` §1
+
+| Chỉ số | Giá trị đăng ký trước @ `c5f8ed7` |
+|---|---|
+| blob **cả file** | `daf7a2c3cc751559f5fcf38ea66f3816f3fd2d65` |
+| **số dòng bắt đầu bằng `\|` trong §1** | **0** ⇒ §1 **là văn xuôi nguyên văn**, không phải bảng |
+| độ dài khối nguyên văn §1 | **2109 ký tự / 2109 byte** |
+| **`sha256` KHOI NGUYEN VAN §1** | **`2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72`** |
+
+**Luật chấm:** hash khối §1 **phải KHÔNG ĐỔI**. Đổi ⇒ khối nguyên văn bị chạm ⇒ **REJECT theo `D-027`**.
+Thêm **mục `### 1b` mới** là **ĐÚNG** (không đổi khối §1) — và **chính bảng `### 1b` đó cũng phải có `archived_at`**.
+
+### 2.42.2 `D-026` — CANARY 4 file **CAPTURE** (phải **KHÔNG ĐỔI**)
+
+| File | blob @ `c5f8ed7` |
+|---|---|
+| `…/T3/EVIDENCE/scope_github.md` | **`15c946ff956a3fdb466f7f9768081af29b812088`** *(không đổi từ T27 đến nay)* |
+| `…/T3/EVIDENCE/scope_cloudflare.md` | `62cb927e95ce5d552c1cb8a9bc2013b9dbd67755` |
+| `…/T3/EVIDENCE/scope_security.md` | `aec4f6dcd178c7190abc5b48783631be957482f3` |
+| `…/T3/EVIDENCE/scope_gitlab.md` | `22e3dc7d031076627c5be463ffa6523ecd25ff25` |
+
+**Luật chấm:** blob **phải KHÔNG ĐỔI**. Đổi ⇒ **sửa trực tiếp `EVIDENCE/**`** ⇒ vi phạm `D-026` + luật cấm sửa
+bằng chứng thô ⇒ **báo Admin ngay**. Bản `_v2` **phải là file MỚI**, và **phải ghi ngày chụp**.
+
+### 2.42.3 `D-027` — CANARY **ÂM**: 2 file `RECON.md` phải **KHÔNG** có `archived_at`
+
+| File | blob @ `c5f8ed7` | `grep -c archived_at` |
+|---|---|---|
+| `security/github/RECON.md` | `85a45252b552…` | **0** |
+| `security/cloudflare/RECON.md` | `a76822e58c6e…` | **0** |
+
+**Luật chấm:** nếu số lần > **0** ⇒ họ **thêm cột `archived_at` vào bảng DNS/phương pháp** ⇒ **sai ngữ nghĩa**
+⇒ **REJECT theo `D-027`**. **Nếu KHÔNG thêm ⇒ ĐÚNG** — và tôi sẽ **ghi rõ "không thêm là ĐÚNG, không phải thiếu"**,
+đúng như Admin yêu cầu, để nó **không bị hiểu là bỏ sót**.
+
+### 2.42.4 Hai file **phải được sửa** — blob nền
+
+`security/gitlab/SCOPE.md` = `de53744f623582aaca19b6bbda3b83ea5746bc9d` ·
+`security/cloudflare/SCOPE.md` = `03eeac130c01f1a1bc16933081dba7daf3558509`.
+
+---
+
+## 2.43 Kiểm lại câu hỏi Admin đã hỏi **hai lần** — "còn bảng AUTHORED nào khác thiếu không?"
+
+Quét lại **toàn bộ** `security/**` @ `c5f8ed7` (sau khi Admin merge T38 — T38 chỉ chạm `reviews/` + `agents/reviewer1/**`
+nên `security/**` không đổi): **kết quả VẪN LÀ "đúng 3, không còn"** ✅
+
+| File | Mục | dòng tài sản | `archived_at` |
+|---|---|---|---|
+| `security/gitlab/SCOPE.md` | §1 (`n=24`) | 24 | ❌ thiếu |
+| `security/gitlab/SCOPE.md` | §2a (`n=39`) | 10 | ❌ thiếu |
+| `security/cloudflare/SCOPE.md` | §1a | 12 | ❌ thiếu |
+
+**Chưa có bảng `### 1b` nào** ⇒ chưa có bảng mới nào cần kiểm. **Nhưng khi họ thêm `### 1b`, nó là một bảng
+AUTHORED MỚI ⇒ tự nó cũng phải có `archived_at`** — tôi sẽ kiểm đúng điểm này.
+
+---
+
+## 2.44 NGUỒN GỐC HỆ THỐNG — **template đã đúng, 3 file là DI SẢN**
+
+`security/_TEMPLATE/SCOPE.md` @ `c5f8ed7` **đã** quy định:
+> `| **archived_at của MỌI asset** | ✅ **BẮT BUỘC** | **Bài học M-01 (Auditor2 T24):** hai kiểm định viên độc lập
+> cùng truy vấn một tập trường thì **cùng mù một chiều dữ liệu**… |`
+
+kèm khối **`[QUY TẮC CHỐNG MÙ MỘT CHIỀU — D-013]`** đòi truy vấn **4 chiều** (`archived_at`, `asset_type`,
+`eligible_for_bounty`/`eligible_for_submission`, ngày cập nhật chính sách) trước khi kết luận "xung đột".
+
+**Mốc thời gian chính xác:** yêu cầu này được **thêm vào template tại `17ccb0a`**
+(*"[T0] fix: … **them archived_at BAT BUOC vao mau SCOPE.md**; ghi DISSENT-8"* — **Admin**, sau M-01).
+Ba file `SCOPE.md` được viết ở **T3 (`03d304b`)** — **TRƯỚC** `17ccb0a`.
+
+⇒ **Nguồn gốc đúng là: 3 file là DI SẢN viết trước khi template có hiệu lực** — **không phải** template còn thiếu.
+**Hệ quả:** mọi file mới viết theo template **đã** có `archived_at`; việc còn lại thuần là **retrofit 3 bảng di sản**.
+**Điều này khớp với cách Admin gọi ở `LOG` #82 ("lỗi thiết kế của Admin")** — và nay **thiết kế đã được sửa**;
+phần còn lại là **di trú dữ liệu**, không phải sửa quy tắc.
+
+### ⚠️ KHE HỞ NHỎ CÒN LẠI ở template (đề xuất, không phải reject)
+
+Template **quy định trường** nhưng **KHÔNG có BẢNG MẪU** minh hoạ **cách bày cột** — nó chỉ có bảng
+*"Trường | Bắt buộc | Vì sao"*. ⇒ Người viết sau có thể **"có nhắc `archived_at`"** mà **không nhúng cột vào
+bảng tài sản**. **Đề xuất:** thêm một **bảng tài sản mẫu** (3–4 dòng giả) với **đủ cột** gồm `archived_at`,
+để yêu cầu trở nên **không thể hiểu sai**. Đây là cách chặn **lần thứ năm** ở tầng thiết kế.
+
+---
+
+## 2.45 Đã kiểm những mục nào (vòng 11)
+
+- **Trạng thái nhánh — 3 mục:** T34/T36/T37 vẫn rỗng · không có `_v2` · T33 đã merge.
+- **Đăng ký canary — 4 mục:** `D-027` canary khối nguyên văn §1 (`sha256` + 2109 byte + 0 dòng `|`) ·
+  `D-026` canary 4 blob CAPTURE · `D-027` canary **âm** 2 file `RECON.md` (count = 0) · blob nền 2 file phải sửa.
+- **Kiểm lại inventory — 3 mục:** quét toàn bộ `security/**` ⇒ **vẫn "đúng 3, không còn"** ·
+  chưa có `### 1b` ⇒ chưa có bảng mới cần kiểm.
+- **Nguồn gốc hệ thống — 3 mục:** template **đã** có `archived_at` BẮT BUỘC + khối D-013 4 chiều ·
+  mốc `17ccb0a` (Admin, sau M-01) **sau** T3 `03d304b` ⇒ 3 file là **di sản** · **khe hở nhỏ**: template thiếu bảng mẫu.
+- **`chưa xác minh`: 8 mục** — toàn bộ 8 ưu tiên của Admin thuộc T34/T36/T37 (nhánh chưa push).
+
+> **Phán quyết vòng 11: `chưa xác minh` cho T34+T36+T37 (lần thứ ba — nhánh vẫn chưa push, nêu rõ lý do, không suy đoán).**
+> **Giá trị độc lập của vòng này:** (1) **đăng ký trước canary** cho `D-026`/`D-027` ⇒ vòng sau chấm **cơ học**;
+> (2) **xác định nguồn gốc hệ thống**: template **đã đúng** từ `17ccb0a`, 3 file là **di sản trước đó** ⇒
+> việc còn lại là **di trú**, không phải sửa quy tắc; (3) **1 khe hở thiết kế còn lại** — template thiếu bảng mẫu.
