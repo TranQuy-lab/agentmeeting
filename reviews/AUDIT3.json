@@ -1,0 +1,498 @@
+{
+  "checked_at": "2026-10-01T15:05:00+07:00",
+  "task": "T24",
+  "round": 3,
+  "auditor": {
+    "name": "Auditor2",
+    "agent_id": "ag_d271d4f8",
+    "room": "ab1-478d-cfa7",
+    "branch": "agent/auditor-2/T24",
+    "clone": "/home/noble-tran/agentmeeting-auditor2",
+    "forbidden_tools": [
+      "/home/noble-tran/admin-agentmeet/admin_cli.py"
+    ]
+  },
+  "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a",
+  "main_head": "e8c45a07b73640c68f12b1252f04300ebbae041a",
+  "subject": {
+    "artifact": "reviews/VERIFY2.md + agents/deepseek-harness/**",
+    "branch": "agent/deepseek-harness/T8",
+    "commit_audited": "ff252f8",
+    "branch_head_now": "5ccb731",
+    "note": "nhanh da tien toi #12 (T22) sau moc chi dinh; #12 KHONG nam trong phan quyet nay"
+  },
+  "preserved_artifacts": [
+    "reviews/AUDIT.md",
+    "reviews/AUDIT.json",
+    "reviews/AUDIT2.md",
+    "reviews/AUDIT2.json"
+  ],
+  "verdict": {
+    "T18_qualifies_as_second_independent_source": true,
+    "claim1_S31": "XAC NHAN HOAN TOAN - HTTP 200, 368458 B byte-exact, 8/8 keyword = 0 (dem tren RAW HTML), future-work sentence nguyen van khop, venue SPIQE 2026 qua arxiv:comment",
+    "claim2_DOI": "XAC NHAN - HOA 404 tren 3/3 dich vu, thuong 200/200/202 (DSH ghi doi.org=302; khac do co/khong dung -L)",
+    "claim3_asset_type": "DU LIEU TAI LAP 100% NHUNG KET LUAN BI VUOT QUA - bien quyet dinh la archived_at, ca 2 kiem dinh vien truoc deu KHONG truy van",
+    "claim4_T19": "XAC NHAN - 4/4 DOI da sua, vi tri trich dan hieu luc 5 thuong/0 HOA, N=4 khop D-017",
+    "central_question_answer": "0 XUNG DOT trong chinh sach DANG HIEU LUC - KHONG PHAI 2, CUNG KHONG PHAI 4",
+    "headline": "T18 DAT va du tu cach lam nguon thu hai (khoa bam 3/3 khop, bang chung dong bang, tai lap lan ba khop). NHUNG cau hoi trung tam phai sua dap an: 0 xung dot hieu luc, khong phai 2 hay 4 - ca hai kiem dinh vien truoc cung thieu chieu archived_at."
+  },
+  "claim_verification": [
+    {
+      "id": "claim1_S31",
+      "verified": true,
+      "strength": "byte-exact",
+      "method": "curl -sL arxiv.org/html/2603.11006v2; dem keyword tren RAW HTML (khong chi van ban boc the); parse arxiv:comment qua API",
+      "results": {
+        "http_code": 200,
+        "size_download": 368458,
+        "matched_claim": "368.458 B byte-exact",
+        "keyword_counts_raw_html": {
+          "MTU": 0,
+          "middlebox": 0,
+          "fragment": 0,
+          "packet size": 0,
+          "network layer": 0,
+          "certificate chain": 0,
+          "tunnel": 0,
+          "VPN": 0,
+          "ML-DSA": 4,
+          "hybrid": 40,
+          "latency": 74,
+          "handshake": 64,
+          "load balancer": 2,
+          "MiTM": 2
+        },
+        "future_work_found_at_char": 56165,
+        "future_work_verbatim": "extending the analysis to real network environments with commercial load balancers and MiTM (Man-in-The-Middle) inspection devices to quantify the performance impact when using PQC in TLS",
+        "venue_in_html_body": 0,
+        "venue_in_arxiv_comment": "Accepted in SPIQE 2026 (Workshop on Secure Protocol Implementations in the Quantum Era), associated to Euro S&P 2026"
+      },
+      "added_value": "Dem tren RAW HTML loai tru kha nang 8 so 0 la do phuong phap boc the lam mat chu => 8 tu khoa THUC SU vang mat; 0 la dung ban chat, khong phai tieu tiet ky thuat",
+      "evidence": [
+        {
+          "path": "curl https://arxiv.org/html/2603.11006v2",
+          "line": "http_code=200 size_download=368458",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "curl http://export.arxiv.org/api/query?id_list=2603.11006",
+          "line": "arxiv:comment",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        }
+      ]
+    },
+    {
+      "id": "claim2_DOI",
+      "verified": true,
+      "method": "curl ca 3 dich vu voi CA HAI dang hoa/thuong",
+      "results": {
+        "uppercase": "doi.org=404 Crossref=404 OpenAlex=404",
+        "lowercase": "doi.org=202 Crossref=200 OpenAlex=200"
+      },
+      "sub_number_variance": {
+        "author_reported": "doi.org=302",
+        "auditor_measured": 202,
+        "cause": "co dung -L (theo redirect, lay ma cuoi) hay khong",
+        "researchlead_also_measured": 202
+      },
+      "metadata_confirmed": {
+        "title": "Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, RBAC, and ABAC",
+        "container": "2025 4th International Conference on Computing and Information Technology (ICCIT)",
+        "published": "2025-04-13",
+        "type": "proceedings-article",
+        "note": "container-title la ICCIT => giai thich vi sao ICICT sai: dao chu cua ICCIT"
+      },
+      "evidence": [
+        {
+          "path": "doi.org / api.crossref.org / api.openalex.org (6 lan goi)",
+          "line": "404 vs 200/200/202",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        }
+      ]
+    },
+    {
+      "id": "claim3_asset_type",
+      "verified": "data_reproduced_conclusion_superseded",
+      "central_question": "2 hay 4 xung dot that?",
+      "answer": "0 xung dot trong chinh sach DANG HIEU LUC. Ca 4 'xung dot' chi la so voi ban ghi DA LUU TRU (archived 2020-2022).",
+      "raw_data_reproduced": {
+        "total_63": true,
+        "in_24": true,
+        "out_39": true,
+        "type_split_2_same_2_diff": true,
+        "note": "du lieu tho cua DeepSeek-Harness CHINH XAC"
+      },
+      "decisive_variable": "archived_at - ca hai kiem dinh vien truoc deu KHONG truy van truong nay",
+      "active_policy": {
+        "query": "structured_scopes(first:200, archived:false)",
+        "total": 44,
+        "in": 19,
+        "out": 25,
+        "assets_on_both_sides": 0
+      },
+      "four_assets": [
+        {
+          "id": "about.gitlab.com",
+          "active": "URL submission=True bounty=True sev=medium",
+          "out_entry": "URL submission=False archived_at=2022-07-21T15:53:03.572Z"
+        },
+        {
+          "id": "docs.gitlab.com",
+          "active": "URL submission=True bounty=True sev=medium",
+          "out_entry": "URL submission=False archived_at=2022-07-21T15:53:13.475Z"
+        },
+        {
+          "id": "*.gitlab.net",
+          "active": "WILDCARD submission=True bounty=True sev=medium",
+          "out_entry": "URL submission=False archived_at=2022-07-21T15:51:33.499Z"
+        },
+        {
+          "id": "*.gitlap.com",
+          "active": "WILDCARD submission=True bounty=True sev=medium",
+          "out_entry": "URL submission=False archived_at=2022-07-21T15:51:16.877Z"
+        }
+      ],
+      "archived_summary": {
+        "total_archived": 19,
+        "examples": [
+          "*.gitter.im (2021-05-25)",
+          "api.gitter.im (2020-10-05)",
+          "blog.gitter.im (2020-10-05)",
+          "ws*.gitter.im (2020-10-05)",
+          "gitlab.net (2020-10-05)",
+          "gitlap.com (2020-10-05)"
+        ]
+      },
+      "archived_never_queried_proof": "grep -rn 'archived' --include=*.md --include=*.txt . => 3 dong, ca 3 la ve 'archived repos' trong chinh sach GitHub, KHONG lien quan scope GitLab",
+      "no_harm": "Quyet dinh loai ca 4 khoi T4 van la than trong an toan; DISSENT-7 da tu nhan 'than trong hon muc can nhung khong gay hai'. T24 chi lam chinh xac them: 0 that + 4 than trong, khong phai 2 that + 2 than trong.",
+      "evidence": [
+        {
+          "path": "POST https://hackerone.com/graphql team(handle:gitlab) structured_scopes",
+          "line": "63 entry / IN=24 / OUT=39",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "POST https://hackerone.com/graphql structured_scopes(archived:false)",
+          "line": "44 entry / 0 tai san 2 phia",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": "183-184",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "ADMIN/DISSENT.md",
+          "line": "DISSENT-7",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        }
+      ]
+    },
+    {
+      "id": "claim4_T19",
+      "verified": true,
+      "results": {
+        "four_positions_fixed": true,
+        "live_citation_positions": "5 x 10.1109/iccit63348.2025.10989392 ; 0 x dang HOA",
+        "N_equals_4": true,
+        "N_requirement": "D-017 yeu cau >=3, khong giu N=2"
+      },
+      "imprecision_found": "Cau 'grep -rn \"ICICT63348\" research/ -> 0 match' SAI khi chay nguyen van: 8 match",
+      "but_all_8_legitimate": [
+        "3 dong trong T19_checks.txt:12,14,16 la URL dung de chung minh 404",
+        "3 dong la cau van mo ta viec sua",
+        "1 dong T19_checks.txt:117 la LOI TU CANH BAO cua chinh ResearchLead"
+      ],
+      "author_pre_documented": true,
+      "author_caveat_verbatim": "Luu y ve grep -rn ICICT63348 research/: sau khi sua, cac match con lai CHI nam trong (a) chinh file bang chung nay (ghi lai chuoi SAI de doi chieu) va (b) cau van giai thich viec sua. KHONG con match nao o vi tri trich dan that.",
+      "evidence": [
+        {
+          "path": "grep -rn 'ICICT63348' research/ | wc -l",
+          "line": "8",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "grep vi tri trich dan hieu luc",
+          "line": "5 thuong / 0 HOA",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "research/EVIDENCE/T19_checks.txt",
+          "line": "117-119",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        }
+      ]
+    }
+  ],
+  "integrity_verification": {
+    "blind_lock_hashes": {
+      "claimed": 3,
+      "recomputed_from_git_blobs": 3,
+      "match": "3/3 TUNG BYTE",
+      "hashes": [
+        "3c5668eb582581470dd000c8145dcf57b8c52c3beacf635faacf0d2096c4a407 t18a_s31_blind_raw.txt",
+        "54fd0e99a80c75fdfd78649b5b5b4ffb3345ada02fcb1335e0ebe500e215c7d6 t18b_doi_blind_raw.txt",
+        "af52f7eae8ba07e69de4cc02be8032f36bda46e31346f6ecf3eaadfb981b5a65 t18c_scope_blind_raw.txt"
+      ]
+    },
+    "evidence_frozen": true,
+    "evidence_frozen_proof": "Ca 3 file bang chung duoc tao o 441a72f va KHONG bi cham lan nao sau do (git log <branch> -- <file> | tail -1 = 441a72f). ff252f8 chi them output tai lap lan 2, khong sua 3 file blind.",
+    "independent_third_reproduction": true,
+    "independent_third_reproduction_note": "Auditor2 tai lap lan thu ba tren may nay: 3/3 phep kiem then chot (S31, DOI, scope) cho cung con so.",
+    "author_self_corrected": true,
+    "author_self_correction_quote": "VERIFY2 #3 §3: 'toi goi do la xung dot la SAI VE BAN CHAT' + 'Day la lan thu hai Reviewer1 di xa hon toi'",
+    "D004_compliance": true,
+    "D004_note": "VERIFY2 #10 §7 va #11 §8 deu ghi 'File nay do toi viet - toi KHONG tu verify (D-004). Can Reviewer1 hoac Auditor2 kiem; neu bat dong => Auditor2 chot.'",
+    "dns_spot_check": "4/4 khop (registry.gitlab.com 35.227.35.254; gitlab.com 172.65.251.78; license.gitlab.com khong A; khong CNAME)"
+  },
+  "findings": [
+    {
+      "id": "M-01",
+      "severity": "trung bình",
+      "category": "tiền đề sai trong chỉ thị",
+      "status": "vi phạm",
+      "summary": "directives.md:183-184 (D-013 addendum) khang dinh '4 tai san GitLab co XUNG DOT SCOPE trong du lieu cong bo cua chinh GitLab'. SAI TIEN DE: xung dot chi xuat hien khi so voi ban ghi DA LUU TRU; chinh sach dang hieu luc ghi ca 4 la in-scope + co thuong. DISSENT-7 cung phan '2 la xung dot THAT' - cung chua dung: so dung la 0.",
+      "evidence": [
+        {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": "183-184",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "ADMIN/DISSENT.md",
+          "line": "DISSENT-7",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "GraphQL structured_scopes(archived:false)",
+          "line": "44 entry, 0 tai san xuat hien 2 phia",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "4 ve OUT",
+          "line": "deu archived_at 2022-07-21",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        }
+      ],
+      "recommendation": "Sua cau chu trong directives.md:183-184 va bo sung DISSENT-7: so dung la 0 xung dot hieu luc; them archived_at vao tieu chi so scope. GIU NGUYEN quyet dinh loai khoi T4 (than trong, vo hai)."
+    },
+    {
+      "id": "M-02",
+      "severity": "thấp",
+      "category": "kết luận lớp 2 bị vượt",
+      "status": "nghi vấn",
+      "summary": "T18 ket luan '4 xung dot -> 2 that + 2 khac type' va cham PASS 8/8. Ket luan thieu chieu archived_at => PASS khong con gia tri nguyen ven o hang muc 3. Hai kiem dinh vien doc lap CUNG ket luan sai vi CUNG thieu mot chieu du lieu.",
+      "evidence": [
+        {
+          "path": "reviews/VERIFY2.md (T18 §4 dong 8, §6 dong 4)",
+          "line": "4 xung dot scope -> 2 that + 2 khac type | PASS",
+          "commit": "ff252f8"
+        },
+        {
+          "path": "grep -rn 'archived' --include=*.md --include=*.txt .",
+          "line": "3 dong, khong dong nao ve scope GitLab",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        }
+      ],
+      "recommendation": "Khong ha cap toan bo T18: van DAT o S31/DOI/T19 va o tinh liem chinh. Chi ghi chu rang ket luan asset_type da duoc T24 thay the."
+    },
+    {
+      "id": "M-03",
+      "severity": "thấp",
+      "category": "thiếu sót trình bày",
+      "status": "thiếu sót trình bày",
+      "summary": "Cau 'grep -rn \"ICICT63348\" research/ -> 0 match' (T19_checks.txt:28, ebpf SOURCES.md:157, pqc SOURCES.md:181) sai khi chay nguyen van: 8 match. Ban chat dung (0 o vi tri trich dan) va tac gia DA TU GHI RO gioi han o T19_checks.txt:117-119.",
+      "evidence": [
+        {
+          "path": "grep -rn 'ICICT63348' research/ | wc -l",
+          "line": "8",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "research/EVIDENCE/T19_checks.txt",
+          "line": "117-119",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        }
+      ],
+      "recommendation": "Sua thanh '0 match o vi tri trich dan', hoac dung grep -rn ... | grep -v EVIDENCE."
+    },
+    {
+      "id": "M-04",
+      "severity": "thấp",
+      "category": "thiếu sót trình bày (đo lường)",
+      "status": "thiếu sót trình bày",
+      "summary": "doi.org cho DOI dung: DeepSeek-Harness ghi 302, Auditor2 va ResearchLead deu do 202. Khac do co/khong dung -L (theo redirect, lay ma cuoi). Ban chat giong het.",
+      "evidence": [
+        {
+          "path": "agents/deepseek-harness/T18/EVIDENCE/t18b_doi_blind_raw.txt",
+          "line": "doi.org=302",
+          "commit": "ff252f8"
+        },
+        {
+          "path": "research/EVIDENCE/T19_checks.txt",
+          "line": "11,17 -> 202",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        },
+        {
+          "path": "do lai cua Auditor2",
+          "line": "doi.org=202",
+          "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+        }
+      ],
+      "recommendation": "Khi ghi ma HTTP cua doi.org, ghi ro co -L hay khong."
+    }
+  ],
+  "no_issue_items": [
+    {
+      "item": "S31 tai duoc toan van, kich thuoc khop",
+      "result": "DAT - HTTP 200, 368458 B byte-exact voi khai bao.",
+      "evidence": {
+        "path": "curl https://arxiv.org/html/2603.11006v2",
+        "line": "http_code=200 size_download=368458",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "8 tu khoa bien/middlebox/MTU",
+      "result": "DAT - 8/8 = 0, va toi dem tren RAW HTML nen loai tru kha nang mat chu do boc the.",
+      "evidence": {
+        "path": "grep -oiF tren arxivS31.html",
+        "line": "8/8 = 0",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "Cau future work ve load balancers & MiTM",
+      "result": "DAT - nguyen van khop, tim thay tai ky tu 56165.",
+      "evidence": {
+        "path": "arxivS31.html",
+        "line": "char 56165",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "Venue SPIQE 2026 va canh bao cua Admin",
+      "result": "DAT - SPIQE = 0 lan trong HTML body nhung CO trong arxiv:comment cua API. Canh bao 'dung grep HTML roi ket luan sai' la DUNG va tai lap duoc.",
+      "evidence": {
+        "path": "arxiv:comment qua export.arxiv.org API",
+        "line": "Accepted in SPIQE 2026 ... Euro S&P 2026",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "DOI hoa/thuong",
+      "result": "DAT - HOA 404 tren 3/3 dich vu; thuong 200/200/202.",
+      "evidence": {
+        "path": "doi.org + crossref + openalex",
+        "line": "404 vs 200/200/202",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "Metadata S29 co that",
+      "result": "DAT - Crossref tra title + container '2025 4th ICCIT' + 2025-04-13 + proceedings-article. container-title = ICCIT giai thich vi sao ICICT sai (dao chu).",
+      "evidence": {
+        "path": "api.crossref.org/works/10.1109/iccit63348.2025.10989392",
+        "line": "title/container/published/type",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "Khoa kiem mu T18 bang bam",
+      "result": "DAT - sha256 3/3 khop TUNG BYTE khi tinh lai tu git blob.",
+      "evidence": {
+        "path": "agents/deepseek-harness/T18/BLIND_LOCK.md",
+        "line": "3 hash",
+        "commit": "ff252f8"
+      }
+    },
+    {
+      "item": "Bang chung T18 khong bi sua sau khi khoa",
+      "result": "DAT - ca 3 file tao o 441a72f, khong cham lai; ff252f8 chi them output tai lap.",
+      "evidence": {
+        "path": "git log origin/agent/deepseek-harness/T8 -- agents/deepseek-harness/T18/",
+        "line": "441a72f, ff252f8",
+        "commit": "ff252f8"
+      }
+    },
+    {
+      "item": "Tai lap doc lap lan thu ba",
+      "result": "DAT - Auditor2 tai lap tren may nay, 3/3 phep kiem then chot cung con so.",
+      "evidence": {
+        "path": "curl/graphql do chinh Auditor2 chay",
+        "line": "khop",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "T19: 4/4 DOI da sua + N=4",
+      "result": "DAT - 4/4 vi tri dung dang thuong; vi tri trich dan hieu luc 5 thuong/0 HOA; N=4 khop yeu cau D-017 (>=3).",
+      "evidence": {
+        "path": "grep iccit63348 research/",
+        "line": "4 vi tri muc tieu + 1 trong RANKING",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "Du lieu tho scope GitLab cua DeepSeek-Harness",
+      "result": "DAT - khop 100%: 63 entry / IN=24 / OUT=39 / tach type 2 cung + 2 khac.",
+      "evidence": {
+        "path": "POST hackerone.com/graphql",
+        "line": "63/24/39",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "4/4 quan sat DNS (kiem them ngoai pham vi)",
+      "result": "DAT - khop tung octet; license.gitlab.com khong A, khong CNAME => khong phai subdomain takeover.",
+      "evidence": {
+        "path": "dig +short",
+        "line": "35.227.35.254 / 172.65.251.78 / (rong) / (rong)",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "Vi pham territory",
+      "result": "KHONG - T18 nam trong reviews/VERIFY2.md + agents/deepseek-harness/**, dung territory T18.",
+      "evidence": {
+        "path": "ADMIN/ASSIGNMENTS.md",
+        "line": "hang T18",
+        "commit": "e8c45a07b73640c68f12b1252f04300ebbae041a"
+      }
+    },
+    {
+      "item": "Ro ri credential trong artifact moi",
+      "result": "KHONG - khong thay agent_token/creds/token nao trong VERIFY2.md hay agents/deepseek-harness/**.",
+      "evidence": {
+        "path": "git grep -lI -E 'agent_token|creds|api[_-]?key' origin/agent/deepseek-harness/T8",
+        "line": "0 file",
+        "commit": "ff252f8"
+      }
+    }
+  ],
+  "limitations": [
+    "Chi kiem dung 4 hang muc Admin giao (+ DNS kiem them); KHONG kiem toan bo T11 cua Reviewer1 hay toan bo T18.",
+    "KHONG doc duoc toan van S29 (OpenAlex oa_status=closed) - chi xac minh metadata; dieu kien dao VAN TREO.",
+    "KHONG cham lai diem tinh moi N (ngoai pham vi T24; D-017 giao ResearchLead).",
+    "Ket qua GraphQL/HTTP dung tai thoi diem chay 2026-10-01; arXiv/HackerOne co the doi sau.",
+    "Nhanh agent/deepseek-harness/T8 da tien toi 5ccb731 (verify #12, T22) sau moc chi dinh; phan #12 KHONG nam trong phan quyet nay.",
+    "Khong doc ~/.agentmeet/**/creds.json hay bat ky agent_token nao."
+  ],
+  "user_notified": true,
+  "user_notification_summary": "Da bao qua bao cao phong [AUDIT3] va return: T18 DAT va DU TU CACH lam nguon thu hai (S31 byte-exact 368458 B + 8/8 keyword=0 tren RAW HTML + future-work nguyen van + venue qua arxiv:comment; DOI hoa 404/thuong 200; T19 4/4 + N=4; khoa bam 3/3 khop; bang chung dong bang; tai lap lan ba khop). NHUNG cau hoi trung tam phai sua dap an: 0 xung dot trong chinh sach DANG HIEU LUC, khong phai 2 hay 4 - ca hai kiem dinh vien truoc cung thieu chieu archived_at. Khong phat hien bia dat, lam gia, thoi phong hay vi pham territory.",
+  "summary_counts": {
+    "vi phạm": 1,
+    "nghi vấn": 1,
+    "thiếu sót trình bày": 2,
+    "total_findings": 4,
+    "by_severity": {
+      "cao": 0,
+      "trung bình": 1,
+      "thấp": 3
+    },
+    "no_issue_items": 14,
+    "claims_verified": "4/4 (1 co sua doi ket luan)",
+    "central_answer": "0 xung dot hieu luc"
+  },
+  "conclusion": "T18 DAT va DU TU CACH lam nguon thu hai doc lap cho T11: S31 tai lap BYTE-EXACT (368458 B, 8/8 keyword=0 khi dem tren RAW HTML, cau future-work nguyen van, venue SPIQE 2026 qua arxiv:comment chu KHONG co trong HTML); DOI hoa 404/thuong 200 tren 3/3 dich vu; T19 4/4 DOI + N=4; khoa kiem mu bang bam 3/3 khop tung byte, bang chung dong bang khong sua sau khi khoa, va tai lap lan thu ba cho cung ket qua. NHUNG cau hoi trung tam '2 hay 4 xung dot that?' phai sua dap an: 0 xung dot trong chinh sach DANG HIEU LUC - ca 4 'xung dot' chi la so voi ban ghi DA LUU TRU (archived 2020-2022); bien quyet dinh la archived_at, thu ma CA HAI kiem dinh vien truoc deu khong truy van. Day chinh la gia tri cua nguon thu ba: khong chay lai cau hoi cu ma hoi them mot cau hoi moi. Quyet dinh loai 4 tai san khoi T4 van than trong va vo hai, nhung tien de trong directives.md:183-184 can sua. Khong phat hien bia dat, lam gia, thoi phong hay vi pham territory."
+}
