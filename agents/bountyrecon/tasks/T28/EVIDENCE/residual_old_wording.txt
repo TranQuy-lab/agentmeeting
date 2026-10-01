@@ -1,0 +1,27 @@
+=== T28 — TON DONG CU CON LAI NGOAI §2b (KHONG DUOC PHEP SUA) ===
+UTC: 2026-10-01T15:00:26Z
+file: security/gitlab/SCOPE.md   |   §2b hien tai = dong 146..203   |   §3 bat dau dong 204
+
+Chi thi T28 cua Admin: 'Sua CHI §2b'. Vi vay tôi GIU NGUYEN 2 cho sau va BAO CAO.
+
+--- (A) DONG 9 — khoi Tieu de/Trang thai (§0..§1), NGOAI §2b ---
+$ sed -n '9p' $F
+  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+
+--- (B) §5 KET LUAN, 2 dong con nhan 'xung dot' (dong 284 va 289) ---
+$ sed -n '284p;289p' $F
+  | Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột |
+  | Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+
+--- Kiem chung day la NGOAI §2b ---
+  '## 2b.' o dong 146 ; '## 3.' o dong 204  => §2b = dong 146..202
+  dong 9: NGOAI §2b  <-- GIU NGUYEN, chi bao cao
+  dong 284: NGOAI §2b  <-- GIU NGUYEN, chi bao cao
+  dong 289: NGOAI §2b  <-- GIU NGUYEN, chi bao cao
+
+--- Xac nhan 2 dong nay CO trong ban TRUOC (khong phai do T28 tao ra) ---
+$ git show HEAD:$F | sed -n '9p'
+  **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+$ git show HEAD:$F | sed -n '252p;257p'   # §5 o ban truoc lech dong
+  254:| Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột |
+  259:| Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |

@@ -1,0 +1,47 @@
+=== T28 VERIFY — chi §2b thay doi, vung trich nguyen van giu nguyen ===
+UTC   : 2026-10-01T15:00:11Z
+repo  : /home/noble-tran/agentmeeting-bountyrecon
+branch: agent/bounty-recon/T28  |  base: 8006168
+file  : security/gitlab/SCOPE.md
+
+### 1. Blob hash TRUOC (tu HEAD) va SAU (cay lam viec)
+$ git rev-parse HEAD:$F      # blob TRUOC
+  9eafa8d050f51727148853e48d916190c66fd3ca
+$ git hash-object $F         # blob SAU
+  c6b1131d498fd694acd62b648c9644824c3f6492
+  => blob KHAC nhau la DUNG (file co thay doi o §2b)
+
+$ sha256sum cua 2 phien ban
+  TRUOC: 14169e6ac7f2ceb07e83d25c848503036d94b824c248bbb8ab32917c676c2633  -
+  SAU  : 46db4daa041df7904d2b9a978ef9f961b5915da008f8e1218e03b3c204f6d59a  (SAU)
+
+### 2. Tach file tai RANH GIOI §2b va so tung phan
+  PHAN                        sha256 TRUOC        sha256 SAU          KET QUA
+  TRUOC §2b (truoc dong '## 2b.')09fce4b8afac0ede    09fce4b8afac0ede    GIONG HET ✅
+    §2b (than muc)            2f7322f812e7e249    099b489f47f5e953    KHAC ⚠️
+  SAU §2b (tu '## 3.' tro di) 40904074229cbabc    40904074229cbabc    GIONG HET ✅
+
+  do dai TRUOC: pre=8284 mid=1695 suf=5490  tong=15469
+  do dai SAU  : pre=8284 mid=3164 suf=5490  tong=16938
+
+  => VUNG TRICH NGUYEN VAN (pre + suf) KHONG DOI: True
+  => chi than §2b thay doi: True
+
+### 3. git diff --stat (chi 1 file)
+   security/gitlab/SCOPE.md | 74 ++++++++++++++++++++++++++++++++++--------------
+   1 file changed, 52 insertions(+), 22 deletions(-)
+
+### 4. git diff: so hunk va dong dau/cuoi cua moi hunk
+  @@ -146 +146 @@ dòng 125–191, danh sách rất dài. Các mục quan trọng nhất cho giai
+  @@ -148,2 +148,6 @@ dòng 125–191, danh sách rất dài. Các mục quan trọng nhất cho giai
+  @@ -151 +155,31 @@ thời** ở cả `eligible_for_submission=true` **và** `=false` trong chính d
+  @@ -153,18 +187,14 @@ thời** ở cả `eligible_for_submission=true` **và** `=false` trong chính d
+
+### 5. Kiem tra TUYET DOI khong cham: 3 link thieu scheme dong 185 cua scope_github.md
+$ git diff --exit-code HEAD -- agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md ; echo exit=$?
+  exit=0  (0 = khong cham)
+
+### 6. Cac file KHAC co bi cham khong? (toan bo cay lam viec)
+$ git status --short
+   M security/gitlab/SCOPE.md
+  ?? agents/bountyrecon/tasks/T28/
