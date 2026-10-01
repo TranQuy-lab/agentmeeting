@@ -1,0 +1,321 @@
+
+=== [4] 3 MUC ADMIN DA VA con nguyen khong? ===
+--- (a) chot ngay 2026-10-01 ---
+4:**Ngày lập bản này:** 2026-10-01 — **Admin đã chốt mốc ngày** (`date` → `Thu Oct 1 08:56 PM +07 2026`); xem phán quyết DISSENT-4
+395:- **Ngày:** Admin chốt **`2026-10-01`** (DISSENT-4) — DocWriter từng **từ chối phán bên nào**, và
+  so lan '2025-10-01' con lai: 0
+
+--- (b) ghi ro ban goc Admin viet o abe0c3e + DocWriter tiep quan ---
+5:**Bản gốc do Admin viết** ở `abe0c3e`, DocWriter **tiếp quản và viết lại toàn bộ** ở T1 (phán quyết DISSENT-2). Bản này là lần viết lại **thứ hai**, ở T22, theo mốc `main` hiện tại.
+45:| 1 | `.gitignore` | Admin AgentMeet | Admin | Hạ tầng | ✅ hoàn tất | Reviewer1 | `abe0c3e` | `[T0] dd0fc3c` |
+46:| 2 | `ADMIN/.gitkeep` | Admin AgentMeet | Admin | Giữ thư mục | — | — | `abe0c3e` | `[T0] abe0c3e` |
+47:| 3 | `ADMIN/ASSIGNMENTS.md` | Admin AgentMeet | Admin | Điều hành | 🔄 đang làm | Auditor2 | `abe0c3e` | `[T0] a1e026f` |
+48:| 4 | `ADMIN/DISSENT.md` | Admin AgentMeet | Admin | Điều hành | 🔄 đang làm | Auditor2 | `abe0c3e` | `[T0] a1e026f` |
+49:| 5 | `ADMIN/LOG.md` | Admin AgentMeet | Admin | Điều hành | 🔄 đang làm | Auditor2 | `abe0c3e` | `[T0] 0f41ebb` |
+50:| 6 | `ADMIN/ROSTER.md` | Admin AgentMeet | Admin | Điều hành | 🔄 đang làm | Auditor2 | `abe0c3e` | `[T0] 0f41ebb` |
+51:| 7 | `ADMIN/SUMMARY.md` | Admin AgentMeet | Admin | Điều hành | 🔄 đang làm | Auditor2 | `abe0c3e` | `[T0] 0f41ebb` |
+5:**Bản gốc do Admin viết** ở `abe0c3e`, DocWriter **tiếp quản và viết lại toàn bộ** ở T1 (phán quyết DISSENT-2). Bản này là lần viết lại **thứ hai**, ở T22, theo mốc `main` hiện tại.
+7:**Trạng thái:** đã tiếp quản từ Admin; **chờ Reviewer1 kiểm định**
+
+--- (c) canh bao pham vi ---
+4:**Ngày lập bản này:** 2026-10-01 — **Admin đã chốt mốc ngày** (`date` → `Thu Oct 1 08:56 PM +07 2026`); xem phán quyết DISSENT-4
+5:**Bản gốc do Admin viết** ở `abe0c3e`, DocWriter **tiếp quản và viết lại toàn bộ** ở T1 (phán quyết DISSENT-2). Bản này là lần viết lại **thứ hai**, ở T22, theo mốc `main` hiện tại.
+6:**Nhánh:** `agent/doc-writer/T22` · **Mốc đối chiếu:** `main` @ `0f41ebb` — **157 file**
+12:> ⚠️ **CẢNH BÁO PHẠM VI (cập nhật ở T22):** bảng §2 nay mô tả **`main` @ `0f41ebb` với 157 file**.
+14:> vào `main` tại `c4a7fae`. **Mâu thuẫn phạm vi cũ nay đã hết**: con số trong bảng **chính là** con
+15:> số của `main` tại mốc ghi ở trên. Mốc `39 file` chỉ còn **giá trị lịch sử**, được giữ nguyên
+41:## 2. Bảng đầy đủ — 157 file (mốc `main` @ `0f41ebb`)
+219:| 5 | Bảng phản ánh **mốc `0f41ebb`**. `main` đang tiến; bảng sẽ lạc hậu ngay sau khi có commit mới. |
+334:⇒ **đây là khoảng trống phạm vi kiểm định**, không phải cáo buộc Reviewer1 sai.
+401:## 5. Cảnh báo phạm vi
+408:- **`reviews/CROSS.md` đã được điền** (last commit `[T11] 85ea56f`) — khác với mốc T1 khi file còn rỗng.
+412:> ⚠️ **ĐỌC TRƯỚC:** bảng mô tả **mốc `main@0f41ebb`**. Nếu bạn đang ở **nhánh `agent/doc-writer/T22`**,
+
+=== [5] BANG §2 CO LIEN TUC khong? (khong dong trong cat giua) ===
+  ✅ khong bi cat (khong dong trong/van ban xen giua)
+
+  --- so thu tu co lien tuc 1..157 khong? ---
+    so dong: 157 | dai: 1 -> 157 | lien tuc? True
+    thieu so: (khong)
+    trung so: (khong)
+
+=== [5b] KIEM LINK CHET trong INDEX.md (moi link tuong doi phai tro file CO THAT @ 0f41ebb) ===
+  tong link: 1 | ngoai (http/#): 0 | tuong doi: 1
+  LINK CHET: 1
+    ❌ agents/docwriter/tasks/T1/
+
+=== [5c] SUA LOI KIEM LINK CUA TOI: 'agents/docwriter/tasks/T1/' la THU MUC, khong phai file ===
+$ git ls-tree -r --name-only 0f41ebb | grep '^agents/docwriter/tasks/T1/'
+agents/docwriter/tasks/T1/BAO-CAO-CHAT-LUONG.md
+agents/docwriter/tasks/T1/KIEM-TRA-KHUNG.md
+  => thu muc TON TAI (co 2 file ben trong) => KHONG phai link chet. Loi do bo kiem cua TOI.
+
+  link tuong doi: 1 | FILE khop: 0 | THU MUC khop: 1
+  LINK CHET that su: 0
+    ✅ 0 link chet (doi chieu ca file VA thu muc @ 0f41ebb)
+
+=== [6] 4 PHAT HIEN CUA DocWriter — kiem tung cai ===
+--- (a) ADMIN/SUMMARY.md tung dan 3 duong dan T5 KHONG TON TAI — Admin da sua, con khong? ---
+$ git show 0f41ebb:ADMIN/SUMMARY.md | grep -n 'T5'
+29:**`main` nay có 157 file. Chưa merge:** T5 (ForensicsMal), T8 (DeepSeek-Harness), T13 (javis)
+46:| 4 | **`pip` không tồn tại + `sudo` cần mật khẩu ⇒ nhiều agent không cài được thư viện** | **Cao** | Dùng `uv` (không cần sudo). Script tái lập đã push | `agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt`; `agents/forensicsmal/T5/scripts/bootstrap_tools.sh` |
+51:| 9 | **Máy không có môi trường cô lập đã xác minh ⇒ phân tích động malware bị đình chỉ** | Trung bình | Đình chỉ phân tích động; chỉ làm tĩnh | `agents/forensicsmal/T5/FORENSICS_PROCEDURE.md`; `ADMIN/LOG.md` |
+
+  --- 3 duong dan T5 do CO TON TAI @ 0f41ebb khong? ---
+    ❌ KHONG CO: agents/forensicsmal/T5/FORENSICS_PROCEDURE.md
+    ❌ KHONG CO: agents/forensicsmal/T5/scripts/bootstrap_tools.sh
+    ❌ KHONG CO: agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt
+
+--- (b) 3 link sai do sau trong CANDIDATES.md dong 27/39/50 ---
+$ git show 0f41ebb:agents/bountyrecon/tasks/T3/CANDIDATES.md | sed -n '27p;39p;50p'
+### 1.1 GitHub — [`security/github/RECON.md`](../../../security/github/RECON.md)
+### 1.2 GitLab — [`security/gitlab/RECON.md`](../../../security/gitlab/RECON.md)
+### 1.3 Cloudflare — [`security/cloudflare/RECON.md`](../../../security/cloudflare/RECON.md)
+
+  --- suy do sau: file nam o agents/bountyrecon/tasks/T3/ ; dich la security/<p>/RECON.md ---
+     tu agents/bountyrecon/tasks/T3/ -> repo root can '../../../' (T3->tasks->bountyrecon->root)
+     => '../../../security/github/RECON.md' la DUNG do sau. Kiem:
+    ../../../security/github/RECON.md  ->  agents/security/github/RECON.md
+    ../../../../security/github/RECON.md  ->  security/github/RECON.md
+
+=== [6b-2] XAC NHAN: dich dung cua 3 link la gi, co ton tai khong? ===
+$ git ls-tree -r --name-only 0f41ebb | grep -E '^security/.*RECON.md'
+security/cloudflare/RECON.md
+security/github/RECON.md
+security/gitlab/RECON.md
+  => 'security/github/RECON.md' TON TAI @ 0f41ebb.
+  => Ket luan: DocWriter DUNG — '../../../' tro sai; phai la '../../../../' (4 cap).
+
+=== [6a-2] ADMIN/SUMMARY.md tren MAIN HIEN TAI (e8c45a0) — 3 duong dan T5 da het chua? ===
+$ git show e8c45a0:ADMIN/SUMMARY.md | grep -n 'T5'
+29:**`main` nay có 157 file. Chưa merge:** T5 (ForensicsMal), T8 (DeepSeek-Harness), T13 (javis)
+46:| 4 | **`pip` không tồn tại + `sudo` cần mật khẩu ⇒ nhiều agent không cài được thư viện** | **Cao** | Dùng `uv` (không cần sudo). Script tái lập đã push | ⚠️ **T5 CHƯA MERGE** ⇒ đường dẫn chưa kiểm chứng được từ `main` (DocWriter phát hiện ở T22) |
+51:| 9 | **Máy không có môi trường cô lập đã xác minh ⇒ phân tích động malware bị đình chỉ** | Trung bình | Đình chỉ phân tích động; chỉ làm tĩnh | ⚠️ **T5 CHƯA MERGE** ⇒ đường dẫn chưa kiểm chứng được từ `main` (DocWriter phát hiện ở T22). Sẽ đúng sau khi merge T5 (đang chờ T23 vá C2) |
+
+$ T5 da duoc merge vao main chua? (git merge-base --is-ancestor ee97c37 origin/main)
+  ❌ ee97c37 (T5) CHUA co tren main
+$ T13 da merge chua?
+  ✅ 3e19d46 (T13) DA co tren main
+
+  --- 3 duong dan T5 co ton tai @ e8c45a0 khong? ---
+    ❌ KHONG CO @ e8c45a0: agents/forensicsmal/T5/FORENSICS_PROCEDURE.md
+    ❌ KHONG CO @ e8c45a0: agents/forensicsmal/T5/scripts/bootstrap_tools.sh
+    ❌ KHONG CO @ e8c45a0: agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt
+
+=== [6c] Diff SUMMARY.md: 0f41ebb -> e8c45a0 (Admin sua gi?) ===
+diff --git a/ADMIN/SUMMARY.md b/ADMIN/SUMMARY.md
+index 0449b6d..862010a 100644
+--- a/ADMIN/SUMMARY.md
++++ b/ADMIN/SUMMARY.md
+@@ -43,14 +43,14 @@
+ | 1 | Phòng giới hạn 500 tin; 8+ agent poll liên tục sẽ đầy nhanh | Cao | Nội dung dài ghi file trong repo, tin nhắn chỉ giữ điều phối | `admin_cli.py status` → 500 max; HTTP 422 khi Admin gửi tin 4892 ký tự (`ADMIN/LOG.md` #8) |
+ | 2 | Worker tự bịa cấu trúc nếu clone repo trước khi có khung | Đã xử lý | Đã push khung ở commit đầu tiên | commit `abe0c3e`; `DeepSeek-Harness` msg_id=8 §1 xác nhận cây thư mục đủ |
+ | 3 | HTTPS credential helper hỏng, agent clone sai giao thức | Trung bình | Mọi prompt ghi rõ SSH, cấm HTTPS | `ssh -T git@github.com` → `Hi TranQuy-lab!` OK; Reviewer1 từ chối kiểm mục này vì D-001 cấm HTTPS |
+-| 4 | **`pip` không tồn tại + `sudo` cần mật khẩu ⇒ nhiều agent không cài được thư viện** | **Cao** | Dùng `uv` (không cần sudo). Script tái lập đã push | `agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt`; `agents/forensicsmal/T5/scripts/bootstrap_tools.sh` |
++| 4 | **`pip` không tồn tại + `sudo` cần mật khẩu ⇒ nhiều agent không cài được thư viện** | **Cao** | Dùng `uv` (không cần sudo). Script tái lập đã push | ⚠️ **T5 CHƯA MERGE** ⇒ đường dẫn chưa kiểm chứng được từ `main` (DocWriter phát hiện ở T22) |
+ | 5 | **Bằng chứng bảo mật chỉ do MỘT người chạy được ⇒ không đạt lớp 2** | Cao | Cấp slot 8 (DeepSeek-Harness) làm Verifier lớp 2 | `ADMIN/LOG.md` #12; D-006 |
+ | 6 | **Thiếu testbed mạng và cụm K8s ⇒ 2 hồ sơ NCKH chỉ là thiết kế, không có số liệu** | **Cao** | Cấp slot 9 (Antigravity, MCP Packet Tracer thật) | `ADMIN/LOG.md` #24; báo cáo T2 ResearchLead |
+ | 7 | **8 nguồn không fetch được (MDPI 403, ACM DL 403…) ⇒ mất nguồn đối chiếu lớp 2** | Trung bình | Cấp slot 10 (javis, trình duyệt thật) | `research/EVIDENCE/FETCH_STATUS`; `ADMIN/LOG.md` #25 |
+ | 8 | **4 tài sản GitLab có xung đột scope trong dữ liệu công bố của chính GitLab** | Trung bình | Loại khỏi T4; cấm khai thác tới khi GitLab làm rõ | D-013; báo cáo T3 BountyRecon |
+-| 9 | **Máy không có môi trường cô lập đã xác minh ⇒ phân tích động malware bị đình chỉ** | Trung bình | Đình chỉ phân tích động; chỉ làm tĩnh | `agents/forensicsmal/T5/FORENSICS_PROCEDURE.md`; `ADMIN/LOG.md` |
++| 9 | **Máy không có môi trường cô lập đã xác minh ⇒ phân tích động malware bị đình chỉ** | Trung bình | Đình chỉ phân tích động; chỉ làm tĩnh | ⚠️ **T5 CHƯA MERGE** ⇒ đường dẫn chưa kiểm chứng được từ `main` (DocWriter phát hiện ở T22). Sẽ đúng sau khi merge T5 (đang chờ T23 vá C2) |
+ | 10 | **Hai đề tài NCKH HOÀ điểm 48–48 sau khi Reviewer1 chấm lại tính mới** | Trung bình | Admin chốt thứ tự ưu tiên; xem `ADMIN/LOG.md` #35 | `ADMIN/LOG.md` #35; `reviews/CROSS.md` T11 |
+ | 11 | **DOI S29 ghi sai hoa/thường ở 4 tài liệu (ICICT vs iccit) ⇒ 404** | Trung bình | Giao ResearchLead T19 sửa; **không phải bịa nguồn**, metadata đã xác minh thật | DISSENT-6; `reviews/CROSS.md` T11 |
+-| 12 | **`capstone` khai báo phiên bản KHÔNG nhất quán: metadata 5.0.9 vs `__version__` 5.0.7** | Thấp | Agent nào trích version capstone phải ghi rõ dùng nguồn nào | `agents/forensicsmal/T15/T15_REPORT.md` |
++| 12 | **`capstone` khai báo phiên bản KHÔNG nhất quán: metadata 5.0.9 vs `__version__` 5.0.7** | Thấp | Agent nào trích version capstone phải ghi rõ dùng nguồn nào | `agents/forensicsmal/T15/T15_REPORT.md` ✅ đã merge (`896b81e`) |
+ | 13 | **Bẫy đối chiếu chéo: so CHUỖI THÔ giữa 2 công cụ báo lệch sai** (`4660` vs `0x1234`, `0` vs `False`) | Trung bình | Phải chuẩn hoá về **giá trị** (`int(x,0)`, `bool`) trước khi so | `agents/forensicsmal/T15/T15_REPORT.md` T15-1 |
+-| 14 | **Nguy cơ mất nội dung khi merge T1: bản vá `INDEX.md:10` của Admin sẽ bị ghi đè** | **Cao** | KHÔNG merge T1 kiểu "lấy bản worker"; phải rebase và giữ `INDEX.md:10` | N-03 của Auditor2; Reviewer1 xác nhận độc lập |
++| 14 | **Nguy cơ mất nội dung khi merge T1: bản vá `INDEX.md:10` của Admin sẽ bị ghi đè** | **Cao** | KHÔNG merge T1 kiểu "lấy bản worker"; phải rebase và giữ `INDEX.md:10` | N-03 của Auditor2; Reviewer1 xác nhận độc lập. **ĐÃ XỬ LÝ:** merge T1 tại `c4a7fae`, `INDEX.md` lấy bản DocWriter + Admin vá lại 3 mục trong lần giải quyết merge |
+
+=== [6d] TOAN BO §4 'PHAT HIEN' cua DocWriter + xac minh tung cai ===
+## 4. Việc còn thiếu và VẤN ĐỀ MỞ (đã kiểm bằng lệnh)
+
+### 4.1 🆕 `ADMIN/SUMMARY.md` §3 dẫn 3 đường dẫn bằng chứng KHÔNG TỒN TẠI trên `main`
+
+`ADMIN/SUMMARY.md` dòng 46 và 51 dùng cột "Bằng chứng" trỏ tới:
+
+```text
+agents/forensicsmal/T5/EVIDENCE/tooling_bootstrap_raw.txt   (SUMMARY.md dòng 46)
+agents/forensicsmal/T5/scripts/bootstrap_tools.sh           (SUMMARY.md dòng 46)
+agents/forensicsmal/T5/FORENSICS_PROCEDURE.md               (SUMMARY.md dòng 51)
+```
+
+Kiểm bằng `os.path.exists` trên **toàn bộ 71 file `.md`** được track: **cả 3 đường dẫn đều KHÔNG tồn tại.**
+**Nguyên nhân đã xác minh:** nhánh **`agent/forensics-mal/T5` chưa được merge** (D-019 §1 ghi rõ).
+⇒ **Cột "Bằng chứng" của `SUMMARY.md` đang trỏ vào thứ không có trong kho**, nên 2 dòng rủi ro đó
+**không kiểm chứng được từ repo**. **Đây là file của Admin — DocWriter không sửa**, chỉ báo cáo.
+**Đề nghị Admin:** hoặc merge T5, hoặc ghi rõ trong `SUMMARY.md` rằng bằng chứng nằm ở nhánh chưa merge.
+
+### 4.2 🆕 3 link tương đối SAI ĐỘ SÂU trong `agents/bountyrecon/tasks/T3/CANDIDATES.md`
+
+| Dòng | Link đang ghi | Giải ra thực tế | Đúng phải là |
+|---|---|---|---|
+| 27 | `../../../security/github/RECON.md` | `agents/security/github/RECON.md` ❌ | `../../../../security/github/RECON.md` |
+| 39 | `../../../security/gitlab/RECON.md` | `agents/security/gitlab/RECON.md` ❌ | `../../../../security/gitlab/RECON.md` |
+| 50 | `../../../security/cloudflare/RECON.md` | `agents/security/cloudflare/RECON.md` ❌ | `../../../../security/cloudflare/RECON.md` |
+
+File ở `agents/bountyrecon/tasks/T3/` cần **4** cấp `../` mới tới gốc, không phải 3.
+`ls -d agents/security` → **không tồn tại**, nên cả 3 link **chết**.
+**Territory BountyRecon — DocWriter không sửa.** Đáng chú ý: T3 **đã PASS kiểm định lớp 1 (T14)**,
+nhưng T14 kiểm **nội dung `SCOPE.md`**, không kiểm link trong `CANDIDATES.md`
+⇒ **đây là khoảng trống phạm vi kiểm định**, không phải cáo buộc Reviewer1 sai.
+
+### 4.3 🆕 3 link thiếu scheme trong `agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md`
+
+Dòng 185 có nguyên văn dạng *dấu-ngoặc-vuông bọc `lgtm-com.pentesting.semmle.net`, rồi
+dấu-ngoặc-đơn chứa đúng chuỗi hostname đó* — và 2 chỗ tương tự cho
+`backend-dot-lgtm-penetration-testing.appspot.com` và `downloads.lgtm.com`.
+
+> (T22 ghi mô tả thay vì chép lại cặp ngoặc literal, vì chép lại sẽ **tạo thêm link chết ngay
+> trong chính `INDEX.md`** — DocWriter đã tự phát hiện lỗi này ở bản nháp và sửa.)
+
+Đây là **trích nguyên văn từ trang chính sách GitHub**, nơi URL gốc viết thiếu `https://`.
+Markdown render thành link hỏng, **nhưng sửa lại sẽ phá tính nguyên văn** của bản trích.
+⇒ DocWriter **không tự sửa**; **Admin quyết**: giữ nguyên văn, hay bọc trong code span để không render thành link.
+
+### 4.4 🆕 16 file đã merge nhưng task nguồn KHÔNG có trong danh sách nghiệm thu
+
+Các file sau có commit sửa cuối mang tiền tố **`[T2]`** (11 file) và **`[T4]`** (5 file),
+**đã nằm trên `main`**, nhưng `ADMIN/SUMMARY.md` §1 **không** liệt kê T2 hay T4 là đã nghiệm thu,
+và `ADMIN/ASSIGNMENTS.md` vẫn để **T2 = `⏳ todo`**, **T4 = `⏸ chờ T3`**:
+
+```text
+[T2] agents/researchlead/tasks/checkin.md
+[T2] research/EVIDENCE/FETCH_STATUS.md            [T2] research/EVIDENCE/arxiv_lookups.txt
+[T2] research/EVIDENCE/crossref_lookups.txt       [T2] research/EVIDENCE/openalex_authors.txt
+[T2] research/EVIDENCE/openalex_doi_lookup.txt    [T2] research/EVIDENCE/openalex_title_filters.txt
+[T2] research/EVIDENCE/quote_extracts.txt         [T2] research/ebpf-microsegmentation/EVIDENCE/openalex_queries.txt
+[T2] research/ebpf-microsegmentation/PROPOSAL.md  [T2] research/pqc-tls-migration/EVIDENCE/openalex_queries.txt
+[T4] agents/exploitdeep/T4/EVIDENCE/{msg-checkin,msg-report,msg-report-1,msg-report-2}.md
+[T4] agents/exploitdeep/T4/EVIDENCE/tool_inventory_raw.txt
+```
+
+⇒ **Trạng thái của 16 file này trong bảng §2 là `🔄 chờ kiểm định`** — DocWriter **không** gán ✅
+cho chúng. **Đề nghị Admin làm rõ:** T2/T4 đã qua lớp 1 chưa, hay đang ở `main` mà chưa được kiểm?
+
+### 4.5 Đường dẫn còn thiếu (đã kiểm, chưa có trên `main`)
+
+| # | Đường dẫn | Lý do | Ai làm |
+|---|---|---|---|
+| 1 | `reviews/VERIFY2.md` | nhánh **T8 chưa merge** (D-019 §1) | DeepSeek-Harness |
+
+=== [6e] §4.4 — 16 file [T2]/[T4] co that @ 0f41ebb + SUMMARY/ASSIGNMENTS noi gi? ===
+--- dem file co commit sua cuoi mang tien to [T2]/[T4] ---
+  file sua-cuoi [T2]: 11  (DocWriter khai 11)
+  file sua-cuoi [T4]: 5  (DocWriter khai 5)
+
+--- SUMMARY.md §1 @ 0f41ebb liet ke task nao da nghiem thu? ---
+T1 T10 T11 T13 T14 T15 T16 T17 T19 T2 T20 T3 T5 T6 T7 T8 
+--- ASSIGNMENTS.md @ 0f41ebb: trang thai T2 va T4 ---
+| T2 | ResearchLead | Hồ sơ đề tài NCKH | `research/**`, `agents/researchlead/**` | ≥1 `research/<slug>/` có đủ PROPOSAL.md, LITREVIEW.md, SOURCES.md, BLINDCHECK.md; mọi nguồn có DOI/URL kiểm tra được | Reviewer1 | ⏳ todo |
+| T4 | ExploitDeep | Xác nhận lỗ hổng + PoC tối thiểu (**điều kiện: xem D-013**) | `security/**/FINDING.md`, `security/**/POC/**`, `security/**/EVIDENCE/**`, `agents/exploitdeep/**` | FINDING.md có mức độ + điều kiện khai thác + tác động + khắc phục; POC chạy lại được; EVIDENCE thô đã che dữ liệu thật | Reviewer1 | ⏸ chờ T3 |
+
+=== [6f] §4.5 — 3 duong dan DocWriter khai con thieu, co that su thieu @ 0f41ebb? ===
+  reviews/VERIFY2.md -> 0 file @ 0f41ebb  ✅ THIEU (DocWriter dung)
+  agents/deepseek-harness/ -> 0 file @ 0f41ebb  ✅ THIEU (DocWriter dung)
+  agents/forensicsmal/T5/ -> 0 file @ 0f41ebb  ✅ THIEU (DocWriter dung)
+
+=== [6g] §4.3 — 3 link thieu scheme trong scope_github.md dong 185 ===
+$ git show 0f41ebb:agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md | sed -n '185p' | cut -c1-320
+| OTHER | LGTM | True | critical | LGTM is a code analysis platform for development teams to identify vulnerabilities early and prevent them from reaching production. It uses [CodeQL](https://semmle.com/ql)  which works by retrieving source code from version control systems, building it with custom tooling, and creatin
+
+  --- dem link thieu scheme trong ca file ---
+  link thieu scheme: 3
+    • [`lgtm-com.pentesting.semmle.net`](lgtm-com.pentesting.semmle.net)
+    • [`backend-dot-lgtm-penetration-testing.appspot.com`](backend-dot-lgtm-penetration-testing.appspot.com)
+    • [`downloads.lgtm.com`](downloads.lgtm.com)
+
+=== [6e-2] DOC KY SUMMARY.md §1 @ 0f41ebb (de khong bao OAN DocWriter) ===
+$ git show 0f41ebb:ADMIN/SUMMARY.md | sed -n '/^## 1\./,/^## 2\./p'
+## 1. Kết quả đã nghiệm thu
+
+**Đã merge vào `main`:** `reviews/{CROSS,RECONCILE,BLIND}.md` (T6, `c579d1f`) và
+`reviews/AUDIT.md`+`AUDIT.json` (T7, `99672c5`). Đây là **hạ tầng kiểm định và bản kiểm toán**,
+**không phải kết quả nghiên cứu hay lỗ hổng** — mục này vẫn **chưa có kết quả kỹ thuật nào
+được nghiệm thu**. Đính chính N-07 của Auditor2.
+
+**Đã merge sản phẩm kỹ thuật (đều qua kiểm định lớp 1):**
+
+| Nhánh | Merge commit | Nội dung | Ai verify |
+|---|---|---|---|
+| T1 | `c4a7fae` | `INDEX.md` 39 file + `rooms/**` digest | Reviewer1 T10 (PASS 6/6) |
+| T3 | `4642e3c` | `security/<3 chương trình>/SCOPE.md` trích nguyên văn + RECON | Reviewer1 T14 (PASS, policy byte-exact SHA256) |
+| T15 | `896b81e` | Kiểm chuẩn toolchain trên corpus vô hại | Reviewer1 T20 (PASS 4/4) |
+| T16 | `2620932` | Sửa lỗi `unicorn` + quy trình kiểm kê theo môi trường | Reviewer1 T20 (PASS 5/5) |
+| T19 | `932074f` | Sửa DOI S29 + N của T1 = 4 + `RANKING.md` | Reviewer1 T11 |
+| T11 | `943ccb2` | Bằng chứng thô cho DISSENT-6/7 + T10/T14 | Auditor2 T17 (merge trung thực) |
+| T17 | `3d183f7` | `reviews/AUDIT2.md` + `.json` | Người dùng |
+| T20 | `a395ba5` | Kiểm chứng T15 + T16 | Auditor2 |
+
+**`main` nay có 157 file. Chưa merge:** T5 (ForensicsMal), T8 (DeepSeek-Harness), T13 (javis)
+— chưa qua kiểm định lớp 1.
+
+## 2. Việc chưa làm được / thất bại
+
+--- So sanh voi main hien tai e8c45a0 ---
+## 1. Kết quả đã nghiệm thu
+
+**Đã merge vào `main`:** `reviews/{CROSS,RECONCILE,BLIND}.md` (T6, `c579d1f`) và
+`reviews/AUDIT.md`+`AUDIT.json` (T7, `99672c5`). Đây là **hạ tầng kiểm định và bản kiểm toán**,
+**không phải kết quả nghiên cứu hay lỗ hổng** — mục này vẫn **chưa có kết quả kỹ thuật nào
+được nghiệm thu**. Đính chính N-07 của Auditor2.
+
+**Đã merge sản phẩm kỹ thuật (đều qua kiểm định lớp 1):**
+
+| Nhánh | Merge commit | Nội dung | Ai verify |
+|---|---|---|---|
+| T1 | `c4a7fae` | `INDEX.md` 39 file + `rooms/**` digest | Reviewer1 T10 (PASS 6/6) |
+| T3 | `4642e3c` | `security/<3 chương trình>/SCOPE.md` trích nguyên văn + RECON | Reviewer1 T14 (PASS, policy byte-exact SHA256) |
+| T15 | `896b81e` | Kiểm chuẩn toolchain trên corpus vô hại | Reviewer1 T20 (PASS 4/4) |
+| T16 | `2620932` | Sửa lỗi `unicorn` + quy trình kiểm kê theo môi trường | Reviewer1 T20 (PASS 5/5) |
+| T19 | `932074f` | Sửa DOI S29 + N của T1 = 4 + `RANKING.md` | Reviewer1 T11 |
+| T11 | `943ccb2` | Bằng chứng thô cho DISSENT-6/7 + T10/T14 | Auditor2 T17 (merge trung thực) |
+| T17 | `3d183f7` | `reviews/AUDIT2.md` + `.json` | Người dùng |
+| T20 | `a395ba5` | Kiểm chứng T15 + T16 | Auditor2 |
+
+**`main` nay có 157 file. Chưa merge:** T5 (ForensicsMal), T8 (DeepSeek-Harness), T13 (javis)
+— chưa qua kiểm định lớp 1.
+
+## 2. Việc chưa làm được / thất bại
+
+=== [6e-3] ADMIN sua gi ve T2/T4 o e8c45a0? ===
+-| T2 | ResearchLead | Hồ sơ đề tài NCKH | `research/**`, `agents/researchlead/**` | ≥1 `research/<slug>/` có đủ PROPOSAL.md, LITREVIEW.md, SOURCES.md, BLINDCHECK.md; mọi nguồn có DOI/URL kiểm tra được | Reviewer1 | ⏳ todo |
++| T2 | ResearchLead | Hồ sơ đề tài NCKH | `research/**`, `agents/researchlead/**` | ≥1 `research/<slug>/` có đủ PROPOSAL.md, LITREVIEW.md, SOURCES.md, BLINDCHECK.md; mọi nguồn có DOI/URL kiểm tra được | Reviewer1 | ✅ merged qua T19 (`932074f`) |
+-| T4 | ExploitDeep | Xác nhận lỗ hổng + PoC tối thiểu (**điều kiện: xem D-013**) | `security/**/FINDING.md`, `security/**/POC/**`, `security/**/EVIDENCE/**`, `agents/exploitdeep/**` | FINDING.md có mức độ + điều kiện khai thác + tác động + khắc phục; POC chạy lại được; EVIDENCE thô đã che dữ liệu thật | Reviewer1 | ⏸ chờ T3 |
++| T4 | ExploitDeep | Xác nhận lỗ hổng + PoC tối thiểu (**điều kiện: xem D-013**) | `security/**/FINDING.md`, `security/**/POC/**`, `security/**/EVIDENCE/**`, `agents/exploitdeep/**` | FINDING.md có mức độ + điều kiện khai thác + tác động + khắc phục; POC chạy lại được; EVIDENCE thô đã che dữ liệu thật | Reviewer1 | ✅ merged qua T16 (`2620932`) |
+
+[T0] fix+log: bo sung ngoai le D-001 (may khong co SSH key), D-014 (va C2 cua T5), giao T23-T26, sua trang thai T2/T4 va 3 duong dan T5 trong SUMMARY
+
+=== [7] PHAT HIEN BO SUNG CUA REVIEWER1: SUMMARY.md @ e8c45a0 con LAC HAU khong? ===
+  so file that @ e8c45a0 (main hien tai): 166
+  SUMMARY.md §1 @ e8c45a0 van ghi:
+29:**`main` nay có 157 file. Chưa merge:** T5 (ForensicsMal), T8 (DeepSeek-Harness), T13 (javis)
+
+  --- T13 da merge chua? ---
+37a39ff [T13] evidence: javis truy hoi 7/8 nguon bi chan bang trinh duyet that
+    ✅ 37a39ff (T13 merge) DA co tren main
+    => SUMMARY van liet T13 trong 'Chưa merge' => LAC HAU
+
+  --- T5 va T8 thi sao? ---
+    T5 (ee97c37): ✅ dung la CHUA merge
+    T8 (5ccb731): ✅ dung la CHUA merge
+
+=== [8] TONG KET CAC MUC DA KIEM T25 ===
+  1   tu dem 157 file @ 0f41ebb                                          ✅ 157
+  1b  nhanh T22 = 158 file (canh bao cua DocWriter dung)                  ✅ 158
+  1c  viec sua o 38cf43d la THAT (git ls-files -> git ls-tree $M)         ✅ co that
+  2   bang §2 khop 157/157 duong dan                                    ✅ diff rong
+  2b  so luong theo loai (md71 txt45 gitkeep13 py10 json7 sh2 dir52)    ✅ khop het
+  3   tac gia tu --diff-filter=A, 157/157 truy duoc, 0 'chua xac minh'   ✅ khop
+  3d  kiem mau cot 'Tac gia' 21 file / 7 nhom                            ✅ khop 21/21
+  4a  chot ngay 2026-10-01 (0 lan '2025-10-01')                          ✅
+  4b  ghi ro ban goc Admin o abe0c3e + DocWriter tiep quan               ✅
+  4c  canh bao pham vi                                                    ✅
+  5   bang lien tuc, so 1..157 khong thieu/khong trung                   ✅
+  5c  link chet (doi chieu ca FILE va THU MUC)                           ✅ 0 link chet
+  6a  SUMMARY dan 3 duong dan T5 khong ton tai                           ✅ DocWriter DUNG; Admin da sua @ e8c45a0
+  6b  3 link sai do sau trong CANDIDATES.md                              ✅ DocWriter DUNG (can 4 cap ../)
+  6c  3 link thieu scheme trong scope_github.md                          ✅ du 3, Admin giu nguyen van
+  6d  16 file [T2]/[T4] (11+5) + SUMMARY/ASSIGNMENTS noi gi              ✅ DocWriter DUNG; Admin da sua @ e8c45a0
+  6e  §4.5 3 duong dan con thieu                                         ✅ ca 3 thieu that
+  7   PHAT HIEN BO SUNG: SUMMARY @ e8c45a0 con lac hau (157 -> 166; T13)  ⚠️ MOI

@@ -1,0 +1,19 @@
+
+=== [2] DOI CHIEU BANG §2 (157 dong) voi git ls-tree 0f41ebb ===
+$ awk '/^## 2\. Bảng/{f=1} /^### 2\.1/{f=0} f' INDEX.md | grep -c '^| [0-9]'
+157
+
+$ awk ... | sed -n 's/^| [0-9]* | `\([^`]*\)`.*/\1/p' | sort > /tmp/idx.txt ; git ls-tree ... | sort > /tmp/git.txt ; diff
+  so dong bang  : 157
+  so file moc   : 157
+  ✅ KHOP 157/157 — diff RONG
+
+=== [2b] SO LUONG THEO LOAI (DocWriter khai trong §7 lenh kiem chung) ===
+  mau          | toi do | DocWriter khai
+  \.md$        | 71     | 71     ✅
+  \.txt$       | 45     | 45     ✅
+  \.gitkeep$   | 13     | 13     ✅
+  \.py$        | 10     | 10     ✅
+  \.json$      | 7      | 7      ✅
+  \.sh$        | 2      | 2      ✅
+  so thu muc  : 52 (DocWriter khai 52) ✅

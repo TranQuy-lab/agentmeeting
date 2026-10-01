@@ -1,0 +1,79 @@
+
+=== [3d] KIEM MAU: cot 'Tac gia' trong bang §2 co khop git log --diff-filter=A khong? ===
+  so dong doc duoc: 163
+  --- MAU MOI NHOM TAC GIA (kiem cot tac gia trong bang) ---
+
+  === Admin AgentMeet (32 file) — kiem 3 mau ===
+    ✅ #1 .gitignore
+        git --diff-filter=A -> 'Admin AgentMeet' | bang ghi -> 'Admin AgentMeet'
+    ✅ #2 ADMIN/.gitkeep
+        git --diff-filter=A -> 'Admin AgentMeet' | bang ghi -> 'Admin AgentMeet'
+    ✅ #3 ADMIN/ASSIGNMENTS.md
+        git --diff-filter=A -> 'Admin AgentMeet' | bang ghi -> 'Admin AgentMeet'
+
+  === BountyRecon (30 file) — kiem 3 mau ===
+    ✅ #15 agents/bountyrecon/tasks/T3/CANDIDATES.md
+        git --diff-filter=A -> 'BountyRecon' | bang ghi -> 'BountyRecon'
+    ✅ #16 agents/bountyrecon/tasks/T3/EVIDENCE/bounty_meta.json
+        git --diff-filter=A -> 'BountyRecon' | bang ghi -> 'BountyRecon'
+    ✅ #17 agents/bountyrecon/tasks/T3/EVIDENCE/fetch_h1.py
+        git --diff-filter=A -> 'BountyRecon' | bang ghi -> 'BountyRecon'
+
+  === Reviewer1 (28 file) — kiem 3 mau ===
+    ✅ #86 agents/reviewer1/evidence/T10/t10-verify.txt
+        git --diff-filter=A -> 'Reviewer1' | bang ghi -> 'Reviewer1'
+    ✅ #87 agents/reviewer1/evidence/T11/t11-fetch-s29-s31.txt
+        git --diff-filter=A -> 'Reviewer1' | bang ghi -> 'Reviewer1'
+    ✅ #88 agents/reviewer1/evidence/T11/t11-phuluc-N03-INDEX.md.txt
+        git --diff-filter=A -> 'Reviewer1' | bang ghi -> 'Reviewer1'
+
+  === ResearchLead (20 file) — kiem 3 mau ===
+    ✅ #84 agents/researchlead/tasks/checkin.md
+        git --diff-filter=A -> 'ResearchLead' | bang ghi -> 'ResearchLead'
+    ✅ #116 research/EVIDENCE/FETCH_STATUS.md
+        git --diff-filter=A -> 'ResearchLead' | bang ghi -> 'ResearchLead'
+    ✅ #117 research/EVIDENCE/T19_checks.txt
+        git --diff-filter=A -> 'ResearchLead' | bang ghi -> 'ResearchLead'
+
+  === ForensicsMal (18 file) — kiem 3 mau ===
+    ✅ #63 agents/forensicsmal/T15/EVIDENCE/t15_0_corpus_hashes.txt
+        git --diff-filter=A -> 'ForensicsMal' | bang ghi -> 'ForensicsMal'
+    ✅ #64 agents/forensicsmal/T15/EVIDENCE/t15_1_pcap_raw.txt
+        git --diff-filter=A -> 'ForensicsMal' | bang ghi -> 'ForensicsMal'
+    ✅ #65 agents/forensicsmal/T15/EVIDENCE/t15_2_elf_raw.txt
+        git --diff-filter=A -> 'ForensicsMal' | bang ghi -> 'ForensicsMal'
+
+  === ExploitDeep (17 file) — kiem 3 mau ===
+    ✅ #44 agents/exploitdeep/T16/EVIDENCE/inventory_per_interpreter_raw.txt
+        git --diff-filter=A -> 'ExploitDeep' | bang ghi -> 'ExploitDeep'
+    ✅ #45 agents/exploitdeep/T16/EVIDENCE/msg-ask-gate-T4-G1.md
+        git --diff-filter=A -> 'ExploitDeep' | bang ghi -> 'ExploitDeep'
+    ✅ #46 agents/exploitdeep/T16/EVIDENCE/msg-report-T16-1.md
+        git --diff-filter=A -> 'ExploitDeep' | bang ghi -> 'ExploitDeep'
+
+  === DocWriter (7 file) — kiem 3 mau ===
+    ✅ #41 agents/docwriter/tasks/T1/BAO-CAO-CHAT-LUONG.md
+        git --diff-filter=A -> 'DocWriter' | bang ghi -> 'DocWriter'
+    ✅ #42 agents/docwriter/tasks/T1/KIEM-TRA-KHUNG.md
+        git --diff-filter=A -> 'DocWriter' | bang ghi -> 'DocWriter'
+    ✅ #143 rooms/ab1-478d-cfa7/README.md
+        git --diff-filter=A -> 'DocWriter' | bang ghi -> 'DocWriter'
+
+  ===  (6 file) — kiem 3 mau ===
+Traceback (most recent call last):
+  File "<stdin>", line 27, in <module>
+IndexError: list index out of range
+
+=== [3e] Vi sao parser cua toi ra 163 dong? (bang §2 chi co 157) ===
+  tong so dong dang '| N | `path` |' trong TOAN file: 163
+    157  ## 2. Bảng đầy đủ — 157 file (mốc `main` @ `0f41ebb`)
+      3  ### 4.2 🆕 3 link tương đối SAI ĐỘ SÂU trong `agents/bountyrecon/tasks/T3/CANDIDATES.md`
+      3  ### 4.5 Đường dẫn còn thiếu (đã kiểm, chưa có trên `main`)
+
+  --- 6 dong KHONG thuoc §2 ---
+    dong 326 | ### 4.2 🆕 3 link tương đối SAI ĐỘ SÂU trong `agents/bountyrecon/tasks/T3/CANDIDATES.md` | #27 ../../../security/github/RECON.md
+    dong 327 | ### 4.2 🆕 3 link tương đối SAI ĐỘ SÂU trong `agents/bountyrecon/tasks/T3/CANDIDATES.md` | #39 ../../../security/gitlab/RECON.md
+    dong 328 | ### 4.2 🆕 3 link tương đối SAI ĐỘ SÂU trong `agents/bountyrecon/tasks/T3/CANDIDATES.md` | #50 ../../../security/cloudflare/RECON.md
+    dong 373 | ### 4.5 Đường dẫn còn thiếu (đã kiểm, chưa có trên `main`) | #1 reviews/VERIFY2.md
+    dong 374 | ### 4.5 Đường dẫn còn thiếu (đã kiểm, chưa có trên `main`) | #2 agents/deepseek-harness/**
+    dong 375 | ### 4.5 Đường dẫn còn thiếu (đã kiểm, chưa có trên `main`) | #3 agents/forensicsmal/T5/**
