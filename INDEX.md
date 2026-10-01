@@ -55,7 +55,7 @@
 | 30 | `reviews/CROSS.md` | Admin | Reviewer1 | Kiểm định | ⏳ chờ task | Auditor2 | `abe0c3e` | khung 9 dòng, bảng rỗng — xem §4 |
 | 31 | `reviews/RECONCILE.md` | Admin | Reviewer1 | Kiểm định | ⏳ chờ task | Auditor2 | `abe0c3e` | khung 9 dòng, bảng rỗng |
 | 32 | `rooms/ab1-478d-cfa7/README.md` | DocWriter | DocWriter | Khung | 🔄 chờ kiểm định | Reviewer1 | `5bcea63` | mục đích `raw/` vs `digest/` |
-| 33 | `rooms/ab1-478d-cfa7/directives.md` | Admin | Admin | Điều hành | 🔄 đang làm | Reviewer1 | `abe0c3e` | D-001..D-005; **`say` sai, xem §4.2** |
+| 33 | `rooms/ab1-478d-cfa7/directives.md` | Admin | Admin | Điều hành | 🔄 đang làm | Reviewer1 | `abe0c3e` | D-001..D-005; **KHÔNG chứa `say`** — xem §4.2 (đính chính) |
 | 34 | `rooms/ab1-478d-cfa7/digest/.gitkeep` | Admin | DocWriter | Giữ thư mục | — | — | `abe0c3e` | |
 | 35 | `rooms/ab1-478d-cfa7/digest/README.md` | DocWriter | DocWriter | Digest | 🔄 chờ kiểm định | Reviewer1 | `5bcea63` | quy trình 7 bước, **đã chạy thực tế** |
 | 36 | `rooms/ab1-478d-cfa7/digest/digest-msg-0001-0012.md` | DocWriter | DocWriter | Digest | 🔄 chờ kiểm định | Reviewer1 | `5bcea63` | digest đầu tiên, 12 tin |
@@ -114,29 +114,71 @@ reviewer **`Người dùng`**. Hai giá trị `Kiểm toán` và `Người dùng
 ở §1. DocWriter **giữ nguyên** và ghi chú tại đây thay vì tự đổi — việc đổi quy ước là quyết định
 của Admin. Trạng thái mục đó nay là **⛔ chặn** (file không tồn tại).
 
-### 4.2 Chỉ thị dùng lệnh `say` — lệnh này chạy KHÔNG được (DocWriter đã chạy thử)
+### 4.2 Lệnh `say` — ĐÃ SỬA LẠI PHẠM VI cho đúng (bản trước của mục này SAI)
 
-`rooms/ab1-478d-cfa7/directives.md` và `[msg 7]` hướng dẫn
-`run.py ... say --file <tin.md>`. DocWriter chạy thử trên máy này:
+> **Đính chính:** bản INDEX trước của DocWriter viết `directives.md` hướng dẫn `say`.
+> **Sai.** `grep -n say rooms/ab1-478d-cfa7/directives.md` → **không có kết quả**.
+> Nguồn thật của chỉ dẫn `say` là **`/home/noble-tran/agent-meet_skill/SKILL.md` dòng 43**
+> và tin `[msg 7]`. DocWriter ghi lại đính chính này thay vì âm thầm sửa.
 
-| Lệnh | Mã thoát thật | Kết quả |
-|---|---|---|
-| `... send --help` | `0` | hợp lệ |
-| `... say --file <f>` | `3` | in bảng trợ giúp chung, **không gửi** |
-| `... say --help` | `3` | không tồn tại |
+**Sự thật đã kiểm bằng lệnh (không đoán):**
 
-Subcommand đúng là **`send`**. **Đề nghị Admin sửa `directives.md` + mọi prompt.**
-Trạng thái: **`chưa phân xử`**. Chi tiết: [`digest-msg-0001-0012.md`](rooms/ab1-478d-cfa7/digest/digest-msg-0001-0012.md) §4.6.
+| CLI | Có `say`? | Có `send`? | Bằng chứng |
+|---|---|---|---|
+| `run.py` (CLI của **worker**) | **KHÔNG** | **CÓ** | `run.py send --help` → exit **0**; `run.py say --file` → exit **3**, chỉ in trợ giúp, **không gửi** |
+| `admin_cli.py` (CLI **chỉ Admin**, DocWriter bị CẤM dùng) | **CÓ** | — | `grep -n 'add_parser("say"' admin_cli.py` → **dòng 347** |
+
+⇒ **Đây là lỗi đường dẫn CLI, không phải lỗi của lệnh `say`:**
+`say` có thật trong `admin_cli.py`, còn `SKILL.md` dòng 43 lại dạy worker dùng `run.py say` — sai CLI.
+Điều này khớp với `ADMIN/LOG.md` **quyết định #8** (Admin dùng `say --file`, gặp HTTP 422 do dài,
+rồi tách tin và thành công) — Admin chạy **CLI của Admin**, nên `say` chạy được.
+
+**Hệ quả cho worker:** ai làm đúng `SKILL.md` dòng 43 sẽ **không gửi được tin** và có thể tưởng
+mình đã gửi. **Đề nghị Admin sửa `SKILL.md` dòng 43: `say` → `send`** (không phải sửa `directives.md`).
+
+**Cập nhật theo `main`:** `ADMIN/LOG.md` **#8** đã ghi nhận giới hạn **4000 ký tự/tin** (HTTP 422).
+Trạng thái: **giới hạn đã được ghi nhận**; **lỗi `SKILL.md` dòng 43 chưa thấy được sửa** trên `main@a414944`.
 
 ### 4.3 Lệch ngày `2025-10-01` (tài liệu) vs `2026-10-01` (`timestamp` thật) — `chưa xác minh`
 
 Toàn bộ tài liệu do Admin viết ghi `2025-10-01`, nhưng `timestamp` trong dữ liệu thô của phòng
 ghi `2026-10-01`. **DocWriter không phán bên nào đúng.** Cần Admin chốt mốc ngày chuẩn cho kho.
 
-### 4.4 Hai `agent_id` cùng mang tên "Admin" — `chưa xác minh`
+### 4.4 Hai `agent_id` cùng tên "Admin" — ✅ **ADMIN ĐÃ GIẢI QUYẾT** (không còn là vấn đề mở)
 
-`ag_9026ba92` (`[msg 1]`) và `ag_cd389846` (`[msg 6]`, `[msg 7]`, tự khai là "danh tính điều hành
-hiện hành"). Trong khi `ADMIN/ROSTER.md` chỉ ghi `ag_9026ba92`. Cần Admin ghi vào `ADMIN/LOG.md`.
+`ag_9026ba92` (`[msg 1]`) và `ag_cd389846` (`[msg 6]`, `[msg 7]`). **Nguyên nhân đã được Admin ghi
+tại `ADMIN/LOG.md` quyết định #5 trên `main`:** danh tính cũ `ag_9026ba92` **đã bị đánh dấu `kicked`**
+trong phòng (mọi lệnh ghi trả **HTTP 403**), nên Admin join lại bằng danh tính mới `ag_cd389846`.
+Trích nguyên văn lý do: *"Danh tính cũ đã bị đánh dấu `kicked` trong phòng; mọi lệnh ghi
+(say/assign/review) trả HTTP 403 Forbidden."*
+⇒ DocWriter **rút lại** mục này khỏi danh sách "cần Admin xử lý". `ADMIN/ROSTER.md` trên `main`
+vẫn ghi `ag_9026ba92` ở dòng 1 — **đây là việc còn lại của Admin** (cập nhật cột danh tính cho khớp LOG #5).
+
+### 4.5 `main` đã tiến 2 commit — INDEX này chỉ đúng cho nhánh T1
+
+| Mốc | Commit | Nội dung |
+|---|---|---|
+| Khung gốc | `abe0c3e` | 32 file — mốc DocWriter đối chiếu khi làm T1 |
+| `main` hiện tại | `a414944` | +7 quyết định điều phối (`879d69d`), +D-006 slot 8 / D-007 ZCode (`a414944`) |
+| Nhánh DocWriter | `3be89fd` | +7 file của T1, **chưa merge** |
+
+**⚠️ Cảnh báo phạm vi:** bảng §2 (39 file) đúng cho **nhánh `agent/doc-writer/T1`**. Trên
+`main@a414944` vẫn là **32 file**, vì T1 **chưa được merge**. Sau khi Admin merge, DocWriter phải
+cập nhật lại bảng.
+
+**Thay đổi trên `main` ảnh hưởng tới INDEX này (đã đọc diff, không đoán):**
+
+| Thay đổi | Ảnh hưởng |
+|---|---|
+| `ADMIN/ROSTER.md` thêm **dòng 9**: `DeepSeek-Harness` (`agents/deepseek-harness/*`, `agent/deepseek-harness/*`) — **D-006** | đội hình nay là **8 slot + 1 quan sát**. `agents/deepseek-harness/**` **chưa tồn tại** trên `main` |
+| `ADMIN/ASSIGNMENTS.md` thêm **T8** cho DeepSeek-Harness, sản phẩm `reviews/VERIFY2.md` | **`reviews/VERIFY2.md` chưa tồn tại** |
+| `ADMIN/ROSTER.md` thêm mục **D-007**: `ZCode` (`ag_c79f5017`) → **quan sát, chỉ được đọc** | giải quyết một phần mục 4.4 cũ |
+| `ADMIN/LOG.md` **#6**: mỗi agent một clone riêng `/home/noble-tran/agentmeeting-<slug>` | giải quyết xung đột đường dẫn clone (mục 4.5 cũ) |
+| `ADMIN/LOG.md` **#7, #8**: `--rejoin`/`--as` bắt buộc; giới hạn **4000 ký tự/tin** | đã ghi nhận |
+
+**Nhánh khác đã push (thấy qua `git fetch`):** `agent/auditor-2/T7`, `agent/deepseek-harness/T8`,
+`agent/exploit-deep/T4`. ⇒ **`reviews/AUDIT.md` + `AUDIT.json` có thể đã có trên nhánh Auditor2**
+dù chưa thấy trên `main`. DocWriter **chưa kiểm nội dung các nhánh đó** — `chưa xác minh`.
 
 ## 5. Cảnh báo phạm vi
 
