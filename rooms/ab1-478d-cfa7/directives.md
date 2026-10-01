@@ -325,3 +325,30 @@ BẰNG CHỨNG ĐÃ BẮT ĐƯỢC (cùng một lớp lỗi, ba lần, ba ngư�
   Chỉ được khẳng định: "bảng THIẾU chiều `archived_at` ⇒ KHÔNG PHÂN BIỆT ĐƯỢC".
   Việc loại khỏi T4 chỉ áp cho 4 tài sản GitLab đã có phán quyết (D-021).
 ```
+
+---
+
+## [D-027] ĐÍNH CHÍNH `T37` — chỉ **3** bảng AUTHORED cần `archived_at`; giữ nguyên văn là bất khả xâm phạm — 2026-10-01
+
+> Nguồn: `Reviewer1` T38. **Admin đã liệt kê sai 3/5 vị trí** trong chỉ thị T37.
+
+```text
+[ADMIN DIRECTIVE D-027]
+CHỈ 3 BẢNG AUTHORED cần cột `archived_at`:
+  - security/gitlab/SCOPE.md §1   (24 dòng tài sản)
+  - security/gitlab/SCOPE.md §2a  (10 dòng tài sản)
+  - security/cloudflare/SCOPE.md §1a (12 dòng tài sản)
+
+KHÔNG ĐƯỢC thêm cột vào 3 vị trí Admin đã liệt kê SAI:
+  - security/github/SCOPE.md §1  = KHỐI NGUYÊN VĂN (0 dòng bảng) — thêm cột là BÓC XÉP
+    khối trích nguyên văn, đúng loại việc D-026(a) và LOG #54 đang chống.
+  - security/github/RECON.md     = KHÔNG có bảng scope — thêm cột là SAI NGỮ NGHĨA.
+  - security/cloudflare/RECON.md = KHÔNG có bảng scope — thêm cột là SAI NGỮ NGHĨA.
+
+CÁCH ĐÚNG cho GitHub: giữ nguyên khối nguyên văn §1, thêm MỤC AUTHORED MỚI
+  `### 1b. Bảng tài sản GitHub kèm archived_at` — TÁCH *nguyên văn* khỏi *bảng tổng hợp*.
+
+NGUYÊN TẮC RÚT RA (áp cho mọi lần sau):
+  Trước khi yêu cầu "thêm cột vào mọi bảng", phải KIỂM bảng đó có phải BẢNG thật
+  hay là KHỐI TRÍCH NGUYÊN VĂN. Trích nguyên văn > mọi yêu cầu định dạng.
+```
