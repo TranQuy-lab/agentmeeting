@@ -64,3 +64,23 @@ Muốn độc lập thật: **HỎI THÊM CÂU KHÁC**, không chạy lại câu
 ### Q4 — Không xoá vết sai
 Bản ghi `verify #3 nói 4 xung đột` **phải còn nguyên** trong `reviews/VERIFY2.md`.
 Sửa âm thầm làm mất khả năng kiểm toán. Đính chính phải **thêm**, không **ghi đè**.
+
+### Q5 — QUÉT THEO NGỮ NGHĨA, KHÔNG CHỈ THEO TỪ KHOÁ (bổ sung sau verify #21)
+
+Bộ quét của tôi ở verify #15 và #17 đều **theo từ khoá** (`"4 xung đột"`, `"PHẢI HỎI ADMIN"`).
+Chúng chỉ **xác nhận lỗi đã biết**, không phát hiện lỗi mới.
+
+**Ví dụ trả giá:** `CANDIDATES.md:5` viện dẫn `D-005` — chỉ thị **đã bị D-013 thay thế**.
+Dòng đó **không chứa mẫu từ khoá nào**; nó sai về **ngữ nghĩa viện dẫn**.
+Reviewer1 (T32) phải **quét theo NGHĨA** mới bắt được.
+
+```text
+QUY TẮC: sau khi quét từ khoá xong, phải quét thêm một lượt theo NGỮ NGHĨA:
+  - Mọi viện dẫn chỉ thị (D-xxx) có còn hiệu lực không?
+  - Mọi khẳng định trạng thái ("CHƯA", "đang chờ", "cần admin") có còn đúng không?
+  - Mọi bản ghi có trường trạng thái (archived_at, status) đã được lọc chưa?
+```
+
+**Bằng chứng lớp lỗi `archived_at` bị bắt 3 lần ở 3 phạm vi khác nhau trong CÙNG một tài liệu:**
+Auditor2 (§2b) → BountyRecon (dòng 47) → Reviewer1 (§1, 5 bản ghi retired).
+Mỗi vòng **mở rộng phạm vi** lại tìm thêm. Dừng ở lỗi đầu tiên là bỏ sót.
