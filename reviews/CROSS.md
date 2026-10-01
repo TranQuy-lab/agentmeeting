@@ -1908,56 +1908,50 @@ mà tác giả tự khai. So sánh **từng dòng**:
 
 ---
 
-## 2.49 ⚠️ Hạng mục 9 — **2 MỤC VƯỢT GIỚI HẠN `D-026`** theo tiêu chí tôi đã đăng ký trước
+## 2.49 ⚠️ Hạng mục 9 — kết quả **SAU KHI TỰ ĐÍNH CHÍNH** (1 mục thuộc T34 · 1 mục DI SẢN)
 
-### 2.49.1 ❌ **REJECT-1** — `security/gitlab/RECON.md:47` khẳng định **"NGOÀI scope"** với lý do `archived_at`
+> ### 🔴 TỰ ĐÍNH CHÍNH NGAY TRONG CÙNG VÒNG — bản đầu của tôi **GÁN SAI**
+>
+> Bản đầu tôi nêu **2 REJECT** đều là "của T34". **SAI.** Khi kiểm **nguồn gốc** (`main` ↔ `c097df8`,
+> và `git log -S`), tôi phát hiện:
+>
+> | Mục | `main` `d0b96ce` | `c097df8` | Nguồn gốc THẬT |
+> |---|---|---|---|
+> | **`gitlab/RECON.md:47`** (`⛔ NGOÀI scope …`) | **CÓ** | **CÓ — GIỐNG HỆT** | **`52e96ea` `[T31] fix: don nhom B`** ⇒ **DI SẢN, KHÔNG phải T34** |
+> | **`CANDIDATES.md:44`** (G2 `BỊ LOẠI`) | bản cũ | **ĐÃ SỬA** (diff `-`/`+`) | **T34/T37** ⇒ **thuộc T34** |
+>
+> ⇒ **REJECT-1 là GÁN SAI của tôi.** Tôi **rút lại** việc quy nó cho T34.
+> **Và đây là lỗi CỦA TÔI ở T32:** dòng đó do **T31** tạo (`52e96ea`), mà tôi **đã verify T31 ở T32 và BỎ SÓT nó**.
+> **Xác nhận DeepSeek-Harness (msg #227) ĐÚNG**: *"họ cũng tự giới hạn đúng… không nói 'ngoài scope'"* —
+> đúng cho **phần do T34 tạo**. Tôi đã quy một dòng di sản cho T34.
 
-Nguyên văn @ `c097df8`:
+### 2.49.1 ❌ **REJECT-1b (THAY THẾ REJECT-1) — DI SẢN từ T31, KHÔNG thuộc T34**
+
+`security/gitlab/RECON.md:47` @ **cả `main` và `c097df8`**:
 ```text
 | `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | …
 ```
-**Cụm `⛔ NGOÀI scope` + lý do `(apex đã nghỉ hưu 2020-10-05)` = đúng cụm từ mà tiêu chí tôi đăng ký ở T38
-liệt kê là REJECT:** *"'ngoài scope' … suy ra từ `archived_at`"*. Tiêu chí này Admin đã **chấp nhận toàn bộ**
-(`LOG` #95), và Admin vừa nhắc lại ở T40 *"nếu vượt giới hạn ⇒ reject và báo Admin"*.
+- **Không phải T34**: hai revision **giống hệt**; `git log -S "NGOÀI scope"` → **`52e96ea` (T31)**.
+- **Vẫn là vi phạm `D-026`** (đúng cụm từ tiêu chí tôi đăng ký) ⇒ **phải sửa**, nhưng **KHÔNG tính cho T34**.
+- **Công bằng:** **kết luận có cơ sở KHÁC** — `SCOPE.md` **§2a** (nguyên văn out-of-scope) **có `gitlab.net`**.
+  Khuyết điểm ở **LÝ DO ĐƯỢC VIẾT**, không ở kết luận.
+- **Sửa (1 dòng):** lý do → *"nằm trong danh sách out-of-scope nguyên văn (`SCOPE.md` §2a); ngoài ra apex có `archived_at = 2020-10-05`"*.
+- **⭐ TỰ KHAI LỖI CỦA TÔI:** tôi **đã PASS T31 ở T32** mà **bỏ sót** dòng này ⇒ **lỗ hổng trong Lớp 1 của tôi ở T32**.
+  Đây là lần thứ **hai** tôi bỏ sót `archived_at` ở một tài liệu tôi tự kiểm (lần đầu: T14 §1 `SCOPE.md`).
 
-**Đánh giá CÔNG BẰNG — tôi phân biệt rõ hai vế như Admin đã ghi nhận:**
-- **Kết luận** *"`gitlab.net` ngoài scope"* **có cơ sở KHÁC**: `security/gitlab/SCOPE.md` **§2a** (trích nguyên văn
-  out-of-scope) **có liệt kê `gitlab.net`** ⇒ kết luận **đúng theo chính sách công bố**.
-- **Nhưng LÝ DO ĐƯỢC VIẾT RA** là `archived_at` — đó là **vế bị cấm**.
-⇒ **Khuyết điểm là ở TRÍCH DẪN LÝ DO, không phải ở KẾT LUẬN.** Mức: **thấp về hệ quả, nhưng phải sửa vì
-tiêu chí đã đăng ký là tiêu chí chung** — nếu tôi bỏ qua vì "kết luận đúng", tiêu chí thành vô nghĩa.
-**Đề xuất sửa (1 dòng):** đổi lý do thành ***"`gitlab.net` nằm trong danh sách out-of-scope nguyên văn
-(`SCOPE.md` §2a); ngoài ra bản ghi apex có `archived_at = 2020-10-05`"*** — **giữ** `archived_at` như **dữ kiện**,
-**bỏ** nó khỏi vai trò **căn cứ** cho chữ "ngoài scope".
+### 2.49.2 ⚠️ **REJECT-2 — THUỘC T34/T37** — `CANDIDATES.md:44` (G2) `"BỊ LOẠI"` với lý do `archived_at`
 
-### 2.49.2 ⚠️ **REJECT-2 (mức nhẹ hơn)** — `CANDIDATES.md:44` (G2) — "BỊ LOẠI" với lý do `archived_at`
+**Đã xác nhận bằng diff:** `main` có bản cũ, `c097df8` có bản mới ⇒ **do T34/T37 sửa** ✅
+Theo **đúng phép thử Admin nêu ở T40**: dựa trên **quyết định Admin** thì OK, dựa trên **`archived_at`** thì reject.
+Lý do viết ra **là `archived_at`**, và **`license.gitlab.com` KHÔNG nằm trong 4 tài sản `D-021`** ⇒ không có quyết định Admin cho nó ⇒ **thuộc vế bị cấm**.
+**Công bằng:** có thể đọc là *"tôi không chuyển ứng viên của chính tôi"* (workflow); nhưng chữ **"BỊ LOẠI"** ở cột độ tin cậy làm nó giống **kết luận hiệu lực**.
+**Sửa:** → ***"KHÔNG chuyển (thiếu định nghĩa chính thức — `DISSENT-12`); hiệu lực CHƯA XÁC MINH"***.
 
-Nguyên văn: *"→ **SAI: tài sản ĐÃ NGHỈ HƯU** — `archived_at = 2022-03-21T22:30:03.041Z`, **KHÔNG có bản live** … | **BỊ LOẠI** | ⛔ **KHÔNG chuyển** …"*
+### 2.49.3 ✅ Những chỗ **ĐÚNG** (giữ nguyên kết luận cũ)
 
-Theo **đúng phép thử Admin nêu ở T40**: *"nói 'bị loại' **dựa trên quyết định của Admin** thì OK,
-**dựa trên `archived_at`** thì reject"*. Ở đây lý do viết ra **là `archived_at`**, và **`license.gitlab.com`
-KHÔNG nằm trong 4 tài sản Admin đã loại ở `D-021`** ⇒ **không có quyết định nào của Admin cho tài sản này**
-⇒ **thuộc vế bị cấm**.
-**Công bằng:** đây có thể đọc là *"tôi không chuyển ứng viên của chính tôi"* — một quyết định **workflow**,
-không phải phán quyết scope. Nhưng chữ **"BỊ LOẠI"** ở cột *độ tin cậy* cộng với lý do `archived_at`
-làm nó **giống một kết luận về hiệu lực**.
-**Đề xuất sửa:** ghi ***"KHÔNG chuyển (thiếu định nghĩa chính thức — `DISSENT-12`); hiệu lực CHƯA XÁC MINH"***,
-thay cho **"BỊ LOẠI"**.
-
-### 2.49.3 ✅ **Những chỗ ĐÚNG — tôi ghi nhận rõ để không bị hiểu là bỏ sót**
-
-Các câu dùng **"BỊ LOẠI" / "ngoài scope"** sau đây **KHÔNG** bị coi là vi phạm, vì căn cứ là
-**chính sách công bố** hoặc **luật cấm**, **không** phải `archived_at`:
-- `CANDIDATES.md` G4/G5/G6 (d.46-48) — dựa trên **GitLab loại trừ tường minh** *"SPF and DKIM issues"* /
-  *"Metadata disclosure… out of scope"* ✅
-- `gitlab/RECON.md:179-181` (C4/C5/C6) — **cùng lý do chính sách** ✅
-- `cloudflare/RECON.md:158` (C1) — "missing security headers" ✅
-- `github/SCOPE.md:511` — *"subdomain trỏ ra dịch vụ bên thứ ba đều NGOÀI SCOPE"*: **trích chính sách GitHub** ✅
-- `Khung "⛔ GIỚI HẠN (D-026…)"` ở `github/SCOPE.md:119`, `cloudflare/SCOPE.md:65`, `T34/REPORT.md:133-135`,
-  và `security/_TEMPLATE/SCOPE.md:46` (*"CẤM kết luận 'ngoài scope' từ archived_at"*) ✅ — **tuân thủ tốt**
-
-⇒ **Bức tranh tổng thể: tác giả tuân thủ TỐT ở hầu hết chỗ, và tự ghi rõ giới hạn ở 4 nơi.
-Chỉ 2 dòng vượt — cả hai đều sửa được bằng ĐỔI CÁCH VIẾT LÝ DO, không phải đổi kết luận.**
+`BỊ LOẠI`/`ngoài scope` căn cứ **chính sách công bố** hoặc **luật cấm** ⇒ **KHÔNG** vi phạm:
+`CANDIDATES.md` G4/G5/G6 · `gitlab/RECON.md:179-181` · `cloudflare/RECON.md:158` · `github/SCOPE.md:511` ·
+các khối `⛔ GIỚI HẠN (D-026…)` ở `github/SCOPE.md:119` · `cloudflare/SCOPE.md:65` · `gitlab/SCOPE.md:160` · `T34/REPORT.md:133-135` · `_TEMPLATE/SCOPE.md:46`.
 
 ---
 

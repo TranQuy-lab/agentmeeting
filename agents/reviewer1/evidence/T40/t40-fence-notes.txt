@@ -213,3 +213,38 @@ c097df8:security/gitlab/RECON.md:47:| `gitlab.net` | ⛔ **NGOÀI scope** (apex 
 c097df8:security/gitlab/RECON.md:179:| C4 | `customers.gitlab.com` SPF `~all` | §1 | **BỊ LOẠI** | ⛔ GitLab liệt kê tường minh **"SPF and DKIM issues"** là out-of-scope. **Đừng theo.** |
 c097df8:security/gitlab/RECON.md:180:| C5 | `gitlab.org`/`gitlab.net` DMARC `p=none` | §1.1 | **BỊ LOẠI** | ⛔ Cùng lý do C4. **Đừng theo.** |
 c097df8:security/gitlab/RECON.md:181:| C6 | `gitlab-sv: web-gke-us-east1-d`, `gitlab-lb: haproxy-main-51-lb-gprd` lộ hạ tầng | §2.1 | **BỊ LOẠI** | ⛔ GitLab: *"Metadata disclosure, enumeration, and information gathering issues are out of scope unless the researcher demonstrates a privacy breach"*. **Đừng theo.** |
+
+=== [XAC NHAN LAI] 'NGOÀI scope' xuat hien o DAU trong security/** @ c097df8? ===
+$ git grep -n 'NGOÀI scope\|ngoài scope' c097df8 -- security/
+c097df8:security/_TEMPLATE/SCOPE.md:46:3. CẤM kết luận "ngoài scope" từ archived_at. Chỉ được nói:
+c097df8:security/cloudflare/SCOPE.md:65:> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho các bản ghi này.
+c097df8:security/github/SCOPE.md:119:> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho bản ghi
+c097df8:security/gitlab/RECON.md:47:| `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
+c097df8:security/gitlab/SCOPE.md:160:> ⛔ **GIỚI HẠN (D-026, KHÔNG được vượt):** **KHÔNG** suy ra *"ngoài scope"* cho các bản ghi này.
+
+  --- rieng gitlab/RECON.md dong 47 (nguyen van, cat 200 ky tu) ---
+| `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-ve
+
+  --- dong 47 co duoc SUA o T34 khong? (so voi main d0b96ce) ---
+  main    : | `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.
+  c097df8 : | `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.
+
+  --- gitlab/RECON.md co nam trong danh sach file T34 sua khong? ---
+security/gitlab/RECON.md
+  => CO (T34 da sua file nay)
+
+=== [DINH CHINH REJECT-1] dong gitlab/RECON.md:47 la DI SAN hay do T34 TAO? ===
+  main    : | `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net`
+  c097df8 : | `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net`
+  => GIONG NHAU? ✅ GIONG => T34 KHONG tao ra dong nay (DI SAN tu main)
+
+  --- dong nay xuat hien tu commit nao? ---
+52e96ea [T31] fix: don nhom B - RECON.md 5 dong + CANDIDATES.md §2 (0 xung dot hieu luc)
+
+=== [KIEM REJECT-2] CANDIDATES.md dong 44 (G2) co phai do T34 sua khong? ===
+  main    :
+| **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải** | **TRUNG BÌNH–THẤP** | ✅ **Đáng chuyển + cần Admin/GitLab l�
+  c097df8 :
+| **G2** | ~~**`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải**~~ → **SAI: tài sản ĐÃ NGHỈ HƯU** — `archived_at = 2022-03-21
+18:-| **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải** | **TRUNG BÌNH–THẤP** | ✅ **Đáng chuyển + cần Admin/GitLab làm rõ.** ⚠️ **KHÔNG có CNAME treo ⇒ KHÔNG phải takeover.** **CẤM tự đoán.** |
+19:+| **G2** | ~~**`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải**~~ → **SAI: tài sản ĐÃ NGHỈ HƯU** — `archived_at = 2022-03-21T22:30:03.041Z`, **KHÔNG có bản live** (tự truy vấn lại ở T34; xem `security/gitlab/SCOPE.md` §1) | **BỊ LOẠI** | ⛔ **KHÔNG chuyển** — đây là **bản ghi đã retired**, không phải target đang mở. Việc không phân giải là **hệ quả tự nhiên**, không phải bất thường. |
