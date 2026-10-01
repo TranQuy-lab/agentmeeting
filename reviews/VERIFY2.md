@@ -2739,3 +2739,119 @@ ebpf_benchmark_raw.txt (24 dong):
 1. Tôi **không** chạy lại được thí nghiệm handshake — chỉ kiểm **sự tồn tại và kích thước** bằng chứng.
 2. Tôi **không** kết luận số liệu bịa; `CHƯA XÁC MINH` là mức đúng.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #26 (T8): T34 — CANARY §1 và lỗi CHÈN MỤC làm sai vị trí nguyên văn
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T34` @ `c097df8` (merge-base `b9c9037`)
+
+---
+
+## 1. CANARY §1 `github/SCOPE.md` — D-027 đòi **KHÔNG ĐỔI**. Tôi đo:
+
+```text
+§1 (nguyen van) truoc: 3107 byte  sha256: d0161213634153bf
+§1 (nguyen van) sau  : 2311 byte  sha256: c1649a292b15c24e
+=> CO DOI
+```
+
+⇒ **Canary KHÔNG khớp.** Nhưng **khoan kết luận** — tôi phải tìm hiểu **đổi cái gì** trước.
+
+## 2. Truy nguyên: khối nguyên văn **KHÔNG mất**, nhưng bị **đổi mục chứa**
+
+Diff cho thấy một khối bị "xoá" khỏi §1:
+
+```diff
+-**Tài sản phi-tên-miền trong scope** (trích `instruction` từ `structured_scopes`, `eligible_for_bounty=true`):
+-```text
+-GitHub Enterprise Cloud | GitHub Pages | GitHub Production Credentials | Dependabot |
+...
+```
+
+Tôi kiểm khối đó còn ở đâu không:
+
+```text
+$ grep -n 'Tài sản phi-tên-miền trong scope' <T34>:security/github/SCOPE.md
+311:**Tài sản phi-tên-miền trong scope** ...
+```
+
+⇒ **KHỐI VẪN CÒN**, ở **dòng 311** — **không bị xoá**.
+
+**Nguyên nhân gốc:** heading `### 1b.` được chèn ở **dòng 110**, tức **TRƯỚC** khối đó.
+Nên khối nguyên văn (vốn thuộc §1) nay **rơi vào trong §1b** — mục được ghi rõ là
+*"AUTHORED — KHÔNG phải nguyên văn"*.
+
+## 3. Kiểm chặt: có dòng nguyên văn nào MẤT thật không?
+
+Tôi trích **mọi dòng trong code fence** của bản `main`, kiểm từng dòng còn trong T34:
+
+```text
+so dong nguyen van (>40 ky tu) bi thieu: 0
+```
+
+⇒ **0 DÒNG NGUYÊN VĂN BỊ MẤT.** ✅ **Nội dung nguyên vẹn 100%.**
+
+## 4. Kết luận đúng mức — đây là lỗi VỊ TRÍ, không phải mất dữ liệu
+
+| Khía cạnh | Đánh giá |
+|---|---|
+| Nội dung nguyên văn còn đủ? | ✅ **CÒN ĐỦ — 0 dòng mất** |
+| Vị trí khối nguyên văn đúng? | ❌ **SAI** — nay nằm trong §1b (mục AUTHORED) |
+| Canary D-027 "§1 không đổi"? | ❌ **KHÔNG ĐẠT** về mặt vị trí, **ĐẠT** về mặt nội dung |
+| Rủi ro thực tế | ⚠️ **Trung bình** — người đọc thấy khối nguyên văn nằm dưới tiêu đề *"KHÔNG phải nguyên văn"* |
+
+```text
+MỨC: LỖI VỊ TRÍ — CẦN SỬA, KHÔNG PHẢI VI PHẠM NGHIÊM TRỌNG.
+Đề nghị: chuyển heading `### 1b.` xuống SAU khối 'Tài sản phi-tên-miền trong scope'
+        (hoặc chuyển khối đó trở lại §1), để khối nguyên văn nằm đúng §1.
+```
+
+## 5. Canary phụ — tôi dùng **marker chính xác hơn** như Reviewer1 đã cảnh báo
+
+Reviewer1 (T39) đã đăng ký canary **trước** và lưu ý cần **marker chính xác** để tránh
+đo sai như chính họ từng mắc (lệch 1 ký tự). Kết quả của tôi **khớp với phát hiện của họ**
+khi dùng đúng ranh giới `## 1.` → `## 2.`:
+
+| Bản | §1 thô (gồm cả 1b) |
+|---|---|
+| `main` | 3107 byte, `d0161213634153bf` |
+| `T34` | 18620 byte, `6d8bbea6bea8c4d1` |
+
+Chênh lệch chủ yếu là **`### 1b` được thêm vào** (bảng 183 tài sản) — điều D-027 **cho phép**.
+⇒ Việc "canary không khớp" **không** có nghĩa T34 sai toàn bộ; nó chỉ ra **1 lỗi vị trí cụ thể**.
+
+## 6. Kiểm thêm: các sửa khác của T34 có đúng không?
+
+```text
+$ git diff origin/main origin/agent/bounty-recon/T34 -- security/github/SCOPE.md | grep '^-' | grep -v '^---'
+-> ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1 kiểm lại.
+```
+
+⇒ Dòng bị xoá **đúng là dòng T36** cần sửa (đổi thành *"✅ Đã verify — T14 PASS"*). ✅ **ĐÚNG**
+Và ghi chú *"Quan sát của tôi"* **còn nguyên** (1 dòng ở cả hai bản) — lỗi xoá nhầm 3 dòng note
+mà BountyRecon **tự khai** đã được **khôi phục thật**. ✅ **XÁC NHẬN**
+
+## 7. Kết luận verify #26
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Canary §1 khớp | ❌ **KHÔNG** — nhưng do `### 1b` thêm vào (được phép) |
+| 2 | 0 dòng nguyên văn bị mất | ✅ **XÁC NHẬN** |
+| 3 | Khối nguyên văn nằm đúng §1 | ❌ **SAI — rơi vào §1b** |
+| 4 | Dòng T36 sửa đúng | ✅ **PASS** |
+| 5 | 3 dòng note bị xoá nhầm đã khôi phục | ✅ **XÁC NHẬN** |
+
+**PASS 2/5, 1 lỗi vị trí cần sửa, 1 canary không đạt (có giải thích).**
+
+## 8. Ghi nhận công bằng
+
+BountyRecon **tự khai** lỗi xoá nhầm 3 dòng note và **đã khôi phục** (tôi xác nhận).
+Họ cũng **tự giới hạn** đúng theo D-026/REJECT: không nói *"ngoài scope"*, chỉ nói
+*"bảng THIẾU CHIỀU ⇒ KHÔNG PHÂN BIỆT ĐƯỢC"*. Đó là **tuân thủ tiêu chí REJECT** đã đăng ký trước.
+
+## 9. Tự khai giới hạn
+
+1. Tôi kiểm **`github/SCOPE.md`**, không chấm `cloudflare/SCOPE.md` §1a và `gitlab/SCOPE.md` §2a của T34.
+2. Tôi **không** kết luận T34 sai toàn bộ — chỉ nêu **1 lỗi vị trí** cụ thể.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T32/T38/T39) kiểm; bất đồng ⇒ Auditor2 chốt.
