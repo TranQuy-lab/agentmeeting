@@ -37,7 +37,10 @@ def load(f, rev):
 
 
 def main():
+    base = subprocess.run(["git", "merge-base", "main", "HEAD"],
+                          capture_output=True, text=True).stdout.strip()
     print("# verify_t31.py — T31 (BountyRecon)")
+    print(f"# DOI CHIEU: 'TRUOC' = merge-base main = {base[:12]}  ('SAU' = cay lam viec)")
     print("# QUY UOC RANH GIOI: dong = splitlines() (bo \\n cuoi dong);")
     print("#   vung = '\\n'.join(dong_a..dong_b), 1-based, hai dau DONG; khong co \\n o cuoi vung.")
     print("#   Moi vung in hash theo 2 quy uoc: (A) khong \\n cuoi, (B) co \\n cuoi.")
@@ -45,7 +48,7 @@ def main():
     total_changed = 0
     all_ok = True
     for f in FILES:
-        before = load(f, "HEAD")
+        before = load(f, base)
         after = load(f, "WORK")
         sm = difflib.SequenceMatcher(a=before, b=after, autojunk=False)
         ops = [o for o in sm.get_opcodes() if o[0] != "equal"]

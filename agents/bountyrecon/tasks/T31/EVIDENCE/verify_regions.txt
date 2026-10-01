@@ -1,11 +1,12 @@
 # verify_t31.py — T31 (BountyRecon)
+# DOI CHIEU: 'TRUOC' = merge-base main = 6d47749ea548  ('SAU' = cay lam viec)
 # QUY UOC RANH GIOI: dong = splitlines() (bo \n cuoi dong);
 #   vung = '\n'.join(dong_a..dong_b), 1-based, hai dau DONG; khong co \n o cuoi vung.
 #   Moi vung in hash theo 2 quy uoc: (A) khong \n cuoi, (B) co \n cuoi.
 
 ==============================================================================
 FILE: security/gitlab/RECON.md
-  blob TRUOC (HEAD) : 5c088a23eb7280a9d5a5a265eec31a10d41daba0
+  blob TRUOC (HEAD) : 75f163cf40131eb862250d6a7bf7d72886bd1342
   blob SAU          : 75f163cf40131eb862250d6a7bf7d72886bd1342
   so dong TRUOC=213  SAU=214
   opcodes khac: [('replace', 39, 40, 39, 40), ('replace', 47, 47, 47, 47), ('replace', 206, 209, 206, 210)]
@@ -46,8 +47,8 @@ FILE: security/gitlab/RECON.md
 
 ==============================================================================
 FILE: agents/bountyrecon/tasks/T3/CANDIDATES.md
-  blob TRUOC (HEAD) : 95d16d76c55fd0358d93632245f7c0123526c4ba
-  blob SAU          : ac04b4605a0a8baa66fb827da848cb03c3c514d3
+  blob TRUOC (HEAD) : ac04b4605a0a8baa66fb827da848cb03c3c514d3
+  blob SAU          : 095006ce5914622f6634d6252793f87af1720df6
   so dong TRUOC=118  SAU=121
   opcodes khac: [('replace', 19, 19, 19, 19), ('replace', 21, 21, 21, 21), ('replace', 64, 64, 64, 64), ('replace', 66, 67, 66, 67), ('replace', 69, 69, 69, 73), ('replace', 71, 74, 75, 78), ('replace', 76, 77, 80, 82), ('replace', 79, 82, 84, 85)]
 
@@ -57,7 +58,7 @@ FILE: agents/bountyrecon/tasks/T3/CANDIDATES.md
       + | 4 | GitLab: **0 xung đột hiệu lực** — vế OUT là bản ghi đã nghỉ hưu (`archived_at` 2022-07-21); Admin đã **loại cả 4 t
     [replace] TRUOC dong 21..21  ->  SAU dong 21..21
       - **⇒ Chưa đủ 4/4. ĐỀ NGHỊ CHƯA MỞ T4.**
-      + **⇒ Điều kiện còn thiếu duy nhất: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**
+      + **⇒ Điều kiện mở T4 nay là: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**
     [replace] TRUOC dong 64..64  ->  SAU dong 64..64
       - ## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)
       + ## 2. GitLab — **0 xung đột hiệu lực**; 4 tài sản đã nghỉ hưu (ĐÃ PHÁN QUYẾT)

@@ -18,7 +18,7 @@
 | 3 | Reviewer1 verify T3 độc lập | ⏸ **CHƯA** |
 | 4 | GitLab: **0 xung đột hiệu lực** — vế OUT là bản ghi đã nghỉ hưu (`archived_at` 2022-07-21); Admin đã **loại cả 4 tài sản khỏi T4** | ✅ **XONG** |
 
-**⇒ Điều kiện còn thiếu duy nhất: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**
+**⇒ Điều kiện mở T4 nay là: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**
 
 ---
 
