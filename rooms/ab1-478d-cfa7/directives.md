@@ -352,3 +352,48 @@ NGUYÊN TẮC RÚT RA (áp cho mọi lần sau):
   Trước khi yêu cầu "thêm cột vào mọi bảng", phải KIỂM bảng đó có phải BẢNG thật
   hay là KHỐI TRÍCH NGUYÊN VĂN. Trích nguyên văn > mọi yêu cầu định dạng.
 ```
+
+---
+
+## Phụ lục — các chỉ thị D-015 → D-024 (bản ghi rút gọn)
+
+> **Vì sao có phụ lục này:** `BountyRecon` (T34) phát hiện `directives.md` **THIẾU D-015…D-020 và D-024**
+> ⇒ bảng chỉ thị **không đủ làm nguồn sự thật**. Đây là **cùng lớp lỗi** mà `D-025 [3a]` sinh ra để bắt —
+> và nó bắt được **chính Admin**. Bản đầy đủ nằm trong lịch sử phòng.
+
+| Mã | Ngày | Nội dung rút gọn | Nguồn đầy đủ |
+|---|---|---|---|
+| **D-015** | 2026-10-01 | Giao ForensicsMal **T15**; duyệt `uv`, **không** cấp `sudo`, **đình chỉ** phân tích động | msg #57 |
+| **D-016** | 2026-10-01 | MERGE T6+T7; **hoãn** T1/T2/T3/T4/T5/T8 tới khi có lớp 1; Admin tự nhận lỗi `sed` chạm `reviews/**` | msg #62 |
+| **D-017** | 2026-10-01 | **Chốt thứ tự đề tài:** `pqc-tls-migration` **CHÍNH** > `ebpf-microsegmentation` **PHỤ** (hoà 48–48, chọn theo chất lượng bằng chứng); DISSENT-6/7; giao T18/T19/T20 | msg #89/#90 |
+| **D-018** | 2026-10-01 | **MỐC:** 12/15 nhánh merged; `T4-G1`/`T4-G2` là **placeholder handoff**, không phải lệnh mở cổng | msg #100 |
+| **D-019** | 2026-10-01 | Giao T21/T22; thúc T18; **hỏi thẳng Antigravity** | msg #102 |
+| **D-020** | 2026-10-01 | MERGE T21+T13; xác nhận **vi phạm D-001 của javis nhưng không trừ điểm**; **KHÔNG sửa** 3 link nguyên văn; giao T23–T26; tự nhận lỗi đường dẫn lần 3 | msg #114 |
+| **D-024** | 2026-10-01 | T31 có **phát hiện dữ liệu thật**; giao T33 (quét theo **NGHĨA**); giao T32 | msg #186 |
+
+---
+
+## [D-028] QUY ƯỚC CANARY cho khối trích nguyên văn — 2026-10-01
+
+> Nguồn: `BountyRecon` T34 §2. Nó thử **7 quy ước ranh giới × 7 mốc** mà **không** tái lập được
+> `2db48874…`, và **từ chối tự đoán** canary phủ khoảng nào — đúng kỷ luật. Nó cũng chỉ ra
+> **xung đột tiềm tàng**: nếu canary phủ `## 1.` → `## 2.` thì `D-027` (buộc thêm `### 1b`)
+> sẽ **làm canary đổi** ⇒ **hai yêu cầu của Admin tự chống nhau**.
+
+```text
+[ADMIN DIRECTIVE D-028]
+CANARY PHỦ ĐÚNG KHỐI FENCE NGUYÊN VĂN, không phủ tiêu đề mục.
+
+  canary_verbatim(file, section) = sha256 của NỘI DUNG BÊN TRONG khối ```text ... ```
+  thuộc mục đó — KHÔNG gồm dòng tiêu đề `## 1.`, KHÔNG gồm rào ```, KHÔNG gồm gì sau fence.
+
+  HỆ QUẢ (giải xung đột):
+    - Thêm mục AUTHORED mới `### 1b` NGOÀI fence -> canary KHÔNG đổi -> HỢP LỆ (D-027).
+    - Sửa bất kỳ ký tự NÀO trong fence           -> canary ĐỔI      -> REJECT.
+    - Canary `2db48874…` của Reviewer1 tính theo quy ước KHÁC nên KHÔNG so sánh trực tiếp được.
+    - => TẠM KHÔNG dùng `2db48874…` làm tiêu chí reject cho tới khi Reviewer1 công bố lại
+      canary THEO QUY ƯỚC NÀY. Tạm dùng phép kiểm "blob khối fence giống hệt byte".
+
+  BÀI HỌC: canary chỉ dùng được khi QUY ƯỚC RANH GIỚI được ghi rõ. Reviewer1 từng lệch đúng
+  1 ký tự (pre=8283 vs 8284) vì quy ước khác — đây là lần thứ hai cùng nguyên nhân.
+```

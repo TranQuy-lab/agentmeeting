@@ -32,6 +32,18 @@ Người viết KHÔNG được tự verify. Chỉ Admin được merge vào `ma
 | T24 | Auditor2 | Kiểm định T18 của DeepSeek-Harness | `reviews/AUDIT3.md`, `reviews/AUDIT3.json`, `agents/auditor2/**` | Tự đọc toàn văn S31, tự kiểm DOI, tự tách `asset_type`; so với kết luận DeepSeek-Harness | Người dùng | ⏳ todo |
 | T25 | Reviewer1 | Kiểm chứng T22 của DocWriter | `reviews/CROSS.md`, `agents/reviewer1/**` | Tự `git ls-tree` mốc `0f41ebb` đối chiếu bảng; kiểm tác giả lấy từ commit thêm file lần đầu; kiểm 3 mục Admin vá | Auditor2 | ⏳ todo |
 | T26 | BountyRecon | Sửa 3 link sai độ sâu trong CANDIDATES.md | `agents/bountyrecon/**`, `security/**` | `../../../security/` → `agents/security/` không tồn tại; sửa thành 4 cấp `../../../../security/`; KHÔNG sửa file trích nguyên văn | Reviewer1 | ⏳ todo |
+| T27 | Reviewer1 | Kiểm chứng T23 (ForensicsMal) + T26 (BountyRecon) | `reviews/CROSS.md`, `agents/reviewer1/**` | PASS 4/4 + PASS · 20 mục đã kiểm | Auditor2 | ✅ merged |
+| T28 | BountyRecon | Sửa nhãn §2b `SCOPE.md` + thêm `archived_at` | `security/**/SCOPE.md` | Băm 6/6 khớp; pre=8284/suf=5490 giống hệt | Reviewer1 | ✅ merged |
+| T29 | BountyRecon | Sửa 3 dòng cũ ngoài §2b (d9/284/289) | `security/**/SCOPE.md` | 299=299 dòng; §2b + vùng nguyên văn không chạm | Reviewer1 | ✅ merged |
+| T30 | Reviewer1 | Kiểm chứng T28 + T29 | `reviews/CROSS.md`, `agents/reviewer1/**` | T28 PASS 5/5 · tự sửa T14 · đề xuất [3a]/[3b] | Auditor2 | ✅ merged |
+| T31 | BountyRecon | Dọn nhóm B (`RECON.md` + `CANDIDATES.md` §2) | `security/**`, `agents/bountyrecon/**` | Phát hiện dữ liệu thật `gitlab.net` apex vs wildcard | Reviewer1 | ✅ merged |
+| T32 | Reviewer1 | Kiểm chứng T31 + phát hiện §1 thiếu `archived_at` | `reviews/CROSS.md`, `agents/reviewer1/**` | §1 trộn 19 live + 5 retired; đề xuất [3a]/[3b] | Auditor2 | ✅ merged |
+| T33 | BountyRecon | Sửa `CANDIDATES.md` dòng 18 | `agents/bountyrecon/**` | 1 dòng; phát hiện định lượng 0/6 vs 6/6 | Reviewer1 | ✅ merged |
+| T34 | BountyRecon | Retrofit `archived_at` + 6 dòng Chưa verify + G2 | `security/**`, `agents/bountyrecon/**` | D-027: 3 bảng AUTHORED; GitHub dùng `### 1b`; 4 bản `_v2` | Reviewer1 | ⏳ chờ T40 |
+| T35 | Reviewer1 | Kiểm chứng T33 + phát hiện `[3b]` chưa áp cho GitHub/Cloudflare | `reviews/CROSS.md`, `agents/reviewer1/**` | GitHub 153 orphan · Cloudflare 4 · phân xử xung đột quy tắc | Auditor2 | ✅ merged |
+| T36 | BountyRecon | Sửa 6 dòng `Chưa verify` trong `security/**` | `security/**` | `grep` → 0; ghi chú supersede giữ nguyên | Reviewer1 | ⏳ chờ T40 |
+| T37 | BountyRecon | Mở rộng `[3b]` (đã đính chính D-027) | `security/**` | Chỉ 3 bảng AUTHORED; GitHub `### 1b`; 2 bản `_v2` | Reviewer1 | ⏳ chờ T40 |
+| T40 | Reviewer1 | Verify T34/T36/T37 tại HEAD CUỐI (dùng `D-028`) | `reviews/CROSS.md`, `agents/reviewer1/**` | Fence §1 giống hệt byte · 3 note `📝` khôi phục · `### 1b` ngoài fence · 4 `_v2` có `archived_at` + ngày chụp, bản gốc không đổi | Auditor2 | ⏳ todo |
 
 ---
 
