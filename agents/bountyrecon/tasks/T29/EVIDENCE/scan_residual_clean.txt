@@ -1,0 +1,41 @@
+=== T29 — YEU CAU 5 (lam sach): PHAN LOAI moi lan xuat hien 'xung dot' / 'PHẢI HỎI ADMIN' ===
+UTC: 2026-10-01T15:04:56Z
+pham vi: agents/bountyrecon/** + security/**  (BO cac file trong /EVIDENCE/ de khong tu khop)
+
+Tong so file co mau: 5
+
+### agents/bountyrecon/tasks/T28/FIX_2B.md   (7 dong)
+  27: | Nhãn | `## 2b. 🚨 XUNG ĐỘT SCOPE ĐÃ XÁC MINH — KHÔNG ĐƯỢC ĐOÁN` | `## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT HIỆU LỰC** (đã đính chính ở T28)` |
+  134: | A | **dòng 9** (khối Tiêu đề/Trạng thái, §0) | `**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**` | Vẫn khẳng định "4 
+  135: | B | **§5, dòng 284** | `\| Trích được nguyên văn in-scope? \| ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột \|` | Vẫn gọi "xung đột" |
+  136: | C | **§5, dòng 289** | `\| Đủ điều kiện chuyển ExploitDeep (T4)? \| ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước \|` | Vẫn nói "phải chốt 4 xung đột" — việc c
+  141: > ⚠️ **Hệ quả nếu để nguyên:** tài liệu **tự mâu thuẫn** — §2b nói "0 xung đột hiệu lực" nhưng
+  142: > dòng 9 nói "4 XUNG ĐỘT … PHẢI HỎI ADMIN". Người đọc sau sẽ tin dòng 9 (nó ở đầu file).
+  158: | 1. Sửa CHỈ §2b, nhãn đúng "0 xung đột hiệu lực + 4 đã nghỉ hưu", thêm `archived_at` | ✅ |
+
+### agents/bountyrecon/tasks/T3/CANDIDATES.md   (2 dong)
+  19: | 4 | Chốt 4 **xung đột scope** của GitLab (xem §2) | ⏸ **CHƯA** — **CẦN ADMIN PHÁN QUYẾT** |
+  64: ## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)
+
+### security/_TEMPLATE/SCOPE.md   (3 dong)
+  9: | **`archived_at` của MỌI asset** | ✅ **BẮT BUỘC** | **Bài học M-01 (Auditor2 T24):** hai kiểm định viên độc lập cùng truy vấn một tập trường thì **cùng mù một chiều dữ l
+  19:   2. asset_type         (WILDCARD vs URL vs IP — khác loại thì có thể không phải xung đột)
+  22: Chỉ kết luận "xung đột" sau khi đã loại trừ cả bốn chiều. Ghi rõ đã truy vấn hay chưa.
+
+### security/gitlab/RECON.md   (5 dong)
+  39: | `about.gitlab.com` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | `shaz`/`julio.ns.cloudflare.com` | A `104.18.28.129`, `104.18.29.129` | Sau Cloudflare. TXT: `_globalsign-domain-veri
+  40: | `docs.gitlab.com` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | — | A `104.18.39.11`, `172.64.148.245` | TXT: `google-site-verification=YgHoFZLvJOGzjmqfSOAqWD8fU4GnVYXjWojp8Tgxvb4`. 
+  47: | `gitlab.net` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
+  206: 2. **4 tài sản bị XUNG ĐỘT scope** (`*.gitlab.net`, `*.gitlap.com`, `about.gitlab.com`,
+  208:    ở mức **thụ động thuần** (chỉ đọc DNS công khai) **trước khi** phát hiện xung đột.
+
+### security/gitlab/SCOPE.md   (8 dong)
+  9: **Trạng thái:** ✅ **Trích được nguyên văn. 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §2b.**
+  146: ## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT HIỆU LỰC** (đã đính chính ở T28)
+  148: > 🔄 **ĐÍNH CHÍNH (T28, `2026-10-01`).** Mục này trước đây gọi là *"4 XUNG ĐỘT SCOPE ĐÃ XÁC MINH"*.
+  149: > **Cách gọi đó SAI.** Cách đọc đúng: **0 xung đột hiệu lực + 4 bản ghi đã nghỉ hưu
+  164: > Bỏ nó ⇒ sinh ra "xung đột scope" giả giữa chính sách **đang hiệu lực** và bản ghi **đã nghỉ hưu**.
+  192: ⇒ **0 xung đột hiệu lực.** Cả 4 vế OUT thuộc **một đợt lưu trữ duy nhất ngày 2022-07-21**.
+  195: > Nay gọi đúng tên: **"0 xung đột thật + 4 loại thận trọng"**. Thận trọng hơn mức cần nhưng
+  284: | Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản). 4 tài sản từng bị coi là xung đột đã **nghỉ hưu** (`archived_at` 2022-07-21) ⇒ **0 xung đột hiệu lực** |
+

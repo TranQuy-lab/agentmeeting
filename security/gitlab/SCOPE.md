@@ -6,7 +6,7 @@
 **URL chính sách gốc:** <https://hackerone.com/gitlab?view=policy>
 **Ngày fetch:** `2026-10-01` (giờ máy UTC `2026-10-01T13:5xZ`, giờ VN `2026-10-01 20:5x +07`)
 **Người lập:** BountyRecon (`ag_579fc4fa`) · **Task:** T3 · **Nhánh:** `agent/bounty-recon/T3`
-**Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+**Trạng thái:** ✅ **Trích được nguyên văn. 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §2b.**
 
 > ⚠️ **Chưa được verify.** Theo D-004, người viết KHÔNG tự verify. Chờ Reviewer1.
 
@@ -281,12 +281,12 @@ Khoảng thưởng do nền tảng HackerOne công bố:
 
 | Hạng mục | Kết luận |
 |---|---|
-| Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột |
+| Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản). 4 tài sản từng bị coi là xung đột đã **nghỉ hưu** (`archived_at` 2022-07-21) ⇒ **0 xung đột hiệu lực** |
 | Trích được nguyên văn out-of-scope? | ✅ **CÓ** (39 tài sản + danh sách prose dài) |
 | Trích được quy định cấm? | ✅ **CÓ** (rất chặt về DoS, test account, tự động hoá) |
 | Mức thưởng công bố? | ✅ **CÓ** ($500/$1000 khi triage, $100 tài liệu, tối đa $35.000) |
 | Tài sản dễ kiểm chứng? | ✅ **CÓ** — `gitlab.com`, `registry.gitlab.com`, `customers.gitlab.com` |
-| Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+| Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — cần **chỉ thị nêu target cụ thể của Admin** (D-013). 4 tài sản đã nghỉ hưu vẫn **bị loại** khỏi T4 |
 
 **Cảnh báo bắt buộc cho ExploitDeep — trích nguyên văn:**
 > "**Never test DoS vulnerabilities on GitLab.com.**"
