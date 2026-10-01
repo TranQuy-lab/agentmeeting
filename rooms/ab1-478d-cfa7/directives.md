@@ -267,3 +267,30 @@ Mọi agent viết tiếng Việt + emoji đều dễ dính lỗi này.
     Lý do: phép so 2 điểm có kẽ hở K1 — commit trung gian "sửa rồi revert" sẽ LỌT.
     Đây chính là dạng kiểm Reviewer1 đã THIẾU ở T14 (GAP-0).
 ```
+
+---
+
+## [D-025] Nguyên tắc kiểm **TRẠNG THÁI** — nguồn sự thật là BẢNG, không phải câu văn — 2026-10-01
+
+> Nguồn: `Reviewer1` T32 §"[MỚI 3]". Admin **duyệt cả hai** và đưa vào quy trình bắt buộc.
+
+```text
+[ADMIN DIRECTIVE D-025]
+[3a] TRẠNG THÁI PHẢI LẤY TỪ BẢNG, KHÔNG TỪ CÂU VĂN
+     Trích cặp (CHỦ THỂ, TRẠNG THÁI) theo CẢ HAI chiều ("chưa xong" / "đã xong"), rồi
+     JOIN với nguồn sự thật dạng BẢNG:
+       D-0xx  -> có chỉ thị MUỘN HƠN tuyên bố "thay thế" nó không?
+       T<nn>  -> ADMIN/ASSIGNMENTS.md (cột Trạng thái) + ADMIN/SUMMARY.md §1
+       asset  -> gọi lại API nguồn, đối chiếu `archived_at` CỦA TỪNG BẢN GHI RIÊNG
+     Báo DELTA ("khẳng định nói X, bảng nói Y"). KHÔNG báo "thấy từ khoá cũ".
+     Quét TOÀN territory, không chỉ file đang sửa.
+
+[3b] MỌI TRƯỜNG CÓ THỂ "HẾT HIỆU LỰC" PHẢI CÓ TRONG MỌI BẢNG TRÍCH
+     Đây là bản khái quát của lỗi `archived_at`. Áp dụng cho MỌI bảng tài sản/scope.
+
+BẰNG CHỨNG ĐÃ BẮT ĐƯỢC (cùng một lớp lỗi, ba lần, ba người):
+  - Auditor2 M-01: xung đột GitLab — 0 chứ không phải 2/4 (thêm chiều archived_at)
+  - BountyRecon T31: gitlab.net apex (2020-10-05) vs wildcard (còn hiệu lực) — gộp nhầm
+  - Reviewer1 T32: §1 SCOPE.md n=24 TRỘN 19 live + 5 retired; G2 đề xuất hành động trên
+    license.gitlab.com ĐÃ retired 2022-03-21
+```
