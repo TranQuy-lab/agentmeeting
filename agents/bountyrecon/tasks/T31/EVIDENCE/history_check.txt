@@ -3,12 +3,16 @@
 
 branch     : agent/bounty-recon/T31
 merge-base : 6d47749ea548  (main)
-head       : 81a56e4dd799
+head       : 683e31f35493
 
 ==============================================================================
 (A) MOI COMMIT CUA NHANH T31 — file bi cham + doi chieu danh sach CHO PHEP
 ==============================================================================
-so commit: 2
+so commit: 3
+
+  commit 683e31f35493  [T31] report: FIX_GROUP_B.md + cap nhat output phep kiem lich su
+    OK    agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
+    OK    agents/bountyrecon/tasks/T31/FIX_GROUP_B.md
 
   commit 81a56e4dd799  [T31] evidence: them phep kiem lich su (D-023 [2]) + sua 1 phep thu sai cua chin
     OK    agents/bountyrecon/tasks/T31/EVIDENCE/history_check.txt
