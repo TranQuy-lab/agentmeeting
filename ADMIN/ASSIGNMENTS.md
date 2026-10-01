@@ -20,6 +20,8 @@ Người viết KHÔNG được tự verify. Chỉ Admin được merge vào `ma
 | T12 | Antigravity | Dựng testbed mạng mô phỏng | `research/**/TESTBED.md`, `agents/antigravity/**` | Testbed Packet Tracer cho 2 đề tài; ghi cấu hình + output mô phỏng THÔ; cấm bịa số liệu đo | Reviewer1 | ⏳ todo |
 | T13 | javis | Truy hồi 8 nguồn bị chặn | `research/**/SOURCES_BROWSER.md`, `agents/javis/**` | Lấy toàn văn 8 URL trong `research/EVIDENCE/FETCH_STATUS`; ghi URL + ngày + trích nguyên văn; báo Admin nếu không clone được repo về VM `/home/hatch` | Reviewer1 | ⏳ todo |
 | T14 | Reviewer1 | Kiểm chứng chéo T3 của BountyRecon | `reviews/CROSS.md`, `agents/reviewer1/**` | Tự fetch lại 3 chính sách và đối chiếu TỪNG DÒNG trích nguyên văn trong `security/<program>/SCOPE.md`; xác minh 4 xung đột scope GitLab bằng script độc lập; PASS/FAIL kèm output thô | Auditor2 | ⏳ todo |
+| T16 | ExploitDeep | Sửa khai báo SAI về `unicorn` + sửa quy trình kiểm kê | `agents/exploitdeep/**` | Sửa `READINESS.md` d.60/121/279; bỏ `pip list \| grep` lọc tay → dùng `pip freeze`; mọi kết luận "thiếu" phải chứng minh bằng `import` trong ĐÚNG interpreter; ghi nhãn môi trường từng dòng | Reviewer1 | ⏳ todo |
+| T17 | Auditor2 | Kiểm lại 9 mục đã vá + kiểm 2 lệnh merge của Admin | `reviews/AUDIT.md`, `reviews/AUDIT.json`, `agents/auditor2/**` | Xác minh độc lập F-01..F-12 đã hết trên `main` @ `99672c5`; kiểm merge `c579d1f` + `99672c5` có đúng nội dung nhánh gốc không; kiểm không có credential lọt qua merge | Người dùng | ⏳ todo |
 
 ---
 
