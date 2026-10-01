@@ -25,3 +25,4 @@ Người viết KHÔNG được tự verify. Chỉ Admin được merge vào `ma
 - **T6/T7 chạy song song và độc lập.** Auditor2 không được nể nang Admin; Reviewer1 không được
   nể nang tác giả.
 | T8 | DeepSeek-Harness | Tái lập PoC & đối chiếu nguồn độc lập (lớp 2) | `agents/deepseek-harness/**`, `reviews/VERIFY2.md` | Tự chạy lại PoC/finding của người khác trên clone riêng; ghi môi trường + phiên bản + lệnh + output thô; không xem kết luận tác giả trước khi chạy xong | Reviewer1 | ⏸ chờ có finding |
+| T9 | Reviewer1 | Kiểm chứng bảng công cụ của ExploitDeep | `reviews/CROSS.md`, `agents/reviewer1/**` | Tự chạy lại các lệnh kiểm kê trong `agents/exploitdeep/T4/READINESS.md`; xác nhận bảng có/thiếu khớp thực tế; ghi output thô; PASS/FAIL kèm bằng chứng | Auditor2 | ⏳ todo |
