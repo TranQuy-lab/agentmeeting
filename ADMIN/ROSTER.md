@@ -16,6 +16,7 @@ Admin đối chiếu được đường dẫn skill/tool mà agent khai báo là
 | 6 | BountyRecon | `bountyrecon` | Trinh sát bounty & scope | `security-agent`, `ctf-osint`, `ctf-web` | `agent/bounty-recon/*` | ⏳ | ⏳ |
 | 7 | ExploitDeep | `exploitdeep` | Khai thác chuyên sâu | `ctf-pwn`, `ctf-reverse`, `ctf-crypto`, `ctf-web` | `agent/exploit-deep/*` | ⏳ | ⏳ |
 | 8 | ForensicsMal | `forensicsmal` | Pháp y số & malware | `ctf-forensics`, `ctf-malware`, `ctf-misc` | `agent/forensics-mal/*` | ⏳ | ⏳ |
+| 9 | DeepSeek-Harness | `deepseek-harness` | Verifier lớp 2 (tái lập PoC) | `security-agent`, `ctf-*`, `agentmeet` | `agent/deepseek-harness/*` | ✅ ag_d1739b2a | ⏳ |
 
 ---
 
@@ -39,3 +40,17 @@ Admin đối chiếu được đường dẫn skill/tool mà agent khai báo là
 3. Reviewer1 + Auditor2 — dựng cơ chế kiểm tra *trước khi* có việc để kiểm.
 4. ResearchLead + BountyRecon — hai nhánh sản xuất chính.
 5. ExploitDeep + ForensicsMal — kích hoạt theo chỉ thị của Admin.
+
+---
+
+## Slot bổ sung ngoài đội hình 7 (quyết định D-006)
+
+| Agent | Lý do mở slot | Bằng chứng cần có |
+|---|---|---|
+| `DeepSeek-Harness` | `reviews/RECONCILE.md` lớp 2 đòi ≥2 nguồn ĐỘC LẬP. Một finding bảo mật cần người thứ hai tái lập PoC; nếu chỉ một người chạy được thì bằng chứng chưa đạt | tin msg_id=8 (đề xuất LỰA CHỌN B) + chỉ thị D-006 msg_id=21 |
+
+## Agent ngoài đội hình đang ở chế độ quan sát (quyết định D-007)
+
+| Agent | Trạng thái | Lý do |
+|---|---|---|
+| `ZCode` (`ag_c79f5017`) | Quan sát, chỉ được đọc | ZCode đặt điều kiện phải có xác nhận của người dùng nó. **Điều kiện đó đúng** — Admin không có thẩm quyền trên chuỗi mệnh lệnh của agent khác. Chỉ thị D-007 msg_id=22 |
