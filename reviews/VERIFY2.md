@@ -147,3 +147,103 @@ gõ lệnh sai và tưởng đã gửi tin.
 3. Kết quả `PASS` ở đây là **của tôi cho artifact của DocWriter** — tôi **không** tự verify sản phẩm
    của chính tôi (D-004). File `reviews/VERIFY2.md` này phải do **Reviewer1** hoặc **Auditor2** kiểm.
 4. Nếu Reviewer1 kết luận khác tôi, **Auditor2 chốt** — tôi không tự chốt vì có lợi ích liên quan.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #2 (T8): SCOPE.md của BountyRecon (T3)
+
+**Ngày:** 2025-10-01 · **Đối tượng:** `origin/agent/bounty-recon/T3` @ `71f0bf8`
+**Artifact:** `security/{github,cloudflare,gitlab}/SCOPE.md` (740 dòng tổng) + evidence thô
+**Clone kiểm:** `/tmp/vfy/t3` (clone riêng thứ ba, độc lập với tác giả)
+
+---
+
+## 1. Vì sao verify này quan trọng hơn verify #1
+
+`SCOPE.md` là **thứ duy nhất định nghĩa "được phép"**. Nếu scope sai, mọi hành động của ExploitDeep
+(T4) đều mất căn cứ pháp lý. Đây là artifact có hậu quả pháp lý, không phải tài liệu trình bày.
+
+## 2. Tái lập nguồn — tôi tự fetch, không dùng file tác giả
+
+```text
+$ curl -sS https://github.com/.well-known/security.txt
+Contact: https://hackerone.com/github
+Policy: https://bounty.github.com
+Expires: 2026-10-31T13:55:35z
+
+$ curl -sS -o gh.html -w 'HTTP=%{http_code} BYTES=%{size_download}' https://bounty.github.com/
+HTTP=200 BYTES=5240
+$ curl -sS -o ghr.html -w 'HTTP=%{http_code} BYTES=%{size_download}' https://bounty.github.com/rewards
+HTTP=200 BYTES=6258
+```
+
+**Đối chiếu byte count với lời khai của tác giả:**
+
+| Nguồn | Tác giả khai | Tôi fetch được | Kết quả |
+|---|---|---|---|
+| `bounty.github.com/` | 5240 B | **5240 B** | ✅ khớp từng byte |
+| `bounty.github.com/rewards` | 6258 B | **6258 B** | ✅ khớp từng byte |
+| `security.txt` Expires | 2026-10-31 | 2026-10-31 | ✅ khớp (giây thay đổi theo thời điểm fetch — hợp lý) |
+
+## 3. Kiểm chứng trích dẫn nguyên văn — có phương pháp
+
+> **Bài học từ lần chạy đầu:** grep thô của tôi báo "42 dòng không khớp". **Sai.** Nguyên nhân: câu
+> trong JSON gốc bị ngắt bằng `\n` escape. Sau khi chuẩn hoá (`\n`→space, bỏ link markdown, bỏ backtick),
+> tỉ lệ khớp tăng vọt. Tôi **không** kết luận tác giả bịa khi công cụ kiểm của tôi còn thô.
+
+**Chuẩn hoá rồi kiểm lại — các khẳng định AN NINH THEN CHỐT:**
+
+| Khẳng định (định nghĩa được phép / không được phép) | Nguyên văn trong evidence? |
+|---|---|
+| `Individual sites which are hosted on GitHub Pages are out-of-scope` | ✅ **OK** |
+| `git.io URL shortener is out-of-scope` | ✅ **OK** |
+| `All subdomains under githubassets.com are in-scope` | ✅ **OK** |
+| `GitHub Enterprise Server` (phân biệt với `enterprise.github.com`) | ✅ **OK** |
+| `dash.cloudflare.com` (phạm vi Cloudflare) | ✅ **OK** |
+| `hosts owned and operated by GitLab` | ✅ **OK** |
+
+**Các "không khớp" còn lại** đã kiểm từng loại — đều là **sai lệch định dạng, không phải bịa nội dung**:
+bảng Markdown gộp nhiều ô một dòng, tiền tố `Instruction:`, và việc tôi tự bỏ backtick khi chuẩn hoá.
+
+## 4. Kiểm điều kiện pháp lý D-005 — 3 chương trình có hợp lệ không?
+
+```text
+hackerone.com/github      -> HTTP 200
+hackerone.com/cloudflare  -> HTTP 200
+hackerone.com/gitlab      -> HTTP 200
+```
+
+| Điều kiện D-005 | GitHub | Cloudflare | GitLab |
+|---|---|---|---|
+| Chương trình bounty CÔNG KHAI, có scope công bố | ✅ | ✅ | ✅ |
+| Không phải cơ quan nhà nước / hạ tầng trọng yếu VN | ✅ công ty tư nhân Hoa Kỳ | ✅ | ✅ |
+| Không thuộc tổ chức VN không có chương trình bounty | ✅ | ✅ | ✅ |
+
+⇒ **3/3 chương trình hợp lệ theo D-005.** Không có dấu hiệu vi phạm. **Không kích hoạt `DỪNG — PHÁP LÝ`.**
+
+## 5. Điểm tôi ghi nhận tích cực về tác giả
+
+1. Tác giả **tự ghi "Chưa được verify"** ngay đầu SCOPE.md — đúng D-004, không tự nhận đã xong.
+2. Tác giả **giữ lại bằng chứng thô** (`h1_*.json` 78–90 KB, `policy_*.md`, `scope_*.md`) ⇒ **tái lập được**.
+   Đây là điều kiện để tôi làm được việc này; nếu chỉ nộp kết luận thì tôi đã ghi `KHÔNG TÁI LẬP`.
+3. Tác giả ghi rõ **phương pháp fetch** (GraphQL công khai không cần auth) ⇒ bước nào cũng chạy lại được.
+
+## 6. Kết luận verify #2
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Artifact tồn tại đúng commit `71f0bf8` | ✅ **PASS** |
+| 2 | Tái lập được nguồn (byte count khớp) | ✅ **PASS** |
+| 3 | Trích dẫn then chốt nguyên văn trong evidence | ✅ **PASS** |
+| 4 | 3 chương trình hợp lệ theo D-005 | ✅ **PASS** |
+| 5 | Toàn bộ 740 dòng nguyên văn | ⚠️ **CHƯA XÁC MINH HẾT** — tôi kiểm khẳng định then chốt + mẫu, không kiểm từng dòng |
+
+**Tổng: PASS 4/5, 1 mục chưa xác minh hết.** Không phát hiện vi phạm nào.
+
+## 7. Tự khai giới hạn
+
+1. Tôi **không** kiểm `RECON.md` và phần trinh sát thụ động — chỉ kiểm `SCOPE.md`.
+2. Tôi **không** kiểm 740/740 dòng nguyên văn; đã kiểm **toàn bộ khẳng định then chốt** + mẫu.
+3. Chính sách bounty có thể thay đổi sau ngày fetch ⇒ `PASS` này chỉ đúng cho bản fetch `2026-10-01`.
+4. **File này là sản phẩm của tôi — tôi không tự verify nó (D-004).** Đề nghị **Reviewer1** kiểm;
+   bất đồng ⇒ **Auditor2** chốt.
