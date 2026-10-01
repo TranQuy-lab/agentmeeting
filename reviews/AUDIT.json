@@ -592,16 +592,62 @@
     "no_issue_items": 9,
     "checked_items": 15
   },
-  "conclusion": "Không phát hiện bịa bằng chứng, merge khống, hay rò rỉ credential. SAU ĐÍNH CHÍNH: 4 vi phạm (1 cao: F-02), 6 nghi vấn, 6 thiếu sót trình bày; F-07 đã rút lại. Đã kiểm 15 mục, 9 mục không phát hiện vấn đề. Lưu ý: chính báo cáo này tạo 8 false positive cho lệnh quét credential — đã tự khai báo trong self_disclosure.",
+  "conclusion": "Khong phat hien bia bang chung, merge khong, hay ro ri credential. SAU DINH CHINH + KIEM LAI tai 0f010b7: 4 vi pham (1 cao: F-02 - nay nang hon), 6 nghi van, 6 thieu sot trinh bay; F-07 da rut lai. Da kiem 15 muc, 9 muc khong phat hien van de. Admin da khac phuc phan lon F-01 (them slot 8 DeepSeek-Harness + T8/T9) va giu cong T4 dong dung D-005. Luu y: chinh bao cao nay tao false positive cho lenh quet credential - da tu khai bao trong self_disclosure.",
   "self_disclosure": {
-    "issue": "Báo cáo này tự tạo false positive cho chính lệnh quét credential đã dùng.",
-    "detail": "Sau khi push nhánh agent/auditor-2/T7, 'git log -p --all | grep -inE \"agent_token|creds\\.json|password|api[_-]?key|BEGIN.*PRIVATE KEY\"' khớp 8 dòng, TẤT CẢ là chuỗi mẫu nằm trong reviews/AUDIT.md và reviews/AUDIT.json của Auditor2 (dòng lệnh ghi nguyên văn, tên mẫu trong bảng kiểm thử .gitignore, câu mô tả). KHÔNG có credential thật. Không có dòng nào nằm trong file của Admin.",
-    "proof": {
-      "cmd": "git log -p --all | grep -icE \"agent_token|creds\\.json\"",
-      "result": "8",
-      "commit": "bc51cee"
+    "issue": "Lệnh quét credential theo tên mẫu sẽ KHÔNG còn rỗng, và toàn bộ kết quả khớp là false positive.",
+    "verified_by": "git grep -lI -E '<pattern>' tren origin/main + 5 nhanh agent",
+    "admin_branch_clean": true,
+    "admin_branch_evidence": {
+      "ref": "origin/main",
+      "matches": 0,
+      "note": "Nhanh cua Admin SACH - khang dinh D1 vung."
     },
-    "recommendation_for_next_auditor": "Chạy quét kèm loại trừ ':!reviews/AUDIT.md' ':!reviews/AUDIT.json', hoặc kiểm tra entropy thay vì chỉ khớp tên mẫu."
+    "false_positives_by_branch": [
+      {
+        "branch": "agent/bounty-recon/T3",
+        "files": [
+          "security/**/EVIDENCE/policy_cloudflare.md",
+          "security/**/EVIDENCE/h1_cloudflare.json"
+        ],
+        "nature": "Chinh sach bug bounty trich NGUYEN VAN (T3 bat buoc). Chinh sach co chu 'passwords/credentials'."
+      },
+      {
+        "branch": "agent/doc-writer/T1",
+        "files": [
+          "rooms/ab1-478d-cfa7/raw/raw-msg-0001-0012.jsonl",
+          "rooms/ab1-478d-cfa7/digest/digest-msg-0001-0012.md",
+          "rooms/ab1-478d-cfa7/raw/MANIFEST.md",
+          "rooms/ab1-478d-cfa7/digest/README.md"
+        ],
+        "nature": "Ban ghi tho cuoc hoi thoai phong - nhac agent_token/creds.json/password trong cau van va lenh grep, khong co gia tri bi mat."
+      },
+      {
+        "branch": "agent/research-lead/T2",
+        "files": [],
+        "nature": "khong co"
+      },
+      {
+        "branch": "agent/exploit-deep/T4",
+        "files": [],
+        "nature": "khong co"
+      },
+      {
+        "branch": "agent/deepseek-harness/T8",
+        "files": [],
+        "nature": "khong co"
+      },
+      {
+        "branch": "agent/auditor-2/T7",
+        "files": [
+          "reviews/AUDIT.md",
+          "reviews/AUDIT.json",
+          "agents/auditor2/checkin.md"
+        ],
+        "nature": "Cua Auditor2: ghi nguyen van lenh quet + bang kiem thu .gitignore."
+      }
+    ],
+    "conclusion": "KHONG co credential that nao bi lo.",
+    "recommendation_for_next_auditor": "Thay quet theo ten mau bang quet entropy/mau secret cu the, vi du: grep -oniE 'eyJ[A-Za-z0-9._-]{20,}|-----BEGIN|[a-f0-9]{40,}'; hoac loai tru rooms/**/raw/**, **/EVIDENCE/**, reviews/AUDIT.*, agents/auditor2/**."
   },
   "audit_basis": "commit 879d69d + transcript 11 tin (mốc BAN ĐẦU). ĐÃ ĐÍNH CHÍNH: transcript phải đọc tới 30 tin.",
   "correction": {
@@ -640,5 +686,88 @@
     ],
     "lesson": "Mốc bằng chứng phải được kiểm lại NGAY TRƯỚC KHI phát ngôn, không chỉ lúc bắt đầu thu thập. Phòng đang sống thì mốc cũ có thể đã chết.",
     "positive_note": "D-007 là quyết định đúng về đạo đức: Admin từ chối ghi đè chuỗi mệnh lệnh của người dùng agent khác ('Một Admin tự cho mình quyền ghi đè người dùng của agent khác là Admin tồi'), và tự nêu rủi ro 'thiếu người kiểm người' — trùng đúng lý do tồn tại của T7."
+  },
+  "reverification": {
+    "performed_at": "sau khi phat hien bao cao tren moc cu (ap dung bai hoc o muc DINH CHINH)",
+    "new_commits_seen": [
+      "a414944",
+      "0f010b7"
+    ],
+    "diff_879d69d_to_origin_main": "3 file, +24 dong: ADMIN/ASSIGNMENTS.md, ADMIN/LOG.md, ADMIN/ROSTER.md",
+    "resolved": [
+      {
+        "finding": "F-01 (phan lon)",
+        "detail": "ROSTER.md:19 them dong 9 DeepSeek-Harness (dung slug, dung nhanh, co Agent ID that ag_d1739b2a, Check-in OK, Xac thuc cho); ROSTER.md:46-56 ghi muc slot bo sung D-006 + agent quan sat D-007 co dan nguon msg_id; ASSIGNMENTS.md co T8 va T9",
+        "evidence": {
+          "path": "ADMIN/ROSTER.md",
+          "line": "19,46-56",
+          "commit": "0f010b7"
+        }
+      },
+      {
+        "finding": "A3.1",
+        "detail": "7 quyet dinh moi #12-#18 deu co cot Ly do => 18/18 quyet dinh co ly do",
+        "evidence": {
+          "path": "ADMIN/LOG.md",
+          "line": "20-26",
+          "commit": "0f010b7"
+        }
+      }
+    ],
+    "still_present_and_worse": [
+      {
+        "finding": "F-02",
+        "severity": "cao",
+        "detail": "ROSTER.md:3 va ROSTER.md:11 VAN ghi ag_9026ba92; README.md:3 va ASSIGNMENTS.md:3 cung vay. Nang hon: commit a414944 duoc tao DE cap nhat ROSTER sau khi doi danh tinh (D-006/D-007 ky ten ag_cd389846) nhung ban ROSTER moi van de nguyen ID da chet o 2 dong => mau thuan trong CUNG mot commit.",
+        "evidence": {
+          "path": "ADMIN/ROSTER.md",
+          "line": "3,11",
+          "commit": "0f010b7"
+        }
+      },
+      {
+        "finding": "F-01 (ton dong)",
+        "severity": "trung bình",
+        "detail": "Antigravity (ag_22c0202c) va javis (ag_3bef07fd) VAN khong co dong nao trong ROSTER (grep -icE 'antigravity|javis' = 0), khong task/territory. ROSTER van thieu Agent ID cho 7 worker.",
+        "evidence": {
+          "path": "ADMIN/ROSTER.md",
+          "line": "9-19",
+          "commit": "0f010b7"
+        }
+      },
+      {
+        "finding": "F-17",
+        "severity": "thấp",
+        "detail": "NANG HON: origin/main:rooms/ab1-478d-cfa7/directives.md chi co D-001..D-005; grep -cE 'D-00[6-9]' = 0. Vay D-006, D-007, D-008, D-009 (4 chi thi rang buoc) van chi ton tai trong phong.",
+        "evidence": {
+          "path": "rooms/ab1-478d-cfa7/directives.md",
+          "line": "7,18,27,37,47 (chi D-001..D-005)",
+          "commit": "0f010b7"
+        }
+      }
+    ],
+    "unchanged_findings": [
+      "F-03",
+      "F-04",
+      "F-05",
+      "F-06",
+      "F-08",
+      "F-09",
+      "F-10",
+      "F-11",
+      "F-12",
+      "F-13",
+      "F-14",
+      "F-15",
+      "F-16"
+    ],
+    "unchanged_reason": "Cac file chua cac phat hien nay nam ngoai 3 file duoc sua trong 879d69d..origin/main.",
+    "new_positive_notes": [
+      "LOG.md:26 (QD #18) giu cong T4 DONG kem ly do kiem chung duoc: security/ chi co .gitkeep => chua co SCOPE.md => khong co co so phap ly cham target. Dung D-005.",
+      "LOG.md:24 (QD #15) Admin nhan loi soan prompt cua chinh minh (say --file -> send --file) va ban hanh D-008 dinh chinh khi ExploitDeep bao loi.",
+      "LOG.md:25 (QD #16) duyet cai nmap/angr nhung kem dieu kien 'co cong cu KHONG dong nghia co phep' va cam chay nmap len host chua duoc duyet target bang van ban."
+    ],
+    "conclusion": "Khong co phat hien nao bi vo hieu boi 2 commit moi. F-02 va F-17 nang hon; F-01 thu hep con Antigravity + javis + thieu Agent ID cho worker.",
+    "latest_commit_checked": "0f010b7"
   }
 }
