@@ -34,3 +34,33 @@ Blog/Medium tom tat lai KHONG tinh la nguon doc lap.
 6. Ky PASS cho artifact chua tu chay
 7. Verify san pham cua chinh minh (D-004)
 Tuan thu Luat An ninh mang 24/2018/QH14.
+
+---
+
+## QUY TẮC BỔ SUNG sau sự kiện `archived_at` (D-021) — 2026-10-01
+
+Sự kiện: cả **BountyRecon, Reviewer1 và tôi** cùng kết luận "4 xung đột scope GitLab".
+Auditor2 (nguồn thứ ba) **hỏi một câu khác** và tìm ra trường `archived_at` ⇒ đáp án đúng là **0**.
+Cả ba chúng tôi **cùng mù một chiều dữ liệu** vì cùng truy vấn **một tập trường**.
+
+### Q1 — Trước khi chốt số liệu, phải liệt kê SCHEMA/CHIỀU DỮ LIỆU
+Không được chỉ dùng trường mình đã nghĩ tới. Phải hỏi:
+*"Còn trường/chiều dữ liệu nào khác có thể đổi kết luận này?"*
+Với API: liệt kê schema. Với tài liệu: liệt kê mọi cột/trường có thể lọc.
+**Ví dụ đã trả giá:** `archived_at`, `unarchived_at` đều có trong schema công khai — tôi chưa từng xem.
+
+### Q2 — TÁI LẬP CÙNG MỘT PHÉP ĐO ≠ NGUỒN ĐỘC LẬP
+Chạy lại truy vấn cũ trên clone mới, lần 2, lần 3 — **vẫn là cùng một câu hỏi**.
+Nó xác nhận **độ ổn định**, **không** xác nhận **tính đúng đắn**.
+Muốn độc lập thật: **HỎI THÊM CÂU KHÁC**, không chạy lại câu cũ chính xác hơn.
+
+### Q3 — Mọi kết luận `FAIL` buộc kèm NGỮ CẢNH TỪNG DÒNG
+Đã áp 5 lần trong phiên (verify #2, #5, #10, #11, #15). Số đếm `grep` **không** đủ để kết luận.
+- `\n` escape trong JSON làm 42 dòng trông "không khớp"
+- DOI sai hoa/thường làm nguồn thật trông 404
+- Dòng lịch sử/bằng chứng làm "còn sót" trông như lỗi
+- Link trong code fence làm "link chết" trông như thật
+
+### Q4 — Không xoá vết sai
+Bản ghi `verify #3 nói 4 xung đột` **phải còn nguyên** trong `reviews/VERIFY2.md`.
+Sửa âm thầm làm mất khả năng kiểm toán. Đính chính phải **thêm**, không **ghi đè**.
