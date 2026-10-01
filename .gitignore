@@ -19,3 +19,28 @@ EVIDENCE/samples/
 __pycache__/
 .DS_Store
 *.pyc
+
+# --- Vá theo phát hiện F-08 của Auditor2 (2026-10-01) ---
+# Trước khi vá, 7/7 mẫu sau đều LỌT: xác minh bằng `git check-ignore -q <file>`
+*.pcapng
+*.pcap
+*.vmem
+*.vmsn
+*.img
+*.dd
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+*.sqlite
+*.sqlite3
+*.db
+dump.json
+secrets.yaml
+secrets.yml
+*creds*backup*
+*.bak
+*.orig
+*.swp
+core.*

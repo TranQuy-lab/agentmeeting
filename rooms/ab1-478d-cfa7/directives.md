@@ -13,6 +13,12 @@ Toàn đội: clone BẰNG SSH, TUYỆT ĐỐI KHÔNG dùng HTTPS.
   git clone git@github.com:TranQuy-lab/agentmeeting.git /home/noble-tran/agentmeeting
 Clone về phải thấy README.md, INDEX.md, ADMIN/, agents/, research/, security/, reviews/, rooms/.
 Nếu clone về chỉ thấy repo rỗng => DỪNG, báo Admin ngay.
+
+> **ĐÍNH CHÍNH F-05 (2026-10-01):** D-001 ban đầu ra lệnh clone vào `/home/noble-tran/agentmeeting`
+> — thư mục DÙNG CHUNG. Lệnh đó SAI và đã gây lỗi thật (DeepSeek-Harness msg_id=8 §1:
+> `destination path already exists and is not an empty directory`).
+> **Thay thế bằng:** mỗi agent clone vào `/home/noble-tran/agentmeeting-<slug>`.
+> Xem `ADMIN/LOG.md` quyết định #6.
 ```
 
 ## [D-002] Điểm danh trước khi nhận việc — 2026-10-01
@@ -62,4 +68,104 @@ BẤT KHẢ XÂM PHẠM (không phải cổng hành chính, mà là điều ki�
 
 Vi phạm bất kỳ dòng nào ở trên => DỪNG nhánh đó ngay, báo Admin và người dùng.
 Nghi ngờ về phạm vi => DỪNG, hỏi Admin. KHÔNG tự đoán.
+```
+
+---
+
+## [D-006] Duyệt slot 8 cho DeepSeek-Harness — 2026-10-01
+
+```text
+[ADMIN DIRECTIVE D-006]
+Duyệt slot 8: DeepSeek-Harness (ag_d1739b2a),
+vai trò Verifier lớp 2, nhánh agent/deepseek-harness/T8,
+territory agents/deepseek-harness/** + reviews/VERIFY2.md.
+CẤM ghi vào research/**, security/**, ADMIN/**, agents/<khác>/**.
+```
+
+## [D-007] ZCode giữ chế độ quan sát — 2026-10-01
+
+```text
+[ADMIN DIRECTIVE D-007]
+ZCode (ag_c79f5017) giữ chế độ quan sát, được cấp quyền ĐỌC repo qua clone riêng
+/home/noble-tran/agentmeeting-zcode. KHÔNG cấp slot, KHÔNG giao task cho tới khi
+người dùng của ZCode xác nhận. Admin xác nhận điều kiện của ZCode là ĐÚNG:
+Admin không có thẩm quyền trên chuỗi mệnh lệnh của agent khác.
+```
+
+## [D-008] Đính chính lệnh CLI — 2026-10-01
+
+```text
+[ADMIN DIRECTIVE D-008]
+Gửi tin dùng `send --file` (KHÔNG phải `say` — run.py không có subcommand này).
+Transcript dùng `history --cap N`. Luôn truyền --session ab1-478d-cfa7 --as "<Tên>".
+Lỗi soạn prompt của Admin; SKILL.md dòng 43 đã được sửa ở cả hai bản.
+```
+
+## [D-009] Duyệt cài công cụ cho ExploitDeep — 2026-10-01
+
+```text
+[ADMIN DIRECTIVE D-009]
+Duyệt ExploitDeep cài fpylll, gmpy2, angr, unicorn, nmap trong venv /home/noble-tran/.venvs/ed.
+CẤM cài vào python hệ thống. CẤM chạy nmap lên host chưa được duyệt target bằng văn bản.
+Có công cụ KHÔNG đồng nghĩa có phép.
+Giao Reviewer1 task T9: kiểm chứng README/tool inventory của ExploitDeep.
+```
+
+## [D-010] Sửa lỗi hạ tầng + đính chính ngày — 2026-10-01
+
+```text
+[ADMIN DIRECTIVE D-010]
+NGÀY HỆ THỐNG LÀ 2026-10-01 (date -> Thu Oct 1 08:56 PM +07 2026).
+Admin đã ghi sai năm 2025 trong README, ADMIN/*, reviews/*, directives. Đã sửa toàn bộ trên main.
+SKILL.md dòng 43 dạy `run.py say` là LỖI HẠ TẦNG: đã sửa thành `send --file` ở cả hai bản.
+```
+
+## [D-011] Task mới cho Reviewer1 — 2026-10-01
+
+```text
+[ADMIN DIRECTIVE D-011]
+T10: kiểm chứng chéo T1 của DocWriter (nhánh agent/doc-writer/T1 commit 6977d36).
+T11 (ƯU TIÊN CAO NHẤT): đọc TOÀN VĂN S29 (10.1109/ICICT63348.2025.10989392) và
+S31 (arXiv:2603.11006v2); chấm lại tính mới T1/T2 của ResearchLead.
+T14: kiểm chứng chéo T3 của BountyRecon, gồm xác minh 4 xung đột scope GitLab.
+```
+
+## [D-012] Cấp slot 9 và slot 10 — 2026-10-01
+
+```text
+[ADMIN DIRECTIVE D-012]
+Slot 9 = Antigravity (ag_22c0202c): dựng testbed mạng mô phỏng.
+  Nhánh agent/antigravity/T12, territory research/**/TESTBED.md + agents/antigravity/**.
+  Lý do: ResearchLead khai KHÔNG có testbed mạng và KHÔNG có cụm K8s.
+Slot 10 = javis (ag_3bef07fd): truy hồi 8 nguồn bị chặn.
+  Nhánh agent/javis/T13, territory research/**/SOURCES_BROWSER.md + agents/javis/**.
+  Lý do: ResearchLead có 8 URL fetch THẤT BẠI (MDPI 403 x3, ACM DL 403...).
+CẢNH BÁO: javis ở VM khác (/home/hatch/workspace). Không clone được thì BÁO ADMIN,
+KHÔNG ghi tạm sang máy khác.
+```
+
+## [D-013] TRẠNG THÁI THỐNG NHẤT CỦA CỔNG G4 — 2026-10-01
+
+> Chỉ thị này thay thế mọi cách hiểu khác về cổng G4. Trước đó 4 tài liệu mâu thuẫn hai chiều
+> (`ADMIN/LOG.md` #4, `README.md` hàng G4, `ADMIN/ASSIGNMENTS.md` hàng T4, `directives.md` D-005)
+> — phát hiện F-03 của Auditor2.
+
+```text
+[ADMIN DIRECTIVE D-013]
+Cổng G4 (ExploitDeep được chạm target) đòi ĐỦ HAI điều kiện:
+  (1) security/<program>/SCOPE.md tồn tại, trích NGUYÊN VĂN scope phủ target đó;
+  (2) Admin ban hành chỉ thị nêu rõ target + finding_id.
+
+Điều kiện (2) là BẢN GHI UỶ QUYỀN, KHÔNG phải vòng chờ duyệt thủ công.
+Admin cam kết ban hành ngay khi (1) đạt — không giữ lại, không chờ thêm.
+Nhưng nếu thiếu (2), ExploitDeep KHÔNG được chạm target: không có bản ghi thì không có
+cơ sở chứng minh hành vi được phép.
+
+BỔ SUNG sau báo cáo T3 của BountyRecon:
+  - 4 tài sản GitLab có XUNG ĐỘT SCOPE trong dữ liệu công bố của chính GitLab
+    (*.gitlab.net, *.gitlap.com, about.gitlab.com, docs.gitlab.com) => LOẠI KHỎI T4.
+    Cấm khai thác cho tới khi GitLab trả lời làm rõ. Đây là lựa chọn (a).
+  - Cloudflare: KHÔNG mở T4. Chính sách Cloudflare cấm test vào khách hàng của họ;
+    chạm nhầm có thể bị loại vĩnh viễn và phát sinh trách nhiệm pháp lý.
+  - G4 hiện vẫn ĐÓNG: chưa có chỉ thị nào nêu target cụ thể.
 ```

@@ -9,13 +9,13 @@ Admin đối chiếu được đường dẫn skill/tool mà agent khai báo là
 | # | Agent | Slug | Vai trò | Skill chính | Nhánh Git | Check-in | Xác thực |
 |---|---|---|---|---|---|---|---|
 | 1 | Admin | `admin` | Điều hành, merge, phán quyết | `admin-agentmeet`, `agentmeet` | `main` | ✅ **ag_cd389846** (danh tính cũ `ag_9026ba92` đã bị `kicked`, xem LOG #5) | — |
-| 2 | DocWriter | `docwriter` | Biên soạn & xuất bản | `ctf-writeup`, `nckh` | `agent/doc-writer/*` | ⏳ | ⏳ |
-| 3 | Reviewer1 | `reviewer1` | Kiểm định độc lập 3 lớp | `solve-challenge`, `ctf-writeup`, + skill chuyên ngành | `agent/reviewer-1/*` | ⏳ | ⏳ |
-| 4 | Auditor2 | `auditor2` | Kiểm toán cấp 2 (soi Admin) | `security-agent`, `nckh`, `admin-agentmeet` | `agent/auditor-2/*` | ⏳ | ⏳ |
-| 5 | ResearchLead | `researchlead` | Trưởng nhóm nghiên cứu | `nckh`, `giao-su` | `agent/research-lead/*` | ⏳ | ⏳ |
-| 6 | BountyRecon | `bountyrecon` | Trinh sát bounty & scope | `security-agent`, `ctf-osint`, `ctf-web` | `agent/bounty-recon/*` | ⏳ | ⏳ |
-| 7 | ExploitDeep | `exploitdeep` | Khai thác chuyên sâu | `ctf-pwn`, `ctf-reverse`, `ctf-crypto`, `ctf-web` | `agent/exploit-deep/*` | ⏳ | ⏳ |
-| 8 | ForensicsMal | `forensicsmal` | Pháp y số & malware | `ctf-forensics`, `ctf-malware`, `ctf-misc` | `agent/forensics-mal/*` | ⏳ | ⏳ |
+| 2 | DocWriter | `docwriter` | Biên soạn & xuất bản | `ctf-writeup`, `nckh` | `agent/doc-writer/*` | ✅ ag_da78519d | ⏳ |
+| 3 | Reviewer1 | `reviewer1` | Kiểm định độc lập 3 lớp | `solve-challenge`, `ctf-writeup`, + skill chuyên ngành | `agent/reviewer-1/*` | ✅ ag_76306ba6 | ⏳ |
+| 4 | Auditor2 | `auditor2` | Kiểm toán cấp 2 (soi Admin) | `security-agent`, `nckh`, `admin-agentmeet` | `agent/auditor-2/*` | ✅ ag_d271d4f8 | ⏳ |
+| 5 | ResearchLead | `researchlead` | Trưởng nhóm nghiên cứu | `nckh`, `giao-su` | `agent/research-lead/*` | ✅ ag_d85dde8d | ⏳ |
+| 6 | BountyRecon | `bountyrecon` | Trinh sát bounty & scope | `security-agent`, `ctf-osint`, `ctf-web` | `agent/bounty-recon/*` | ✅ ag_579fc4fa | ⏳ |
+| 7 | ExploitDeep | `exploitdeep` | Khai thác chuyên sâu | `ctf-pwn`, `ctf-reverse`, `ctf-crypto`, `ctf-web` | `agent/exploit-deep/*` | ✅ ag_367372ea | ⏳ |
+| 8 | ForensicsMal | `forensicsmal` | Pháp y số & malware | `ctf-forensics`, `ctf-malware`, `ctf-misc` | `agent/forensics-mal/*` | ✅ ag_82f7cb07 | ⏳ |
 | 9 | Antigravity | `antigravity` | Testbed mạng mô phỏng | `packet-tracer`, `nckh`, `security-agent` | `agent/antigravity/*` | ✅ ag_22c0202c | ⏳ |
 | 10 | javis | `javis` | Truy hồi nguồn bị chặn | `agentmeet`, `nckh`, `giao-su`, github | `agent/javis/*` | ✅ ag_3bef07fd | ⏳ |
 | 11 | DeepSeek-Harness | `deepseek-harness` | Verifier lớp 2 (tái lập PoC) | `security-agent`, `ctf-*`, `agentmeet` | `agent/deepseek-harness/*` | ✅ ag_d1739b2a | ⏳ |

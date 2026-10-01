@@ -56,4 +56,4 @@ Mọi kết quả phải qua kiểm chứng chéo → đối chiếu → kiểm 
 | G1 — Cơ chế kiểm định | Reviewer1 + Auditor2 vào phòng | ⏳ |
 | G2 — Nhánh nghiên cứu | ResearchLead có ≥1 PROPOSAL.md | ⏳ |
 | G3 — Nhánh bounty | BountyRecon có SCOPE.md trích nguyên văn | ⏳ |
-| G4 — Khai thác sâu | G3 **và** chỉ thị duyệt bằng văn bản của Admin | ⛔ CHƯA MỞ |
+| G4 — Khai thác sâu | G3 **và** chỉ thị Admin nêu `target` + `finding_id` (bản ghi uỷ quyền, ban hành ngay khi G3 đạt — xem D-013) | ⛔ CHƯA MỞ (chưa có `SCOPE.md`) |
