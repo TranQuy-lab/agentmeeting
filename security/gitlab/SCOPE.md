@@ -143,31 +143,61 @@ dòng 125–191, danh sách rất dài. Các mục quan trọng nhất cho giai 
 
 ---
 
-## 2b. 🚨 XUNG ĐỘT SCOPE ĐÃ XÁC MINH — KHÔNG ĐƯỢC ĐOÁN
+## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT HIỆU LỰC** (đã đính chính ở T28)
 
-Tôi đã kiểm bằng script (`agents/bountyrecon/tasks/T3/EVIDENCE/`): 4 tài sản xuất hiện **đồng
-thời** ở cả `eligible_for_submission=true` **và** `=false` trong chính dữ liệu scope của GitLab:
+> 🔄 **ĐÍNH CHÍNH (T28, `2026-10-01`).** Mục này trước đây gọi là *"4 XUNG ĐỘT SCOPE ĐÃ XÁC MINH"*.
+> **Cách gọi đó SAI.** Cách đọc đúng: **0 xung đột hiệu lực + 4 bản ghi đã nghỉ hưu
+> (`archived_at` = 2022-07-21)**.
+>
+> **Thay đổi này supersede chứng thực T14 ở RIÊNG §2b; phần trích nguyên văn (§1, §2a, §3, §4)
+> KHÔNG đổi nên chứng thực byte-exact vẫn nguyên giá trị cho phần đó.**
 
-| # | Tài sản | Dòng IN | Dòng OUT |
+### Nguyên nhân gốc — bài học M-01 (Auditor2 T24)
+
+Bốn tài sản xuất hiện ở **cả hai phía** không phải vì chính sách mâu thuẫn, mà vì phép so đã đem
+vế IN **đang hiệu lực** so với vế OUT **đã nghỉ hưu từ 2022-07-21** — cách nhau **4 năm**.
+
+Biến quyết định **không phải `asset_type`**, mà là **`archived_at`** — trường mà **cả ba** kiểm
+định viên ở thời điểm đó (BountyRecon, Reviewer1, DeepSeek-Harness) **đều không truy vấn**.
+
+> 📋 Theo `security/_TEMPLATE/SCOPE.md`: **`archived_at` của MỌI asset là trường BẮT BUỘC.**
+> Bỏ nó ⇒ sinh ra "xung đột scope" giả giữa chính sách **đang hiệu lực** và bản ghi **đã nghỉ hưu**.
+
+Truy vấn T3 của tôi **không hỏi** trường này ⇒ bỏ sót một chiều dữ liệu. **`archived_at` CÓ trong
+schema công khai** (đã tự kiểm ở T28: `{__type(name:"StructuredScope"){fields{name}}}` →
+`archived_at` = `True`), nên đây **không phải giới hạn công cụ** mà là chiều dữ liệu tôi đã không hỏi.
+
+### Bằng chứng thô — tự tái lập (T28)
+
+`POST https://hackerone.com/graphql` (công khai, không auth), `team(handle:"gitlab")`:
+
+```text
+archived:false -> tong 44   IN=19   OUT=25
+IN giao OUT (theo asset_identifier): 0        <-- KHONG con xung dot nao
+
+archived:true  -> tong 19
+   *.gitlab.net      type=URL  eligible=False  archived_at=2022-07-21T15:51:33.499Z
+   *.gitlap.com      type=URL  eligible=False  archived_at=2022-07-21T15:51:16.877Z
+   about.gitlab.com  type=URL  eligible=False  archived_at=2022-07-21T15:53:03.572Z
+   docs.gitlab.com   type=URL  eligible=False  archived_at=2022-07-21T15:53:13.475Z
+```
+
+| # | Tài sản | Vế IN (còn hiệu lực) | Vế OUT (**`archived_at`**) |
 |---|---|---|---|
-| 1 | `*.gitlab.net` | `WILDCARD`, bounty=`True`, `max_severity=medium`, instr "Hosts owned and operated by GitLab." | `URL`, bounty=`False`, `max_severity=none`, không instruction |
-| 2 | `*.gitlap.com` | `WILDCARD`, bounty=`True`, `medium`, instr "Hosts owned and operated by GitLab. gitla**p** with a p!" | `URL`, bounty=`False`, `none` |
-| 3 | `about.gitlab.com` | `URL`, bounty=`True`, `medium`, instr về "no user data…" | `URL`, bounty=`False`, `none` |
-| 4 | `docs.gitlab.com` | `URL`, bounty=`True`, `medium`, instr về "no user data…" | `URL`, bounty=`False`, `none` |
+| 1 | `*.gitlab.net` | `WILDCARD`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:51:33.499Z`** |
+| 2 | `*.gitlap.com` | `WILDCARD`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:51:16.877Z`** |
+| 3 | `about.gitlab.com` | `URL`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:53:03.572Z`** |
+| 4 | `docs.gitlab.com` | `URL`, bounty=`True`, `medium`, `archived_at=None` | `URL`, bounty=`False`, **`2022-07-21T15:53:13.475Z`** |
 
-**Đây là mâu thuẫn trong dữ liệu công bố của chính chương trình, không phải lỗi đọc của tôi.**
-Kiểm chứng lại bằng:
-`python3 -c "...set(IN) & set(OUT)..."` trên `h1_gitlab.json`, hoặc xem trực tiếp
-`scope_gitlab.md` (mục IN có 4 dòng này, mục OUT cũng có 4 dòng này).
+⇒ **0 xung đột hiệu lực.** Cả 4 vế OUT thuộc **một đợt lưu trữ duy nhất ngày 2022-07-21**.
 
-> ⛔ **Theo D-005 ("Nghi ngờ về phạm vi ⇒ DỪNG, hỏi Admin. KHÔNG tự đoán"):**
-> 4 tài sản trên bị đánh dấu **`SCOPE KHÔNG XÁC ĐỊNH`**.
-> **ĐỀ NGHỊ ADMIN:** hoặc (a) loại 4 tài sản này khỏi mọi hoạt động T4, hoặc
-> (b) cho phép tôi gửi câu hỏi làm rõ tới GitLab qua kênh HackerOne trước.
-> **Tôi KHÔNG tự quyết.** Cho tới khi Admin phán quyết: **CẤM chạm 4 tài sản này.**
+> ⛔ **QUYẾT ĐỊNH CỦA ADMIN KHÔNG ĐỔI:** vẫn **loại cả 4 tài sản khỏi T4**.
+> Nay gọi đúng tên: **"0 xung đột thật + 4 loại thận trọng"**. Thận trọng hơn mức cần nhưng
+> **không gây hại**, trong khi khai thác nhầm gây hại không khắc phục được
+> (D-021 §1; `DISSENT-7`/`DISSENT-8`).
 
-*(Ghi chú: GitHub cũng có 1 xung đột — `Atom`, nhưng cả hai phía đều `eligible_for_bounty=False`
-nên không ảnh hưởng: dù hiểu thế nào thì Atom cũng không được thưởng.)*
+*(Ghi chú: GitHub cũng có 1 mục tương tự — `Atom`, nhưng cả hai phía đều `eligible_for_bounty=False`
+nên dù hiểu thế nào thì Atom cũng không được thưởng.)*
 
 ---
 
