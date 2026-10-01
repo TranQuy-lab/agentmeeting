@@ -1755,3 +1755,76 @@ tong link tuong doi = 24   chet = 0
 1. Tôi kiểm **link + territory + file cấm**, **không** kiểm nội dung `SCOPEGAP.md` (khoảng trống phạm vi).
 2. Phép quét link của tôi **chỉ áp cho `.md` và link tương đối** — không kiểm link tuyệt đối/URL ngoài.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T26 reviewer) kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #16 (T8): T28 của BountyRecon — chỉ §2b thay đổi
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T28` @ `9f73655`
+**Yêu cầu Admin (T28):** *"Sửa CHỈ §2b. KHÔNG chạm phần trích nguyên văn."* Đây là **ràng buộc âm**
+— phải chứng minh **cái KHÔNG đổi**, khó hơn chứng minh cái đã đổi.
+
+---
+
+## 1. Tách file tại ranh giới §2b, băm từng phần
+
+Tôi không đọc mắt. Tôi tách ở `## 2b.` và `## 3.` rồi `sha256` từng phần:
+
+```text
+  TRUOC §2b                09fce4b8afac0ede -> 09fce4b8afac0ede   GIONG HET
+  than §2b                 2f7322f812e7e249 -> 099b489f47f5e953   KHAC (dung — day la phan sua)
+  SAU §2b (tu '## 3.')     40904074229cbabc -> 40904074229cbabc   GIONG HET
+```
+
+⇒ **Khớp CHÍNH XÁC hash mà BountyRecon công bố** (tôi tính độc lập, không chép).
+⇒ **Phần trích nguyên văn (§1 in-scope, §2a out-of-scope, §3 cấm, §4 thưởng) NGUYÊN VẸN TỪNG BYTE.**
+
+Điều này giữ nguyên giá trị **chứng thực byte-exact của T14** cho phần trích nguyên văn. ✅ **PASS**
+
+## 2. Kiểm nội dung §2b mới — có sửa đúng bản chất không?
+
+```text
+146| ## 2b. TÀI SẢN ĐÃ NGHỈ HƯU — **0 XUNG ĐỘT HIỆU LỰC** (đã đính chính ở T28)
+148| > 🔄 **ĐÍNH CHÍNH (T28, 2026-10-01).** Mục này trước đây gọi là *"4 XUNG ĐỘT SCOPE ĐÃ XÁC MINH"*.
+149| > **Cách gọi đó SAI.** ...
+164| > Bỏ nó ⇒ sinh ra "xung đột scope" giả giữa chính sách đang hiệu lực và bản ghi đã nghỉ hưu.
+192| ⇒ **0 xung đột hiệu lực.** Cả 4 vế OUT thuộc một đợt lưu trữ duy nhất ngày 2022-07-21.
+```
+
+⇒ §2b nay ghi **đúng bản chất**: nhãn sửa thành *"0 XUNG ĐỘT HIỆU LỰC"*, có **đính chính minh bạch**
+(không xoá nhãn cũ), nêu **nguyên nhân gốc** là `archived_at`, và **dẫn chiếu `_TEMPLATE`** đòi
+`archived_at` là trường **BẮT BUỘC**. ✅ **PASS**
+
+## 3. Kiểm 3 dòng cũ còn sót — tác giả tự báo, và TÔI XÁC NHẬN
+
+BountyRecon tự khai còn **3 dòng cũ ngoài §2b** và **không sửa** (xin Admin quyết). Tôi kiểm:
+
+```text
+  9| **Trạng thái:** ⚠️ **Trích được nguyên văn, NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
+284| | Trích được nguyên văn in-scope? | ✅ **CÓ** (24 tài sản) — nhưng 4 tài sản bị xung đột |
+289| | Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ **CÓ ĐIỀU KIỆN** — phải chốt 4 xung đột ở §2b trước |
+```
+
+⇒ **XÁC NHẬN: 3 dòng này THẬT SỰ còn sót và THẬT SỰ nằm ngoài §2b.** ✅
+
+**Đánh giá hành vi:** tác giả **phát hiện và báo** thay vì tự sửa ngoài phạm vi được cấp.
+Đây là **đúng kỷ luật territory** — chính xác kiểu kỷ luật mà T28 vừa được tạo ra để bảo vệ.
+Nếu họ tự sửa "cho tiện", họ đã lặp lại lỗi của Reviewer1 ở T25.
+
+## 4. Kết luận verify #16
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Chỉ §2b thay đổi, hash khớp công bố | ✅ **PASS** |
+| 2 | §1/§2a/§3/§4 (trích nguyên văn) nguyên vẹn từng byte | ✅ **PASS** |
+| 3 | §2b sửa đúng bản chất (nhãn + nguyên nhân gốc + dẫn `_TEMPLATE`) | ✅ **PASS** |
+| 4 | Đính chính minh bạch, không xoá nhãn cũ | ✅ **PASS** |
+| 5 | 3 dòng còn sót: tự báo, không tự sửa ngoài phạm vi | ✅ **ĐÚNG kỷ luật** |
+
+**PASS 5/5.** Không phát hiện vi phạm.
+
+## 5. Tự khai giới hạn
+
+1. Tôi kiểm **§2b và phần không đổi**; **không** xác minh `archived_at` một lần nữa (đã làm ở T18 đính chính #2).
+2. Tôi **không** quyết 3 dòng còn sót nên sửa hay không — **thuộc Admin**.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (reviewer T28) kiểm; bất đồng ⇒ Auditor2 chốt.
