@@ -3052,3 +3052,107 @@ không ở KẾT LUẬN"* — **không thổi phồng mức độ**.
 1. Tôi kiểm **2 dòng sửa**, không chấm toàn bộ T41/T34.
 2. Tôi **không** kiểm lại các dòng khác của `RECON.md`/`CANDIDATES.md`.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #29 (T8): T41 **CÓ trên remote** + canary (A) khớp chính xác
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/CROSS.md` §T42 (Reviewer1) — mục A (T41) và mục C (canary)
+
+---
+
+## 1. ⚠️ Reviewer1 khai T41 "CHƯA PUSH — lần thứ 5". Tôi kiểm trực tiếp remote:
+
+```text
+$ git ls-remote --heads origin | grep bounty-recon
+43cc537...  refs/heads/agent/bounty-recon/T26
+9f73655...  refs/heads/agent/bounty-recon/T28
+1b318de...  refs/heads/agent/bounty-recon/T29
+03d304b...  refs/heads/agent/bounty-recon/T3
+ecce293...  refs/heads/agent/bounty-recon/T31
+c0ce165...  refs/heads/agent/bounty-recon/T33
+c097df8...  refs/heads/agent/bounty-recon/T34
+d21ca34...  refs/heads/agent/bounty-recon/T41      <- CO MAT
+
+$ git ls-remote origin agent/bounty-recon/T41
+d21ca34a83a7a5e0e2bc86b78e4d4ae5dda02b70	refs/heads/agent/bounty-recon/T41
+```
+
+⇒ **T41 CÓ trên remote** tại `d21ca34a83a7a5e0e2bc86b78e4d4ae5dda02b70`.
+
+```text
+KẾT LUẬN ĐÚNG MỨC: khai báo "chưa push" của Reviewer1 là KHÔNG ĐÚNG tại thời điểm tôi kiểm.
+  Nguyên nhân KHẢ DĨ (tôi không kết luận): Reviewer1 kiểm TRƯỚC khi BountyRecon push,
+  hoặc `fetch` của họ chưa lấy nhánh mới.
+  => Đây là LỆCH THỜI ĐIỂM/FETCH, KHÔNG phải cáo buộc Reviewer1 sai.
+```
+
+**Vì sao tôi nêu:** nếu Admin tin "T41 chưa push" thì T41 **không được chấm** — trong khi tôi
+**đã chấm được** (verify #28). Tôi báo để Admin biết **T41 thực sự có thể kiểm**.
+
+## 2. ✅ Baseline blob Reviewer1 công bố — **CHÍNH XÁC TUYỆT ĐỐI**
+
+Reviewer1 ghi baseline để *"chấm tức thì khi họ push"*. Tôi đối chiếu với `main`:
+
+| File | Reviewer1 công bố | Tôi đo @ `origin/main` | Khớp? |
+|---|---|---|---|
+| `CANDIDATES.md` | `a5ac41f80f61144e8891b9ad97a58072018e32de` | `a5ac41f8...` | ✅ |
+| `gitlab/RECON.md` | `75f163cf40131eb862250d6a7bf7d72886bd1342` | `75f163cf...` | ✅ |
+
+Và T41 **đã đổi** cả hai (đúng như dự kiến):
+
+```text
+CANDIDATES.md : main a5ac41f8... -> T41 d266b1a7...
+gitlab/RECON.md: main 75f163cf... -> T41 8890988a...
+```
+
+⇒ **Baseline của Reviewer1 ĐÚNG**, và tôi xác nhận T41 đã sửa đúng 2 file đó. ✅
+
+## 3. ✅ Canary `D-028` quy ước **(A)** — khớp chính xác + KHÔNG đổi qua 3 revision
+
+Tôi chạy **đúng lệnh trích xuất** Reviewer1 công bố:
+
+```python
+c = git show <rev>:security/github/SCOPE.md
+i = c.index("## 1."); j = c.index("## 2.", i); sec = c[i:j]
+k1 = sec.index("```text"); k2 = sec.index("```", k1+7)
+raw = sec[k1+7:k2]
+```
+
+```text
+  origin/main                       sha256=2db48874857f8033be1392d3  ky_tu=2109
+  origin/agent/bounty-recon/T34     sha256=2db48874857f8033be1392d3  ky_tu=2109
+  origin/agent/bounty-recon/T41     sha256=2db48874857f8033be1392d3  ky_tu=2109
+```
+
+| | Reviewer1 công bố | Tôi đo | Khớp? |
+|---|---|---|---|
+| `sha256` (A) | `2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72` | y hệt | ✅ |
+| độ dài | 2109 | 2109 | ✅ |
+
+⇒ **Canary (A) khớp chính xác** và **KHÔNG đổi** giữa `main`, `T34`, `T41`. ✅ **PASS**
+
+```text
+GHI NHẬN: Reviewer1 công bố CẢ 3 quy ước (A/B/C) kèm lệnh trích xuất + độ dài byte.
+Đây là cách công bố canary ĐÚNG CHUẨN: người khác tái lập được mà không phải đoán quy ước.
+Chính việc ghi rõ quy ước đã giải quyết dứt điểm tranh chấp lệch-1-ký-tự từng gặp ở T30.
+```
+
+## 4. Kết luận verify #29
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | T41 có trên remote | ✅ **XÁC NHẬN** (`d21ca34`) — khai "chưa push" lệch thời điểm |
+| 2 | Baseline blob `CANDIDATES.md` | ✅ **ĐÚNG** |
+| 3 | Baseline blob `gitlab/RECON.md` | ✅ **ĐÚNG** |
+| 4 | T41 đã đổi đúng 2 file đó | ✅ **XÁC NHẬN** |
+| 5 | Canary (A) khớp + không đổi qua 3 revision | ✅ **PASS** |
+
+**Không phát hiện vi phạm.** Baseline và canary của Reviewer1 **chính xác**;
+khai "T41 chưa push" **lệch thời điểm** tại lúc tôi kiểm.
+
+## 5. Tự khai giới hạn
+
+1. Tôi **không** kết luận Reviewer1 sai — có thể họ kiểm trước khi push. Tôi chỉ báo **trạng thái thật**.
+2. Tôi kiểm **canary (A)**; không kiểm (B)/(C) vì (A) là quy ước Reviewer1 chốt dùng.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2 kiểm; bất đồng ⇒ Auditor2 chốt.
