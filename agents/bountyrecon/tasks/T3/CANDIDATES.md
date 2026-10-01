@@ -16,9 +16,9 @@
 | 1 | `SCOPE.md` đã trích **nguyên văn** in-scope/out-of-scope/cấm/thưởng | ✅ xong 3 chương trình |
 | 2 | Admin ban hành chỉ thị T4 bằng văn bản | ⏸ **CHƯA** |
 | 3 | Reviewer1 verify T3 độc lập | ⏸ **CHƯA** |
-| 4 | Chốt 4 **xung đột scope** của GitLab (xem §2) | ⏸ **CHƯA** — **CẦN ADMIN PHÁN QUYẾT** |
+| 4 | GitLab: **0 xung đột hiệu lực** — vế OUT là bản ghi đã nghỉ hưu (`archived_at` 2022-07-21); Admin đã **loại cả 4 tài sản khỏi T4** | ✅ **XONG** |
 
-**⇒ Chưa đủ 4/4. ĐỀ NGHỊ CHƯA MỞ T4.**
+**⇒ Điều kiện còn thiếu duy nhất: chỉ thị nêu target cụ thể của Admin (D-013). G4 vẫn ĐÓNG.**
 
 ---
 
@@ -61,25 +61,28 @@
 
 ---
 
-## 2. 🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB (CẦN ADMIN PHÁN QUYẾT)
+## 2. GitLab — **0 xung đột hiệu lực**; 4 tài sản đã nghỉ hưu (ĐÃ PHÁN QUYẾT)
 
-Đã xác minh bằng script trên `h1_gitlab.json`. 4 tài sản nằm **đồng thời** ở cả
-`eligible_for_submission=true` **và** `=false`:
+> 🔄 **ĐÍNH CHÍNH (T31).** Mục này trước đây là *"🚨 VẤN ĐỀ CHẶN — 4 XUNG ĐỘT SCOPE CỦA GITLAB
+> (CẦN ADMIN PHÁN QUYẾT)"*. **Việc phán quyết ĐÃ XONG.** Chi tiết: `security/gitlab/SCOPE.md` §2b.
 
-| # | Tài sản | IN | OUT |
+Bằng chứng (`h1_gitlab.json`; tái lập ở T28 và T31): truy vấn `archived:false` cho
+**44 entry · IN=19 · OUT=25 · giao = 0**. Bốn tài sản từng bị coi là "xung đột" thực chất là
+**bản ghi OUT đã nghỉ hưu ngày 2022-07-21**. Biến quyết định là **`archived_at`**, không phải `asset_type`:
+
+| # | Tài sản | Vế IN (còn hiệu lực) | Vế OUT (`archived_at`) |
 |---|---|---|---|
-| 1 | `*.gitlab.net` | WILDCARD, bounty=True, medium | URL, bounty=False, none |
-| 2 | `*.gitlap.com` | WILDCARD, bounty=True, medium | URL, bounty=False, none |
-| 3 | `about.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, none |
-| 4 | `docs.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, none |
+| 1 | `*.gitlab.net` | WILDCARD, bounty=True, medium | URL, bounty=False, **2022-07-21T15:51:33.499Z** |
+| 2 | `*.gitlap.com` | WILDCARD, bounty=True, medium | URL, bounty=False, **2022-07-21T15:51:16.877Z** |
+| 3 | `about.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, **2022-07-21T15:53:03.572Z** |
+| 4 | `docs.gitlab.com` | URL, bounty=True, medium | URL, bounty=False, **2022-07-21T15:53:13.475Z** |
 
-⛔ **Theo D-005 ("Nghi ngờ về phạm vi ⇒ DỪNG, hỏi Admin. KHÔNG tự đoán"):**
-**CẤM ExploitDeep chạm 4 tài sản này** cho tới khi Admin phán quyết.
+⛔ **QUYẾT ĐỊNH CỦA ADMIN (giữ nguyên): loại cả 4 tài sản khỏi T4.** Thận trọng hơn mức cần
+nhưng **không gây hại**, trong khi khai thác nhầm gây hại không khắc phục được. Nay gọi đúng tên:
+**"0 xung đột thật + 4 loại thận trọng"** (D-021; `DISSENT-7`/`DISSENT-8`).
 
-**Đề nghị Admin chọn 1 trong 2:**
-- **(a)** Loại 4 tài sản khỏi mọi hoạt động T4 (an toàn nhất), **hoặc**
-- **(b)** Cho phép tôi (BountyRecon) gửi câu hỏi làm rõ tới GitLab qua kênh HackerOne **trước**
-  khi T4 chạm.
+⇒ **ExploitDeep: CẤM chạm 4 tài sản này.** Điều kiện mở T4 **không** còn là "chốt xung đột"
+(đã xong) mà là **chỉ thị nêu target cụ thể của Admin** (D-013).
 
 ---
 

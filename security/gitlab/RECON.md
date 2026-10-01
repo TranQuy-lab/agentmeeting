@@ -36,15 +36,15 @@ Nguồn thô: `recon_gitlab.txt`.
 | Tên miền | Trong scope? | NS | A / AAAA | Ghi chú |
 |---|---|---|---|---|
 | `gitlab.com` | ✅ URL (critical) | `jermaine.ns.cloudflare.com`, `diva.ns.cloudflare.com` | A `172.65.251.78` · AAAA `2606:4700:90:0:f22e:fbec:5bed:a9b9` | GitLab dùng DNS của Cloudflare. Cả A và AAAA nằm trong dải Cloudflare. |
-| `about.gitlab.com` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | `shaz`/`julio.ns.cloudflare.com` | A `104.18.28.129`, `104.18.29.129` | Sau Cloudflare. TXT: `_globalsign-domain-verification=…`. |
-| `docs.gitlab.com` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | — | A `104.18.39.11`, `172.64.148.245` | TXT: `google-site-verification=YgHoFZLvJOGzjmqfSOAqWD8fU4GnVYXjWojp8Tgxvb4`. |
+| `about.gitlab.com` | ✅ URL (medium) — **Admin loại khỏi T4** (§2b) | `shaz`/`julio.ns.cloudflare.com` | A `104.18.28.129`, `104.18.29.129` | Sau Cloudflare. TXT: `_globalsign-domain-verification=…`. |
+| `docs.gitlab.com` | ✅ URL (medium) — **Admin loại khỏi T4** (§2b) | — | A `104.18.39.11`, `172.64.148.245` | TXT: `google-site-verification=YgHoFZLvJOGzjmqfSOAqWD8fU4GnVYXjWojp8Tgxvb4`. |
 | `customers.gitlab.com` | ✅ URL (critical) | — | A `172.64.148.245`, `104.18.39.11` · AAAA `2a06:98c1:3105::ac40:94f5` | MX `10 mxa/mxb.mailgun.org`. TXT SPF `"v=spf1 include:mailgun.org ~all"`. |
 | `registry.gitlab.com` | ✅ URL (critical) | — | A `35.227.35.254` (**GCP, KHÔNG qua Cloudflare**) | **Khác biệt hạ tầng:** đây là IP Google Cloud trực tiếp. |
 | `design.gitlab.com` | ✅ URL (medium) | — | `CNAME gitlab-org.gitlab.io.` → A `35.185.44.232` (**Google**) | Trỏ vào hạ tầng GitLab Pages (`*.gitlab.io`). |
 | `advisories.gitlab.com` | ✅ URL (medium) | — | `CNAME pages.gitlab.io.` → A `35.185.44.232` | Như trên. |
 | `license.gitlab.com` | ✅ URL (critical) | **không có bản ghi NS/A/AAAA/MX/TXT/CAA** | — | **Trong scope nhưng KHÔNG phân giải.** Xem §3 ứng viên C3. |
 | `gitlab.org` | ✅ WILDCARD (medium) | `hal`/`arya.ns.cloudflare.com` | A `104.21.92.3`, `172.67.183.112` | MX `mx1/mx2.emailsrvr.com`. |
-| `gitlab.net` | ⚠️ **XUNG ĐỘT** (§2b SCOPE) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
+| `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
 
 ### 1.1 DMARC (nguyên văn)
 
@@ -203,10 +203,11 @@ chỉ còn **C1** và **C3** là đáng chuyển tiếp — và cả hai đều 
 ## 5. Hạn chế & điều CHƯA xác minh
 
 1. `dig gitlab.com TXT` **timeout** ⇒ SPF gốc **chưa xác minh**.
-2. **4 tài sản bị XUNG ĐỘT scope** (`*.gitlab.net`, `*.gitlap.com`, `about.gitlab.com`,
-   `docs.gitlab.com`) — tôi đã trinh sát `about.gitlab.com`, `docs.gitlab.com` và `gitlab.net`
-   ở mức **thụ động thuần** (chỉ đọc DNS công khai) **trước khi** phát hiện xung đột.
-   ⛔ **Từ thời điểm phát hiện: CẤM chạm.** Xem [`SCOPE.md`](SCOPE.md) §2b. **Cần Admin phán quyết.**
+2. **4 tài sản đã được Admin loại khỏi T4** (`*.gitlab.net`, `*.gitlap.com`, `about.gitlab.com`,
+   `docs.gitlab.com`) — **0 xung đột hiệu lực**: vế OUT là bản ghi **đã nghỉ hưu**
+   (`archived_at` 2022-07-21). Tôi đã trinh sát `about.gitlab.com`, `docs.gitlab.com` và `gitlab.net`
+   ở mức **thụ động thuần** (chỉ đọc DNS công khai) **trước khi** biết điều đó.
+   ⛔ **Phán quyết đã xong (D-021): CẤM chạm 4 tài sản này trong T4.** Xem [`SCOPE.md`](SCOPE.md) §2b.
 3. Chỉ kiểm **10 tên miền** trong khi scope có **24 tài sản** (gồm cả source code).
 4. `license.gitlab.com` không phân giải — **chưa xác minh** lý do.
 5. Toàn bộ §2 là **quan sát thô**; chương trình GitLab **tuyên bố** nhóm này **out of scope**,
