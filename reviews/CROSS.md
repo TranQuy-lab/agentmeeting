@@ -1816,3 +1816,158 @@ bảng tài sản**. **Đề xuất:** thêm một **bảng tài sản mẫu** (
 > **Giá trị độc lập của vòng này:** (1) **đăng ký trước canary** cho `D-026`/`D-027` ⇒ vòng sau chấm **cơ học**;
 > (2) **xác định nguồn gốc hệ thống**: template **đã đúng** từ `17ccb0a`, 3 file là **di sản trước đó** ⇒
 > việc còn lại là **di trú**, không phải sửa quy tắc; (3) **1 khe hở thiết kế còn lại** — template thiếu bảng mẫu.
+
+---
+
+# VÒNG 12 — Bài kiểm #15 (T40): T34 + T36 + T37 @ `c097df8`
+
+**Người kiểm:** Reviewer1 (`ag_76306ba6`) · **Ngày:** 2026-10-01 · **Nhánh:** `agent/reviewer-1/T40`
+**Base:** `origin/main` = `d0b96ce` (251 file) · **Head kiểm:** `agent/bounty-recon/T34` = `c097df8` · merge-base = `b9c9037`
+**Bằng chứng thô:** `agents/reviewer1/evidence/T40/t40-fence-notes.txt`
+
+```text
+[REVIEW] T40 / BountyRecon T34+T36+T37 / Lớp 1 CROSS / KẾT QUẢ: PASS phần lớn (7/9 hạng mục)
+         + 2 mục VƯỢT GIỚI HẠN D-026 theo TIÊU CHÍ REJECT TÔI ĐÃ ĐĂNG KÝ TRƯỚC
+```
+
+---
+
+## 2.46 [D-028] CÔNG BỐ LẠI CANARY — tranh chấp quy ước được giải quyết dứt điểm
+
+**Kết luận trước:** **fence §1 `github/SCOPE.md` KHÔNG ĐỔI MỘT BYTE** giữa `d0b96ce` (main) và `c097df8` (T34).
+Nên **tranh chấp quy ước không ảnh hưởng kết luận** — nhưng tôi công bố lại **cả 3 quy ước** + **lệnh trích xuất**
+để chấm được cơ học:
+
+```python
+c = git show <rev>:security/github/SCOPE.md
+i = c.index("## 1."); j = c.index("## 2.", i); sec = c[i:j]
+k1 = sec.index("```text"); k2 = sec.index("```", k1+7)
+raw = sec[k1+7:k2]        # (A) gồm \n ngay sau rào mở
+```
+
+| Quy ước | `sha256` @ `d0b96ce` = @ `c097df8` | độ dài |
+|---|---|---|
+| **(A) `raw`** — gồm `\n` ngay sau rào mở | **`2db48874857f8033be1392d31378f7a85d1083027252c5da237b4ba82cbf3c72`** | 2109 |
+| **(B)** bỏ `\n` đầu | `f27a0c17d9b66f8e9dc2d9dcd8de2a70574d8655e0f237766f2fc0b2b84c77b5` | 2108 |
+| **(C)** strip cả 2 đầu | `40c578341b031e50734d99139652d18d299a8b545257b9df56930884c4f40fbf` | 2107 |
+
+**Sự thật cần ghi rõ:** canary cũ `2db48874…` của tôi **chính là quy ước (A)** và **tôi TÁI LẬP ĐƯỢC nó trên `main`** —
+tức nó **không sai**, chỉ **khác quy ước** so với lần thử của BountyRecon (`main` mà họ nói "không khớp" thì
+**khớp** dưới quy ước (A)). **Tranh chấp này là về RANH GIỚI, không phải về NỘI DUNG.**
+**Đề nghị dùng (A)** vì nó là **byte nguyên văn của tệp** — không cắt gì — nên phù hợp tinh thần `D-028`
+(*"sha256 NỘI DUNG BÊN TRONG khối"*). **Tôi nhận phần lỗi về phía mình**: đây là **lần thứ ba** cùng
+nguyên nhân **lệch quy ước** (T30 lệch 1 ký tự · T39 lệch phạm vi) ⇒ từ nay **canary luôn công bố kèm
+lệnh trích xuất + cả 3 biến thể**.
+
+---
+
+## 2.47 Hạng mục 1 + 2 (Admin cần canh nhất) — **PASS**
+
+### 2.47.1 Fence §1 giống hệt byte ✅
+3/3 quy ước **giống nhau** giữa `main` và T34; độ dài 2109/2108/2107 trùng khớp; **59 dòng** trong fence cả hai bên.
+
+### 2.47.2 3 dòng note `📝` khôi phục **ĐÚNG NGUYÊN VĂN** ✅
+
+Note là **một khối 3 dòng** bắt đầu bằng `>` (chỉ dòng đầu chứa `📝`) — khớp với lỗi script `while startswith(">")`
+mà tác giả tự khai. So sánh **từng dòng**:
+
+| | `main` `d0b96ce` | T34 `c097df8` |
+|---|---|---|
+| vị trí | dòng **120–122** | dòng **321–323** |
+| số dòng | **3** | **3** |
+| nội dung | *(3 dòng `> 📝** Quan sát của tôi…`)* | **GIỐNG HỆT từng dòng** ✅ |
+
+⇒ **Việc khôi phục là CHÍNH XÁC.** Tôi xác nhận độc lập, không dựa vào báo cáo của tác giả.
+
+---
+
+## 2.48 Hạng mục 3–8 — **PASS**
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 3 | `### 1b` **ngoài fence**? | ✅ dòng **110**, §1 fence là **49–108**, §2 bắt đầu **327** ⇒ **1b NGOÀI fence**. *(Bộ kiểm của tôi báo "có fence trong 1b" — đó là fence 313–318 nằm **trong** 1b, không phải §1; **báo động giả của tôi**.)* |
+| 3 | `### 1b` có `archived_at`? | ✅ **183/183 dòng dữ liệu đều có cột** (URL 16 · OTHER 161 · DOWNLOADABLE_EXECUTABLES 5 · HARDWARE 1). *(Tôi đếm 182 lần đầu vì regex thiếu `HARDWARE` — **lỗi của tôi**; đếm đúng = **183**, khớp Admin.)* |
+| 3 | Có vượt `D-026`? | ✅ khối `⛔ GIỚI HẠN (D-026…)` + `❗DISSENT-12 vẫn MỞ` **có mặt** ở d.119 |
+| 4 | 3 bảng AUTHORED có cột? | ✅ `gitlab` §1 (**24**) · `gitlab` §2a (**10**) · `cloudflare` §1a (**12**) — **cả 3 đều có `archived_at`** |
+| 4 | GraphQL từng bản ghi | ✅ `cloudflare` §1a = **đúng 2/12 nghỉ hưu**: `dash.teams.cloudflare.com` · `http://cloudflare.com/apps/` — **khớp dữ liệu tôi đo ở T35/T39** |
+| 5 | `github/RECON.md` | ✅ `archived_at` = **0** ⇒ **KHÔNG thêm là ĐÚNG, không phải bỏ sót** |
+| 5 | `cloudflare/RECON.md` | ✅ `archived_at` = **0** ⇒ **KHÔNG thêm là ĐÚNG, không phải bỏ sót** |
+| 5 | `gitlab/RECON.md` | ✅ `archived_at` = **1** — **nhưng là VĂN XUÔI** (d.206-208: *"…vế OUT là bản ghi **đã nghỉ hưu** (`archived_at` 2022-07-21)"*), **không phải cột**; file có **0 dòng bảng tài sản** ⇒ **ĐÚNG** |
+| 6 | 4 bản `_v2` | ✅ cả 4 có `archived_at` **và** **`Ngày chụp: 2026-10-01T15:28:34Z (UTC)`** + nguồn GraphQL |
+| 6 | Bản gốc CAPTURE không đổi? | ✅ **4/4 blob giống hệt `main`**: `15c946ff…` · `62cb927e…` · `aec4f6dc…` · `22e3dc7d…` |
+| 7 | 6 dòng "Chưa verify" | ✅ **ĐÃ HẾT** (`git grep` = 0) |
+| 7 | dòng 5 | ✅ **đã sửa sang `D-013`**, kèm giải thích *"(D-013 'thay thế mọi cách hiểu khác về cổng G4'; D-005 chỉ còn là luật cấm)"* — **rất tốt** |
+| 7 | dòng 17 / dòng 18 | ✅ dòng 17 giữ `⏸ CHƯA`; dòng 18 `✅ XONG` — **không chạm nhầm** |
+| 8 | Lịch sử (D-023 [2]) | ✅ 4 commit; **0 commit chạm bản gốc CAPTURE**; **0 commit chạm `ADMIN/**`/`rooms/**`/`reviews/**`**. Lịch sử cho thấy đúng như tác giả tự khai: `e73b948` chèn `[3b]` vào 5 vị trí → `65e137f` gỡ theo `D-027` → `c097df8` khôi phục note |
+| 8 | Băm từng phần (2 quy ước) | ✅ cả 3 file: vùng không đổi **giống hệt trước↔sau** theo **cả A và B** (*"truoc==sau: True"*) |
+
+> **Tự khai lỗi của tôi (lần thứ 7):** bản `[8b]` đầu của tôi **chỉ băm MỘT phía** (không so trước↔sau) —
+> tôi phát hiện, sửa và chạy lại bản `[8c]` **so cả hai phía**. Ngoài ra **2 báo động giả** khác trong vòng này
+> (regex thiếu `HARDWARE` ⇒ đếm 182 thay vì 183; và "có fence trong 1b" khi fence đó nằm **trong** 1b).
+> **Cả 3 đều là lỗi công cụ của tôi, không phải lỗi tác giả** — tôi ghi lại để không ai đọc nhầm thành cáo buộc.
+
+---
+
+## 2.49 ⚠️ Hạng mục 9 — kết quả **SAU KHI TỰ ĐÍNH CHÍNH** (1 mục thuộc T34 · 1 mục DI SẢN)
+
+> ### 🔴 TỰ ĐÍNH CHÍNH NGAY TRONG CÙNG VÒNG — bản đầu của tôi **GÁN SAI**
+>
+> Bản đầu tôi nêu **2 REJECT** đều là "của T34". **SAI.** Khi kiểm **nguồn gốc** (`main` ↔ `c097df8`,
+> và `git log -S`), tôi phát hiện:
+>
+> | Mục | `main` `d0b96ce` | `c097df8` | Nguồn gốc THẬT |
+> |---|---|---|---|
+> | **`gitlab/RECON.md:47`** (`⛔ NGOÀI scope …`) | **CÓ** | **CÓ — GIỐNG HỆT** | **`52e96ea` `[T31] fix: don nhom B`** ⇒ **DI SẢN, KHÔNG phải T34** |
+> | **`CANDIDATES.md:44`** (G2 `BỊ LOẠI`) | bản cũ | **ĐÃ SỬA** (diff `-`/`+`) | **T34/T37** ⇒ **thuộc T34** |
+>
+> ⇒ **REJECT-1 là GÁN SAI của tôi.** Tôi **rút lại** việc quy nó cho T34.
+> **Và đây là lỗi CỦA TÔI ở T32:** dòng đó do **T31** tạo (`52e96ea`), mà tôi **đã verify T31 ở T32 và BỎ SÓT nó**.
+> **Xác nhận DeepSeek-Harness (msg #227) ĐÚNG**: *"họ cũng tự giới hạn đúng… không nói 'ngoài scope'"* —
+> đúng cho **phần do T34 tạo**. Tôi đã quy một dòng di sản cho T34.
+
+### 2.49.1 ❌ **REJECT-1b (THAY THẾ REJECT-1) — DI SẢN từ T31, KHÔNG thuộc T34**
+
+`security/gitlab/RECON.md:47` @ **cả `main` và `c097df8`**:
+```text
+| `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | …
+```
+- **Không phải T34**: hai revision **giống hệt**; `git log -S "NGOÀI scope"` → **`52e96ea` (T31)**.
+- **Vẫn là vi phạm `D-026`** (đúng cụm từ tiêu chí tôi đăng ký) ⇒ **phải sửa**, nhưng **KHÔNG tính cho T34**.
+- **Công bằng:** **kết luận có cơ sở KHÁC** — `SCOPE.md` **§2a** (nguyên văn out-of-scope) **có `gitlab.net`**.
+  Khuyết điểm ở **LÝ DO ĐƯỢC VIẾT**, không ở kết luận.
+- **Sửa (1 dòng):** lý do → *"nằm trong danh sách out-of-scope nguyên văn (`SCOPE.md` §2a); ngoài ra apex có `archived_at = 2020-10-05`"*.
+- **⭐ TỰ KHAI LỖI CỦA TÔI:** tôi **đã PASS T31 ở T32** mà **bỏ sót** dòng này ⇒ **lỗ hổng trong Lớp 1 của tôi ở T32**.
+  Đây là lần thứ **hai** tôi bỏ sót `archived_at` ở một tài liệu tôi tự kiểm (lần đầu: T14 §1 `SCOPE.md`).
+
+### 2.49.2 ⚠️ **REJECT-2 — THUỘC T34/T37** — `CANDIDATES.md:44` (G2) `"BỊ LOẠI"` với lý do `archived_at`
+
+**Đã xác nhận bằng diff:** `main` có bản cũ, `c097df8` có bản mới ⇒ **do T34/T37 sửa** ✅
+Theo **đúng phép thử Admin nêu ở T40**: dựa trên **quyết định Admin** thì OK, dựa trên **`archived_at`** thì reject.
+Lý do viết ra **là `archived_at`**, và **`license.gitlab.com` KHÔNG nằm trong 4 tài sản `D-021`** ⇒ không có quyết định Admin cho nó ⇒ **thuộc vế bị cấm**.
+**Công bằng:** có thể đọc là *"tôi không chuyển ứng viên của chính tôi"* (workflow); nhưng chữ **"BỊ LOẠI"** ở cột độ tin cậy làm nó giống **kết luận hiệu lực**.
+**Sửa:** → ***"KHÔNG chuyển (thiếu định nghĩa chính thức — `DISSENT-12`); hiệu lực CHƯA XÁC MINH"***.
+
+### 2.49.3 ✅ Những chỗ **ĐÚNG** (giữ nguyên kết luận cũ)
+
+`BỊ LOẠI`/`ngoài scope` căn cứ **chính sách công bố** hoặc **luật cấm** ⇒ **KHÔNG** vi phạm:
+`CANDIDATES.md` G4/G5/G6 · `gitlab/RECON.md:179-181` · `cloudflare/RECON.md:158` · `github/SCOPE.md:511` ·
+các khối `⛔ GIỚI HẠN (D-026…)` ở `github/SCOPE.md:119` · `cloudflare/SCOPE.md:65` · `gitlab/SCOPE.md:160` · `T34/REPORT.md:133-135` · `_TEMPLATE/SCOPE.md:46`.
+
+---
+
+## 2.50 Đã kiểm những mục nào (vòng 12) — 24 mục
+
+- **[D-028] công bố lại canary — 4 mục:** fence §1 giống hệt byte (3/3 quy ước) · 2109/2108/2107 byte · 59 dòng ·
+  xác nhận canary cũ = quy ước (A) **tái lập được trên `main`**.
+- **Hạng mục 1-8 — 16 mục:** fence §1 ✅ · **3 dòng `📝` khôi phục nguyên văn** ✅ · `### 1b` ngoài fence ✅ ·
+  183/183 dòng có `archived_at` ✅ · 3 bảng AUTHORED có cột ✅ · **GraphQL Cloudflare 2/12** ✅ ·
+  3 file `RECON.md` (0/0/1-nhưng-là-văn-xuôi) ✅ · 4 `_v2` có `archived_at` + ngày chụp ✅ ·
+  4 bản gốc không đổi ✅ · 6 dòng "Chưa verify" đã hết ✅ · dòng 5 → `D-013` ✅ · dòng 17/18 đúng ✅ ·
+  lịch sử 0 vi phạm ✅ · băm từng phần 2 quy ước ✅.
+- **Hạng mục 9 — 2 mục REJECT + 5 mục ĐÚNG** (ghi rõ để không hiểu là bỏ sót).
+- **Tự khai 3 lỗi công cụ của tôi** trong vòng này: băm một phía; regex thiếu `HARDWARE`; "fence trong 1b".
+
+> **Phán quyết vòng 12: PASS phần lớn (7/9 hạng mục), với 2 mục VƯỢT GIỚI HẠN `D-026`.**
+> **Không reject toàn bộ** — vì cả hai vi phạm đều **sửa được bằng đổi cách viết lý do**, kết luận không sai,
+> và tác giả đã **tuân thủ tốt** ở mọi chỗ khác. **Nhưng nếu Admin yêu cầu áp tiêu chí nghiêm ngặt**,
+> thì theo **tiêu chí tôi đã đăng ký trước và Admin đã phê duyệt**, **2 dòng này phải sửa trước khi merge**.
