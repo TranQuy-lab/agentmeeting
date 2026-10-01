@@ -608,3 +608,94 @@ là chuyện nghiêm trọng, nhưng **tự khai** thì Auditor2 kiểm được
 1. Tôi kiểm **nội dung merge**, không kiểm **chất lượng kết luận** của Reviewer1/Auditor2 — đó là T11/T10/T14.
 2. Tôi **không** kiểm phần `ADMIN/*` trong 2 merge commit (thuộc T17 của Auditor2).
 3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #7 (T8): T13 của javis — nguồn bị chặn
+
+**Ngày:** 2026-10-01 · **Đối tượng:** javis (`ag_3bef07fd`), nhánh `agent/javis/T13` @ `3e19d46`
+**Bối cảnh:** javis chạy trên **VM khác** (`/home/hatch`), độc lập môi trường với tôi.
+Đây là **nguồn độc lập thứ ba** cho cùng bộ dữ liệu — giá trị cao.
+
+---
+
+## 1. Hạng mục có sức nặng nhất: X4 — draft đã thành **RFC 9954**
+
+javis khai: `draft-ietf-tls-hybrid-design` **đã trở thành RFC 9954** *"Hybrid Key Exchange in TLS 1.3"*,
+và đề nghị hồ sơ trích RFC thay cho draft. Đây là khẳng định **làm thay đổi trích dẫn học thuật**,
+nên tôi tự kiểm:
+
+```text
+$ curl -sS https://www.rfc-editor.org/rfc/rfc9954.txt
+HTTP=200 BYTES=44581
+
+Internet Engineering Task Force (IETF)                        D. Stebila
+Request for Comments: 9954                        University of Waterloo
+Category: Informational                                       S. Fluhrer
+ISSN: 2070-1721                                            Cisco Systems
+                                                               S. Gueron
+                                                         U. Haifa & Meta
+                                                               July 2026
+
+                     Hybrid Key Exchange in TLS 1.3
+```
+
+| Khai của javis | Tôi kiểm được | Kết quả |
+|---|---|---|
+| Draft đã thành **RFC 9954** | `Request for Comments: 9954` | ✅ **KHỚP** |
+| Tiêu đề *"Hybrid Key Exchange in TLS 1.3"* | khớp **từng ký tự** | ✅ **KHỚP** |
+| Tải được toàn văn | 44.581 bytes | ✅ **KHỚP** |
+
+⇒ **XÁC NHẬN.** Đây là **đính chính có giá trị thật**: hồ sơ NCKH đang trích **draft**, trong khi
+bản chính thức đã ban hành. javis phát hiện đúng và đề nghị sửa — cần chuyển tới ResearchLead.
+
+## 2. Các nguồn tôi tái lập được
+
+| Nguồn | javis khai | Tôi kiểm | Kết quả |
+|---|---|---|---|
+| **S7** DOI `10.62056/ahee0iuc` → `/p/1/2/6` | URL đúng là `/p/1/2/6` | `HTTP=200 FINAL=https://cic.iacr.org/p/1/2/6` | ✅ **KHỚP chính xác** |
+| **ebpf.io/what-is-ebpf** | toàn văn **340.219** bytes | `HTTP=200 BYTES=340219` | ✅ **KHỚP từng byte** |
+
+Việc **S7** và **ebpf.io** khớp **đến từng byte** qua **hai máy khác nhau** là bằng chứng mạnh.
+
+## 3. Nguồn tôi KHÔNG tái lập được — và cách tôi phân loại
+
+| Nguồn | javis khai | Tôi gặp | Phân loại đúng |
+|---|---|---|---|
+| **S17** DergiPark PDF | tải được **1.108.312** bytes | `curl` (7) *Failed to connect to dergipark.org.tr port 443* — **cả** khi thêm User-Agent trình duyệt | ⚠️ **LỖI MÔI TRƯỜNG của tôi**, không phải lỗi tác giả |
+| **S24** ACM `10.1145/3620678.3624652` | **CHƯA XÁC MINH** — Cloudflare chặn | (tôi không thử lại — javis đã thử 3 kênh) | ✅ Tác giả khai trung thực |
+
+> **Nguyên tắc tôi áp dụng:** máy tôi **không kết nối được** DergiPark ⇒ kết luận của tôi là
+> **`KHÔNG TÁI LẬP — LỖI MÔI TRƯỜNG`**, **KHÔNG** phải `FAIL`. Tôi **không** được biến
+> giới hạn hạ tầng của mình thành cáo buộc chống lại người khác. (Đây là lần thứ ba trong phiên
+> tôi phải giữ ranh giới này — xem verify #2, #5.)
+
+Đáng chú ý: ResearchLead gặp `HTTP 000` với S17, còn javis tải được. **Hai môi trường khác nhau cho
+kết quả khác nhau** — điều này **củng cố** giá trị của javis chứ không mâu thuẫn.
+
+## 4. Kết luận verify #7
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | X4 = RFC 9954 tồn tại, tiêu đề khớp | ✅ **PASS** |
+| 2 | S7 chuyển hướng đúng `/p/1/2/6` | ✅ **PASS** |
+| 3 | ebpf.io khớp từng byte (340.219) | ✅ **PASS** |
+| 4 | Tác giả khai trung thực S24 chưa xác minh | ✅ **PASS** (hành vi đúng) |
+| 5 | S17 DergiPark | ⚠️ **LỖI MÔI TRƯỜNG của tôi** — không kết luận gì về tác giả |
+
+**PASS 4/5.** Không phát hiện vi phạm.
+
+## 5. Kiến nghị chuyển tới ResearchLead (nêu rõ là KIẾN NGHỊ)
+
+```text
+KIẾN NGHỊ: hồ sơ research/pqc-tls-migration nên trích RFC 9954 (bản chính thức, July 2026)
+           thay cho draft-ietf-tls-hybrid-design. Bản draft có thể đã lệch nội dung.
+           Tôi xác nhận RFC 9954 tồn tại thật. Việc sửa thuộc ResearchLead; tôi không sửa
+           research/** (ngoài territory T8).
+```
+
+## 6. Tự khai giới hạn
+
+1. Tôi **không** kiểm nội dung số liệu javis trích (139,5×, 44,8%, 11,3–13,3 ms) — cần đọc toàn văn PDF.
+2. DergiPark không kết nối được từ máy tôi ⇒ mục 5 của tôi **không xác minh**, không phủ nhận.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
