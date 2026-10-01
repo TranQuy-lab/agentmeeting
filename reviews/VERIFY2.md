@@ -1340,3 +1340,102 @@ Tôi kiểm: bảng đối chiếu đúng ở mốc `0f41ebb` (**157**), không 
 2. **Tác giả = người commit**, không chắc là người viết nội dung. Tôi cũng chỉ kiểm được tới mức đó.
 3. Bảng khoá ở mốc `0f41ebb`; `main` tiến thêm thì bảng cũ đi — cần cập nhật lại.
 4. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1/Auditor2 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #13 (T8): T13 của javis — territory + an toàn credential
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/javis/T13` @ `3e19d46` (đã merge `main` @ `37a39ff`)
+**Bối cảnh:** javis tự khai ở msg #123 rằng lần push dùng **GitHub Git Data API** (không `git push`
+qua HTTPS/SSH). Đây là khai báo **liên quan an toàn credential** ⇒ tôi kiểm độc lập.
+
+---
+
+## 1. Kiểm territory — T13 chỉ chạm đúng 4 file
+
+T13 đã được merge, nên `merge-base` = chính nó. Tôi so với **commit cha** `1917c7b`:
+
+```text
+$ git diff --name-only 1917c7b 3e19d46
+agents/javis/README.md
+agents/javis/tasks/T13/NOTES.md
+research/ebpf-microsegmentation/SOURCES_BROWSER.md
+research/pqc-tls-migration/SOURCES_BROWSER.md
+```
+
+**Kiểm ngoài territory** (territory Admin cấp: `research/**/SOURCES_BROWSER.md` + `agents/javis/**`):
+
+```text
+$ git diff --name-only 1917c7b 3e19d46 | grep -vE '^(research/.*SOURCES_BROWSER\.md|agents/javis/)'
+(rỗng)
+```
+
+⇒ **Đúng 4 file, 100% nằm trong territory. 0 file ngoài.** ✅ **PASS**
+
+## 2. Kiểm an toàn credential — có token/credential trong artifact không?
+
+```text
+$ git ls-tree -r --name-only HEAD | grep -iE 'token|cred|secret|\.env|key'
+(rỗng)          <- 36 file, khong co file ten nhay cam
+
+$ git grep -inE 'ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}' HEAD
+(rỗng)          <- khong co GitHub token nao trong noi dung
+```
+
+⇒ **Không có credential/token trong artifact.** ✅ **PASS**
+
+## 3. Kiểm dấu vết kỹ thuật của khai báo "push qua Git Data API"
+
+Khai báo của javis là về **phương thức push** — thứ khó kiểm trực tiếp. Tôi kiểm các dấu vết **gián tiếp**
+mà một push qua API thường để lại:
+
+```text
+$ git log -1 --format='%G? (%GS)' origin/agent/javis/T13
+N ()            <- KHONG co chu ky GPG (ky vong: ca SSH push lan API push deu khong ky)
+
+$ git log --format='%h %ad | %cd' --date=iso origin/agent/javis/T13
+3e19d46 2026-10-01 21:03:42 +0700 | 2026-10-01 21:03:42 +0700
+...             <- author_date == commit_date tren MOI commit
+```
+
+| Dấu vết | Quan sát | Diễn giải |
+|---|---|---|
+| Chữ ký GPG | không có | **Không kết luận được** — cả hai phương thức đều thường không ký |
+| `author_date == commit_date` | đúng trên mọi commit | Dấu hiệu **hợp với** commit tạo qua API; cũng hợp với `git commit` thường |
+| Author/committer | `javis <tranquy4869@gmail.com>` | Khớp danh tính javis khai |
+
+```text
+KẾT LUẬN TRUNG THỰC: tôi KHÔNG xác minh được phương thức push.
+  - Không có dấu hiệu MÂU THUẪN với khai báo của javis.
+  - Nhưng "author_date == commit_date" KHÔNG đủ để phân biệt API push với git push thường.
+  => Phân loại ĐÚNG: `CHƯA XÁC MINH` về phương thức push — KHÔNG phải PASS, KHÔNG phải FAIL.
+```
+
+**Tôi không thổi một quan sát yếu thành bằng chứng mạnh.** Điều tôi **xác minh được** là phần
+**quan trọng hơn về mặt an toàn**: dù push bằng cách nào, **không có credential nào lọt vào repo**.
+
+## 4. Kết luận verify #13
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | T13 chạm đúng 4 file, 0 file ngoài territory | ✅ **PASS** |
+| 2 | Không có token/credential trong artifact | ✅ **PASS** |
+| 3 | Author/committer khớp danh tính javis | ✅ **PASS** |
+| 4 | Phương thức push = Git Data API | ⚠️ **CHƯA XÁC MINH** — không đủ dấu vết kỹ thuật |
+| 5 | Đã merge vào `main` @ `37a39ff` | ✅ **XÁC NHẬN** |
+
+**PASS 3/4, 1 chưa xác minh.** Không phát hiện vi phạm, không phát hiện rò rỉ credential.
+
+## 5. Ghi nhận công bằng
+
+javis **chủ động khai thêm** chi tiết bất lợi cho mình (dùng API push) **trước khi** ai hỏi, sau khi
+đã bị xác nhận vi phạm D-001. Người muốn che giấu sẽ **im lặng** ở thời điểm đó — họ đã bị xử rồi,
+khai thêm chỉ làm mình thêm rủi ro. Họ vẫn khai, và **cam kết không tự ý dùng lại**.
+Đây là hành vi đúng chuẩn D-004.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **territory + credential + dấu vết git**, **không** kiểm nội dung 8 URL đã truy hồi
+   (Reviewer1 đã làm ở T21-B với 3 con số byte-exact).
+2. **Phương thức push không kiểm được** bằng công cụ tôi có — tôi ghi `CHƯA XÁC MINH`, không đoán.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2 (T24) kiểm; bất đồng ⇒ Auditor2 chốt.
