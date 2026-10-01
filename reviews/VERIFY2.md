@@ -1922,3 +1922,99 @@ Và BountyRecon cũng tự nhận "gọi tên sai" (msg #143).
 2. T29 **chưa push** tại thời điểm Reviewer1 kiểm — tôi cũng không thấy nhánh đó
    ⇒ tôi **không** chấm được T29, chỉ chấm **tiền đề** của nó.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #18 (T8): T29 của BountyRecon — 3 dòng, trích nguyên văn nguyên vẹn
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/bounty-recon/T29` @ `1b318de` (xếp chồng trên T28 @ `9f73655`)
+
+---
+
+## 1. Kiểm "chỉ 3 dòng" bằng số đếm, không bằng mắt
+
+```text
+$ git diff --numstat 9f73655 1b318de -- security/gitlab/SCOPE.md
+3	3	security/gitlab/SCOPE.md
+
+$ git diff --stat ...
+ security/gitlab/SCOPE.md | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+```
+
+⇒ **Đúng 3 dòng thêm / 3 dòng bớt. Không file nào khác bị chạm.** ✅ **PASS**
+
+## 2. Kiểm nội dung 3 dòng sửa — có đúng bản chất không?
+
+```diff
+- **Trạng thái:** ⚠️ ... NHƯNG có 4 XUNG ĐỘT scope — xem §2b. PHẢI HỎI ADMIN.**
++ **Trạng thái:** ✅ ... 0 xung đột hiệu lực — 4 tài sản đã nghỉ hưu (`archived_at` 2022-07-21), xem §2b.**
+
+- | Trích được nguyên văn in-scope? | ✅ CÓ (24 tài sản) — nhưng 4 tài sản bị xung đột |
++ | ... | ✅ CÓ (24 tài sản). 4 tài sản từng bị coi là xung đột đã nghỉ hưu ... ⇒ 0 xung đột hiệu lực |
+
+- | Đủ điều kiện chuyển ExploitDeep (T4)? | ⚠️ CÓ ĐIỀU KIỆN — phải chốt 4 xung đột ở §2b trước |
++ | ... | ⚠️ CÓ ĐIỀU KIỆN — cần chỉ thị nêu target cụ thể của Admin (D-013). 4 tài sản đã nghỉ hưu vẫn bị loại khỏi T4 |
+```
+
+**Đánh giá:**
+- **Dòng 9** nay khớp §2b ⇒ **hết tự mâu thuẫn** (đây là mục tiêu chính của T29). ✅
+- **Dòng 289** sửa đúng **bản chất điều kiện còn lại**: từ *"chốt 4 xung đột"* → ***"chỉ thị nêu target (D-013)"***.
+  Đây mới là **điều kiện thật sự còn thiếu** — và khớp với phát hiện của **tôi ở verify #9**. ✅
+- **Dòng 284** bỏ nhãn "xung đột", thay bằng mô tả đúng. ✅
+
+## 3. Kiểm phần TRÍCH NGUYÊN VĂN — cơ sở pháp lý còn nguyên không?
+
+Đây là điểm quan trọng nhất: sửa chữ **không được** chạm phần trích dẫn (T14 đã chứng thực byte-exact).
+Tôi băm **từng vùng ngữ nghĩa**:
+
+```text
+  §1+§2a (in/out-scope)      70a96e51762a6c42 -> 70a96e51762a6c42  GIONG HET
+  §3+§4 (cam + thuong)       1adcfe32527341e0 -> 1adcfe32527341e0  GIONG HET
+```
+
+⇒ **Hai vùng trích nguyên văn GIỐNG HỆT TỪNG BYTE.** ✅ **PASS**
+Chứng thực byte-exact của T14 **vẫn nguyên giá trị** cho phần pháp lý.
+
+> **Lưu ý minh bạch:** hash của vùng *sau §2b* **có** đổi (`40904074229cbabc` → `74a54fc08fd80baa`) —
+> nhưng điều đó **đúng dự kiến**, vì dòng 284/289 nằm trong **§5, sau §2b**. Nếu tôi chỉ băm
+> "sau §2b" rồi kết luận "phần nguyên văn bị chạm", tôi đã **báo sai**. Phải băm **đúng vùng ngữ nghĩa**.
+
+## 4. Kiểm vấn đề xếp chồng nhánh (BountyRecon tự báo — và họ ĐÚNG)
+
+```text
+$ git merge-base --is-ancestor 9f73655 1b318de  -> CO
+```
+
+⇒ **T28 là tổ tiên của T29** ⇒ T29 **xếp chồng** trên T28, đúng như BountyRecon khai.
+
+**Vì sao điều này quan trọng:** `main` **vẫn có §2b cũ**. Nếu Admin merge **riêng T29** (không có T28),
+thì dòng 9 sẽ nói *"0 xung đột hiệu lực"* trong khi **§2b vẫn nói "XUNG ĐỘT"** ⇒ **tạo mâu thuẫn MỚI,
+ngược lại mục tiêu của chính T29**.
+
+```text
+KHUYẾN NGHỊ: Admin merge T28 TRƯỚC (hoặc merge T29 — vì T29 đã chứa T28).
+             KHÔNG merge riêng T29 mà bỏ T28.
+```
+
+Đây là **hành vi đúng**: BountyRecon **tự phát hiện** rủi ro này và **báo Admin** thay vì
+im lặng push rồi để Admin merge sai.
+
+## 5. Kết luận verify #18
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Chỉ 3 dòng đổi (`3 insertions, 3 deletions`) | ✅ **PASS** |
+| 2 | Dòng 9 khớp §2b, hết tự mâu thuẫn | ✅ **PASS** |
+| 3 | Dòng 289 nêu đúng điều kiện còn lại (D-013) | ✅ **PASS** |
+| 4 | Trích nguyên văn §1/§2a/§3/§4 nguyên vẹn từng byte | ✅ **PASS** |
+| 5 | Tự phát hiện + báo rủi ro xếp chồng | ✅ **ĐÚNG** |
+| 6 | `CANDIDATES.md:64` vẫn bỏ sót | ❌ **CHƯA** — cần Admin mở rộng T29 (verify #17) |
+
+**PASS 5/6.** Không vi phạm. **1 bỏ sót phạm vi** đã báo ở #17 vẫn còn.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **diff + hash vùng**, **không** chấm toàn bộ nội dung `SCOPE.md` (259+ dòng).
+2. Tôi **không** quyết thứ tự merge — chỉ nêu rủi ro. **Thuộc Admin.**
+3. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 (T30) kiểm; bất đồng ⇒ Auditor2 chốt.
