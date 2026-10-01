@@ -84,3 +84,24 @@ QUY TẮC: sau khi quét từ khoá xong, phải quét thêm một lượt theo 
 **Bằng chứng lớp lỗi `archived_at` bị bắt 3 lần ở 3 phạm vi khác nhau trong CÙNG một tài liệu:**
 Auditor2 (§2b) → BountyRecon (dòng 47) → Reviewer1 (§1, 5 bản ghi retired).
 Mỗi vòng **mở rộng phạm vi** lại tìm thêm. Dừng ở lỗi đầu tiên là bỏ sót.
+
+### Q6 — CANARY CHỈ BẢO VỆ ĐƯỢC VÙNG NÓ PHỦ (bổ sung sau verify #27)
+
+Ngữ cảnh: Reviewer1 đăng ký canary `D-028` cho `§1 github/SCOPE.md` = **code fence 49–108**.
+Canary đó **ĐÚNG** — fence không đổi một byte.
+
+Nhưng `§1` còn có **khối nguyên văn NGOÀI fence** (dòng 110–117: *"Tài sản phi-tên-miền trong scope"*,
+trích `instruction` từ `structured_scopes`). Khối này **bị `### 1b` (mục AUTHORED) nuốt vào**
+vì heading được chèn ở dòng 110 — **trước** nó. Canary **không phủ** vùng đó nên không bắt được.
+
+```text
+QUY TẮC: trước khi tin một canary, phải hỏi: "canary này phủ CHÍNH XÁC dòng nào?"
+  - Đo ranh giới THẬT của vùng cần bảo vệ (không chỉ khối fence lớn nhất).
+  - Với mỗi mục "TRÍCH NGUYÊN VĂN", vùng cần bảo vệ = TOÀN BỘ mục đó,
+    gồm cả text/mục con nằm NGOÀI code fence.
+  - Chèn heading mới vào giữa một mục nguyên văn = làm khối nguyên văn rơi sang mục khác.
+    Đây là lỗi ÂM THẦM: nội dung không mất, nhưng bị dán nhãn sai ("AUTHORED").
+```
+
+**Giá trị của lớp 2 nằm ở đây:** không phải chạy lại canary của lớp 1 (sẽ luôn khớp),
+mà **kiểm vùng mà dụng cụ của lớp 1 không với tới**.
