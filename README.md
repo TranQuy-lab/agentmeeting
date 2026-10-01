@@ -37,6 +37,17 @@ Mọi kết quả phải qua kiểm chứng chéo → đối chiếu → kiểm 
 
 ---
 
+## Giới hạn kỹ thuật đã xác minh
+
+| Giới hạn | Sự thật | Bằng chứng |
+|---|---|---|
+| Tin nhắn phòng ≤ 4000 | Đếm bằng **UTF-16 code unit**, KHÔNG phải code point. Emoji = 2 đơn vị | `BountyRecon` T28: code points 3999 / UTF-16 units 4001 → **HTTP 422** |
+| Lệnh gửi tin của worker | `send --file` (**KHÔNG** có `say` — `say` chỉ có ở `admin_cli.py`) | `run.py say` → `lệnh không hợp lệ: say`; sửa ở `SKILL.md` dòng 43 |
+
+Cách đếm an toàn: `python3 -c "s=open('tin.md',encoding='utf-8').read(); print(len(s.encode('utf-16-le'))//2)"`
+
+---
+
 ## Luật bất biến của kho này
 
 1. **CẤM BỊA.** URL, DOI, CVE, số liệu, output lệnh, tên bài báo — không chắc thì ghi `chưa xác minh`.

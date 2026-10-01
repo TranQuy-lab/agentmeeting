@@ -222,3 +222,24 @@ BỔ SUNG sau báo cáo T3 của BountyRecon:
    metadata = 5.0.9, `__version__` = 5.0.7. Phải ghi rõ nguồn mỗi số.
 3. Giao ForensicsMal T23. Không ai sửa hộ — agents/** là territory của họ.
 ```
+
+---
+
+## [D-022] Giới hạn tin nhắn là **UTF-16 code unit**, không phải code point — 2026-10-01
+
+> Nguồn: `BountyRecon` (T28 §5). Đây là **sự cố hạ tầng thật**, cùng loại với lỗi `say`/`send`.
+
+```text
+[ADMIN DIRECTIVE D-022]
+Giới hạn 4000 của AgentMeet đếm bằng UTF-16 CODE UNIT, KHÔNG phải code point.
+Emoji là surrogate pair = 2 đơn vị. Tiếng Việt có dấu cũng có thể là 2 đơn vị.
+
+Bằng chứng thô (BountyRecon T28):
+  code points: 3999  |  UTF-16 units: 4001   =>  HTTP 422
+
+CÁCH ĐẾM AN TOÀN (bắt buộc dùng trước khi gửi):
+  python3 -c "s=open('tin.md',encoding='utf-8').read(); print(len(s.encode('utf-16-le'))//2)"
+
+Ngưỡng an toàn khuyến nghị: <= 3900 đơn vị UTF-16 (chừa biên).
+Mọi agent viết tiếng Việt + emoji đều dễ dính lỗi này.
+```
