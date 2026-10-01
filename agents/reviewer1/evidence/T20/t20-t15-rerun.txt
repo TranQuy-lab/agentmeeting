@@ -1,0 +1,252 @@
+################ t15_pcap_test.py ################
+    "ip_dst": "192.0.2.53",
+    "ip_proto": 17,
+    "udp_sport": 40000,
+    "udp_dport": 53,
+    "dns_id": 4660,
+    "dns_qr": 0,
+    "dns_qdcount": 1,
+    "dns_qname": "example.invalid.",
+    "dns_qtype": 1,
+    "dns_qclass": 1
+  },
+  "tshark_fields": {
+    "frame.number": "1",
+    "eth.src": "02:00:00:00:00:01",
+    "eth.dst": "02:00:00:00:00:02",
+    "ip.src": "192.0.2.10",
+    "ip.dst": "192.0.2.53",
+    "ip.proto": "17",
+    "udp.srcport": "40000",
+    "udp.dstport": "53",
+    "dns.id": "0x1234",
+    "dns.flags.response": "False",
+    "dns.count.queries": "1",
+    "dns.qry.name": "example.invalid",
+    "dns.qry.type": "1",
+    "dns.qry.class": "0x0001"
+  },
+  "failures_value_mismatch": [],
+  "repr_only_differences": [
+    {
+      "field": "dns.id",
+      "scapy": "4660",
+      "tshark": "0x1234"
+    },
+    {
+      "field": "dns.flags.response",
+      "scapy": "0",
+      "tshark": "False"
+    },
+    {
+      "field": "dns.qry.class",
+      "scapy": "1",
+      "tshark": "0x0001"
+    }
+  ]
+}
+
+  So truong doi chieu        : 14
+  Lech GIA TRI that su       : 0
+  Chi lech BIEU DIEN (PASS*) : 3
+
+  GHI CHU VE CAC LECH BIEU DIEN (KHONG phai loi du lieu):
+    - dns.id: scapy bieu dien '4660', tshark bieu dien '0x1234' => cung gia tri 4660
+    - dns.flags.response: scapy bieu dien '0', tshark bieu dien 'False' => cung gia tri 0
+    - dns.qry.class: scapy bieu dien '1', tshark bieu dien '0x0001' => cung gia tri 1
+  => Bai hoc: SO SANH CHUOI THO giua 2 cong cu se bao 'lech' gia.
+     Phai chuan hoa ve gia tri (int(x,0), bool) truoc khi ket luan.
+
+>>> KET QUA: 0 LECH GIA TRI — scapy<->tshark nhat quan tren 14 truong.
+    LUU Y: corpus VO HAI tu tao; KHONG goi mang that.
+---- EXIT=0 ----
+
+################ t15_elf_test.py ################
+    1174:	bf 03 00 00 00       	mov    edi,0x3
+    1179:	e8 dd ff ff ff       	call   115b <classify>
+    117e:	89 c3                	mov    ebx,eax
+    1180:	bf 0a 00 00 00       	mov    edi,0xa
+    1185:	e8 a7 ff ff ff       	call   1131 <loop_sum>
+    118a:	01 d8                	add    eax,ebx
+    118c:	5b                   	pop    rbx
+    118d:	c3                   	ret
+
+  => objdump: 92 instruction
+
+======================================================================
+BUOC 6 — DOI CHIEU capstone vs objdump
+======================================================================
+  So instruction : capstone=92  objdump=92  => KHOP
+
+  [6a] SO SANH THO (so chuoi truc tiep, CHUA chuan hoa)
+  Lech DIA CHI      : 0
+  Lech MNEMONIC     : 1
+  Lech TOAN HANG    : 41  (khac dinh dang/ky phap la binh thuong)
+
+  --- LECH MNEMONIC (so sanh THO) ---
+    #13 @0x1066: capstone='nop' objdump='cs'
+
+  [6b] SO SANH SAU KHI CHUAN HOA TIEN TO (folding)
+  Lech CUNG (hard)               : 0
+  Lech GIAI THICH DUOC (tien to) : 1
+
+  --- LECH GIAI THICH DUOC: objdump tach tien to thanh token rieng ---
+    #13 @0x1066:
+        capstone : nop word ptr cs:[rax + rax]
+        objdump  : cs nop WORD PTR [rax+rax*1+0x0]
+        => tien to ('cs',) nam trong toan hang capstone; CUNG 1 lenh.
+
+======================================================================
+KET LUAN T15-2
+======================================================================
+  Entry point (readelf)          : 0x1040
+  .text addr/size (readelf)      : 0x1040 / 334 byte
+  .text byte trich (objcopy)     : 334 byte => KHOP readelf
+  Instruction capstone           : 92
+  Instruction objdump            : 92
+  Lech so luong instruction      : KHONG
+  Lech DIA CHI                   : 0
+  Lech MNEMONIC (tho)            : 1
+  -> trong do GIAI THICH DUOC    : 1 (tien to cs/lock...)
+  -> trong do LECH CUNG          : 0
+  Lech TOAN HANG (dinh dang)     : 41
+
+>>> KET QUA: capstone va objdump KHOP ve so luong, DIA CHI va MNEMONIC
+    sau khi chuan hoa tien to. KHONG co lech giai ma thuc su.
+    1 khac biet do OBJDUMP tach tien to thanh token rieng
+    (vi du 'cs nop ...' vs capstone 'nop ... cs:[...]') — CUNG 1 lenh,
+    da doi chieu byte tho: 66 2e 0f 1f 84 00 00 00 00 00 @0x1066.
+    41 khac biet TOAN HANG chi ve CACH VIET (comment symbol cua
+    objdump '<main>', 'WORD PTR' vs 'word ptr', '0x3' vs '3', 'rax*1+0x0').
+
+    GHI CHU PHIEN BAN: uv cai capstone==5.0.9 (metadata) nhung module
+    capstone.__version__ = 5.0.7 => KHAI BAO PHIEN BAN KHONG NHAT QUAN.
+    Khi trich dan phai ghi ro dang dung metadata hay __version__.
+---- EXIT=0 ----
+
+################ t15_yara_test.py ################
+  t15_absent_string       A_marker_upper      khong    khong   TN
+  t15_absent_string       B_url               khong    khong   TN
+  t15_absent_string       C_lowercase         khong    khong   TN
+  t15_absent_string       D_clean             khong    khong   TN
+  t15_absent_string       E_elf_binary        khong    khong   TN
+  t15_absent_string       F_boundary          khong    khong   TN
+  t15_absent_string       G_wide_utf16        khong    khong   TN
+  t15_mz_header_pe        A_marker_upper      khong    khong   TN
+  t15_mz_header_pe        B_url               khong    khong   TN
+  t15_mz_header_pe        C_lowercase         khong    khong   TN
+  t15_mz_header_pe        D_clean             khong    khong   TN
+  t15_mz_header_pe        E_elf_binary        khong    khong   TN
+  t15_mz_header_pe        F_boundary          khong    khong   TN
+  t15_mz_header_pe        G_wide_utf16        khong    khong   TN
+  t15_elf_magic           A_marker_upper      khong    khong   TN
+  t15_elf_magic           B_url               khong    khong   TN
+  t15_elf_magic           C_lowercase         khong    khong   TN
+  t15_elf_magic           D_clean             khong    khong   TN
+  t15_elf_magic           E_elf_binary         KHOP     KHOP   TP
+  t15_elf_magic           F_boundary          khong    khong   TN
+  t15_elf_magic           G_wide_utf16        khong    khong   TN
+  t15_boundary_marker     A_marker_upper       KHOP     KHOP   TP
+  t15_boundary_marker     B_url               khong    khong   TN
+  t15_boundary_marker     C_lowercase         khong    khong   TN
+  t15_boundary_marker     D_clean             khong    khong   TN
+  t15_boundary_marker     E_elf_binary        khong    khong   TN
+  t15_boundary_marker     F_boundary           KHOP     KHOP   TP
+  t15_boundary_marker     G_wide_utf16        khong    khong   TN
+  t15_wide_marker         A_marker_upper      khong    khong   TN
+  t15_wide_marker         B_url               khong    khong   TN
+  t15_wide_marker         C_lowercase         khong    khong   TN
+  t15_wide_marker         D_clean             khong    khong   TN
+  t15_wide_marker         E_elf_binary        khong    khong   TN
+  t15_wide_marker         F_boundary          khong    khong   TN
+  t15_wide_marker         G_wide_utf16         KHOP     KHOP   TP
+
+  TONG: TP=10  TN=46  FP(duong tinh gia)=0  FN(AM TINH GIA)=0
+  Tong so phep kiem: 56
+
+======================================================================
+KET LUAN T15-3
+======================================================================
+  Do chinh xac tren corpus co nhan: 100.0%  (56/56)
+  Rule PHAI khop, da khop (TP)          : 10
+  Rule PHAI KHONG khop, da khong khop   : 46
+  DUONG TINH GIA (FP)                   : 0
+  AM TINH GIA (FN)                      : 0
+
+>>> KET QUA: 0 duong tinh gia, 0 AM TINH GIA tren 56 phep kiem.
+    => yara-python phan loai DUNG ca hai chieu tren corpus co nhan.
+    => Rule t15_absent_string va t15_mz_header_pe la BAY duong tinh gia:
+       ca hai deu KHONG khop file nao — neu khop thi la bug.
+    => Rule t15_case_insensitive khop CA chu HOA (A) va chu thuong (C),
+       con t15_marker_alpha chi khop chu HOA => kiem duoc CA hai chieu
+       cua tinh phan biet chu hoa/thuong.
+    => BAY AM TINH GIA THAT SU (khong de):
+       F: marker STRADDLE moc chunk 4KB cua YARA -> t15_boundary_marker
+          PHAI khop; neu YARA xu ly overlap sai thi day chinh la FN.
+       G: marker ma hoa UTF-16LE -> t15_wide_marker PHAI khop G
+          va PHAI KHONG khop A (ASCII) => kiem ca hai chieu cua 'wide'.
+---- EXIT=0 ----
+
+################ t15_volatility_test.py ################
+$ vol -f /tmp/rv1-t15/agents/forensicsmal/T15/corpus/invalid_garbage.bin linux.pslist
+  thoi gian : 0.21s   
+  exit code : 1
+  Python traceback (dau hieu CRASH): KHONG
+  co thong bao loi : CO
+  --- stdout (715 ky tu) ---
+    Volatility 3 Framework 2.28.2
+    
+    Unsatisfied requirement plugins.PsList.kernel.layer_name: 
+    Unsatisfied requirement plugins.PsList.kernel.symbol_table_name: 
+    
+    A translation layer requirement was not fulfilled.  Please verify that:
+    	A file was provided to create this layer (by -f, --single-location or by config)
+    	The file exists and is readable
+    	The file is a valid memory image and was acquired cleanly
+    
+    A symbol table requirement was not fulfilled.  Please verify that:
+    	The associated translation layer requirement was fulfilled
+    	You have the correct symbol file for the requirement
+    	The symbol file is under the correct directory or zip file
+    	The symbol file is named appropriately or contains the correct banner
+  --- stderr (169 ky tu) ---
+    Progress:  100.00		Stacking attempts finished
+    Unable to validate the plugin requirements: ['plugins.PsList.kernel.layer_name', 'plugins.PsList.kernel.symbol_table_name']
+
+======================================================================
+BUOC 2 — TONG HOP: co that bai SACH SE khong?
+======================================================================
+  case                            exit   giay   treo  traceback  co bao loi
+  file RONG (0 byte)                 1   0.29  khong      khong          CO
+  byte ngau nhien 64KB               1   0.25  khong      khong          CO
+  file 16 byte                       1   0.22  khong      khong          CO
+  toan so 0 4KB                      1   0.26  khong      khong          CO
+  file KHONG ton tai                 2   0.28  khong      khong          CO
+  thu muc thay vi file               1   0.23  khong      khong          CO
+  KHONG truyen -f                    1   0.19  khong      khong          CO
+  plugin KHONG ton tai               2   0.18  khong      khong          CO
+  plugin linux tren input rac        1   0.21  khong      khong          CO
+
+  Tong so ca thu        : 9
+  CRASH (co traceback)  : 0 
+  TREO (timeout)        : 0 
+  IM LANG (khong bao loi): 0 
+
+======================================================================
+KET LUAN T15-4
+======================================================================
+  Day KHONG phai kiem nang luc phan tich dump — ma la kiem
+  'graceful failure': vol3 gap input rac thi xu su the nao.
+
+>>> KET QUA: vol3 THAT BAI SACH SE tren toan bo input khong hop le:
+    - 0 crash (khong Python traceback) tren 9 ca
+    - 0 treo (moi ca ket thuc < 90s)
+    - 9/9 ca co thong bao loi ro rang
+
+    => vol3 dung KHUNG framework dung: nap plugin OK, roi bao thieu
+       yeu cau (symbol / memory layer) thay vi crash.
+    => CO SO de tin: khi co dump THAT, loi se la loi du lieu chu khong
+       phai loi framework. NHUNG van CHUA chung minh phan tich duoc dump
+       that — muc do van la 'cong cu san sang, CHUA thuc chien'.
+---- EXIT=0 ----
+
