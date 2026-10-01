@@ -1,0 +1,23 @@
+=== TAI SAN CO >1 ENTRY DANG HIEU LUC (ung vien xung dot that) ===
+
+=> Tong tai san co nhieu entry dang hieu luc: 0
+
+=== 4 tai san trong cau hoi, CHI dang hieu luc ===
+
+about.gitlab.com:
+   about.gitlab.com         type=URL       elig=True
+
+docs.gitlab.com:
+   docs.gitlab.com          type=URL       elig=True
+
+gitlab.net:
+   *.gitlab.net             type=WILDCARD  elig=True
+   *.runway.gitlab.net      type=WILDCARD  elig=False
+
+gitlap.com:
+   *.gitlap.com             type=WILDCARD  elig=True
+
+=== NGUON: (1) snapshot cua BountyRecon  vs  (2) LIVE API ===
+Snapshot BountyRecon (h1_gitlab.json):
+  TONG=63  archived_at!=null=0  active=63
+  => snapshot KHONG chua du lieu archived_at (tat ca = null)
