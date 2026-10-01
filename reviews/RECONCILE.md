@@ -226,3 +226,56 @@ T7 (Auditor2) — chưa có artifact. **Không có mục nào trong số này đ
   `66ac7183…8295` · 12 bản ghi. **Không mục nào `chưa xác minh`.**
 - **Dissent mới:** 2 mục (DISSENT-6 DOI S29 · DISSENT-7 "4 xung đột" → 2). **Cộng dồn: 7 dissent.**
 - **`chưa xác minh` (vòng 2):** 1 mục — **nội dung toàn văn S29**.
+
+---
+
+# VÒNG 7 — ĐÍNH CHÍNH kết luận Lớp 2 của T14 (DISSENT-7)
+
+**Ngày:** 2026-10-01 · **Căn cứ:** T28 BountyRecon (`9f73655`) + M-01 của Auditor2 (T24) · **Bằng chứng thô:** `agents/reviewer1/evidence/T30/`
+
+## 9. [ĐÍNH CHÍNH] T14 từng gọi "2 xung đột THẬT" — **SAI**. Sự thật: **0 xung đột hiệu lực**
+
+### 9.1 Kết luận cũ (T14) — giữ nguyên văn để truy vết
+
+> *"**2 xung đột thật** (`about`/`docs.gitlab.com`): cùng một URL xuất hiện hai lần với hai giá trị
+> `eligible_for_submission` trái ngược trong **cùng** dữ liệu công bố ⇒ **mâu thuẫn dữ liệu**, không thể tự suy ra."*
+> *"**2 cặp wildcard/apex** (`*.gitlab.net`, `*.gitlap.com`): một chính sách **hoàn toàn có thể có ý** 'subdomain thì trong scope, apex thì không' ⇒ **không chắc là mâu thuẫn**."*
+
+### 9.2 Sự thật — tôi tự tái lập (GraphQL của tôi, có hỏi `archived_at`)
+
+| Khẳng định | Nguồn A: T28 (`9f73655`) | Nguồn B: **Reviewer1 tự fetch** | Khớp? |
+|---|---|---|---|
+| `archived_at` có trong schema công khai | có (T28 tự kiểm) | `__type(name:"StructuredScope")` → 39 trường, có `archived_at` | ✅ |
+| Tổng scope | — | **63** (= đúng con số tôi đo ở T14) | ✅ |
+| `archived:false` → tổng / IN / OUT | 44 / 19 / 25 | **44 / 19 / 25** | ✅ |
+| `archived:true` → tổng | 19 | **19** | ✅ |
+| **IN ∩ OUT trong tập đang hiệu lực** | **0** | **`[]`** | ✅ |
+| 4 vế OUT có `archived_at` | `2022-07-21T15:5x` | `…15:51:33.499Z` / `…15:51:16.877Z` / `…15:53:03.572Z` / `…15:53:13.475Z` | ✅ từng mili-giây |
+
+⇒ **Cả 4 vế OUT là bản ghi ĐÃ NGHỈ HƯU ngày `2022-07-21`**, cách vế IN **4 năm**.
+**Không có mâu thuẫn dữ liệu nào.** Biến quyết định là **`archived_at`**, không phải `asset_type`.
+
+### 9.3 Nguyên nhân sai của tôi — nói thẳng
+
+Truy vấn T14 của tôi **không hỏi trường `archived_at`**, dù trường đó **có sẵn** trong schema công khai.
+Tôi đã kiểm rất kỹ **giá trị** của các trường tôi chọn, nhưng **không liệt kê các trường schema có sẵn**
+trước khi kết luận về bản chất dữ liệu. **Đây là lỗ hổng thứ hai của T14** — khác GAP-0 (không kiểm link),
+và **cùng một gốc**: *kiểm cái mình đã nghĩ tới, không kiểm cái mình chưa nghĩ tới.*
+
+**Ghi nhận công bằng:** **Auditor2 (M-01)** và **BountyRecon (T28)** tìm ra đúng nguyên nhân gốc.
+Ở thời điểm T14, **cả DeepSeek-Harness (T18) và tôi** đều khẳng định "4 xung đột scope THẬT" —
+**cả hai kiểm định viên đều sai**; không bên nào có `archived_at`.
+
+### 9.4 Hiệu lực
+
+| Mục | Trạng thái |
+|---|---|
+| Kết luận "2 xung đột thật" của T14 §2.8.3 | ❌ **HẾT HIỆU LỰC** (đính chính ở §9) |
+| Kết luận "20/20 câu trích nguyên văn khớp" của T14 | ✅ **còn nguyên** (không liên quan trường này) |
+| Kết luận "3/3 policy byte-exact SHA256" của T14 | ✅ **còn nguyên** |
+| Khuyến nghị T14 "dừng lại, hỏi Admin; loại cả 4 là thận trọng hơn mức cần" | ✅ **còn nguyên** — và nay được gọi đúng tên: *"0 xung đột thật + 4 loại thận trọng"* |
+| `DISSENT-7` (tôi nêu "2 xung đột thật + 2 khác `asset_type`") | ⚠️ **ĐÍNH CHÍNH:** cả 4 đều **không phải** xung đột; khác biệt là `archived_at`, không phải `asset_type` |
+
+> **Quy tắc rút ra, áp dụng từ nay:** trước khi kết luận về **bản chất** một tập dữ liệu, phải
+> **liệt kê đủ các trường có trong schema/nguồn** — không chỉ kiểm giá trị của những trường mình đã chọn.
+> Tôi đã đưa phép kiểm này vào Lớp 1 ở `reviews/CROSS.md` §2.24.
