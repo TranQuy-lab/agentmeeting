@@ -1,5 +1,5 @@
 # verify_t34.py — T34 + T36 (BountyRecon)
-# merge-base main = f29c4df98927   head = 846219637feb
+# merge-base main = f29c4df98927   head = cce52e822219
 # QUY UOC RANH GIOI: dong=splitlines(); vung='\n'.join(...); hai dau DONG; khong \n cuoi
 #   Moi vung bam theo CA HAI quy uoc: (A) khong \n cuoi (B) co \n cuoi
 
@@ -10,7 +10,7 @@
     dong 299 -> 343 | dong sua: 36 | opcodes: [('replace', 11, 11, 11, 12), ('replace', 42, 42, 43, 69), ('replace', 45, 45, 72, 72), ('replace', 47, 47, 74, 74), ('replace', 49, 49, 76, 76), ('replace', 51, 53, 78, 80), ('replace', 55, 56, 82, 83), ('replace', 59, 63, 86, 90), ('replace', 66, 66, 93, 93), ('replace', 70, 79, 97, 106), ('replace', 97, 97, 124, 124), ('replace', 101, 104, 128, 131), ('replace', 106, 106, 133, 133), ('replace', 111, 111, 138, 138), ('replace', 115, 115, 142, 142), ('replace', 118, 119, 145, 146), ('insert', 122, 121, 149, 165)]
     moi vung khong doi GIONG HET (ca A va B): True
   security/github/SCOPE.md
-    dong 314 -> 511 | dong sua: 5 | opcodes: [('replace', 12, 12, 12, 12), ('insert', 110, 109, 110, 310), ('delete', 119, 122, 320, 319)]
+    dong 314 -> 515 | dong sua: 1 | opcodes: [('replace', 12, 12, 12, 12), ('insert', 109, 108, 109, 309)]
     moi vung khong doi GIONG HET (ca A va B): True
   security/cloudflare/SCOPE.md
     dong 212 -> 228 | dong sua: 13 | opcodes: [('replace', 12, 12, 12, 12), ('replace', 33, 33, 33, 33), ('replace', 38, 41, 38, 41), ('replace', 44, 47, 44, 47), ('replace', 50, 52, 50, 52), ('insert', 55, 54, 55, 70)]
@@ -37,7 +37,7 @@
     dong 101 -> 104 | dong sua: 2 | opcodes: [('replace', 63, 64, 63, 67)]
     moi vung khong doi GIONG HET (ca A va B): True
 
-  => TONG dong sua (10 file): 65 | tat ca vung khong doi OK: True
+  => TONG dong sua (10 file): 61 | tat ca vung khong doi OK: True
 
 ==============================================================================
 [2] VUNG NGUYEN VAN BAO VE — phai GIONG HET truoc/sau
@@ -74,7 +74,7 @@
 ==============================================================================
 [3] KIEM THEO LICH SU (D-023 phep kiem [2])
 ==============================================================================
-  so commit trong merge-base..HEAD: 5  (chua commit -> 0 la dung)
+  so commit trong merge-base..HEAD: 6  (chua commit -> 0 la dung)
   => file bi LOAI TRU bi cham: 0  
      LOAI TRU = T28/FIX_2B.md, T28|T29|T30|T32|T33/**, moi EVIDENCE/** khac
 

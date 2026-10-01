@@ -318,6 +318,10 @@ Copilot Coding Agent | GitHub Spark | GitHub CSP | Copilot Chat on dotcom
 ```
 (`asset_type = OTHER`, `max_severity = critical`, trừ `GitHub CSP` = `high` và `Copilot Chat on dotcom` = `high`.)
 
+> 📝 **Quan sát của tôi (KHÔNG phải nguyên văn):** trường `asset_identifier` của 25 dòng
+> `OTHER` trong scope GitHub bị lặp chuỗi `All Other Scope` — đây là cách HackerOne biểu diễn
+> mục gộp, không phải 25 tài sản riêng biệt. Chi tiết đầy đủ ở `scope_github.md`.
+
 ---
 
 ## 2. TRÍCH NGUYÊN VĂN — OUT OF SCOPE
