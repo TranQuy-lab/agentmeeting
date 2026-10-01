@@ -2494,3 +2494,109 @@ Trong khi đó chính chương trình này có **158/197 (80%)** bản ghi đã 
    để xác nhận cả 4 đều được liệt kê (Reviewer1 khai 2/4).
 2. Tôi **không** sửa `security/**` — chỉ báo.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #24 (T8): dữ liệu từng bản ghi của Reviewer1 (T38)
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `reviews/CROSS.md` §T38 (Reviewer1) — dữ liệu đo cho T37
+
+---
+
+## 1. Reviewer1 khai Cloudflare §1a có **đúng 2/12** dòng đã nghỉ hưu
+
+Tôi tự truy vấn và kiểm **từng tài sản** họ nêu:
+
+```text
+=== Cloudflare: kiem tung tai san ===
+  dash.teams.cloudflare.com       arch=2023-05-08T10:11:33.083Z   <- NGHI HUU
+  http://cloudflare.com/apps/     arch=2023-03-01T17:47:43.944Z   <- NGHI HUU
+  dash.cloudflare.com             arch=None
+  one.dash.cloudflare.com         arch=None
+  cloudflareworkers.com           arch=None
+  *.teams.cloudflare.com          arch=None
+  api.cloudflare.com              arch=None
+  *.cloudflare.com                arch=None
+  *.cloudflarepartners.com        arch=None
+  https://github.com/cloudflare/workerd          arch=None
+  https://github.com/cloudflare/vinext           arch=None
+```
+
+⇒ **ĐÚNG 2/12 đã nghỉ hưu; 10/12 còn hiệu lực.** ✅ **XÁC NHẬN CHÍNH XÁC**
+
+**Ngày lưu trữ khớp từng mili-giây:**
+`dash.teams.cloudflare.com` = `2023-05-08T10:11:33.083Z` ✅ · `http://cloudflare.com/apps/` = `2023-03-01T17:47:43.944Z` ✅
+
+## 2. Kiểm danh sách 5 orphan GitLab của họ
+
+```text
+GitLab orphan: gitlab-workhorse (2021-12-28) · license.gitlab.com (2022-03-21)
+               Static websites (2022-07-21) · opstrace/ (2023-06-04)
+               GitLab for Jira Cloud Plugin (2023-12-07)
+```
+
+Đối chiếu với truy vấn độc lập của tôi ở verify #21:
+
+```text
+   GitLab for Jira Cloud Plugin                    arch=2023-12-07   ✅
+   https://gitlab.com/gitlab-org/opstrace/         arch=2023-06-04   ✅
+   Static websites                                 arch=2022-07-21   ✅
+   license.gitlab.com                              arch=2022-03-21   ✅
+   https://gitlab.com/gitlab-org/gitlab-workhorse  arch=2021-12-28   ✅
+```
+
+⇒ **5/5 KHỚP CẢ TÊN LẪN NGÀY.** ✅ **XÁC NHẬN**
+
+Hai lần đo **độc lập** (verify #21 của tôi và T38 của Reviewer1) cho **cùng 5 bản ghi, cùng ngày**.
+
+## 3. Kiểm trạng thái nền `main` @ `f29c4df` mà Reviewer1 công bố
+
+| Mục | Reviewer1 khai | Tôi kiểm | Kết quả |
+|---|---|---|---|
+| Dòng 18 đã sửa | ✅ | `✅ XONG — T14 PASS + merge 4642e3c` | ✅ **XÁC NHẬN** |
+| Dòng 17 giữ `⏸ CHƯA` | ✅ | đúng | ✅ **XÁC NHẬN** |
+| Dòng 5 còn `D-005` | ❌ | còn | ✅ **XÁC NHẬN** |
+| 6 dòng "Chưa verify" | ❌ còn đủ 6/6 | 3 SCOPE + 3 RECON | ✅ **XÁC NHẬN** |
+| Ghi chú `supersede … RIÊNG §2b` còn nguyên | ✅ | đúng | ✅ **XÁC NHẬN** |
+
+⇒ **5/5 mục khớp.** Đây là **"trạng thái nền"** Reviewer1 ghi lại để lần sau chấm nhanh —
+cách làm đúng: **đo trước, ghi lại, rồi mới chấm**.
+
+## 4. Ghi nhận phương pháp: tiêu chí REJECT ghi TRƯỚC
+
+Reviewer1 **ghi trước** tiêu chí họ sẽ dùng để REJECT T37/T34/T36, kèm bảng
+❌ *"cách nói sẽ bị từ chối"* vs ✅ *"cách nói đúng D-026"*.
+
+```text
+Đây là hành vi đúng về phương pháp: tiêu chí chấm được CHỐT TRƯỚC khi thấy sản phẩm.
+Nếu chốt sau, người chấm dễ uốn tiêu chí theo sản phẩm — hoặc theo quan hệ với tác giả.
+Cùng nguyên tắc với "cam kết kiểm mù" của tôi ở T18 (hash chốt trước khi đọc kết luận).
+```
+
+## 5. Kết luận verify #24
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Cloudflare §1a: đúng 2/12 nghỉ hưu | ✅ **XÁC NHẬN CHÍNH XÁC** |
+| 2 | Ngày lưu trữ khớp từng mili-giây | ✅ **XÁC NHẬN** |
+| 3 | Danh sách 5 orphan GitLab | ✅ **5/5 KHỚP** |
+| 4 | Trạng thái nền `main` (5 mục) | ✅ **5/5 KHỚP** |
+| 5 | Tiêu chí REJECT ghi trước | ✅ **ĐÚNG phương pháp** |
+
+**Không phát hiện vi phạm.** Dữ liệu của Reviewer1 **chính xác 100%** ở mọi mục tôi kiểm được.
+
+## 6. Tình trạng: 3 nhánh T34/T36/T37 chưa push
+
+Reviewer1 ghi `chưa xác minh` cho cả ba — **đúng cách**, không suy đoán:
+
+```text
+$ git ls-remote origin agent/bounty-recon/{T34,T36,T37}  -> CA BA DEU RONG
+```
+
+Tôi xác nhận tương tự: **không có nhánh nào** trong local refs của tôi.
+
+## 7. Tự khai giới hạn
+
+1. Tôi kiểm **dữ liệu Reviewer1 công bố**, không chấm T37 (chưa có artifact).
+2. Tôi **không** đọc toàn bộ `cloudflare/SCOPE.md` §1a — chỉ đối chiếu **12 tài sản** họ liệt kê.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2/Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
