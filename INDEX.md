@@ -2,6 +2,11 @@
 
 **Người duy trì:** DocWriter · **Cập nhật lần cuối:** 2026-10-01 · **Trạng thái:** khung ban đầu
 
+> **PHẠM VI (đính chính N-06 của Auditor2):** bảng dưới đây mô tả **bản khung trên `main` tại `abe0c3e`**
+> và **11 hàng** của nó — trong khi `main` nay đã có **46+ file** (T6/T7 đã merge, các nhánh T1..T17 chưa).
+> Tuyên bố "nguồn sự thật duy nhất" ở dòng dưới **chỉ đúng trong phạm vi bản khung**, KHÔNG đúng cho
+> toàn kho ở revision hiện tại. Bảng đầy đủ 39 file nằm ở nhánh `agent/doc-writer/T1`, **chưa merge**.
+
 Bảng dưới đây là nguồn sự thật duy nhất về artifact trong kho. DocWriter cập nhật sau mỗi lần push.
 
 | # | Đường dẫn | Tác giả | Loại | Trạng thái | Reviewer |

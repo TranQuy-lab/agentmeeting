@@ -67,6 +67,8 @@ BẤT KHẢ XÂM PHẠM (không phải cổng hành chính, mà là điều ki�
   - Tuân thủ Luật An ninh mạng Việt Nam 24/2018/QH14.
 
 Vi phạm bất kỳ dòng nào ở trên => DỪNG nhánh đó ngay, báo Admin và người dùng.
+
+> **Con trỏ:** trạng thái đầy đủ và thống nhất của cổng G4 nằm ở **D-013** (bên dưới). D-005 chỉ nêu luật cấm.
 Nghi ngờ về phạm vi => DỪNG, hỏi Admin. KHÔNG tự đoán.
 ```
 
@@ -165,6 +167,12 @@ BỔ SUNG sau báo cáo T3 của BountyRecon:
   - 4 tài sản GitLab có XUNG ĐỘT SCOPE trong dữ liệu công bố của chính GitLab
     (*.gitlab.net, *.gitlap.com, about.gitlab.com, docs.gitlab.com) => LOẠI KHỎI T4.
     Cấm khai thác cho tới khi GitLab trả lời làm rõ. Đây là lựa chọn (a).
+
+  ĐÍNH CHÍNH (DISSENT-7, Reviewer1 T14): tách theo `asset_type` thì chỉ **2 là xung đột
+  THẬT** (`about.gitlab.com`, `docs.gitlab.com` — cùng `URL` ở cả hai phía);
+  `*.gitlab.net` và `*.gitlap.com` là `WILDCARD` (IN) vs `URL` (OUT) — KHÁC LOẠI, có thể
+  chính sách cố ý hiểu "subdomain trong scope, apex ngoài scope". QUYẾT ĐỊNH KHÔNG ĐỔI:
+  vẫn loại cả 4 khỏi T4 — thận trọng hơn mức cần nhưng không gây hại.
   - Cloudflare: KHÔNG mở T4. Chính sách Cloudflare cấm test vào khách hàng của họ;
     chạm nhầm có thể bị loại vĩnh viễn và phát sinh trách nhiệm pháp lý.
   - G4 hiện vẫn ĐÓNG: chưa có chỉ thị nào nêu target cụ thể.
