@@ -1,0 +1,953 @@
+================================================================
+PASSIVE RECON — program: github
+UTC timestamp: 2026-10-01T13:50:31Z
+Local timestamp: 2026-10-01 20:50:31 +07
+Host under check: github.com
+Method: public DNS + robots.txt + public HTTP response headers +
+        public /.well-known/security.txt. NO active scanning.
+================================================================
+
+########## DNS: github.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 github.com NS
+--- output ---
+github.com.		449	IN	NS	ns-421.awsdns-52.com.
+github.com.		449	IN	NS	dns2.p08.nsone.net.
+github.com.		449	IN	NS	dns4.p08.nsone.net.
+github.com.		449	IN	NS	ns-1283.awsdns-32.org.
+github.com.		449	IN	NS	ns-1707.awsdns-21.co.uk.
+github.com.		449	IN	NS	dns1.p08.nsone.net.
+github.com.		449	IN	NS	dns3.p08.nsone.net.
+github.com.		449	IN	NS	ns-520.awsdns-01.net.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 github.com A
+--- output ---
+github.com.		23	IN	A	20.205.243.166
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 github.com AAAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 github.com MX
+--- output ---
+github.com.		300	IN	MX	0 github-com.mail.protection.outlook.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 github.com TXT
+--- output ---
+;; communications error to 127.0.0.53#53: timed out
+;; no servers could be reached
+--- end (rc=9) ---
+
+$ dig +noall +answer +time=5 +tries=1 github.com CAA
+--- output ---
+github.com.		3600	IN	CAA	0 issuewild "letsencrypt.org"
+github.com.		3600	IN	CAA	0 issuewild "digicert.com"
+github.com.		3600	IN	CAA	0 issue "digicert.com"
+github.com.		3600	IN	CAA	0 issuewild "sectigo.com"
+github.com.		3600	IN	CAA	0 issue "letsencrypt.org"
+github.com.		3600	IN	CAA	0 issue "globalsign.com"
+github.com.		3600	IN	CAA	0 issue "sectigo.com"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.github.com TXT
+--- output ---
+_dmarc.github.com.	300	IN	TXT	"v=DMARC1; p=quarantine; sp=reject; pct=100; rua=mailto:dmarc@github.com; ruf=mailto:dmarc@github.com; fo=1"
+--- end (rc=0) ---
+
+########## DNS: githubassets.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 githubassets.com NS
+--- output ---
+githubassets.com.	60582	IN	NS	dns3.p02.nsone.net.
+githubassets.com.	60582	IN	NS	dns4.p02.nsone.net.
+githubassets.com.	60582	IN	NS	ns-370.awsdns-46.com.
+githubassets.com.	60582	IN	NS	dns1.p02.nsone.net.
+githubassets.com.	60582	IN	NS	ns-1354.awsdns-41.org.
+githubassets.com.	60582	IN	NS	dns2.p02.nsone.net.
+githubassets.com.	60582	IN	NS	ns-597.awsdns-10.net.
+githubassets.com.	60582	IN	NS	ns-1766.awsdns-28.co.uk.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubassets.com A
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubassets.com AAAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubassets.com MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubassets.com TXT
+--- output ---
+githubassets.com.	30	IN	TXT	"v=spf1 a -all"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubassets.com CAA
+--- output ---
+githubassets.com.	3600	IN	CAA	0 issuewild "digicert.com"
+githubassets.com.	3600	IN	CAA	0 issue "sectigo.com"
+githubassets.com.	3600	IN	CAA	0 issuewild "sectigo.com"
+githubassets.com.	3600	IN	CAA	0 issue "digicert.com"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.githubassets.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: githubusercontent.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 githubusercontent.com NS
+--- output ---
+githubusercontent.com.	225	IN	NS	ns-1411.awsdns-48.org.
+githubusercontent.com.	225	IN	NS	ns-1867.awsdns-41.co.uk.
+githubusercontent.com.	225	IN	NS	ns-596.awsdns-10.net.
+githubusercontent.com.	225	IN	NS	ns-181.awsdns-22.com.
+githubusercontent.com.	225	IN	NS	dns1.p01.nsone.net.
+githubusercontent.com.	225	IN	NS	dns4.p01.nsone.net.
+githubusercontent.com.	225	IN	NS	dns3.p01.nsone.net.
+githubusercontent.com.	225	IN	NS	dns2.p01.nsone.net.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubusercontent.com A
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubusercontent.com AAAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubusercontent.com MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubusercontent.com TXT
+--- output ---
+githubusercontent.com.	30	IN	TXT	"v=spf1 a -all"
+githubusercontent.com.	30	IN	TXT	"globalsign-domain-verification=2wiwCKYW7kQ6LJntfIcdi5EG56lUlQIRj_VGJnEEKb"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubusercontent.com CAA
+--- output ---
+githubusercontent.com.	3600	IN	CAA	0 issue "digicert.com"
+githubusercontent.com.	3600	IN	CAA	0 issue "letsencrypt.org"
+githubusercontent.com.	3600	IN	CAA	0 issue "sectigo.com"
+githubusercontent.com.	3600	IN	CAA	0 issuewild "letsencrypt.org"
+githubusercontent.com.	3600	IN	CAA	0 issuewild "digicert.com"
+githubusercontent.com.	3600	IN	CAA	0 issuewild "sectigo.com"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.githubusercontent.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: githubapp.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 githubapp.com NS
+--- output ---
+githubapp.com.		3600	IN	NS	ns-496.awsdns-62.com.
+githubapp.com.		3600	IN	NS	ns-1805.awsdns-33.co.uk.
+githubapp.com.		3600	IN	NS	dns3.p08.nsone.net.
+githubapp.com.		3600	IN	NS	dns4.p08.nsone.net.
+githubapp.com.		3600	IN	NS	ns-713.awsdns-25.net.
+githubapp.com.		3600	IN	NS	dns1.p08.nsone.net.
+githubapp.com.		3600	IN	NS	ns-1059.awsdns-04.org.
+githubapp.com.		3600	IN	NS	dns2.p08.nsone.net.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubapp.com A
+--- output ---
+githubapp.com.		3600	IN	A	140.82.114.30
+githubapp.com.		3600	IN	A	140.82.113.30
+githubapp.com.		3600	IN	A	140.82.112.29
+githubapp.com.		3600	IN	A	140.82.113.29
+githubapp.com.		3600	IN	A	140.82.112.30
+githubapp.com.		3600	IN	A	140.82.114.29
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubapp.com AAAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubapp.com MX
+--- output ---
+githubapp.com.		3600	IN	MX	10 aspmx.l.google.com.
+githubapp.com.		3600	IN	MX	30 aspmx2.googlemail.com.
+githubapp.com.		3600	IN	MX	30 aspmx3.googlemail.com.
+githubapp.com.		3600	IN	MX	30 aspmx4.googlemail.com.
+githubapp.com.		3600	IN	MX	30 aspmx5.googlemail.com.
+githubapp.com.		3600	IN	MX	20 alt2.aspmx.l.google.com.
+githubapp.com.		3600	IN	MX	20 alt1.aspmx.l.google.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubapp.com TXT
+--- output ---
+githubapp.com.		3600	IN	TXT	"v=spf1 a include:_spf.google.com ~all"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubapp.com CAA
+--- output ---
+githubapp.com.		3600	IN	CAA	0 issue "digicert.com"
+githubapp.com.		3600	IN	CAA	0 issue "letsencrypt.org"
+githubapp.com.		3600	IN	CAA	0 issuewild "sectigo.com"
+githubapp.com.		3600	IN	CAA	0 issuewild "digicert.com"
+githubapp.com.		3600	IN	CAA	0 issue "sectigo.com"
+githubapp.com.		3600	IN	CAA	0 issuewild "letsencrypt.org"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.githubapp.com TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: githubwebhooks.net ##########
+
+$ dig +noall +answer +time=5 +tries=1 githubwebhooks.net NS
+--- output ---
+githubwebhooks.net.	3600	IN	NS	dns2.p04.nsone.net.
+githubwebhooks.net.	3600	IN	NS	dns3.p04.nsone.net.
+githubwebhooks.net.	3600	IN	NS	dns1.p04.nsone.net.
+githubwebhooks.net.	3600	IN	NS	dns4.p04.nsone.net.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubwebhooks.net A
+--- output ---
+githubwebhooks.net.	24	IN	A	140.82.113.18
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubwebhooks.net AAAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubwebhooks.net MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubwebhooks.net TXT
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 githubwebhooks.net CAA
+--- output ---
+githubwebhooks.net.	3600	IN	CAA	0 issue "sectigo.com"
+githubwebhooks.net.	3600	IN	CAA	0 issuewild "sectigo.com"
+githubwebhooks.net.	3600	IN	CAA	0 issuewild "digicert.com"
+githubwebhooks.net.	3600	IN	CAA	0 issue "digicert.com"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.githubwebhooks.net TXT
+--- output ---
+_dmarc.githubwebhooks.net. 3600	IN	CNAME	glb-db52c2cf8be544.github.com.
+--- end (rc=0) ---
+
+########## DNS: github.net ##########
+
+$ dig +noall +answer +time=5 +tries=1 github.net NS
+--- output ---
+github.net.		86400	IN	NS	ns-1799.awsdns-32.co.uk.
+github.net.		86400	IN	NS	ns-988.awsdns-59.net.
+github.net.		86400	IN	NS	dns4.p05.nsone.net.
+github.net.		86400	IN	NS	ns-114.awsdns-14.com.
+github.net.		86400	IN	NS	dns1.p05.nsone.net.
+github.net.		86400	IN	NS	ns-1236.awsdns-26.org.
+github.net.		86400	IN	NS	dns3.p05.nsone.net.
+github.net.		86400	IN	NS	dns2.p05.nsone.net.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 github.net A
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 github.net AAAA
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 github.net MX
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 github.net TXT
+--- output ---
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 github.net CAA
+--- output ---
+github.net.		3600	IN	CAA	0 issue "letsencrypt.org"
+github.net.		3600	IN	CAA	0 issuewild "digicert.com"
+github.net.		3600	IN	CAA	0 issuewild "sectigo.com"
+github.net.		3600	IN	CAA	0 issue "sectigo.com"
+github.net.		3600	IN	CAA	0 issue "amazon.com"
+github.net.		3600	IN	CAA	0 issue "digicert.com"
+github.net.		3600	IN	CAA	0 issuewild "letsencrypt.org"
+github.net.		3600	IN	CAA	0 issuewild "amazon.com"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.github.net TXT
+--- output ---
+--- end (rc=0) ---
+
+########## DNS: npmjs.com ##########
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.com NS
+--- output ---
+npmjs.com.		86400	IN	NS	bayan.ns.cloudflare.com.
+npmjs.com.		86400	IN	NS	sandy.ns.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.com A
+--- output ---
+npmjs.com.		300	IN	A	104.17.134.117
+npmjs.com.		300	IN	A	104.17.135.117
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.com AAAA
+--- output ---
+npmjs.com.		300	IN	AAAA	2606:4700::6811:8675
+npmjs.com.		300	IN	AAAA	2606:4700::6811:8775
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.com MX
+--- output ---
+npmjs.com.		300	IN	MX	30 alt2.aspmx.l.google.com.
+npmjs.com.		300	IN	MX	10 aspmx.l.google.com.
+npmjs.com.		300	IN	MX	20 alt1.aspmx.l.google.com.
+npmjs.com.		300	IN	MX	40 aspmx2.googlemail.com.
+npmjs.com.		300	IN	MX	50 aspmx3.googlemail.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.com TXT
+--- output ---
+npmjs.com.		30	IN	TXT	"ZAMDPQHDY"
+npmjs.com.		30	IN	TXT	"MS=ms83736980"
+npmjs.com.		30	IN	TXT	"9ppvqgfs31mbchvn33n601dh9sm545j0"
+npmjs.com.		30	IN	TXT	"status-page-domain-verification=gx37pw1xshfg"
+npmjs.com.		30	IN	TXT	"v=spf1 include:stspg-customer.com include:mail.zendesk.com include:_spf.google.com include:5326678.spf10.hubspotemail.net include:servers.mcsv.net include:amazonses.com ~all"
+npmjs.com.		30	IN	TXT	"google-site-verification=3olb25e_eHjiKH_mpKzq8anNryKG7fB3C2Hbrrnny6I"
+npmjs.com.		30	IN	TXT	"google-site-verification=KtNKHWHGMRbAhkVydBWxt9sJJF-vvtTMVK5S8AgtreA"
+npmjs.com.		30	IN	TXT	"ZOOM_verify_9jQN-O8pSrO7mY5zFjoF6g"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.com CAA
+--- output ---
+npmjs.com.		300	IN	CAA	0 issuewild "digicert.com; cansignhttpexchanges=yes"
+npmjs.com.		300	IN	CAA	0 issue "letsencrypt.org"
+npmjs.com.		300	IN	CAA	0 issuewild "pki.goog; cansignhttpexchanges=yes"
+npmjs.com.		300	IN	CAA	0 issue "sectigo.com"
+npmjs.com.		300	IN	CAA	0 issue "comodoca.com"
+npmjs.com.		300	IN	CAA	0 issuewild "ssl.com"
+npmjs.com.		300	IN	CAA	0 issuewild "sectigo.com"
+npmjs.com.		300	IN	CAA	0 issue "ssl.com"
+npmjs.com.		300	IN	CAA	0 issuewild "letsencrypt.org"
+npmjs.com.		300	IN	CAA	0 issuewild "comodoca.com"
+npmjs.com.		300	IN	CAA	0 issue "pki.goog; cansignhttpexchanges=yes"
+npmjs.com.		300	IN	CAA	0 issue "digicert.com; cansignhttpexchanges=yes"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.npmjs.com TXT
+--- output ---
+_dmarc.npmjs.com.	3600	IN	TXT	"v=DMARC1; p=quarantine;  pct=5; rua=mailto:dmarc@github.com,mailto:d@rua.agari.com"
+--- end (rc=0) ---
+
+########## DNS: npmjs.org ##########
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.org NS
+--- output ---
+npmjs.org.		86400	IN	NS	sandy.ns.cloudflare.com.
+npmjs.org.		86400	IN	NS	bayan.ns.cloudflare.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.org A
+--- output ---
+npmjs.org.		300	IN	A	104.16.7.34
+npmjs.org.		300	IN	A	104.16.9.34
+npmjs.org.		300	IN	A	104.16.2.34
+npmjs.org.		300	IN	A	104.16.10.34
+npmjs.org.		300	IN	A	104.16.5.34
+npmjs.org.		300	IN	A	104.16.1.34
+npmjs.org.		300	IN	A	104.16.11.34
+npmjs.org.		300	IN	A	104.16.6.34
+npmjs.org.		300	IN	A	104.16.3.34
+npmjs.org.		300	IN	A	104.16.4.34
+npmjs.org.		300	IN	A	104.16.0.34
+npmjs.org.		300	IN	A	104.16.8.34
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.org AAAA
+--- output ---
+npmjs.org.		300	IN	AAAA	2606:4700::6810:822
+npmjs.org.		300	IN	AAAA	2606:4700::6810:622
+npmjs.org.		300	IN	AAAA	2606:4700::6810:522
+npmjs.org.		300	IN	AAAA	2606:4700::6810:222
+npmjs.org.		300	IN	AAAA	2606:4700::6810:a22
+npmjs.org.		300	IN	AAAA	2606:4700::6810:422
+npmjs.org.		300	IN	AAAA	2606:4700::6810:322
+npmjs.org.		300	IN	AAAA	2606:4700::6810:122
+npmjs.org.		300	IN	AAAA	2606:4700::6810:b22
+npmjs.org.		300	IN	AAAA	2606:4700::6810:722
+npmjs.org.		300	IN	AAAA	2606:4700::6810:22
+npmjs.org.		300	IN	AAAA	2606:4700::6810:922
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.org MX
+--- output ---
+npmjs.org.		300	IN	MX	30 alt2.aspmx.l.google.com.
+npmjs.org.		300	IN	MX	20 alt1.aspmx.l.google.com.
+npmjs.org.		300	IN	MX	40 aspmx2.googlemail.com.
+npmjs.org.		300	IN	MX	10 aspmx.l.google.com.
+npmjs.org.		300	IN	MX	50 aspmx3.googlemail.com.
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.org TXT
+--- output ---
+npmjs.org.		30	IN	TXT	"status-page-domain-verification=gx37pw1xshfg"
+npmjs.org.		30	IN	TXT	"v=spf1 -all"
+npmjs.org.		30	IN	TXT	"keybase-site-verification=Ls8jN55i6KesjiX91Ck79bUZ17eA-iohmw2jJFM16xc"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 npmjs.org CAA
+--- output ---
+npmjs.org.		3600	IN	CAA	0 issue "letsencrypt.org"
+npmjs.org.		3600	IN	CAA	0 issue "digicert.com; cansignhttpexchanges=yes"
+npmjs.org.		3600	IN	CAA	0 issuewild "digicert.com; cansignhttpexchanges=yes"
+npmjs.org.		3600	IN	CAA	0 issuewild "letsencrypt.org"
+npmjs.org.		3600	IN	CAA	0 issuewild "pki.goog; cansignhttpexchanges=yes"
+npmjs.org.		3600	IN	CAA	0 issue "pki.goog; cansignhttpexchanges=yes"
+npmjs.org.		3600	IN	CAA	0 issue "ssl.com"
+npmjs.org.		3600	IN	CAA	0 issuewild "comodoca.com"
+npmjs.org.		3600	IN	CAA	0 issue "comodoca.com"
+npmjs.org.		3600	IN	CAA	0 issuewild "ssl.com"
+--- end (rc=0) ---
+
+$ dig +noall +answer +time=5 +tries=1 _dmarc.npmjs.org TXT
+--- output ---
+_dmarc.npmjs.org.	300	IN	TXT	"v=DMARC1; p=reject; rua=mailto:dmarc@github.com; pct=100"
+--- end (rc=0) ---
+
+########## PUBLIC WEB SURFACE: github.com ##########
+
+$ curl -sS -I --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://github.com/
+--- output ---
+HTTP/2 200 
+date: Thu, 01 Oct 2026 13:50:50 GMT
+content-type: text/html; charset=utf-8
+content-language: en-US
+vary: X-PJAX, X-PJAX-Container, Turbo-Visit, Turbo-Frame, X-Requested-With, X-GitHub-Client-Version, Accept-Language, Sec-Fetch-Site,Accept-Encoding, Accept, X-Requested-With
+etag: W/"6c92982ca78a376e94f6c11dc2e4a20b"
+cache-control: max-age=0, private, must-revalidate
+strict-transport-security: max-age=31536000; includeSubdomains; preload
+x-frame-options: deny
+x-content-type-options: nosniff
+x-xss-protection: 0
+referrer-policy: origin-when-cross-origin, strict-origin-when-cross-origin
+content-security-policy: default-src 'none'; base-uri 'self'; child-src github.githubassets.com github.com/assets-cdn/worker/ github.com/assets/ gist.github.com/assets-cdn/worker/; connect-src 'self' uploads.github.com www.githubstatus.com collector.github.com raw.githubusercontent.com api.github.com github-cloud.s3.amazonaws.com github-production-repository-file-5c1aeb.s3.amazonaws.com github-production-upload-manifest-file-7fdce7.s3.amazonaws.com github-production-user-asset-6210df.s3.amazonaws.com *.rel.tunnels.api.visualstudio.com wss://*.rel.tunnels.api.visualstudio.com github.githubassets.com objects-origin.githubusercontent.com copilot-proxy.githubusercontent.com proxy.individual.githubcopilot.com proxy.business.githubcopilot.com proxy.enterprise.githubcopilot.com *.actions.githubusercontent.com wss://*.actions.githubusercontent.com productionresultssa0.blob.core.windows.net productionresultssa1.blob.core.windows.net productionresultssa2.blob.core.windows.net productionresultssa3.blob.core.windows.net productionresultssa4.blob.core.windows.net productionresultssa5.blob.core.windows.net productionresultssa6.blob.core.windows.net productionresultssa7.blob.core.windows.net productionresultssa8.blob.core.windows.net productionresultssa9.blob.core.windows.net productionresultssa10.blob.core.windows.net productionresultssa11.blob.core.windows.net productionresultssa12.blob.core.windows.net productionresultssa13.blob.core.windows.net productionresultssa14.blob.core.windows.net productionresultssa15.blob.core.windows.net productionresultssa16.blob.core.windows.net productionresultssa17.blob.core.windows.net productionresultssa18.blob.core.windows.net productionresultssa19.blob.core.windows.net github-production-repository-image-32fea6.s3.amazonaws.com github-production-release-asset-2e65be.s3.amazonaws.com insights.github.com wss://alive.github.com wss://alive-staging.github.com api.githubcopilot.com api.individual.githubcopilot.com api.business.githubcopilot.com api.enterprise.githubcopilot.com wss://production-copilot-host.webpubsub.azure.com api.github.com/cmc_internal/api/ edge.fullstory.com rs.fullstory.com; font-src github.githubassets.com; form-action 'self' github.com gist.github.com copilot-workspace.githubnext.com objects-origin.githubusercontent.com; frame-ancestors 'none'; frame-src viewscreen.githubusercontent.com notebooks.githubusercontent.com www.youtube-nocookie.com; img-src 'self' data: blob: github.githubassets.com media.githubusercontent.com camo.githubusercontent.com identicons.github.com avatars.githubusercontent.com private-avatars.githubusercontent.com github-cloud.s3.amazonaws.com objects.githubusercontent.com release-assets.githubusercontent.com secured-user-images.githubusercontent.com user-images.githubusercontent.com private-user-images.githubusercontent.com opengraph.githubassets.com repository-images.githubusercontent.com marketplace-screenshots.githubusercontent.com copilotprodattachments.blob.core.windows.net/github-production-copilot-attachments/ github-production-user-asset-6210df.s3.amazonaws.com customer-stories-feed.github.com spotlights-feed.github.com explore-feed.github.com *.googleusercontent.com objects-origin.githubusercontent.com *.githubusercontent.com images.ctfassets.net/8aevphvgewt8/; manifest-src 'self'; media-src github.com user-images.githubusercontent.com secured-user-images.githubusercontent.com private-user-images.githubusercontent.com github-production-user-asset-6210df.s3.amazonaws.com gist.github.com github.githubassets.com assets.ctfassets.net/8aevphvgewt8/ videos.ctfassets.net/8aevphvgewt8/; script-src github.githubassets.com 'sha256-tSjmyPUky1KbRZ0fw9VUil3wFEbeM82rtbJDygGJAXw='; style-src 'unsafe-inline' github.githubassets.com; upgrade-insecure-requests; worker-src github.githubassets.com github.com/assets-cdn/worker/ github.com/assets/ gist.github.com/assets-cdn/worker/
+server: github.com
+accept-ranges: bytes
+set-cookie: _gh_sess=JTxnmWbbumixi%2BWUIWVAge9ynHl346rrQeOi372sQOFZaVDlQq%2B97ZiTFkL1biJWuwruaUQRipT2cMekZbrMoT9aSoE3ys2EJ2V7ourD68GzG%2FyYefnrngYn1r16XPVBdEkZpW6WwbAN%2BNlpg%2FQNiOzlIVhFlqidtarVtUSeMbYhh%2BzMeO5lFRPomd7DR5eaNXL%2FCyELkaOODwpy1sIzzF082pRy%2Fjx4Q3sjpKb5IVQkg%2BVPb1cESwdJrzVh7azGIacFFRJIwEBsT1Yhde5Elg%3D%3D--Z8A4M3nPFtnLDzHz--bN%2Bh9Eb%2BtYEITreEIsywqg%3D%3D; path=/; HttpOnly; secure; SameSite=Lax
+set-cookie: _octo=GH1.1.1511865067.1790862651; expires=Fri, 01 Oct 2027 13:50:51 GMT; domain=.github.com; path=/; secure; SameSite=Lax
+set-cookie: logged_in=no; expires=Fri, 01 Oct 2027 13:50:51 GMT; domain=.github.com; path=/; HttpOnly; secure; SameSite=Lax
+x-github-request-id: E8F8:39F040:2E82DF9:2EBE704:6ABE653B
+x-github-edge-region: southeastasia
+
+--- end (rc=0) ---
+
+$ curl -sS --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://github.com/robots.txt
+--- output ---
+# If you would like to crawl GitHub contact us via https://support.github.com?tags=dotcom-robots
+# We also provide an extensive API: https://docs.github.com
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+Crawl-delay: 1
+Allow: /$
+Allow: /about
+Allow: /customer-stories
+Allow: /enterprise
+Allow: /features
+Allow: /marketplace
+Allow: /mcp
+Allow: /newsroom
+Allow: /pricing
+Allow: /resources
+Allow: /security
+Allow: /solutions
+Allow: /topics/download*
+Allow: /topics/comments*
+Allow: /marketplace/actions/download*
+Disallow: /*/*/pulse
+Disallow: /*/*/projects
+Disallow: /*/*/forks
+Disallow: /*/*/issues/new
+Disallow: /*/*/milestones/new
+Disallow: /*/*/issues/search
+Disallow: /*/*/commits/
+Disallow: /*/*/branches
+Disallow: /*/*/contributors
+Disallow: /*/*/tags
+Disallow: /*/*/stargazers
+Disallow: /*/*/watchers
+Disallow: /*/*/network
+Disallow: /*/*/graphs
+Disallow: /*/*/compare
+Disallow: /*/tree/
+Disallow: /gist/
+Disallow: /*/download
+Disallow: /*/revisions
+Disallow: /*/commits/*?author
+Disallow: /*/commits/*?path
+Disallow: /*/comments
+Disallow: /*/archive/
+Disallow: /*/blame/
+Disallow: /*/raw/
+Disallow: /*/cache/
+Disallow: /.git/
+Disallow: */.git/
+Disallow: /*.git$
+Disallow: /search/advanced
+Disallow: /search$
+Disallow: /*.atom$
+Disallow: /ekansa/Open-Context-Data
+Disallow: /ekansa/opencontext-*
+Disallow: */tarball/
+Disallow: */zipball/
+Disallow: /*commits?author=*
+Disallow: /*report-abuse?report=*
+Disallow: /account-login
+Disallow: /Explodingstuff/
+Disallow: /copilot/
+Disallow: /copilot/c/
+Disallow: /*?source=*
+Disallow: /*&source=*
+Disallow: /*?ref_cta=*
+Disallow: /*&ref_cta=*
+Disallow: /*?plan=*
+Disallow: /*&plan=*
+Disallow: /*?return_to=*
+Disallow: /*&return_to=*
+Disallow: /*?ref_loc=*
+Disallow: /*&ref_loc=*
+Disallow: /*?setup_organization=*
+Disallow: /*&setup_organization=*
+Disallow: /*?source_repo=*
+Disallow: /*&source_repo=*
+Disallow: /*?ref_page=*
+Disallow: /*&ref_page=*
+Disallow: /*?referrer=*
+Disallow: /*&referrer=*
+Disallow: /*?report=*
+Disallow: /*&report=*
+Disallow: /*?author=*
+Disallow: /*&author=*
+Disallow: /*?since=*
+Disallow: /*&since=*
+Disallow: /*?until=*
+Disallow: /*&until=*
+Disallow: /*?tab=*
+Disallow: /*&tab=*
+Disallow: /*?q=*
+Disallow: /*&q=*
+Disallow: /topics/download*?source=*
+Disallow: /topics/download*&source=*
+Disallow: /topics/download*?ref_cta=*
+Disallow: /topics/download*&ref_cta=*
+Disallow: /topics/download*?plan=*
+Disallow: /topics/download*&plan=*
+Disallow: /topics/download*?return_to=*
+Disallow: /topics/download*&return_to=*
+Disallow: /topics/download*?ref_loc=*
+Disallow: /topics/download*&ref_loc=*
+Disallow: /topics/download*?setup_organization=*
+Disallow: /topics/download*&setup_organization=*
+Disallow: /topics/download*?source_repo=*
+Disallow: /topics/download*&source_repo=*
+Disallow: /topics/download*?ref_page=*
+Disallow: /topics/download*&ref_page=*
+Disallow: /topics/download*?referrer=*
+Disallow: /topics/download*&referrer=*
+Disallow: /topics/download*?report=*
+Disallow: /topics/download*&report=*
+Disallow: /topics/download*?author=*
+Disallow: /topics/download*&author=*
+Disallow: /topics/download*?since=*
+Disallow: /topics/download*&since=*
+Disallow: /topics/download*?until=*
+Disallow: /topics/download*&until=*
+Disallow: /topics/download*?tab=*
+Disallow: /topics/download*&tab=*
+Disallow: /topics/download*?q=*
+Disallow: /topics/download*&q=*
+Disallow: /topics/comments*?source=*
+Disallow: /topics/comments*&source=*
+Disallow: /topics/comments*?ref_cta=*
+Disallow: /topics/comments*&ref_cta=*
+Disallow: /topics/comments*?plan=*
+Disallow: /topics/comments*&plan=*
+Disallow: /topics/comments*?return_to=*
+Disallow: /topics/comments*&return_to=*
+Disallow: /topics/comments*?ref_loc=*
+Disallow: /topics/comments*&ref_loc=*
+Disallow: /topics/comments*?setup_organization=*
+Disallow: /topics/comments*&setup_organization=*
+Disallow: /topics/comments*?source_repo=*
+Disallow: /topics/comments*&source_repo=*
+Disallow: /topics/comments*?ref_page=*
+Disallow: /topics/comments*&ref_page=*
+Disallow: /topics/comments*?referrer=*
+Disallow: /topics/comments*&referrer=*
+Disallow: /topics/comments*?report=*
+Disallow: /topics/comments*&report=*
+Disallow: /topics/comments*?author=*
+Disallow: /topics/comments*&author=*
+Disallow: /topics/comments*?since=*
+Disallow: /topics/comments*&since=*
+Disallow: /topics/comments*?until=*
+Disallow: /topics/comments*&until=*
+Disallow: /topics/comments*?tab=*
+Disallow: /topics/comments*&tab=*
+Disallow: /topics/comments*?q=*
+Disallow: /topics/comments*&q=*
+Disallow: /marketplace/actions/download*?source=*
+Disallow: /marketplace/actions/download*&source=*
+Disallow: /marketplace/actions/download*?ref_cta=*
+Disallow: /marketplace/actions/download*&ref_cta=*
+Disallow: /marketplace/actions/download*?plan=*
+Disallow: /marketplace/actions/download*&plan=*
+Disallow: /marketplace/actions/download*?return_to=*
+Disallow: /marketplace/actions/download*&return_to=*
+Disallow: /marketplace/actions/download*?ref_loc=*
+Disallow: /marketplace/actions/download*&ref_loc=*
+Disallow: /marketplace/actions/download*?setup_organization=*
+Disallow: /marketplace/actions/download*&setup_organization=*
+Disallow: /marketplace/actions/download*?source_repo=*
+Disallow: /marketplace/actions/download*&source_repo=*
+Disallow: /marketplace/actions/download*?ref_page=*
+Disallow: /marketplace/actions/download*&ref_page=*
+Disallow: /marketplace/actions/download*?referrer=*
+Disallow: /marketplace/actions/download*&referrer=*
+Disallow: /marketplace/actions/download*?report=*
+Disallow: /marketplace/actions/download*&report=*
+Disallow: /marketplace/actions/download*?author=*
+Disallow: /marketplace/actions/download*&author=*
+Disallow: /marketplace/actions/download*?since=*
+Disallow: /marketplace/actions/download*&since=*
+Disallow: /marketplace/actions/download*?until=*
+Disallow: /marketplace/actions/download*&until=*
+Disallow: /marketplace/actions/download*?tab=*
+Disallow: /marketplace/actions/download*&tab=*
+Disallow: /marketplace/actions/download*?q=*
+Disallow: /marketplace/actions/download*&q=*
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: AdsBot-Google
+User-agent: AdsBot-Google-Mobile
+Disallow: /*/*/pulse
+Disallow: /*/*/projects
+Disallow: /*/*/forks
+Disallow: /*/*/issues/new
+Disallow: /*/*/milestones/new
+Disallow: /*/*/issues/search
+Disallow: /*/*/commits/
+Disallow: /*/*/branches
+Disallow: /*/*/contributors
+Disallow: /*/*/tags
+Disallow: /*/*/stargazers
+Disallow: /*/*/watchers
+Disallow: /*/*/network
+Disallow: /*/*/graphs
+Disallow: /*/*/compare
+Disallow: /*/tree/
+Disallow: /gist/
+Disallow: /*/download
+Disallow: /*/revisions
+Disallow: /*/commits/*?author
+Disallow: /*/commits/*?path
+Disallow: /*/comments
+Disallow: /*/archive/
+Disallow: /*/blame/
+Disallow: /*/raw/
+Disallow: /*/cache/
+Disallow: /.git/
+Disallow: */.git/
+Disallow: /*.git$
+Disallow: /search/advanced
+Disallow: /search$
+Disallow: /*.atom$
+Disallow: /ekansa/Open-Context-Data
+Disallow: /ekansa/opencontext-*
+Disallow: */tarball/
+Disallow: */zipball/
+Disallow: /*commits?author=*
+Disallow: /*report-abuse?report=*
+Disallow: /account-login
+Disallow: /Explodingstuff/
+Disallow: /copilot/
+Disallow: /copilot/c/
+Disallow: /*?source=*
+Disallow: /*&source=*
+Disallow: /*?ref_cta=*
+Disallow: /*&ref_cta=*
+Disallow: /*?plan=*
+Disallow: /*&plan=*
+Disallow: /*?return_to=*
+Disallow: /*&return_to=*
+Disallow: /*?ref_loc=*
+Disallow: /*&ref_loc=*
+Disallow: /*?setup_organization=*
+Disallow: /*&setup_organization=*
+Disallow: /*?source_repo=*
+Disallow: /*&source_repo=*
+Disallow: /*?ref_page=*
+Disallow: /*&ref_page=*
+Disallow: /*?referrer=*
+Disallow: /*&referrer=*
+Disallow: /*?report=*
+Disallow: /*&report=*
+Disallow: /*?author=*
+Disallow: /*&author=*
+Disallow: /*?since=*
+Disallow: /*&since=*
+Disallow: /*?until=*
+Disallow: /*&until=*
+Disallow: /*?tab=*
+Disallow: /*&tab=*
+Disallow: /*?q=*
+Disallow: /*&q=*
+
+User-agent: bingbot
+Disallow: /ekansa/Open-Context-Data
+Disallow: /ekansa/opencontext-*
+Disallow: /account-login
+Disallow: */tarball/
+Disallow: */zipball/
+Disallow: /Explodingstuff/
+Disallow: /copilot/
+Disallow: /copilot/c/
+
+User-agent: adidxbot
+Disallow: /ekansa/Open-Context-Data
+Disallow: /ekansa/opencontext-*
+Disallow: /account-login
+Disallow: */tarball/
+Disallow: */zipball/
+Disallow: /Explodingstuff/
+Disallow: /copilot/
+Disallow: /copilot/c/
+
+User-agent: BingPreview
+Disallow: /ekansa/Open-Context-Data
+Disallow: /ekansa/opencontext-*
+Disallow: /account-login
+Disallow: */tarball/
+Disallow: */zipball/
+Disallow: /Explodingstuff/
+Disallow: /copilot/
+Disallow: /copilot/c/
+
+User-agent: baidu
+crawl-delay: 1
+
+
+User-agent: *
+Allow: /*?tab=achievements&achievement=*
+Allow: /topics/download*
+Allow: /topics/comments*
+Allow: /marketplace/actions/download*
+Disallow: /*/*/pulse
+Disallow: /*/*/projects
+Disallow: /*/*/forks
+Disallow: /*/*/issues/new
+Disallow: /*/*/milestones/new
+Disallow: /*/*/issues/search
+Disallow: /*/*/commits/
+Disallow: /*/*/branches
+Disallow: /*/*/contributors
+Disallow: /*/*/tags
+Disallow: /*/*/stargazers
+Disallow: /*/*/watchers
+Disallow: /*/*/network
+Disallow: /*/*/graphs
+Disallow: /*/*/compare
+Disallow: /*/tree/
+Disallow: /gist/
+Disallow: /*/download
+Disallow: /*/revisions
+Disallow: /*/commits/*?author
+Disallow: /*/commits/*?path
+Disallow: /*/comments
+Disallow: /*/archive/
+Disallow: /*/blame/
+Disallow: /*/raw/
+Disallow: /*/cache/
+Disallow: /.git/
+Disallow: */.git/
+Disallow: /*.git$
+Disallow: /search/advanced
+Disallow: /search$
+Disallow: /*.atom$
+Disallow: /ekansa/Open-Context-Data
+Disallow: /ekansa/opencontext-*
+Disallow: */tarball/
+Disallow: */zipball/
+Disallow: /*commits?author=*
+Disallow: /*report-abuse?report=*
+Disallow: /account-login
+Disallow: /Explodingstuff/
+Disallow: /copilot/
+Disallow: /copilot/c/
+Disallow: /*?source=*
+Disallow: /*&source=*
+Disallow: /*?ref_cta=*
+Disallow: /*&ref_cta=*
+Disallow: /*?plan=*
+Disallow: /*&plan=*
+Disallow: /*?return_to=*
+Disallow: /*&return_to=*
+Disallow: /*?ref_loc=*
+Disallow: /*&ref_loc=*
+Disallow: /*?setup_organization=*
+Disallow: /*&setup_organization=*
+Disallow: /*?source_repo=*
+Disallow: /*&source_repo=*
+Disallow: /*?ref_page=*
+Disallow: /*&ref_page=*
+Disallow: /*?referrer=*
+Disallow: /*&referrer=*
+Disallow: /*?report=*
+Disallow: /*&report=*
+Disallow: /*?author=*
+Disallow: /*&author=*
+Disallow: /*?since=*
+Disallow: /*&since=*
+Disallow: /*?until=*
+Disallow: /*&until=*
+Disallow: /*?tab=*
+Disallow: /*&tab=*
+Disallow: /*?q=*
+Disallow: /*&q=*
+Disallow: /topics/download*?source=*
+Disallow: /topics/download*&source=*
+Disallow: /topics/download*?ref_cta=*
+Disallow: /topics/download*&ref_cta=*
+Disallow: /topics/download*?plan=*
+Disallow: /topics/download*&plan=*
+Disallow: /topics/download*?return_to=*
+Disallow: /topics/download*&return_to=*
+Disallow: /topics/download*?ref_loc=*
+Disallow: /topics/download*&ref_loc=*
+Disallow: /topics/download*?setup_organization=*
+Disallow: /topics/download*&setup_organization=*
+Disallow: /topics/download*?source_repo=*
+Disallow: /topics/download*&source_repo=*
+Disallow: /topics/download*?ref_page=*
+Disallow: /topics/download*&ref_page=*
+Disallow: /topics/download*?referrer=*
+Disallow: /topics/download*&referrer=*
+Disallow: /topics/download*?report=*
+Disallow: /topics/download*&report=*
+Disallow: /topics/download*?author=*
+Disallow: /topics/download*&author=*
+Disallow: /topics/download*?since=*
+Disallow: /topics/download*&since=*
+Disallow: /topics/download*?until=*
+Disallow: /topics/download*&until=*
+Disallow: /topics/download*?tab=*
+Disallow: /topics/download*&tab=*
+Disallow: /topics/download*?q=*
+Disallow: /topics/download*&q=*
+Disallow: /topics/comments*?source=*
+Disallow: /topics/comments*&source=*
+Disallow: /topics/comments*?ref_cta=*
+Disallow: /topics/comments*&ref_cta=*
+Disallow: /topics/comments*?plan=*
+Disallow: /topics/comments*&plan=*
+Disallow: /topics/comments*?return_to=*
+Disallow: /topics/comments*&return_to=*
+Disallow: /topics/comments*?ref_loc=*
+Disallow: /topics/comments*&ref_loc=*
+Disallow: /topics/comments*?setup_organization=*
+Disallow: /topics/comments*&setup_organization=*
+Disallow: /topics/comments*?source_repo=*
+Disallow: /topics/comments*&source_repo=*
+Disallow: /topics/comments*?ref_page=*
+Disallow: /topics/comments*&ref_page=*
+Disallow: /topics/comments*?referrer=*
+Disallow: /topics/comments*&referrer=*
+Disallow: /topics/comments*?report=*
+Disallow: /topics/comments*&report=*
+Disallow: /topics/comments*?author=*
+Disallow: /topics/comments*&author=*
+Disallow: /topics/comments*?since=*
+Disallow: /topics/comments*&since=*
+Disallow: /topics/comments*?until=*
+Disallow: /topics/comments*&until=*
+Disallow: /topics/comments*?tab=*
+Disallow: /topics/comments*&tab=*
+Disallow: /topics/comments*?q=*
+Disallow: /topics/comments*&q=*
+Disallow: /marketplace/actions/download*?source=*
+Disallow: /marketplace/actions/download*&source=*
+Disallow: /marketplace/actions/download*?ref_cta=*
+Disallow: /marketplace/actions/download*&ref_cta=*
+Disallow: /marketplace/actions/download*?plan=*
+Disallow: /marketplace/actions/download*&plan=*
+Disallow: /marketplace/actions/download*?return_to=*
+Disallow: /marketplace/actions/download*&return_to=*
+Disallow: /marketplace/actions/download*?ref_loc=*
+Disallow: /marketplace/actions/download*&ref_loc=*
+Disallow: /marketplace/actions/download*?setup_organization=*
+Disallow: /marketplace/actions/download*&setup_organization=*
+Disallow: /marketplace/actions/download*?source_repo=*
+Disallow: /marketplace/actions/download*&source_repo=*
+Disallow: /marketplace/actions/download*?ref_page=*
+Disallow: /marketplace/actions/download*&ref_page=*
+Disallow: /marketplace/actions/download*?referrer=*
+Disallow: /marketplace/actions/download*&referrer=*
+Disallow: /marketplace/actions/download*?report=*
+Disallow: /marketplace/actions/download*&report=*
+Disallow: /marketplace/actions/download*?author=*
+Disallow: /marketplace/actions/download*&author=*
+Disallow: /marketplace/actions/download*?since=*
+Disallow: /marketplace/actions/download*&since=*
+Disallow: /marketplace/actions/download*?until=*
+Disallow: /marketplace/actions/download*&until=*
+Disallow: /marketplace/actions/download*?tab=*
+Disallow: /marketplace/actions/download*&tab=*
+Disallow: /marketplace/actions/download*?q=*
+Disallow: /marketplace/actions/download*&q=*
+--- end (rc=0) ---
+
+$ curl -sS --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://github.com/.well-known/security.txt
+--- output ---
+Contact: https://hackerone.com/github
+Acknowledgments: https://hackerone.com/github/hacktivity
+Preferred-Languages: en
+Canonical: https://github.com/.well-known/security.txt
+Policy: https://bounty.github.com
+Hiring: https://github.careers
+Expires: 2026-10-31T13:50:56z
+--- end (rc=0) ---
+
+$ curl -sS --max-time 20 -A Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 https://github.com/security.txt
+--- output ---
+Not Found--- end (rc=0) ---
+
+$ bash -c echo | timeout 20 openssl s_client -connect github.com:443 -servername github.com 2>/dev/null | openssl x509 -noout -subject -issuer -dates -ext subjectAltName
+--- output ---
+subject=CN = github.com
+issuer=C = GB, O = Sectigo Limited, CN = Sectigo Public Server Authentication CA DV E36
+notBefore=Sep  1 00:00:00 2026 GMT
+notAfter=Nov 29 23:59:59 2026 GMT
+X509v3 Subject Alternative Name: 
+    DNS:github.com, DNS:www.github.com
+--- end (rc=0) ---
+
+================================================================
+END PASSIVE RECON — github
+================================================================
