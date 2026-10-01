@@ -247,3 +247,99 @@ hackerone.com/gitlab      -> HTTP 200
 3. Chính sách bounty có thể thay đổi sau ngày fetch ⇒ `PASS` này chỉ đúng cho bản fetch `2026-10-01`.
 4. **File này là sản phẩm của tôi — tôi không tự verify nó (D-004).** Đề nghị **Reviewer1** kiểm;
    bất đồng ⇒ **Auditor2** chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #3 (T8): RECON GitLab + xung đột scope
+
+**Ngày:** 2025-10-01 · **Đối tượng:** `origin/agent/bounty-recon/T3` (T4-G1, T4-G2)
+**Câu hỏi trọng tâm:** các quan sát bề mặt BountyRecon trình Admin có **đúng sự thật** không?
+
+---
+
+## 1. Đây là loại verify quan trọng nhất từ trước tới giờ
+
+BountyRecon trình Admin **4 xung đột scope** và đề nghị hoặc loại tài sản, hoặc xin phép hỏi GitLab.
+Nếu quan sát của họ **sai**, Admin sẽ ra quyết định trên dữ liệu sai — và hậu quả là **pháp lý**.
+Vì vậy tôi **tự chạy lại từng quan sát**, không đọc kết luận trước.
+
+## 2. Kiểm xung đột scope — tôi tự parse JSON, không tin bản tóm tắt
+
+Tôi tự viết script duyệt toàn bộ `h1_gitlab.json` (không dùng script của tác giả):
+
+```text
+Tong scope entry: 63
+
+gitlab.net: 4 entry, eligible_for_submission = {'False', 'True'}
+   - *.gitlab.net       | eligible: True  | max_sev: medium | type: WILDCARD
+   - *.runway.gitlab.net| eligible: False | max_sev: none   | type: WILDCARD
+   - *.gitlab.net       | eligible: False | max_sev: none   | type: URL
+   - gitlab.net         | eligible: False | max_sev: none   | type: URL
+
+gitlap.com: 3 entry, eligible_for_submission = {'False', 'True'}
+about.gitlab.com: 2 entry, eligible_for_submission = {'False', 'True'}
+docs.gitlab.com:  2 entry, eligible_for_submission = {'False', 'True'}
+```
+
+**Kết luận: ✅ XÁC NHẬN — xung đột có THẬT.** Mỗi tài sản xuất hiện **2 lần với giá trị
+`eligible_for_submission` TRÁI NGƯỢC NHAU** (`True` và `False`) trong cùng một phản hồi API.
+
+> Đây **không phải** lỗi BountyRecon. Đây là dữ liệu nguồn tự mâu thuẫn.
+> BountyRecon làm **đúng luật D-005**: "Nghi ngờ về phạm vi ⇒ DỪNG, hỏi Admin. Không tự đoán."
+
+## 3. Kiểm quan sát DNS (T4-G1, T4-G2)
+
+Tôi tự chạy `dig`, so với lời khai:
+
+```text
+$ dig +short registry.gitlab.com A
+35.227.35.254                    <- GCP truc tiep
+
+$ dig +short gitlab.com A
+172.65.251.78                    <- Cloudflare
+
+$ dig +short license.gitlab.com A
+(khong co ket qua)               <- KHONG phan giai
+
+$ dig +short license.gitlab.com CNAME
+(khong co ket qua)               <- KHONG co CNAME treo
+```
+
+| Quan sát tác giả khai | Tôi chạy lại | Kết quả |
+|---|---|---|
+| `registry.gitlab.com` → `35.227.35.254` (GCP trực tiếp) | `35.227.35.254` | ✅ **KHỚP tuyệt đối** |
+| `gitlab.com` → `172.65.251.78` (sau Cloudflare) | `172.65.251.78` | ✅ **KHỚP tuyệt đối** |
+| `license.gitlab.com` **không** phân giải | không có bản ghi | ✅ **KHỚP** |
+| **Không** có CNAME treo ⇒ **không** phải subdomain takeover | không có CNAME | ✅ **KHỚP** |
+
+⇒ **4/4 quan sát DNS tái lập được.** Tác giả còn **tự hạ mức** kết luận ("chỉ là QUAN SÁT BỀ MẶT,
+CHƯA XÁC MINH là lỗ hổng") — đúng D-004, không thổi phồng.
+
+## 4. Kết luận verify #3
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Xung đột `eligible_for_submission` là thật | ✅ **PASS** (tự parse 63 entry) |
+| 2 | DNS `registry.gitlab.com` vs `gitlab.com` | ✅ **PASS** (khớp từng octet) |
+| 3 | `license.gitlab.com` không phân giải, không CNAME treo | ✅ **PASS** |
+| 4 | Tác giả không thổi phồng quan sát thành lỗ hổng | ✅ **PASS** (ghi rõ "chưa xác minh") |
+| 5 | Xung đột scope **đã được phân xử** | ❌ **CHƯA** — thuộc Admin, không thuộc tôi |
+
+**PASS 4/5.** Không phát hiện vi phạm. **Tôi không tự quyết xung đột scope** — đó là quyền Admin.
+
+## 5. Khuyến nghị của tôi (nêu rõ là KHUYẾN NGHỊ, không phải quyết định)
+
+```text
+Với 4 tài sản có eligible_for_submission vừa True vừa False:
+  Tôi KHUYẾN NGHỊ phương án (a) LOẠI khỏi T4 ở vòng này.
+  Lý do: D-005 cấm TỰ ĐOÁN phạm vi. Khi nguồn tự mâu thuẫn, cách an toàn là không chạm,
+         rồi hỏi GitLab qua HackerOne (phương án b) ở vòng sau.
+  Đây là KHUYẾN NGHỊ. Quyết định thuộc Admin.
+```
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **sự thật của quan sát**, **không** kiểm đó có phải lỗ hổng — chưa có PoC nào để tái lập.
+2. DNS có thể thay đổi theo thời điểm (TTL). `PASS` này đúng cho lần chạy `2026-10-01`.
+3. Tôi **không** xác minh được phần cần phiên đăng nhập HackerOne.
+4. **File này do tôi viết — tôi không tự verify (D-004).** Reviewer1 kiểm; bất đồng ⇒ Auditor2 chốt.
