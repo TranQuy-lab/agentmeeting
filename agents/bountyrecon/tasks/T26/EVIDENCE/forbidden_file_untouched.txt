@@ -1,0 +1,19 @@
+=== BANG CHUNG: file CAM SUA van NGUYEN VEN (byte-identical voi main) ===
+UTC: 2026-10-01T14:48:38Z
+
+$ sha256sum $F
+  a6f6cad29c90bd4e0e3d7dbbfb94507d6d5835cd34113b195ff9880b378ac0f7  agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md
+$ git show main:$F | sha256sum
+  a6f6cad29c90bd4e0e3d7dbbfb94507d6d5835cd34113b195ff9880b378ac0f7  -
+
+$ git diff --stat main -- $F
+  (khong co thay doi - NGUYEN VEN)
+
+$ git diff --exit-code main -- $F ; echo "exit=$?"
+  exit=0  (0 = khong co khac biet)
+
+### 3 link thieu scheme o dong 185 VAN CON NGUYEN (dung theo QD-2 cua D-020):
+  ](https://semmle.com/ql)
+  ](lgtm-com.pentesting.semmle.net)
+  ](backend-dot-lgtm-penetration-testing.appspot.com)
+  ](downloads.lgtm.com)

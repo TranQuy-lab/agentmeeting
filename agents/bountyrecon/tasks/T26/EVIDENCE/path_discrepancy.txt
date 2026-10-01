@@ -1,0 +1,25 @@
+=== KIEM CHUNG: duong dan D-020 trich dan co ton tai khong ===
+UTC: 2026-10-01T14:49:01Z   main: e8c45a0
+
+$ test -f security/github/EVIDENCE/scope_github.md   # duong dan D-020 §2 QD-2 trich
+  -> FALSE  <= KHONG TON TAI
+$ ls -la security/github/EVIDENCE/ 2>&1
+  ls: cannot access 'security/github/EVIDENCE/': No such file or directory
+
+$ test -f agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md   # duong dan THAT
+  -> TRUE  <= duong dan THAT
+
+$ git ls-files | grep 'scope_github.md'
+  agents/bountyrecon/tasks/T3/EVIDENCE/scope_github.md
+
+$ git ls-files | grep -c '^security/.*EVIDENCE/'   # co bao nhieu file trong security/**/EVIDENCE/
+  -> 0
+
+$ git ls-files | grep 'EVIDENCE/' | sed 's#/EVIDENCE/.*#/EVIDENCE/#' | sort -u
+  agents/bountyrecon/tasks/T3/EVIDENCE/
+  agents/exploitdeep/T16/EVIDENCE/
+  agents/exploitdeep/T4/EVIDENCE/
+  agents/forensicsmal/T15/EVIDENCE/
+  research/ebpf-microsegmentation/EVIDENCE/
+  research/EVIDENCE/
+  research/pqc-tls-migration/EVIDENCE/

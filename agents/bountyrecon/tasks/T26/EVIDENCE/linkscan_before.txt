@@ -1,0 +1,56 @@
+=== BEFORE — WORKTREE cua main e8c45a0 (chua co ban va) ===
+root: /tmp/t3/mainwt   HEAD: e8c45a0
+# scan_links.py v2.1 — T26 (BountyRecon)
+# territory : agents/bountyrecon, security
+# root      : /tmp/t3/mainwt
+# file quet : 24
+
+========================================================================
+## A. DEFECT — link tuong doi trong file AUTHORED, giai ra KHONG ton tai
+========================================================================
+
+agents/bountyrecon/tasks/T3/CANDIDATES.md:27
+    target  : ../../../security/github/RECON.md
+    giai ra : agents/security/github/RECON.md   -> KHONG TON TAI
+    DE XUAT : ../../../../security/github/RECON.md
+              (file that: security/github/RECON.md)
+
+agents/bountyrecon/tasks/T3/CANDIDATES.md:39
+    target  : ../../../security/gitlab/RECON.md
+    giai ra : agents/security/gitlab/RECON.md   -> KHONG TON TAI
+    DE XUAT : ../../../../security/gitlab/RECON.md
+              (file that: security/gitlab/RECON.md)
+
+agents/bountyrecon/tasks/T3/CANDIDATES.md:50
+    target  : ../../../security/cloudflare/RECON.md
+    giai ra : agents/security/cloudflare/RECON.md   -> KHONG TON TAI
+    DE XUAT : ../../../../security/cloudflare/RECON.md
+              (file that: security/cloudflare/RECON.md)
+
+========================================================================
+## B. BARE HOST — target khong scheme, trong nhu ten mien
+     => thuong la TRICH NGUYEN VAN. KHONG SUA.
+========================================================================
+(khong co)
+
+========================================================================
+## C. ROOT-RELATIVE trong file CAPTURE — duong dan cua MAY CHU GOC
+     => khong phai link repo, KHONG SUA. (chi liet ke 5 vi du dau)
+========================================================================
+  tong so: 138
+  agents/bountyrecon/tasks/T3/EVIDENCE/gh_bounty.html:7  /css/normalize.css
+  agents/bountyrecon/tasks/T3/EVIDENCE/gh_bounty.html:8  /css/site.css
+  agents/bountyrecon/tasks/T3/EVIDENCE/gh_bounty.html:9  /css/github-octicons.css
+  agents/bountyrecon/tasks/T3/EVIDENCE/gh_bounty.html:10  /js/modernizr.custom.67567.js
+  agents/bountyrecon/tasks/T3/EVIDENCE/gh_bounty.html:34  /
+
+========================================================================
+## TONG KET
+========================================================================
+  file da quet                        : 24
+  link tương đối OK                   : 7
+  ** DEFECT (sai độ sâu, cần sửa)     : 3 **
+  DEFECT trong code fence (không render): 0
+  BARE_HOST (trích nguyên văn)        : 0
+  ROOT_REL trong file CAPTURE (bỏ qua): 138
+  SKIPPED (http/https/anchor...)      : 344

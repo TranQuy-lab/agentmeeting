@@ -1,0 +1,67 @@
+=== VERIFY T26 — BountyRecon (ag_579fc4fa) ===
+UTC    : 2026-10-01T14:48:34Z
+repo   : /home/noble-tran/agentmeeting-bountyrecon
+branch : agent/bounty-recon/T26 @ e8c45a0
+
+file   : agents/bountyrecon/tasks/T3/CANDIDATES.md   (thu muc chua: agents/bountyrecon/tasks/T3)
+
+### 1. Link SAU KHI SUA — phai TON TAI
+
+$ test -f "agents/bountyrecon/tasks/T3/../../../../security/github/RECON.md"
+  -> TRUE (TON TAI)
+$ realpath --relative-to=. "agents/bountyrecon/tasks/T3/../../../../security/github/RECON.md"
+  -> security/github/RECON.md
+$ git ls-files --error-unmatch "security/github/RECON.md"
+  -> security/github/RECON.md
+
+$ test -f "agents/bountyrecon/tasks/T3/../../../../security/gitlab/RECON.md"
+  -> TRUE (TON TAI)
+$ realpath --relative-to=. "agents/bountyrecon/tasks/T3/../../../../security/gitlab/RECON.md"
+  -> security/gitlab/RECON.md
+$ git ls-files --error-unmatch "security/gitlab/RECON.md"
+  -> security/gitlab/RECON.md
+
+$ test -f "agents/bountyrecon/tasks/T3/../../../../security/cloudflare/RECON.md"
+  -> TRUE (TON TAI)
+$ realpath --relative-to=. "agents/bountyrecon/tasks/T3/../../../../security/cloudflare/RECON.md"
+  -> security/cloudflare/RECON.md
+$ git ls-files --error-unmatch "security/cloudflare/RECON.md"
+  -> security/cloudflare/RECON.md
+
+### 2. Link SAI CU (3 cap) — phai KHONG TON TAI
+
+$ test -f "agents/bountyrecon/tasks/T3/../../../security/github/RECON.md"
+  -> FALSE (dung: link cu chet)
+$ realpath -m --relative-to=. "agents/bountyrecon/tasks/T3/../../../security/github/RECON.md"   # -m: cho phep duong dan khong ton tai
+  -> agents/security/github/RECON.md
+
+$ test -f "agents/bountyrecon/tasks/T3/../../../security/gitlab/RECON.md"
+  -> FALSE (dung: link cu chet)
+$ realpath -m --relative-to=. "agents/bountyrecon/tasks/T3/../../../security/gitlab/RECON.md"   # -m: cho phep duong dan khong ton tai
+  -> agents/security/gitlab/RECON.md
+
+$ test -f "agents/bountyrecon/tasks/T3/../../../security/cloudflare/RECON.md"
+  -> FALSE (dung: link cu chet)
+$ realpath -m --relative-to=. "agents/bountyrecon/tasks/T3/../../../security/cloudflare/RECON.md"   # -m: cho phep duong dan khong ton tai
+  -> agents/security/cloudflare/RECON.md
+
+### 3. Bang chung goc: thu muc 'agents/security' KHONG ton tai
+$ test -d agents/security
+  -> FALSE  <= day la ly do 3 link cu chet
+$ ls -d agents/security 2>&1
+  -> ls: cannot access 'agents/security': No such file or directory
+
+### 4. Kiem lai bang scanner v2
+$ python3 agents/bountyrecon/tasks/T26/scan_links.py | tail -12
+  agents/bountyrecon/tasks/T3/EVIDENCE/gh_bounty.html:34  /
+
+========================================================================
+## TONG KET
+========================================================================
+  file da quet                        : 24
+  link tương đối OK                   : 10
+  ** DEFECT (sai độ sâu, cần sửa)     : 0 **
+  DEFECT trong code fence (không render): 0
+  BARE_HOST (trích nguyên văn)        : 3
+  ROOT_REL trong file CAPTURE (bỏ qua): 135
+  SKIPPED (http/https/anchor...)      : 344

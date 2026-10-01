@@ -1,0 +1,8 @@
+<stdin>:10: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+=== QUET READ-ONLY TOAN REPO: link tuong doi chet trong file .md (khong thuoc EVIDENCE) ===
+UTC 2026-10-01T14:48:45.230259Z
+
+link tuong doi OK (repo): 46
+link tuong doi CHET (repo): 0
+
+CAC LINK CHET — nhom theo file:

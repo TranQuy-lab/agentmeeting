@@ -1,0 +1,48 @@
+=== AFTER (final) — nhanh agent/bounty-recon/T26 ===
+root: /home/noble-tran/agentmeeting-bountyrecon   HEAD: e8c45a0
+# scan_links.py v2.1 — T26 (BountyRecon)
+# territory : agents/bountyrecon, security
+# root      : /home/noble-tran/agentmeeting-bountyrecon
+# file quet : 33
+
+========================================================================
+## A. DEFECT — link tuong doi trong file AUTHORED, giai ra KHONG ton tai
+========================================================================
+(khong co)
+
+## A2. Trong code fence (khong duoc render) — hạ mức ưu tiên
+  agents/bountyrecon/tasks/T26/LINKSCAN.md:83  SCOPE.md -> agents/bountyrecon/tasks/T26/SCOPE.md (KHONG TON TAI)
+  agents/bountyrecon/tasks/T26/LINKSCAN.md:84  ../github/RECON.md -> agents/bountyrecon/tasks/github/RECON.md (KHONG TON TAI)
+  agents/bountyrecon/tasks/T26/LINKSCAN.md:85  SCOPE.md -> agents/bountyrecon/tasks/T26/SCOPE.md (KHONG TON TAI)
+  agents/bountyrecon/tasks/T26/LINKSCAN.md:86  SCOPE.md -> agents/bountyrecon/tasks/T26/SCOPE.md (KHONG TON TAI)
+  agents/bountyrecon/tasks/T26/LINKSCAN.md:87  SCOPE.md -> agents/bountyrecon/tasks/T26/SCOPE.md (KHONG TON TAI)
+  agents/bountyrecon/tasks/T26/LINKSCAN.md:88  ../github/RECON.md -> agents/bountyrecon/tasks/github/RECON.md (KHONG TON TAI)
+  agents/bountyrecon/tasks/T26/LINKSCAN.md:89  SCOPE.md -> agents/bountyrecon/tasks/T26/SCOPE.md (KHONG TON TAI)
+
+========================================================================
+## B. BARE HOST — target khong scheme, trong nhu ten mien
+     => thuong la TRICH NGUYEN VAN. KHONG SUA.
+========================================================================
+(khong co)
+
+========================================================================
+## C. ROOT-RELATIVE trong file CAPTURE — duong dan cua MAY CHU GOC
+     => khong phai link repo, KHONG SUA. (chi liet ke 5 vi du dau)
+========================================================================
+  tong so: 141
+  agents/bountyrecon/tasks/T26/EVIDENCE/forbidden_file_untouched.txt:17  lgtm-com.pentesting.semmle.net
+  agents/bountyrecon/tasks/T26/EVIDENCE/forbidden_file_untouched.txt:18  backend-dot-lgtm-penetration-testing.appspot.com
+  agents/bountyrecon/tasks/T26/EVIDENCE/forbidden_file_untouched.txt:19  downloads.lgtm.com
+  agents/bountyrecon/tasks/T3/EVIDENCE/gh_bounty.html:7  /css/normalize.css
+  agents/bountyrecon/tasks/T3/EVIDENCE/gh_bounty.html:8  /css/site.css
+
+========================================================================
+## TONG KET
+========================================================================
+  file da quet                        : 33
+  link tương đối OK                   : 14
+  ** DEFECT (sai độ sâu, cần sửa)     : 0 **
+  DEFECT trong code fence (không render): 7
+  BARE_HOST (trích nguyên văn)        : 0
+  ROOT_REL trong file CAPTURE (bỏ qua): 141
+  SKIPPED (http/https/anchor...)      : 345
