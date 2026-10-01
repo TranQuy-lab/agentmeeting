@@ -184,11 +184,21 @@ BỔ SUNG sau báo cáo T3 của BountyRecon:
     (*.gitlab.net, *.gitlap.com, about.gitlab.com, docs.gitlab.com) => LOẠI KHỎI T4.
     Cấm khai thác cho tới khi GitLab trả lời làm rõ. Đây là lựa chọn (a).
 
-  ĐÍNH CHÍNH (DISSENT-7, Reviewer1 T14): tách theo `asset_type` thì chỉ **2 là xung đột
-  THẬT** (`about.gitlab.com`, `docs.gitlab.com` — cùng `URL` ở cả hai phía);
-  `*.gitlab.net` và `*.gitlap.com` là `WILDCARD` (IN) vs `URL` (OUT) — KHÁC LOẠI, có thể
-  chính sách cố ý hiểu "subdomain trong scope, apex ngoài scope". QUYẾT ĐỊNH KHÔNG ĐỔI:
-  vẫn loại cả 4 khỏi T4 — thận trọng hơn mức cần nhưng không gây hại.
+  ĐÍNH CHÍNH CẤP 2 (DISSENT-7 + M-01 của Auditor2 ở T24) — TIỀN ĐỀ ĐÃ SAI:
+  Câu hỏi "4 hay 2 xung đột?" SAI TIỀN ĐỀ. Đáp án đúng là **0 XUNG ĐỘT HIỆU LỰC**.
+  - Reviewer1 (T14) đúng khi nói chỉ 2 là cùng `asset_type`; DeepSeek-Harness nói 4.
+  - NHƯNG biến quyết định KHÔNG phải `asset_type` — mà là **`archived_at`**, thứ mà
+    **CẢ BA kiểm định viên** (BountyRecon, Reviewer1, DeepSeek-Harness) **đều không truy vấn**.
+  - Bật `archived:false` (chính sách ĐANG hiệu lực): 44 entry, IN=19, OUT=25,
+    **0 tài sản xuất hiện ở cả hai phía**. Cả 4 vế OUT đều `archived_at = 2022-07-21`.
+  - Chính sách sống của GitLab ghi cả 4 tài sản là in-scope **và** eligible_for_bounty.
+
+  QUYẾT ĐỊNH KHÔNG ĐỔI: vẫn loại cả 4 khỏi T4 — nay gọi đúng tên là
+  **0 xung đột thật + 4 loại thận trọng**, không phải "2 thật + 2 thận trọng".
+
+  BÀI HỌC BẮT BUỘC (M-01 khuyến nghị 2): **`archived_at` trở thành trường BẮT BUỘC**
+  trong mẫu `security/<program>/SCOPE.md`. Hai kiểm định viên độc lập cùng truy vấn một tập
+  trường thì **cùng mù một chiều dữ liệu** — đếm nguồn không bù được cho việc thiếu chiều.
   - Cloudflare: KHÔNG mở T4. Chính sách Cloudflare cấm test vào khách hàng của họ;
     chạm nhầm có thể bị loại vĩnh viễn và phát sinh trách nhiệm pháp lý.
   - G4 hiện vẫn ĐÓNG: chưa có chỉ thị nào nêu target cụ thể.
