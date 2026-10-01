@@ -1,0 +1,119 @@
+# T19 — BẰNG CHỨNG THÔ (ResearchLead, 2026-10-01)
+# Mọi dòng dưới đây là output lệnh thật. Không sửa, không suy diễn.
+
+===============================================================================
+VIỆC 1 — DOI S29: sai hoa/thường (DISSENT-6)
+===============================================================================
+
+## Lệnh chạy
+$ for u in <6 URL>; do echo "HTTP $(curl -s -o /dev/null -w '%{http_code}' -m 25 -L "$u")  <-  $u"; done
+
+## Output THÔ (chạy NGAY TRƯỚC khi sửa file)
+HTTP 404  <-  https://api.crossref.org/works/10.1109/ICICT63348.2025.10989392
+HTTP 200  <-  https://api.crossref.org/works/10.1109/iccit63348.2025.10989392
+HTTP 404  <-  https://api.openalex.org/works/https://doi.org/10.1109/ICICT63348.2025.10989392
+HTTP 200  <-  https://api.openalex.org/works/https://doi.org/10.1109/iccit63348.2025.10989392
+HTTP 404  <-  https://doi.org/10.1109/ICICT63348.2025.10989392
+HTTP 202  <-  https://doi.org/10.1109/iccit63348.2025.10989392
+
+=> DISSENT-6 ĐƯỢC XÁC NHẬN ĐỘC LẬP: hoa/thường quyết định 404 vs 200 trên CẢ BA dịch vụ
+   (Crossref REST, OpenAlex REST, doi.org resolver). Đây là lỗi CHÉP SAI HOA/THƯỜNG,
+   KHÔNG phải bịa nguồn — metadata `iccit` đã được xác minh thật từ đầu (xem crossref_lookups.txt dòng 18).
+
+## 4 vị trí đã sửa (`ICICT63348` -> `iccit63348`)
+research/ebpf-microsegmentation/BLINDCHECK.md:53      (1 occurrence)
+research/ebpf-microsegmentation/LITREVIEW.md:264      (2 occurrences: text + link)
+research/ebpf-microsegmentation/SOURCES.md:81         (1 occurrence)
+research/pqc-tls-migration/SOURCES.md:109             (1 occurrence)
+=> Sau khi sửa: `grep -rn "ICICT63348" research/` -> 0 match.
+=> Đồng thời hết tự mâu thuẫn nội bộ: hàng SOURCES.md:81 nay ghi venue `IEEE ICCIT`
+   và DOI `iccit63348` — khớp nhau.
+
+===============================================================================
+VIỆC 2 — S31: tự kiểm lại bằng chứng của Reviewer1 (KHÔNG tin lời)
+===============================================================================
+
+## Lệnh chạy
+$ curl -sL -m 60 -o s31.html -w "HTTP:%{http_code} bytes:%{size_download} type:%{content_type}\n" \
+      "https://arxiv.org/html/2603.11006v2"
+
+## Output THÔ
+HTTP:200 bytes:368458 type:text/html; charset=utf-8
+raw bytes: 366818
+text chars: 67743   (sau khi bóc thẻ HTML)
+
+## Đếm từ khoá trên TOÀN VĂN (không phân biệt hoa/thường)
+  'MTU'                      -> 0
+  'middlebox'                -> 0
+  'MiTM'                     -> 2
+  'man-in-the-middle'        -> 2
+  'fragment'                 -> 0
+  'packet size'              -> 0
+  'network layer'            -> 0
+  'certificate chain'        -> 0
+  'tunnel'                   -> 0
+  'VPN'                      -> 0
+  'edge'                     -> 1
+  'load balancer'            -> 2
+  'future work'              -> 6
+
+## Vị trí của 'edge' — CHỈ 1 lần, ở 99.5% độ dài văn bản
+   pos=67431 (99.5%): "...We gratefully acknowledge support from our major funders, member
+   institutions, and all contributors..."  => ĐÂY LÀ FOOTER CỦA arXiv, KHÔNG phải nội dung bài.
+   (Reviewer1 ghi 99.7%; tôi đo 99.5% — khác nhau do cách bóc thẻ HTML, không phải mâu thuẫn:
+    cả hai đều chỉ về footer.)
+
+## Trích NGUYÊN VĂN phần future work (đã tự đọc, xác nhận khớp với Reviewer1)
+"...Given the findings from this paper, there are few important feature research directions that are
+important to analyse in details including:
+ • extending the analysis to real network environments with commercial load balancers and MiTM
+   (Man-in-The-Middle) inspection devices to quantify the performance impact when using PQC in TLS
+   especially considering the high network load/connections these devices need to handle, where PQC
+   performance impact may be signifiant.
+ • conducting stress tests beyond 100 TPS to identify the breaking point of PQC-enabled TLS under heav..."
+
+=> S31 TỰ LIỆT KÊ ĐÚNG KHOẢNG HỞ CỦA T1 VÀO *FUTURE WORK*.
+
+## Xác minh VENUE (điểm Reviewer1 nêu mà tôi KHÔNG tìm thấy trong HTML)
+$ grep -oiE "spiqe|Euro S&P|accepted" s31.html   ->  (rỗng)
+$ curl -sL "http://export.arxiv.org/api/query?id_list=2603.11006"   (trường <arxiv:comment>)
+OUTPUT THÔ:
+arxiv:comment : Accepted in SPIQE 2026 (Workshop on Secure Protocol Implementations in the
+                Quantum Era), associated to Euro S&P 2026. v2 incorporates peer-review feedback.
+                Clarified per-layer methodology and terminology, added discussion of client/server
+                computational asymmetry of ML-KEM, refined effect-size framing of TLS handshake
+                results, expanded future work, and added funding acknowledgment
+
+=> XÁC NHẬN: venue "SPIQE 2026, associated to Euro S&P 2026" là THẬT, đọc từ trường
+   <arxiv:comment> qua arXiv API (và cũng có trên https://arxiv.org/abs/2603.11006).
+   "v2 incorporates peer-review feedback" => ĐÃ QUA BÌNH DUYỆT.
+   Ghi chú trung thực: lần grep đầu trên HTML KHÔNG tìm thấy, vì thông tin venue nằm ở
+   metadata arXiv chứ không nằm trong bản HTML toàn văn. Nếu tôi dừng ở lần grep đầu,
+   tôi đã kết luận sai rằng Reviewer1 bịa venue.
+
+===============================================================================
+KẾT LUẬN BẰNG CHỨNG
+===============================================================================
+1. DISSENT-6 (DOI sai hoa/thường): XÁC NHẬN ĐỘC LẬP. Đã sửa 4 vị trí.
+2. S31 bao phủ: phân tích theo tầng, cổ điển/lai/thuần PQC, >30 thí nghiệm, tới 100 TPS,
+   backend đổi kích thước phản hồi, effect size.
+3. S31 KHÔNG bao phủ: MTU, middlebox, fragment, packet size, network layer, certificate chain,
+   tunnel, VPN, edge thật, thiết bị kiểm tra MiTM.
+4. S31 ĐÃ QUA BÌNH DUYỆT (SPIQE 2026 / Euro S&P 2026) => phát biểu future work của nó có trọng lượng.
+=> Khoảng hở của T1 là CÒN MỞ, được chứng minh bằng BẰNG CHỨNG DƯƠNG.
+
+===============================================================================
+KIỂM LẠI SAU KHI SỬA — đọc DOI TRỰC TIẾP từ đúng 4 dòng trong file
+===============================================================================
+Lệnh: với mỗi (file:dòng), trích DOI bằng grep rồi curl lại Crossref + doi.org.
+
+  research/ebpf-microsegmentation/BLINDCHECK.md:53    DOI=10.1109/iccit63348.2025.10989392  crossref=200  doi.org=202
+  research/ebpf-microsegmentation/LITREVIEW.md:264    DOI=10.1109/iccit63348.2025.10989392  crossref=200  doi.org=202
+  research/ebpf-microsegmentation/SOURCES.md:81       DOI=10.1109/iccit63348.2025.10989392  crossref=200  doi.org=202
+  research/pqc-tls-migration/SOURCES.md:109           DOI=10.1109/iccit63348.2025.10989392  crossref=200  doi.org=202
+
+=> CẢ 4/4 vị trí: Crossref 200, doi.org 202. Đã sửa ĐÚNG.
+
+Lưu ý về `grep -rn "ICICT63348" research/`: sau khi sửa, các match còn lại CHỈ nằm trong
+(a) chính file bằng chứng này (ghi lại chuỗi SAI để đối chiếu) và (b) câu văn giải thích việc sửa.
+KHÔNG còn match nào ở vị trí trích dẫn thật.

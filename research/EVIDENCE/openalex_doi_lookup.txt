@@ -1,0 +1,38 @@
+10.62056/ahee0iuc | 2024 | cited 28 | OA: True | https://doi.org/10.62056/ahee0iuc
+   venue: IACR Communications in Cryptology
+10.1145/3620678.3624652 | 2023 | cited 42 | OA: True | https://dl.acm.org/doi/pdf/10.1145/3620678.3624652
+   venue: None
+10.1109/eucnc/6gsummit51104.2021.9482526 | 2021 | cited 44 | OA: True | https://lirias.kuleuven.be/retrieve/14e501bd-e6bb-41d6-bf72-360c4850443a
+   venue: None
+10.1145/3281411.3281443 | 2018 | cited 327 | OA: True | https://dl.acm.org/doi/pdf/10.1145/3281411.3281443
+   venue: None
+10.1109/access.2023.3281480 | 2023 | cited 70 | OA: True | https://ieeexplore.ieee.org/ielx7/6287639/10005208/10138542.pdf
+   venue: IEEE Access
+10.1177/15485129211051386 | 2021 | cited 12 | OA: False | None
+   venue: The Journal of Defense Modeling and Simulation Applications Methodology Technology
+10.1109/sin54109.2021.9699232 | 2021 | cited 18 | OA: True | https://rgu-repository.worktribe.com/preview/1592321/ARIFEEN%202021%20Automated%20microsegmentation%20%28AAM%29.pdf
+   venue: None
+10.1109/iccit63348.2025.10989392 | 2025 | cited 9 | OA: False | None
+   venue: None
+10.1145/3386367.3431305 | 2020 | cited 78 | OA: False | None
+   venue: None
+10.1109/noms54207.2022.9789913 | 2022 | cited 17 | OA: False | None
+   venue: NOMS 2022-2022 IEEE/IFIP Network Operations and Management Symposium
+10.1145/3624354.3630585 | 2023 | cited 45 | OA: False | None
+   venue: None
+10.1145/3372297.3423350 | 2020 | cited 180 | OA: True | https://dl.acm.org/doi/pdf/10.1145/3372297.3423350
+   venue: None
+10.14722/ndss.2020.24203 | 2020 | cited 147 | OA: True | https://doi.org/10.14722/ndss.2020.24203
+   venue: None
+10.3390/e27121242 | 2025 | cited 6 | OA: True | https://www.mdpi.com/1099-4300/27/12/1242/pdf?version=1765206682
+   venue: Entropy
+10.3390/sci7030091 | 2025 | cited 14 | OA: True | https://www.mdpi.com/2413-4155/7/3/91/pdf?version=1751357201
+   venue: Sci
+10.53070/bbd.1898820 | 2026 | cited 4 | OA: True | https://dergipark.org.tr/en/download/article-file/5763310
+   venue: Computer Science
+10.1145/3452296.3472929 | 2021 | cited 30 | OA: True | https://dl.acm.org/doi/pdf/10.1145/3452296.3472929
+   venue: None
+10.1145/3314221.3314590 | 2019 | cited 99 | OA: True | https://dl.acm.org/doi/pdf/10.1145/3314221.3314590
+   venue: None
+10.1016/j.comnet.2025.111234 | 2025 | cited 3 | OA: False | None
+   venue: Computer Networks

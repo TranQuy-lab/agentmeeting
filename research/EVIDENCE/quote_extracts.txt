@@ -1,0 +1,19 @@
+# Trích nguyên văn + số dòng — nguồn toàn văn đã tải và đọc
+
+## A. PDF: ndss2020.pdf — Sikeridis, Kampanakis, Devetsikiotis (2020), 'Post-Quantum Authentication in TLS 1.3: A Performance Study', NDSS 2020. DOI 10.14722/ndss.2020.24203
+### Lệnh tái lập: curl -sL https://www.ndss-symposium.org/wp-content/uploads/2020/02/24203-paper.pdf -o ndss2020.pdf && pdftotext -layout ndss2020.pdf ndss.txt  (kết quả: 1413 dòng)
+```text
+622:would effectively change our results unless they push the Dilithium II, Falcon 512) that equates to less than 5ms extra
+667:because algorithms with excessively large certificate sizes and handshake is ∼10-15ms over RSA3072. Fig. 8(a) shows the
+673:512 and Dilithium II, on the other hand, do not incur extra size triggers an extra round-trip (∼11ms). Falcon 1024 does
+678:from Table III) show competitive performance against conven- Virginia) with a baseline RSA3072 handshake time of ∼15ms.
+685:with a baseline RSA3072 handshake time of ∼15ms. Falcon by using different PQ signature schemes in the same certificate
+```
+
+## B. PDF: k8s_policies.pdf — Budigiri, Baumann, Mühlberg, Truyen, Joosen (2021), 'Network Policies in Kubernetes: Performance Evaluation and Security Analysis', EuCNC/6G Summit 2021. DOI 10.1109/EuCNC/6GSummit51104.2021.9482526
+### Lệnh tái lập: curl -sL https://lirias.kuleuven.be/retrieve/14e501bd-e6bb-41d6-bf72-360c4850443a -o k8s_policies.pdf && pdftotext -layout k8s_policies.pdf k8s.txt  (kết quả: 440 dòng)
+```text
+22:K8s concept for controlling network isolation between tenants. to improve container security by both industry and research
+46:providers. With NFV, the edge computing platform virtualizes that network policies incur a negligible performance
+161: which host results were better by 8.7% and 10.7% for latency
+```

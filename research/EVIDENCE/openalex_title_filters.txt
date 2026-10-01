@@ -1,0 +1,59 @@
+
+=== FILTER: title.search:post-quantum AND title.search:TLS | total: 0 ===
+
+=== FILTER: title.search:post-quantum AND title.search:migration | total: 0 ===
+
+=== FILTER: title.search:ML-KEM | total: 249 ===
+- 2025 | https://doi.org/10.1145/3716368.3735214 | 19 c | None | conference-paper
+  T: ParallelNTT: Maximizing Performance of Forward and Inverse NTT on FPGA for ML-DSA and ML-KEM
+- 2024 | https://doi.org/10.1109/tcsii.2024.3442228 | 18 c | IEEE Transactions on Circuits & Systems II Express Briefs | article
+  T: A Configurable ML-KEM/Kyber Key-Encapsulation Hardware Accelerator Architecture
+  ABS: The development of quantum computers has created a need for new Post-Quantum cryptography (PQC) to address the potential threat to the current cryptography systems. The Module-Lattice-based Key-Encapsulation Mechanism (ML-KEM) – previously known as CRYSTALS-Kyber – is a lattice-based algorithm that offers smaller keys and high s
+- 2024 | https://doi.org/10.1007/978-3-031-70890-9_7 | 15 c | Lecture notes in computer science | conference-paper
+  T: Faster Post-quantum TLS 1.3 Based on ML-KEM: Implementation and Assessment
+- 2024 | https://doi.org/10.1145/3689939.3695785 | 9 c | None | conference-paper
+  T: High-Performance NTT Hardware Accelerator to Support ML-KEM and ML-DSA
+  ABS: Large polynomial multiplications are crucial for Post-Quantum Cryptography standards like Module-Lattice-based Key Encapsulation Mechanism (ML-KEM) and Module-Lattice-based Digital Signature (ML-DSA). These multiplications, being complex, are often accelerated using the Number Theoretic Transform (NTT). This work presents a nove
+- 2025 | https://doi.org/10.1109/access.2025.3579379 | 8 c | IEEE Access | article
+  T: An Area-Time Efficient Hardware Architecture for ML-KEM Post-Quantum Cryptography Standard
+  ABS: To facilitate the integration of the NIST-standardized post-quantum cryptographic (PQC) algorithm, Module Lattice-based Key Encapsulation Mechanism (ML-KEM), into quantum-resistant devices and cryptosystems, this study introduces an area-time efficient hardware implementation. We propose several key optimizations: a dedicated SH
+- 2026 | https://doi.org/10.3389/fphy.2025.1723966 | 7 c | Frontiers in Physics | article
+  T: Design and implementation of an authenticated post-quantum session protocol using ML-KEM (Kyber), ML-DSA (Dilithium), and AES-256-GCM
+  ABS: Introduction Session establishment, the process by which two parties authenticate each other and derive a shared secret key, forms the foundation for secure digital communication. Quantum computers threaten this foundation by breaking classical public-key primitives such as RSA and elliptic-curve Diffie–Hellman (ECDH), thereby e
+- 2025 | https://doi.org/10.1109/sp61157.2025.00220 | 7 c | None | conference-paper
+  T: Towards ML-KEM & ML-DSA on OpenTitan
+  ABS: This paper presents extensions to the OpenTitan hardware root of trust that aim at enabling high-performance lattice-based cryptography. We start by carefully optimizing ML-KEM and ML-DSA-the two algorithms primarily rec-ommended and standardized by NIST-in software targeting the OpenTitan Big Number (OTBN) accelerator. Based on
+- 2025 | https://doi.org/10.1109/access.2025.3628733 | 7 c | IEEE Access | article
+  T: High-Performance Unified Hardware Architecture for ML-DSA and ML-KEM PQC Standards
+  ABS: In response to the advent of quantum computers, which pose significant threats to traditional cryptographic systems, NIST announced the quantum-resistant Module Lattice-based Key Encapsulation Mechanism (ML-KEM) and Digital Signature (ML-DSA) standards in August 2024. While prior studies have proposed hardware designs to acceler
+
+=== FILTER: title.search:eBPF AND title.search:network | total: 0 ===
+
+=== FILTER: title.search:microsegmentation | total: 59 ===
+- 1996 | https://doi.org/10.1016/0923-5965(95)00054-2 | 37 c | Signal Processing Image Communication | article
+  T: Efficient automatic analysis of camera work and microsegmentation of video using spatiotemporal images
+- 2018 | https://doi.org/10.13140/rg.2.2.18206.23365 | 23 c | Digital Education Resource Archive (University College London) | other
+  T: The Microsegmentation of the Autism Spectrum: Economic and Research Implications for Scotland
+  ABS: Economic research on autism and implications for Scotland, including how the economic cost of autism can inform strategy and planning.
+- 2024 | https://doi.org/10.58496/mjcs/2024/005 | 22 c | Mesopotamian Journal of CyberSecurity | article
+  T: Transaction Security and Management of Blockchain-Based Smart Contracts in E-Banking-Employing Microsegmentation and Yellow Saddle Goatfish
+  ABS: The process security of money transactions is considered an important issue in e-banking. Additionally, it is an enormous problem if never controlled. particular, security should be a combination of fast and sturdy characteristics, which is the subject of previous studies suffered from. Our research attempts to improve the syste
+- 2021 | https://doi.org/10.1109/sin54109.2021.9699232 | 18 c | None | conference-paper
+  T: Automated Microsegmentation for Lateral Movement Prevention in Industrial Internet of Things (IIoT)
+  ABS: The integration of the IoT network with the Operational Technology (OT) network is increasing rapidly. However, this incorporation of IoT devices into the OT network makes the industrial control system vulnerable to various cyber threats. Hacking an IoT device at the network edge, an attacker can move laterally to compromise the
+- 2021 | https://doi.org/10.1111/ijcs.12748 | 15 c | International Journal of Consumer Studies | article
+  T: Determinants of mobile social media use, customer heterogeneity, and international microsegmentation
+  ABS: Abstract How to effectively examine the heterogeneous nature of consumer preferences across borders and cultures is a challenge for firms that use mobile social media. This study identifies the determinants of individuals’ mobile social media use behavior and profiles the resulting international microsegments. We propose a model
+- 2021 | https://doi.org/10.1177/15485129211051386 | 12 c | The Journal of Defense Modeling and Simulation Applications Methodology Technology | article
+  T: Optimizing network microsegmentation policy for cyber resilience
+  ABS: This paper describes an approach for improving cyber resilience through the synthesis of optimal microsegmentation policy for a network. By leveraging microsegmentation security architecture, we can reason about fine-grained policy rules that enforce access for given combinations of source address, destination address, destinati
+- 2025 | https://doi.org/10.1109/iccit63348.2025.10989392 | 9 c | None | conference-paper
+  T: Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC)
+  ABS: This paper, titled “Zero Trust Implementation for Legacy Systems using Dynamic Microsegmentation, Role-Based Access Control (RBAC), and Attribute-Based Access Control (ABAC),” addresses the critical cybersecurity challenges legacy systems pose. Legacy infrastructures, integral to numerous organizations, exhibit vulnerabilities d
+- 2019 | https://doi.org/10.1007/978-1-4842-5431-8_2 | 7 c | Apress eBooks | book-chapter
+  T: Microsegmentation and Zero Trust: Introduction
+  ABS: When you implement Zero Trust micro-segmentation, all ingress/egress traffic hitting your virtual NIC cards will be compared against a configured list of firewall policies. The packet will be dropped if there is no rule matching the specific traffic flow. A default deny rule at the end ensures that all unrecognized traffic is de
+
+=== FILTER: title.search:zero-trust AND title.search:network | total: 0 ===
+
+=== FILTER: title.search:kubernetes AND title.search:network policy | total: 0 ===
