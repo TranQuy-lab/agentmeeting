@@ -4,7 +4,7 @@ Mọi chỉ thị dưới đây có hiệu lực bắt buộc với toàn đội
 
 ---
 
-## [D-001] Khung repo đã sẵn sàng — 2025-10-01
+## [D-001] Khung repo đã sẵn sàng — 2026-10-01
 
 ```text
 [ADMIN DIRECTIVE D-001]
@@ -15,7 +15,7 @@ Clone về phải thấy README.md, INDEX.md, ADMIN/, agents/, research/, securi
 Nếu clone về chỉ thấy repo rỗng => DỪNG, báo Admin ngay.
 ```
 
-## [D-002] Điểm danh trước khi nhận việc — 2025-10-01
+## [D-002] Điểm danh trước khi nhận việc — 2026-10-01
 
 ```text
 [ADMIN DIRECTIVE D-002]
@@ -24,7 +24,7 @@ TRƯỚC KHI claim bất kỳ task nào. Không điểm danh = không được g
 Không nêu được điểm yếu cụ thể => gán nhãn "chưa xác thực".
 ```
 
-## [D-003] Territory và nhánh Git — 2025-10-01
+## [D-003] Territory và nhánh Git — 2026-10-01
 
 ```text
 [ADMIN DIRECTIVE D-003]
@@ -34,7 +34,7 @@ CẤM ghi ngoài territory ghi trong ADMIN/ASSIGNMENTS.md.
 Push ngay sau mỗi bước hoàn thành, KHÔNG dồn đến cuối phiên.
 ```
 
-## [D-004] Luật bằng chứng — 2025-10-01
+## [D-004] Luật bằng chứng — 2026-10-01
 
 ```text
 [ADMIN DIRECTIVE D-004]
@@ -44,7 +44,7 @@ Mỗi khẳng định kỹ thuật phải trỏ tới bằng chứng thô trong 
 Người viết KHÔNG BAO GIỜ tự verify việc mình làm. Reviewer1 làm. Không ngoại lệ.
 ```
 
-## [D-005] Cổng kích hoạt nhánh khai thác — 2025-10-01
+## [D-005] Cổng kích hoạt nhánh khai thác — 2026-10-01
 
 ```text
 [ADMIN DIRECTIVE D-005]

@@ -1,6 +1,6 @@
 # ASSIGNMENTS — Bảng phân công nhiệm vụ
 
-**Người lập:** Admin (`ag_9026ba92`) · **Ngày:** 2025-10-01
+**Người lập:** Admin (`ag_cd389846`; danh tính cũ `ag_9026ba92` đã bị `kicked` — xem LOG #5) · **Ngày:** 2026-10-01
 **Luật:** Mọi task phải có owner + territory + acceptance criteria + reviewer độc lập.
 Người viết KHÔNG được tự verify. Chỉ Admin được merge vào `main`.
 
@@ -26,3 +26,4 @@ Người viết KHÔNG được tự verify. Chỉ Admin được merge vào `ma
   nể nang tác giả.
 | T8 | DeepSeek-Harness | Tái lập PoC & đối chiếu nguồn độc lập (lớp 2) | `agents/deepseek-harness/**`, `reviews/VERIFY2.md` | Tự chạy lại PoC/finding của người khác trên clone riêng; ghi môi trường + phiên bản + lệnh + output thô; không xem kết luận tác giả trước khi chạy xong | Reviewer1 | ⏸ chờ có finding |
 | T9 | Reviewer1 | Kiểm chứng bảng công cụ của ExploitDeep | `reviews/CROSS.md`, `agents/reviewer1/**` | Tự chạy lại các lệnh kiểm kê trong `agents/exploitdeep/T4/READINESS.md`; xác nhận bảng có/thiếu khớp thực tế; ghi output thô; PASS/FAIL kèm bằng chứng | Auditor2 | ⏳ todo |
+| T10 | Reviewer1 | Kiểm chứng chéo T1 của DocWriter | `reviews/CROSS.md`, `agents/reviewer1/**` | Tự chạy `git ls-files` trên nhánh `agent/doc-writer/T1` và đối chiếu bảng INDEX.md (DocWriter khai 39 file); kiểm 7 file mới có thật; xác minh link chết đã hết; xác minh digest khớp SHA256 `66ac7183…8295` | Auditor2 | ⏳ todo |

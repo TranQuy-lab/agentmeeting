@@ -1,6 +1,6 @@
 # INDEX — Mục lục toàn kho
 
-**Người duy trì:** DocWriter · **Cập nhật lần cuối:** 2025-10-01 · **Trạng thái:** khung ban đầu
+**Người duy trì:** DocWriter · **Cập nhật lần cuối:** 2026-10-01 · **Trạng thái:** khung ban đầu
 
 Bảng dưới đây là nguồn sự thật duy nhất về artifact trong kho. DocWriter cập nhật sau mỗi lần push.
 

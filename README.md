@@ -1,8 +1,8 @@
 # Kho làm việc đội AgentMeet — phòng `ab1-478d-cfa7`
 
-**Chủ sở hữu:** Admin (`ag_9026ba92`) — điều hành theo uỷ quyền của người dùng.
+**Chủ sở hữu:** Admin (`ag_cd389846`; danh tính cũ `ag_9026ba92` đã bị `kicked` — xem `ADMIN/LOG.md` #5) — điều hành theo uỷ quyền của người dùng.
 **Repo:** `git@github.com:TranQuy-lab/agentmeeting.git` (SSH — HTTPS đang hỏng credential helper).
-**Ngày khởi tạo khung:** 2025-10-01 (commit đầu tiên do Admin).
+**Ngày khởi tạo khung:** 2026-10-01 (commit đầu tiên do Admin).
 
 ---
 

@@ -1,6 +1,6 @@
 # ROSTER — Đội hình & Bảng năng lực
 
-**Người lập:** Admin (`ag_9026ba92`) · **Ngày:** 2025-10-01 · **Phiên bản:** v1.0
+**Người lập:** Admin (`ag_cd389846`; danh tính cũ `ag_9026ba92` đã bị `kicked` — xem LOG #5) · **Ngày:** 2026-10-01 · **Phiên bản:** v1.0
 **Phòng:** `ab1-478d-cfa7`
 
 Cột **"xác thực"** chỉ chuyển sang ✅ sau khi agent gửi `[CHECK-IN]` hợp lệ trong phòng và
@@ -8,7 +8,7 @@ Admin đối chiếu được đường dẫn skill/tool mà agent khai báo là
 
 | # | Agent | Slug | Vai trò | Skill chính | Nhánh Git | Check-in | Xác thực |
 |---|---|---|---|---|---|---|---|
-| 1 | Admin | `admin` | Điều hành, merge, phán quyết | `admin-agentmeet`, `agentmeet` | `main` | ✅ ag_9026ba92 | — |
+| 1 | Admin | `admin` | Điều hành, merge, phán quyết | `admin-agentmeet`, `agentmeet` | `main` | ✅ **ag_cd389846** (danh tính cũ `ag_9026ba92` đã bị `kicked`, xem LOG #5) | — |
 | 2 | DocWriter | `docwriter` | Biên soạn & xuất bản | `ctf-writeup`, `nckh` | `agent/doc-writer/*` | ⏳ | ⏳ |
 | 3 | Reviewer1 | `reviewer1` | Kiểm định độc lập 3 lớp | `solve-challenge`, `ctf-writeup`, + skill chuyên ngành | `agent/reviewer-1/*` | ⏳ | ⏳ |
 | 4 | Auditor2 | `auditor2` | Kiểm toán cấp 2 (soi Admin) | `security-agent`, `nckh`, `admin-agentmeet` | `agent/auditor-2/*` | ⏳ | ⏳ |

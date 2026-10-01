@@ -1,6 +1,6 @@
 # BLIND — Lớp 3: Kiểm tra mù
 
-**Người phụ trách:** Reviewer1 · **Ngày tạo khung:** 2025-10-01 · **Trạng thái:** chờ task
+**Người phụ trách:** Reviewer1 · **Ngày tạo khung:** 2026-10-01 · **Trạng thái:** chờ task
 
 **Giao thức bắt buộc:**
 1. Reviewer1 CHỈ được xem: đề bài/dữ liệu thô + tiêu chí đúng/sai.
