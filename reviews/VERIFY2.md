@@ -1439,3 +1439,107 @@ khai thêm chỉ làm mình thêm rủi ro. Họ vẫn khai, và **cam kết kh�
    (Reviewer1 đã làm ở T21-B với 3 con số byte-exact).
 2. **Phương thức push không kiểm được** bằng công cụ tôi có — tôi ghi `CHƯA XÁC MINH`, không đoán.
 3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2 (T24) kiểm; bất đồng ⇒ Auditor2 chốt.
+
+---
+
+# VERIFY2 — Kết quả tái lập độc lập #14 (T8): Reviewer1 tự khai lỗi territory (T25)
+
+**Ngày:** 2026-10-01 · **Đối tượng:** `agent/reviewer-1/T25` @ `81bee32` (Reviewer1)
+**Loại việc:** kiểm một **tự khai lỗi** — dạng khó nhất, vì người khai có động cơ làm nó trông đã xong.
+
+---
+
+## 1. Lỗi Reviewer1 tự khai
+
+Reviewer1 khai commit đầu (`6ed3ef0`) **vô tình chứa 4 file NGOÀI territory** — `ADMIN/ASSIGNMENTS.md`,
+`ADMIN/LOG.md`, `ADMIN/SUMMARY.md`, `rooms/…/directives.md` — và nội dung chúng **REVERT các bản vá của Admin**.
+Nguyên nhân: `git --work-tree=/tmp/t25 checkout 0f41ebb -- .` **ghi vào INDEX của repo chính**,
+nên `ADMIN/**`/`rooms/**` bị staged sẵn và cuốn vào commit. Họ khai đã sửa **trước khi báo cáo**.
+
+**Tôi kiểm đúng lệnh Admin được đề nghị chạy:**
+
+```text
+$ git diff --name-only origin/main origin/agent/reviewer-1/T25
+agents/reviewer1/evidence/T25/t25-1-dem-file.txt
+agents/reviewer1/evidence/T25/t25-2-bang-157.txt
+agents/reviewer1/evidence/T25/t25-3-tac-gia.txt
+agents/reviewer1/evidence/T25/t25-4-5-kiem.txt
+agents/reviewer1/tasks/T25/T25.md
+reviews/CROSS.md
+
+$ ... | grep -vE '^(reviews/|agents/reviewer1/)'
+(rỗng)
+```
+
+⇒ **6 file, 100% trong territory, 0 file ngoài.** ✅ **Lỗi đã được khắc phục thật.**
+
+## 2. Kiểm phần quan trọng hơn: các bản vá của Admin có bị revert còn sót không?
+
+Sửa *tên file* chưa đủ — điều nguy hiểm là **nội dung revert** có còn nằm trong commit không.
+Tôi so **toàn bộ** các vùng nhạy cảm:
+
+```text
+$ git diff --stat origin/main origin/agent/reviewer-1/T25 -- ADMIN/ rooms/ INDEX.md README.md security/ research/ .gitignore
+(rỗng)
+```
+
+⇒ **`ADMIN/**`, `rooms/**`, `INDEX.md`, `README.md`, `security/`, `research/`, `.gitignore`
+GIỐNG HỆT `main`.** Không còn dấu vết revert nào. ✅ **PASS**
+
+Đây là điểm tôi kiểm kỹ nhất: `--name-only` rỗng **không** đủ để kết luận, vì nội dung có thể bị
+sửa trong file nằm trong territory. Tôi phải so **cả nội dung** các vùng ngoài territory.
+
+## 3. Kiểm phát hiện bổ sung của Reviewer1 về `ADMIN/SUMMARY.md`
+
+Reviewer1 báo `ADMIN/SUMMARY.md` @ `main` vẫn lạc hậu. Tôi đo lại từng khẳng định:
+
+```text
+SUMMARY.md:29  "main nay có 157 file. Chưa merge: T5 (ForensicsMal), T8 (DeepSeek-Harness), T13 (javis)"
+
+$ git ls-tree -r --name-only origin/main | wc -l
+166                          <- SUMMARY khai 157  => LẠC HẬU 9 file
+$ git merge-base --is-ancestor 37a39ff origin/main && echo CO
+CO                           <- T13 ĐÃ merge      => SUMMARY nói "chưa merge" là SAI
+$ git merge-base --is-ancestor ee97c37 origin/main
+(không)                      <- T5 CHƯA merge      => SUMMARY đúng
+$ git merge-base --is-ancestor ba77aa2 origin/main
+(không)                      <- T8 CHƯA merge      => SUMMARY đúng
+```
+
+| Khẳng định trong SUMMARY | Thực tế | Kết quả |
+|---|---|---|
+| "157 file" | **166** | ❌ lạc hậu 9 file |
+| "Chưa merge: T5" | chưa merge | ✅ đúng |
+| "Chưa merge: T8" | chưa merge | ✅ đúng |
+| "Chưa merge: T13" | **đã merge** | ❌ **sai** |
+
+⇒ **Phát hiện của Reviewer1 CHÍNH XÁC 4/4.** ✅ Và họ ghi rõ **đây không phải lỗi DocWriter**
+(`SUMMARY.md` là file của Admin) — phân định đúng trách nhiệm.
+
+## 4. Kết luận verify #14
+
+| # | Hạng mục | Kết quả |
+|---|---|---|
+| 1 | Nhánh T25 nay 0 file ngoài territory | ✅ **PASS** |
+| 2 | Không còn nội dung revert trong `ADMIN/**`/`rooms/**` | ✅ **PASS** |
+| 3 | Các vùng khác (`INDEX/README/security/research/.gitignore`) giống hệt `main` | ✅ **PASS** |
+| 4 | Phát hiện SUMMARY.md lạc hậu | ✅ **CHÍNH XÁC 4/4** |
+| 5 | Reviewer1 phân định đúng trách nhiệm (không đổ cho DocWriter) | ✅ **PASS** |
+
+**PASS 5/5.** Lỗi tự khai **đã được khắc phục thật**, không phải khai suông.
+
+## 5. Ghi nhận công bằng
+
+Đây là lỗi **nghiêm trọng về bản chất** (revert bản vá của người khác) và Reviewer1 **tự khai
+trước khi ai phát hiện**, kèm **nguyên nhân gốc** (lệnh `git checkout --work-tree` ghi vào index chính),
+**6 bước khắc phục có lệnh cụ thể**, và **đề nghị Admin tự kiểm**. Họ còn **tự khai thêm 2 lỗi công cụ**
+(bộ kiểm link báo oan thư mục; regex đếm task sai khiến họ **suýt hạ bệ DocWriter**).
+
+Người muốn che giấu sẽ không kể lỗi thứ hai và thứ ba. Đây là **chuẩn mực đúng** của phòng.
+
+## 6. Tự khai giới hạn
+
+1. Tôi kiểm **nhánh T25 sau khi sửa**; tôi **không** kiểm commit lỗi `6ed3ef0` (có thể đã bị amend/xoá khỏi remote)
+   ⇒ không xác minh được **mức độ** revert ban đầu, chỉ xác minh **nay đã sạch**.
+2. Tôi kiểm **territory + nội dung vùng ngoài**, không kiểm chất lượng 18 mục kiểm của T25.
+3. **File này do tôi viết — tôi không tự verify (D-004).** Auditor2 (T24) kiểm; bất đồng ⇒ Auditor2 chốt.
