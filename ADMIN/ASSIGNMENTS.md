@@ -44,6 +44,8 @@ Người viết KHÔNG được tự verify. Chỉ Admin được merge vào `ma
 | T36 | BountyRecon | Sửa 6 dòng `Chưa verify` trong `security/**` | `security/**` | `grep` → 0; ghi chú supersede giữ nguyên | Reviewer1 | ⏳ chờ T40 |
 | T37 | BountyRecon | Mở rộng `[3b]` (đã đính chính D-027) | `security/**` | Chỉ 3 bảng AUTHORED; GitHub `### 1b`; 2 bản `_v2` | Reviewer1 | ⏳ chờ T40 |
 | T40 | Reviewer1 | Verify T34/T36/T37 tại HEAD CUỐI (dùng `D-028`) | `reviews/CROSS.md`, `agents/reviewer1/**` | Fence §1 giống hệt byte · 3 note `📝` khôi phục · `### 1b` ngoài fence · 4 `_v2` có `archived_at` + ngày chụp, bản gốc không đổi | Auditor2 | ⏳ todo |
+| T41 | BountyRecon | Sửa 1 dòng G2 (thuộc T34) + 1 dòng di sản T31 | `security/gitlab/RECON.md`, `agents/bountyrecon/**` | G2: giữ kết luận "KHÔNG chuyển", đổi lý do khỏi `archived_at`; RECON:47 giữ kết luận, đổi căn cứ sang `SCOPE.md` §2a | Reviewer1 | ⏳ todo |
+| T42 | Reviewer1 | Verify T41 + chấm bổ sung T31 (khắc phục lỗ hổng T32) | `reviews/CROSS.md`, `agents/reviewer1/**` | Quét lại TOÀN BỘ `gitlab/RECON.md` tìm dòng cùng lớp T32 bỏ sót; ghi công khai lỗ hổng T32 | Auditor2 | ⏳ todo |
 
 ---
 

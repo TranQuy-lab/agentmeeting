@@ -391,8 +391,13 @@ CANARY PHỦ ĐÚNG KHỐI FENCE NGUYÊN VĂN, không phủ tiêu đề mục.
     - Thêm mục AUTHORED mới `### 1b` NGOÀI fence -> canary KHÔNG đổi -> HỢP LỆ (D-027).
     - Sửa bất kỳ ký tự NÀO trong fence           -> canary ĐỔI      -> REJECT.
     - Canary `2db48874…` của Reviewer1 tính theo quy ước KHÁC nên KHÔNG so sánh trực tiếp được.
-    - => TẠM KHÔNG dùng `2db48874…` làm tiêu chí reject cho tới khi Reviewer1 công bố lại
-      canary THEO QUY ƯỚC NÀY. Tạm dùng phép kiểm "blob khối fence giống hệt byte".
+    - Reviewer1 đã công bố lại (T40): `2db48874…` = QUY ƯỚC (A) raw, gồm `\n` ngay sau rào mở,
+      2109 byte. TÁI LẬP ĐƯỢC trên `main` ⇒ canary cũ KHÔNG SAI, chỉ khác quy ước.
+
+  [CHỐT — dùng quy ước (A)] canary = sha256 của khối fence theo quy ước RAW (gồm `\n` sau rào mở).
+    Đăng ký canary PHẢI kèm: (1) lệnh trích xuất nguyên văn, (2) cả 3 biến thể (raw / bỏ \n đầu /
+    strip 2 đầu), (3) độ dài byte. Lý do: đã 3 lần lệch quy ước (Reviewer1 lệch 1 ký tự ở T30;
+    canary lệch phạm vi ở T39; tranh chấp ranh giới ở T40) — cùng một nguyên nhân.
 
   BÀI HỌC: canary chỉ dùng được khi QUY ƯỚC RANH GIỚI được ghi rõ. Reviewer1 từng lệch đúng
   1 ký tự (pre=8283 vs 8284) vì quy ước khác — đây là lần thứ hai cùng nguyên nhân.
