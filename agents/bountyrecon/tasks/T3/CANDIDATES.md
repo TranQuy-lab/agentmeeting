@@ -41,7 +41,7 @@
 | # | Ứng viên | Độ tin cậy | Đề xuất |
 |---|---|---|---|
 | **G1** | **`registry.gitlab.com` (critical) KHÔNG qua Cloudflare** — A `35.227.35.254` GCP trực tiếp, khác hạ tầng `gitlab.com` | **THẤP** | ✅ **Đáng chuyển** — tài sản critical, ít lớp phòng vệ hơn. **Chưa xác minh** có phải lỗi hay không. |
-| **G2** | ~~**`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải**~~ → **SAI: tài sản ĐÃ NGHỈ HƯU** — `archived_at = 2022-03-21T22:30:03.041Z`, **KHÔNG có bản live** (tự truy vấn lại ở T34; xem `security/gitlab/SCOPE.md` §1) | **BỊ LOẠI** | ⛔ **KHÔNG chuyển** — đây là **bản ghi đã retired**, không phải target đang mở. Việc không phân giải là **hệ quả tự nhiên**, không phải bất thường. |
+| **G2** | **`license.gitlab.com` (critical) trong scope nhưng KHÔNG phân giải** — `archived_at = 2022-03-21T22:30:03.041Z`, **KHÔNG có bản live** (tự truy vấn lại ở T34; xem `security/gitlab/SCOPE.md` §1) | **TRUNG BÌNH–THẤP** | ⛔ **KHÔNG chuyển (thiếu định nghĩa chính thức — `DISSENT-12`); hiệu lực CHƯA XÁC MINH.** ⚠️ **KHÔNG có CNAME treo ⇒ KHÔNG phải takeover.** Việc không phân giải là **hệ quả tự nhiên**, không phải bất thường. **CẤM tự đoán.** |
 | G3 | `design.gitlab.com` / `advisories.gitlab.com` → CNAME vào GitLab Pages | **THẤP** | ❌ **Không phải takeover** — cả `gitlab-org.gitlab.io` và `pages.gitlab.io` **đều phân giải** ⇒ đã được sở hữu. Đã kiểm bằng DNS thụ động. |
 | G4 | `customers.gitlab.com` SPF `~all` | **BỊ LOẠI** | ⛔ GitLab loại trừ tường minh **"SPF and DKIM issues"**. |
 | G5 | `gitlab.org`/`gitlab.net` DMARC `p=none` | **BỊ LOẠI** | ⛔ Cùng lý do G4. |

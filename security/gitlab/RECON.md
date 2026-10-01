@@ -44,7 +44,7 @@ Nguồn thô: `recon_gitlab.txt`.
 | `advisories.gitlab.com` | ✅ URL (medium) | — | `CNAME pages.gitlab.io.` → A `35.185.44.232` | Như trên. |
 | `license.gitlab.com` | ✅ URL (critical) | **không có bản ghi NS/A/AAAA/MX/TXT/CAA** | — | **Trong scope nhưng KHÔNG phân giải.** Xem §3 ứng viên C3. |
 | `gitlab.org` | ✅ WILDCARD (medium) | `hal`/`arya.ns.cloudflare.com` | A `104.21.92.3`, `172.67.183.112` | MX `mx1/mx2.emailsrvr.com`. |
-| `gitlab.net` | ⛔ **NGOÀI scope** (apex đã nghỉ hưu `2020-10-05`) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
+| `gitlab.net` | ⛔ **NGOÀI scope** — **căn cứ: chính sách công bố `SCOPE.md` §2a** (apex `gitlab.net` nằm trong danh sách out-of-scope; `archived_at 2020-10-05` chỉ là chiều phụ) — nhưng `*.gitlab.net` **trong scope** (medium) | `hal`/`arya.ns.cloudflare.com` | **A/AAAA rỗng** | TXT `google-site-verification=…`. |
 
 ### 1.1 DMARC (nguyên văn)
 
